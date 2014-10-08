@@ -30,16 +30,14 @@
         <p>Perfil/Usuario</p>
     </div>   
       
-    
-    <!--<div class="imagenes">
-        <a href="<?php echo base_url() ?>index.php/distribuidor">
-        <img src="../../assets/img/distribuidorAzul.png" title="Distribuidor" width="158" height="158" />
+    <div class="imagenes">
+         <a href="<?php echo base_url() ?>index.php/tipo_empresa">
+        <img src="../../assets/img/tipoEmpresaAzul.png" title="Tipos de empresa" width="158" height="158" />
         </a>
         <p></p>
-        <p>Distribuidor</p>
-    </div>
-    -->
-    
+        <p>Tipos de empresas</p>
+    </div>    
+            
     <div class="imagenes">
          <a href="<?php echo base_url() ?>index.php/cliente">
         <img src="../../assets/img/clienteAzul.png" title="Clientes" width="158" height="158" />
@@ -56,23 +54,6 @@
         <p>Proveedores</p>
     </div>  
     
-    <!--
-    <div class="imagenes">
-        <a href="<?php echo base_url() ?>index.php/permiso">
-        <img src="../../assets/img/permisoAzul.png" title="Permisos" width="158" height="158" />
-        </a>
-        <p></p>
-        <p>Permisos</p>
-    </div>  
-    
-    <div class="imagenes">
-        <a href="<?php echo base_url() ?>index.php/perfilPermiso">
-        <img src="../../assets/img/permisoPerfilAzul.png" title="Permisos/Perfil" width="158" height="158" />
-        </a>
-        <p></p>
-        <p>Permisos/Perfil</p>
-    </div>    
-    -->
     
     <div class="imagenes">
         <a href="<?php echo base_url() ?>index.php/producto">
@@ -91,8 +72,62 @@
         <p>Variables logisticas</p>
     </div>        
      --> 
+     
+    <div class="imagenes">
+         <a href="<?php echo base_url() ?>index.php/perfil_proveedor">
+        <img src="../../assets/img/perfilProveedorAzul.png" title="Perfiles de proveedores" width="158" height="158" />
+        </a>
+        <p></p>
+        <p>Perfiles de proveedores</p>
+    </div>  
+     
+    <div class="imagenes">
+         <a href="<?php echo base_url() ?>index.php/perfil_cliente">
+        <img src="../../assets/img/perfilClienteAzul.png" title="Perfiles de clientes" width="158" height="158" />
+        </a>
+        <p></p>
+        <p>Perfiles de clientes</p>
+    </div>  
+     
+    <div class="imagenes">
+         <a href="<?php echo base_url() ?>index.php/perfil_distribuidor">
+        <img src="../../assets/img/perfilDistribuidorAzul.png" title="Perfiles de distribuidor" width="158" height="158" />
+        </a>
+        <p></p>
+        <p>Perfiles de distribuidores</p>
+    </div>   
+     
+    <div class="imagenes">
+         <a href="<?php echo base_url() ?>index.php/usuario_perfil_proveedor">
+        <img src="../../assets/img/UsuarioperfilProveedorAzul.png" title="Usuarios/Perfiles/Proveedores" width="158" height="158" />
+        </a>
+        <p></p>
+        <p>Usuarios / Perfiles / Proveedores</p>
+    </div>  
+     
+    <div class="imagenes">
+         <a href="<?php echo base_url() ?>index.php/usuario_perfil_cliente">
+        <img src="../../assets/img/UsuarioperfilClienteAzul.png" title="Usuarios/Perfiles/Clientes" width="158" height="158" />
+        </a>
+        <p></p>
+        <p>Usuarios / Perfiles / Clientes</p>
+    </div>  
+     
+    <div class="imagenes">
+         <a href="<?php echo base_url() ?>index.php/usuario_perfil_distribuidor">
+        <img src="../../assets/img/UsuarioperfilDistribuidorAzul.png" title="Usuarios/Perfiles/Distribuidores" width="158" height="158" />
+        </a>
+        <p></p>
+        <p>Usuarios / Perfiles / Distribuidores</p>
+    </div>       
 
-        
+    <div class="imagenes">
+         <a href="<?php echo base_url() ?>index.php/viaje">
+        <img src="../../assets/img/viajeAzul.png" title="Viajes" width="158" height="158" />
+        </a>
+        <p></p>
+        <p>Viajes</p>
+    </div>      
       
   </div>    
    

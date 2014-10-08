@@ -36,6 +36,10 @@ class producto extends CI_Controller{
     
     $this->grocery_crud->add_action('VL', base_url().'/assets/img/vl.png', '','ui-icon-image',array($this,'link_hacia_vl'));
     
+    $this->grocery_crud->add_action('Edit', '', 'vl/index','ui-icon-pencil');
+    
+    $this->grocery_crud->add_action('Account', '', '', 'ui-icon-image', array($this, 'elencoAccount'));
+    
     $output = $this->grocery_crud->render();
     
     $this->perfil_output($output);
@@ -45,6 +49,11 @@ class producto extends CI_Controller{
     $this->load->view('mostrarABM',$output);
   } 
   
+  function elencoAccount($primary_key , $row)
+{
+    return site_url('vl/popUp/'.$row->id);
+}
+  
   //FANCYBOX TEST
     public function _callback_desc($value, $row)
     {
@@ -53,7 +62,7 @@ class producto extends CI_Controller{
     
     function link_hacia_vl($primary_key , $row)
     {
-        return base_url().'index.php/vl/popUp?id_producto='.$row->id;
+        return site_url('vl/popUp/'.$row->id);
     }
 
 }
