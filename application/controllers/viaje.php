@@ -34,11 +34,18 @@ class Viaje extends CI_Controller{
     $this->grocery_crud->set_relation('id_proveedor','proveedor','razon_social');
     $this->grocery_crud->set_relation('id_distribuidor','distribuidor','razon_social');
     
+    $this->grocery_crud->add_action('Productos', base_url().'/assets/img/iconoProducto.png', '','ui-icon-image',array($this,'link_hacia_productos'));
+    
     $output = $this->grocery_crud->render();
     $this->viaje_output($output);
   }
   
   function viaje_output($output = null){
     $this->load->view('mostrarABM', $output);
-  } 
+  }
+  
+  function link_hacia_productos($primary_key , $row)
+  {
+        return site_url('viajeVL/index/'.$row->id);
+  }
 }

@@ -71,11 +71,12 @@ class usuario extends CI_Controller{
         switch ($row->id_tipo_empresa)
         {
             case 1:
-                return base_url().'index.php/usuario_perfil_distribuidor/popUp?id_usuario='.$row->id;                
+                return site_url('usuario_perfil_distribuidor/popUp/'.$row->id);
             case 2:
-                return base_url().'index.php/usuario_perfil_cliente/popUp?id_usuario='.$row->id;
+                return site_url('usuario_perfil_cliente/popUp/'.$row->id);
             case 3:
-                return base_url().'index.php/usuario_perfil_proveedor/popUp?id_usuario='.$row->id;
+                return site_url('usuario_perfil_proveedor/popUp/'.$row->id);
+                
             default:
                 return base_url().'index.php';
                 

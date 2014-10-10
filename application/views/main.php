@@ -128,6 +128,14 @@
         <p></p>
         <p>Viajes</p>
     </div>      
+     
+     <div class="imagenes">
+         <a href="<?php echo base_url() ?>index.php/viajeVL">
+        <img src="../../assets/img/viajeAzul.png" title="Viajes/VL" width="158" height="158" />
+        </a>
+        <p></p>
+        <p>Viajes/VL</p>
+    </div>       
       
   </div>    
    

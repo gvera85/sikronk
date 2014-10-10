@@ -1,5 +1,6 @@
 <?php
 
+
 class login extends CI_Controller {
 
     function index() {
@@ -70,6 +71,26 @@ class login extends CI_Controller {
         
         $this->load->model('usuario_m');
         $Usuario = $this->usuario_m->getPerfiles($idUsuario);
+        
+        $Usuario2 = $this->usuario_m->getUsuario($idUsuario);
+        
+        if( is_array($Usuario2) && count($Usuario2) > 1 ) {
+               chrome_log("Muchos usuarios con id:".$idUsuario);
+        }
+            else {
+                $user = $Usuario2[0];
+                
+                chrome_log("Usuario:".$Usuario2[0]["id"],"group");
+             
+            }
+        
+       
+        
+        
+        $Perfiles = $this->usuario_m->getPerfilProveedor($Usuario2[0]["id"]);
+        
+        chrome_log("Perfil:".$Perfiles[0]["id"],"log");
+        
         return $Usuario;
     }
     
