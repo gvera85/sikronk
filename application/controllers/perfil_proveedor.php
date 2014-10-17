@@ -21,12 +21,16 @@ class Perfil_proveedor extends CI_Controller{
     $this->grocery_crud->set_table('perfil_proveedor');
     $this->grocery_crud->edit_fields('descripcion');
     $this->grocery_crud->add_fields('descripcion');
-    
-    $this->grocery_crud->set_theme('datatables');
    
+    $this->grocery_crud->set_theme('datatables');
+    
     $this->grocery_crud->set_subject('Perfil de proveedor');
     $this->grocery_crud->required_fields('descripcion');
-    $this->grocery_crud->columns('descripcion');
+  
+    $this->grocery_crud->set_relation_n_n('MenuesDisponibles','menu_proveedor','menu','id_perfil_proveedor','id_menu','descripcion','orden');
+        
+    $this->grocery_crud->columns('descripcion','MenuesDisponibles');
+    $this->grocery_crud->fields('descripcion','MenuesDisponibles');
     
     $output = $this->grocery_crud->render();
     $this->perfil_proveedor_output($output);

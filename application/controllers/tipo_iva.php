@@ -1,6 +1,6 @@
 <?php
 
-class perfil extends CI_Controller{
+class Tipo_iva extends CI_Controller{
 
   public function __construct()
   {
@@ -18,21 +18,21 @@ class perfil extends CI_Controller{
   }
   
   function index(){
-    $this->grocery_crud->set_table('perfil');
+    $this->grocery_crud->set_table('tipo_iva');
     $this->grocery_crud->edit_fields('descripcion');
     $this->grocery_crud->add_fields('descripcion');
     
     $this->grocery_crud->set_theme('datatables');
    
-    $this->grocery_crud->set_subject('Perfil');
+    $this->grocery_crud->set_subject('Tipos de IVA');
     $this->grocery_crud->required_fields('descripcion');
     $this->grocery_crud->columns('descripcion');
     
     $output = $this->grocery_crud->render();
-    $this->perfil_output($output);
+    $this->tipo_iva_output($output);
   }
   
-  function perfil_output($output = null){
+  function tipo_iva_output($output = null){
     $this->load->view('mostrarABM',$output);
   } 
 

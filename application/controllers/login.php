@@ -68,30 +68,17 @@ class login extends CI_Controller {
     }
     
     function getPerfiles($idUsuario){
-        
         $this->load->model('usuario_m');
-        $Usuario = $this->usuario_m->getPerfiles($idUsuario);
         
-        $Usuario2 = $this->usuario_m->getUsuario($idUsuario);
-        
-        if( is_array($Usuario2) && count($Usuario2) > 1 ) {
-               chrome_log("Muchos usuarios con id:".$idUsuario);
-        }
-            else {
-                $user = $Usuario2[0];
+        $Usuario = $this->usuario_m->getUsuario($idUsuario);
                 
-                chrome_log("Usuario:".$Usuario2[0]["id"],"group");
-             
-            }
+        chrome_log("Usuario:".$Usuario[0]["id"],"log");
         
-       
+        $Perfiles = $this->usuario_m->getPerfiles($Usuario[0]["id"]);
         
+        chrome_log("Perfil:".$Perfiles[0]["perfil"],"log");
         
-        $Perfiles = $this->usuario_m->getPerfilProveedor($Usuario2[0]["id"]);
-        
-        chrome_log("Perfil:".$Perfiles[0]["id"],"log");
-        
-        return $Usuario;
+        return $Perfiles;
     }
     
     function show_perfiles($perfiles) {
@@ -105,10 +92,30 @@ class login extends CI_Controller {
     
     function asignarPerfil() {
        
-        $perfil = $this->input->post('selectPerfil');
+        //chrome_log("Antes de obtener el perfil elegido","log");
+        $EmpresayPerfil = $this->input->post('selectPerfil');
+        
+        $vector = explode('-', $EmpresayPerfil);
+
+        $perfil = $vector[0];
+        $empresa = $vector[1];
+        $DescEmpresa = $vector[2];
         
         $this->session->set_userdata('perfil', $perfil);
+        $this->session->set_userdata('empresa', $empresa);
+        $this->session->set_userdata('DescEmpresa', $DescEmpresa);
+                
         $this->session->set_userdata('isLoggedIn', true);
+        
+        $this->load->model('usuario_m');
+        
+        chrome_log("Antes de llamar al metodo getMenuPorPerfil","log");
+        $menus = $this->usuario_m->getMenuPorPerfil($perfil);
+        chrome_log("Despues de llamar al metodo getMenuPorPerfil","log");
+                
+        chrome_log("Menus:".$menus[0]["descripcion"],"log");
+        $this->session->set_userdata('menu', $menus);
+        
         redirect('/main/show_main');
     }
     

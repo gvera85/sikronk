@@ -38,7 +38,7 @@
           <ul class="nav">
             <li><a href="<?php echo base_url() ?>index.php/main/show_main"><i class="icon-home"></i> Home</a></li>
             <li class="divider-vertical"></li>
-            <li class="userInfo"><strong><?php echo $this->session->userdata('nombre'); ?> </strong></li>
+            <li class="userInfo"><strong><?php echo $this->session->userdata('nombre')." - ".$this->session->userdata('DescEmpresa') ; ?> </strong></li>
           </ul>
             
           <div class="btn-group pull-right">

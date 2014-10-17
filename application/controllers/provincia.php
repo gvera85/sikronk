@@ -1,6 +1,6 @@
 <?php
 
-class Perfil_distribuidor extends CI_Controller{
+class Provincia extends CI_Controller{
 
   public function __construct()
   {
@@ -18,25 +18,21 @@ class Perfil_distribuidor extends CI_Controller{
   }
   
   function index(){
-    $this->grocery_crud->set_table('perfil_distribuidor');
+    $this->grocery_crud->set_table('provincia');
     $this->grocery_crud->edit_fields('descripcion');
     $this->grocery_crud->add_fields('descripcion');
     
     $this->grocery_crud->set_theme('datatables');
    
-    $this->grocery_crud->set_subject('Perfil de distribuidor');
+    $this->grocery_crud->set_subject('Provincia');
     $this->grocery_crud->required_fields('descripcion');
-    
-    $this->grocery_crud->set_relation_n_n('MenuesDisponibles','menu_distribuidor','menu','id_perfil_distribuidor','id_menu','descripcion','orden');
-        
-    $this->grocery_crud->columns('descripcion','MenuesDisponibles');
-    $this->grocery_crud->fields('descripcion','MenuesDisponibles');
+    $this->grocery_crud->columns('descripcion');
     
     $output = $this->grocery_crud->render();
-    $this->perfil_distribuidor_output($output);
+    $this->provincia_output($output);
   }
   
-  function perfil_distribuidor_output($output = null){
+  function provincia_output($output = null){
     $this->load->view('mostrarABM',$output);
   } 
 

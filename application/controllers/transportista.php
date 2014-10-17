@@ -1,6 +1,6 @@
 <?php
 
-class proveedor extends CI_Controller{
+class Transportista extends CI_Controller{
 
   public function __construct()
   {
@@ -18,30 +18,26 @@ class proveedor extends CI_Controller{
   }
   
   function index(){
-    $this->grocery_crud->set_table('proveedor');
-    $this->grocery_crud->edit_fields('razon_social', 'cuit','id_provincia','localidad','direccion_comercial','codigo_postal','direccion_carga','mercado','id_tipo_iva','telefono1','telefono2','mail');
-    $this->grocery_crud->add_fields('razon_social', 'cuit','id_provincia','localidad','direccion_comercial','codigo_postal','direccion_carga','mercado','id_tipo_iva','telefono1','telefono2','mail');
+    $this->grocery_crud->set_table('transportista');
+    $this->grocery_crud->edit_fields('razon_social', 'cuit', 'id_provincia','localidad','direccion','codigo_postal','telefono1','telefono2','mail');
+    $this->grocery_crud->add_fields('razon_social', 'cuit', 'id_provincia','localidad','direccion','codigo_postal','telefono1','telefono2','mail');
     
     $this->grocery_crud->set_theme('datatables');
    
-    $this->grocery_crud->set_subject('Proveedores');
+    $this->grocery_crud->set_subject('Transportista');
     $this->grocery_crud->required_fields('razon_social');
-    $this->grocery_crud->columns('razon_social', 'cuit','id_provincia','localidad','direccion_comercial','codigo_postal','direccion_carga');
+    $this->grocery_crud->columns('razon_social', 'cuit', 'id_provincia','localidad','direccion','codigo_postal','telefono1','telefono2','mail');
     
     $this->grocery_crud->display_as('id_provincia','Provincia');        
     $this->grocery_crud->set_relation('id_provincia','provincia','descripcion');
     
-    $this->grocery_crud->display_as('id_tipo_iva','Tipo de IVA');        
-    $this->grocery_crud->set_relation('id_tipo_iva','tipo_iva','descripcion');
-    
-    
     $this->grocery_crud->set_rules('mail','mail','callback_validarMail');
     
     $output = $this->grocery_crud->render();
-    $this->proveedor_output($output);
+    $this->transportista_output($output);
   }
   
-  function proveedor_output($output = null){
+  function transportista_output($output = null){
     $this->load->view('mostrarABM',$output);
   } 
   

@@ -26,7 +26,11 @@ class Perfil_cliente extends CI_Controller{
    
     $this->grocery_crud->set_subject('Perfil de cliente');
     $this->grocery_crud->required_fields('descripcion');
-    $this->grocery_crud->columns('descripcion');
+    
+    $this->grocery_crud->set_relation_n_n('MenuesDisponibles','menu_cliente','menu','id_perfil_cliente','id_menu','descripcion','orden');
+        
+    $this->grocery_crud->columns('descripcion','MenuesDisponibles');
+    $this->grocery_crud->fields('descripcion','MenuesDisponibles');
     
     $output = $this->grocery_crud->render();
     $this->perfil_cliente_output($output);

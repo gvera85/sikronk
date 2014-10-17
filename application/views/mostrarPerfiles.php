@@ -7,7 +7,7 @@
 
         <legend>Bienvenido <?php echo $this->session->userdata('nombre'); ?></legend>
         
-        <?php echo form_open('login/asignarPerfil') ?> <!--Controlador login, funcion login_user -->
+        <?php echo form_open('login/asignarPerfil') ?> <!--Controlador login, funcion asignarPerfil -->
                 
             <div class="alert alert-error">
             Seleccione un perfil para ingresar al sistema
@@ -16,7 +16,7 @@
             <select name='selectPerfil' class='chosen-select span5' data-placeholder='Seleccionar perfil' >
                 
             <?php foreach( $perfiles as $perfil ) : ?>
-                <option value=<?php echo $perfil['id_perfil'] ?>><?php echo $perfil['perfil'] ?> - <?php echo $perfil['empresa'] ?></option>
+                <option value=<?php echo $perfil['id_perfil']."-".$perfil['id_empresa']."-".$perfil['empresa'] ?>><?php echo $perfil['perfil'] ?> - <?php echo $perfil['empresa'] ?></option>
             <?php endforeach; ?>
             </select>				
         <BR> 

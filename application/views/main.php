@@ -4,8 +4,27 @@
   <div class='w1024'>
   <div class='w980'>
       
-  <div id="navcontainer">
+  <div>
 
+               
+    <?php foreach( $menues as $menu ) : ?> 
+                
+                
+        <div class="imagenes" >
+            <a href="<?php echo base_url() ?>index.php/<?php echo $menu['controlador']?>">
+            <img src="<?php echo $menu['path_icono']?>" title="<?php echo $menu['descripcion']?>" width="158" height="158" />
+            </a>
+            <p></p>
+            <p><?php echo $menu['descripcion']?></p>
+        </div>
+               
+    <?php endforeach; ?>   
+    
+    
+    
+  </div>
+      
+  <div id="navcontainer" style="display:none;">    
     <div class="imagenes">
         <a href="<?php echo base_url() ?>index.php/usuario">
         <img src="../../assets/img/usuarioAzul.png" title="Usuarios" width="158" height="158" />
@@ -63,15 +82,7 @@
         <p>Productos</p>
     </div>      
     
-    <!--
-    <div class="imagenes">
-        <a href="<?php echo base_url() ?>index.php/vl">
-            <img src="../../assets/img/vlAzul.png" title="Variables logisticas" width="158" height="158" />
-        </a>
-        <p></p>
-        <p>Variables logisticas</p>
-    </div>        
-     --> 
+
      
     <div class="imagenes">
          <a href="<?php echo base_url() ?>index.php/perfil_proveedor">
@@ -129,48 +140,26 @@
         <p>Viajes</p>
     </div>      
      
-     <div class="imagenes">
+    <div class="imagenes">
          <a href="<?php echo base_url() ?>index.php/viajeVL">
-        <img src="../../assets/img/viajeAzul.png" title="Viajes/VL" width="158" height="158" />
+        <img src="../../assets/img/viajeProductoAzul.png" title="Viajes/VL" width="158" height="158" />
         </a>
         <p></p>
         <p>Viajes/VL</p>
-    </div>       
+    </div>  
+     
+    <div class="imagenes">
+         <a href="<?php echo base_url() ?>index.php/menu">
+        <img src="../../assets/img/menuAzul.png" title="Menu" width="158" height="158" />
+        </a>
+        <p></p>
+        <p>Menu</p>
+    </div> 
+     
       
   </div>    
    
   </div> <!--  <div class='w980'> -->
   </div> <!--  <div class='w1024'> -->
-
-
-
-  <!-- ****************************************************************** -->
-  <!--                        NEW USER Modal Window                       -->
-  <!-- ****************************************************************** -->
-  
-  <div class="modal hide" id="myModal">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal">x</button>
-      <h3>Nuevo usuario</h3>
-    </div>
-    <div class="modal-body">
-        <p><input type="text" class="span4" name="first_name" id="first_name" placeholder="Nombre"></p>
-        <p><input type="text" class="span4" name="last_name" id="last_name" placeholder="Apellido"></p>
-        <p><input type="text" class="span4" name="email" id="email" placeholder="Correo electrónico"></p>
-        <p><input type="password" class="span4" name="password" id="password" placeholder="Contraseña"></p>
-        <p><input type="password" class="span4" name="password2" id="password2" placeholder="Confirme contraseña"></p>
-        
-    
-    </div>
-    
-    <div class="modal-footer">
-      <a href="#" class="btn btn-warning" data-dismiss="modal">Cancelar</a>
-      
-      <a href="<?php echo base_url() ?>/index.php/usuario/agregar_usuario" id="btnModalSubmit" class="btn btn-primary">Crear</a>
-    
-    </div>
-  </div>
-  
-  
   
 <?php $this->load->view('footer') ?>

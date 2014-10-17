@@ -23,8 +23,17 @@ class main extends CI_Controller{
    * application screen is set up.
    */
   function show_main() {
-      
-    $this->load->view('main');
+    
+    $menues = $this->session->userdata('menu');
+    
+    //foreach( $menues as $menu ) : 
+      //          echo $menu['descripcion'] .' - ' .$menu['path_icono']; 
+    //endforeach; 
+    
+    $data['menues'] = $menues;
+
+    $this->load->helper('form');
+    $this->load->view('main',$data);
   }
   
 
