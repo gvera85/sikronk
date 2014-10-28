@@ -7,7 +7,7 @@
 
         <legend>Bienvenido <?php echo $this->session->userdata('nombre'); ?></legend>
         
-        <?php echo form_open('login/asignarPerfil') ?> <!--Controlador login, funcion asignarPerfil -->
+        <?php echo form_open('login/asignarPerfilSeleccionado') ?> <!--Controlador login, funcion asignarPerfil -->
                 
             <div class="alert alert-error">
             Seleccione un perfil para ingresar al sistema

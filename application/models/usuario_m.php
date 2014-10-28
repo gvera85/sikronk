@@ -25,22 +25,25 @@ class usuario_m extends CI_Model {
         $id_tipo_empresa = $Usuario["id_tipo_empresa"];
         $idUsuario = $Usuario["id"];
         
-        switch($id_tipo_empresa)/*Dependiendo del tipo de empresa voy a buscar un perfil determinado*/
+        if ($id_tipo_empresa)
         {
-            case DISTRIBUIDOR: /*El usuario es un distribuidor*/
-                $perfiles = $this->getPerfilDistribuidor($idUsuario);
-                break;
-            case CLIENTE: /*El usuario es un cliente*/
-                $perfiles = $this->getPerfilCliente($idUsuario);
-                break;
-            case PROVEEDOR:: /*El usuario es un proveedor*/
-                $perfiles = $this->getPerfilProveedor($idUsuario);
-                break;
-                    
-        }
-        
-        if( is_array($perfiles) && count($perfiles) > 0 ) {
-              return $perfiles;
+            switch($id_tipo_empresa)/*Dependiendo del tipo de empresa voy a buscar un perfil determinado*/
+            {
+                case DISTRIBUIDOR: /*El usuario es un distribuidor*/
+                    $perfiles = $this->getPerfilDistribuidor($idUsuario);
+                    break;
+                case CLIENTE: /*El usuario es un cliente*/
+                    $perfiles = $this->getPerfilCliente($idUsuario);
+                    break;
+                case PROVEEDOR: /*El usuario es un proveedor*/
+                    $perfiles = $this->getPerfilProveedor($idUsuario);
+                    break;
+
+            }
+
+            if( is_array($perfiles) && count($perfiles) > 0 ) {
+                  return $perfiles;
+            }
         }
         
         return false;
@@ -119,7 +122,35 @@ class usuario_m extends CI_Model {
         }   
     }
     
-    public function getMenuPorPerfil($idPerfil)
+    public function getMenuPorPerfil($Usuario, $idPerfil)
+    {
+        //var $menues;
+        $id_tipo_empresa = $Usuario["id_tipo_empresa"];
+        
+               
+        switch($id_tipo_empresa)/*Dependiendo del tipo de empresa voy a buscar un perfil determinado*/
+        {
+            case DISTRIBUIDOR: /*El usuario es un distribuidor*/
+                $menues = $this->getMenuDistribuidor($idPerfil);
+                break;
+            case CLIENTE: /*El usuario es un cliente*/
+                $menues = $this->getMenuCliente($idPerfil);
+                break;
+            case PROVEEDOR: /*El usuario es un proveedor*/
+                $menues = $this->getMenuProveedor($idPerfil);
+                break;
+                    
+        }
+        
+        if( is_array($menues) && count($menues) > 0 ) {
+              return $menues;
+        }
+        
+        return false;
+        
+    }
+    
+    public function getMenuDistribuidor($idPerfil)
     {
         if($idPerfil != FALSE) {
           $sql = "select b.descripcion , b.path_icono, b.controlador 
@@ -127,7 +158,57 @@ class usuario_m extends CI_Model {
                     join menu b on a.id_menu = b.id
                     where id_perfil_distribuidor = ?
                     and b.id_menu_padre is null
-                    order by b.orden";
+                    order by a.orden";
+            
+            $query = $this->db->query($sql, array($idPerfil));
+                   
+            $menues = $query->result_array();
+
+            if( is_array($menues) && count($menues) > 0 ) {
+              return $menues;
+            }
+            
+            return false;
+        }
+        else {
+          return FALSE;
+        }   
+    }
+    
+    public function getMenuProveedor($idPerfil)
+    {
+        if($idPerfil != FALSE) {
+          $sql = "select b.descripcion , b.path_icono, b.controlador 
+                    from menu_proveedor a
+                    join menu b on a.id_menu = b.id
+                    where id_perfil_proveedor = ?
+                    and b.id_menu_padre is null
+                    order by a.orden";
+            
+            $query = $this->db->query($sql, array($idPerfil));
+                   
+            $menues = $query->result_array();
+
+            if( is_array($menues) && count($menues) > 0 ) {
+              return $menues;
+            }
+            
+            return false;
+        }
+        else {
+          return FALSE;
+        }   
+    }
+    
+    public function getMenuCliente($idPerfil)
+    {
+        if($idPerfil != FALSE) {
+          $sql = "select b.descripcion , b.path_icono, b.controlador 
+                    from menu_cliente a
+                    join menu b on a.id_menu = b.id
+                    where id_perfil_cliente = ?
+                    and b.id_menu_padre is null
+                    order by a.orden";
             
             $query = $this->db->query($sql, array($idPerfil));
                    

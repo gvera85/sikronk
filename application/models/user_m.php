@@ -4,7 +4,7 @@
 class user_m extends CI_Model {
 
     var $details;
-
+    
     function validate_user( $email, $password ) {
         // Build a query to retrieve the user's details
         // based on the received username and password

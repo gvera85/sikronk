@@ -36,8 +36,10 @@ class usuario extends CI_Controller{
     $this->grocery_crud->callback_before_insert(array($this,'encrypt_password_callback'));
     $this->grocery_crud->callback_before_update(array($this,'encrypt_password_callback'));
     $this->grocery_crud->callback_edit_field('password',array($this,'decrypt_password_callback'));
+      
+    $this->grocery_crud->add_action('Perfiles', base_url().'/assets/img/perfilmini.png', '','ui-icon-image',array($this,'link_hacia_perfiles'));
     
-    $this->grocery_crud->add_action('Perfiles', base_url().'/assets/img/vl.png', '','ui-icon-image',array($this,'link_hacia_perfiles'));
+    $this->grocery_crud->set_rules('mail','mail','callback_validarMail');
     
     $output = $this->grocery_crud->render();
     $this->usuario_output($output);
@@ -83,6 +85,20 @@ class usuario extends CI_Controller{
         }
         
     }
+    
+    public function validarMail($mailIngresado) 
+    {
+        if ($mailIngresado) {
+              if (preg_match('/^[^0-9][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[@][a-zA-Z0-9_]+([.][a-zA-Z0-9_]+)*[.][a-zA-Z]{2,4}$/', $mailIngresado)) {
+                  return TRUE;
+              } else {
+                  $this->form_validation->set_message('validarMail', $mailIngresado . ' no es un mail valido');
+                  return FALSE;
+              }
+          } else {
+              return TRUE;
+          }
+      }
     
 
 }

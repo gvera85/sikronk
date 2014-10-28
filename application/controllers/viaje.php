@@ -28,7 +28,7 @@ class Viaje extends CI_Controller{
    
     $this->grocery_crud->set_subject('Viaje');
     $this->grocery_crud->required_fields('id_proveedor');
-    $this->grocery_crud->columns('id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_chofer','id_empresa_transportista');
+    $this->grocery_crud->columns('id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_empresa_transportista');
     
     $this->grocery_crud->change_field_type('id_distribuidor','invisible');
     
@@ -37,12 +37,14 @@ class Viaje extends CI_Controller{
     
     $this->grocery_crud->display_as('id_empresa_transportista','Transportista');
     $this->grocery_crud->set_relation('id_empresa_transportista','transportista','razon_social');
+    
+    $this->grocery_crud->display_as('id_chofer','Chofer');
+    $this->grocery_crud->set_relation('id_chofer','chofer','{dni} - {nombre} {apellido} - Tel: {telefono}');
         
     $this->grocery_crud->add_action('Productos', base_url().'/assets/img/iconoProducto.png', '','ui-icon-image',array($this,'link_hacia_productos'));
     
     $this->grocery_crud->set_rules('patente_semi','Patente semi','callback_validarPatente');
     $this->grocery_crud->set_rules('patente_camion','Patente del camion','callback_validarPatente');
-    
     
     $this->grocery_crud->fields('id_distribuidor','id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_chofer','id_empresa_transportista');
     
@@ -55,13 +57,19 @@ class Viaje extends CI_Controller{
     $this->viaje_output($output);
   }
   
+  function item_description_callback($value, $row) { 
+      return 'GONZA';  
+      
+      //return substr($value,0,40); 
+  }
+  
   function viaje_output($output = null){
     $this->load->view('mostrarABM', $output);
   }
   
   function link_hacia_productos($primary_key , $row)
   {
-        return site_url('viajeVL/index/'.$row->id);
+        return site_url('viajeVL/popUp/'.$row->id);
   }
   
   public function validarPatente($patenteIngresada) 
