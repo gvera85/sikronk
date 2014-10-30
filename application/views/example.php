@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html>
-<?php $this->load->view('header') ?>
+
 <head>
 	<meta charset="utf-8" />
 <?php 

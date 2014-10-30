@@ -65,7 +65,7 @@ class ViajeVL extends CI_Controller{
         );
         
         $config = array(
-        'main_table' => 'producto',
+        'main_table' => 'productos_viaje',
         'main_table_primary' => 'id',
         //"url" => base_url() . __CLASS__ . '/' . __FUNCTION__ . '/',
         'url'=>base_url().'/index.php/viajeVL/test'
@@ -98,42 +98,61 @@ class ViajeVL extends CI_Controller{
   function popUp($primary_key){
     $id_viaje = $primary_key;    
     if ($id_viaje) {
-            $this->session->set_userdata('id_viaje', $id_viaje);        }  
+            $this->session->set_userdata('id_viaje', $id_viaje);        
+    }  
         
-    $this->grocery_crud->where('id_viaje', $id_viaje);      
+    
+    $this->load->library('grocery_CRUD');
+    $this->load->library('ajax_grocery_CRUD');
+
+    //create ajax_grocery_CRUD instead of grocery_CRUD. This extends the functionality with the set_relation_dependency method keeping all original functionality as well
+    $crud = new ajax_grocery_CRUD();
+            
+    $crud->where('id_viaje', $id_viaje);      
       
-    $this->grocery_crud->set_table('productos_viaje');
-    $this->grocery_crud->edit_fields('id_viaje','id_producto', 'id_variable_logistica', 'cantidad_bultos');
-    $this->grocery_crud->add_fields('id_viaje','id_producto', 'id_variable_logistica','cantidad_bultos');
+    $crud->set_table('productos_viaje');
+    $crud->edit_fields('id_viaje','id_producto', 'id_variable_logistica', 'cantidad_bultos');
+    $crud->add_fields('id_viaje','id_producto', 'id_variable_logistica','cantidad_bultos');
     
-    $this->grocery_crud->set_theme('datatables');
+    $crud->set_theme('datatables');
    
-    $this->grocery_crud->set_subject('Productos del viaje');
-    $this->grocery_crud->required_fields('id_producto', 'id_variable_logistica','cantidad_bultos');
-    $this->grocery_crud->columns('id_viaje','id_producto', 'id_variable_logistica','cantidad_bultos');
+    $crud->set_subject('Productos del viaje');
+    $crud->required_fields('id_producto', 'id_variable_logistica','cantidad_bultos');
+    $crud->columns('id_viaje','id_producto', 'id_variable_logistica','cantidad_bultos');
     
-    $this->grocery_crud->fields('id_viaje','id_producto', 'id_variable_logistica','cantidad_bultos');
-    $this->grocery_crud->change_field_type('id_viaje','invisible');
+    $crud->fields('id_viaje','id_producto', 'id_variable_logistica','cantidad_bultos');
+    $crud->change_field_type('id_viaje','invisible');
     
-    $this->grocery_crud->callback_before_insert(array($this,'viaje_callback'));
-    $this->grocery_crud->callback_before_update(array($this,'viaje_callback'));
+    $crud->callback_before_insert(array($this,'viaje_callback'));
+    $crud->callback_before_update(array($this,'viaje_callback'));
     
-    $this->grocery_crud->display_as('id_viaje','Viaje - Proveedor');
+    $crud->display_as('id_viaje','Viaje - Proveedor');
     
-    $this->grocery_crud->display_as('id_producto','Producto');
-    $this->grocery_crud->set_relation('id_producto','producto','{descripcion}');
+    $crud->display_as('id_producto','Producto');
+    $crud->set_relation('id_producto','producto','{descripcion}');
     
-    $this->grocery_crud->display_as('id_variable_logistica','Peso');
-    $this->grocery_crud->set_relation('id_variable_logistica','variable_logistica','{codigo_vl} - {descripcion} - {peso} [KG]- Pallet {base_pallet} x {altura_pallet}');
+    $crud->display_as('id_variable_logistica','Peso');
+    $crud->set_relation('id_variable_logistica','variable_logistica','{codigo_vl}-{descripcion}-{peso}[KG]-Pallet:{base_pallet}x{altura_pallet}');
     
-    $this->grocery_crud->callback_column('id_viaje',array($this,'item_description_callback'));
+    $crud->callback_column('id_viaje',array($this,'item_description_callback'));
     
-    $output = $this->grocery_crud->render();
+    $crud->set_relation_dependency('id_variable_logistica','id_producto','id_producto');
+
+    $output = $crud->render();
+    
+    //$this->load->view('bootstrap');
+    
+    
     $this->usuario_output($output);
+    
+    
+    
+    
+    //$this->load->view('example', $output);        
   }
   
   function usuario_output($output = null){
-    $this->load->view('mostrarABM', $output);
+    $this->load->view('mostrarPopUp', $output);
   } 
   
   function viaje_callback($post_array) {
@@ -148,7 +167,55 @@ class ViajeVL extends CI_Controller{
 
        $Proveedor = $this->proveedor_m->getProveedorXViaje($row->id_viaje);
 
+       $this->session->set_userdata('titulo', "Viaje ".$row->id_viaje." - ".$Proveedor[0]["razon_social"]); 
+       
        return $row->id_viaje." - ".$Proveedor[0]["razon_social"]; 
        //return substr($value,0,40); 
    }
+   
+   
+   function prueba3()
+{
+            $this->load->library('grocery_CRUD');
+            $this->load->library('ajax_grocery_CRUD');
+
+//create ajax_grocery_CRUD instead of grocery_CRUD. This extends the functionality with the set_relation_dependency method keeping all original functionality as well
+            $crud = new ajax_grocery_CRUD();
+
+//this is the default grocery CRUD model declaration
+            $crud->set_table('address');
+            $crud->set_relation('ad_country_id','country','c_name');
+            $crud->set_relation('ad_state_id','state','s_name');
+
+//this is the specific line that specifies the relation.
+// 'ad_state_id' is the field (drop down) that depends on the field 'ad_country_id' (also drop down).
+// 's_country_id' is the foreign key field on the state table that specifies state's country
+            $crud->set_relation_dependency('ad_state_id','ad_country_id','s_country_id');
+
+            $output = $crud->render();
+            
+            $this->load->view('example', $output);
+            //$this->_example($output);
+}
+
+function prueba4(){    
+    
+        $this->load->library('grocery_CRUD');
+        $this->load->library('ajax_grocery_CRUD');
+
+//create ajax_grocery_CRUD instead of grocery_CRUD. This extends the functionality with the set_relation_dependency method keeping all original functionality as well
+        $crud = new ajax_grocery_CRUD();
+
+        $crud->set_table('productos_viaje');
+        $crud->set_relation('id_producto', 'producto', 'descripcion');
+        $crud->set_relation('id_variable_logistica', 'variable_logistica', '{descripcion} - {peso}[KG]');
+        
+        $crud->set_relation_dependency('id_variable_logistica','id_producto','id_producto');
+
+        $output = $crud->render();
+            
+        $this->load->view('example', $output);
+    
+}
+
 }
