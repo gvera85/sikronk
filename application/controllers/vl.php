@@ -52,10 +52,10 @@ class vl extends CI_Controller{
   
   
   function vl_output($output = null){
-    $this->load->view('mostrarABM',$output);
+    $this->load->view('mostrarPopUp',$output);
   } 
   
-  function popUp($primary_key){
+  function popUp($primary_key,$DescProducto){
     $this->id_producto = $primary_key;
     
     if ($this->id_producto) {
@@ -90,12 +90,14 @@ class vl extends CI_Controller{
     
     $this->grocery_crud->set_rules('codigo_vl','Codigo VL','callback_validar_codigo_vl');
     
-    
     $output = $this->grocery_crud->render();
+    
+    $this->session->set_userdata('titulo', "Producto: ".urldecode($DescProducto));    
     $this->vl_output($output);
   }
   
   function producto_callback($post_array) {
+         
    $post_array['id_producto'] = $this->session->userdata('id_producto');//Fijo el Id de producto recibido por parametro
  
    return $post_array;

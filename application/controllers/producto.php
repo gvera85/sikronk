@@ -53,7 +53,8 @@ class producto extends CI_Controller{
     
     function link_hacia_vl($primary_key , $row)
     {
-        return site_url('vl/popUp/'.$row->id);
+        
+        return site_url('vl/popUp/'.$row->id.'/'.$row->descripcion);
     }
 
 }

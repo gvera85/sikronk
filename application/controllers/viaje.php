@@ -69,7 +69,7 @@ class Viaje extends CI_Controller{
   
   function link_hacia_productos($primary_key , $row)
   {
-        return site_url('viajeVL/popUp/'.$row->id);
+        return site_url('viajeVL/popUp/'.$row->id.'/'.$row->id_proveedor);
   }
   
   public function validarPatente($patenteIngresada) 

@@ -28,10 +28,6 @@ a:hover
 }
 </style>
 
-<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="stylesheet" href="http://localhost/sikronk/assets/bootstrap/css/bootstrap.css">
-<link rel="stylesheet" href="http://localhost/sikronk/assets/bootstrap/css/bootstrap-theme.min.css">
 
 </head>
 
@@ -42,7 +38,8 @@ a:hover
     </div>  
 
     <div class="panel panel-default">
-      <div class="panel-heading"><?php echo $this->session->userdata('titulo')?>  </div>
+  
+      <h2>&nbsp; <?php echo $this->session->userdata('titulo')?>  </h2><hr />
       <div class="panel-body">
         <?php echo $output; ?>
       </div>
