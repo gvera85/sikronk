@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html>
-
 <head>
 	<meta charset="utf-8" />
 <?php 
@@ -26,14 +25,18 @@ a:hover
 	text-decoration: underline;
 }
 </style>
-
 </head>
-
 <body>
-	
-    <div style='height:20px;'></div>  
+	<div>
+		<a href='<?php echo site_url('images_examples/example1')?>'>Example 1 - Simple</a> |
+		<a href='<?php echo site_url('images_examples/example2')?>'>Example 2 - Ordering</a> |
+		<a href='<?php echo site_url('images_examples/example3/22')?>'>Example 3 - With group id</a> |
+		<a href='<?php echo site_url('images_examples/example4')?>'>Example 4 - Images with title</a> | 
+		<a href='<?php echo site_url('images_examples/simple_photo_gallery')?>'>Simple Photo Gallery</a>
+	</div>
+	<div style='height:20px;'></div>  
     <div>
-        <?php echo $output; ?>
+		<?php echo $output; ?>
     </div>
 </body>
 </html>

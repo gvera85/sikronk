@@ -143,15 +143,13 @@ class ViajeVL extends CI_Controller{
 
     $output = $crud->render();
     
-    //$this->load->view('bootstrap');
-    
-    
+    $this->load->model('proveedor_m');
+
+    $Proveedor = $this->proveedor_m->getProveedorXViaje($id_viaje);
+
+    $this->session->set_userdata('titulo', "Viaje ".$id_viaje." - ".$Proveedor[0]["razon_social"]); 
+        
     $this->usuario_output($output);
-    
-    
-    
-    
-    //$this->load->view('example', $output);        
   }
   
   function usuario_output($output = null){
@@ -160,6 +158,7 @@ class ViajeVL extends CI_Controller{
   
   function viaje_callback($post_array) {
    $post_array['id_viaje'] = $this->session->userdata('id_viaje');//Fijo el Id de viaje recibido por parametro
+   $post_array['numero_de_viaje'] = $this->session->userdata('id_viaje');//Fijo el Id de viaje recibido por parametro
  
    return $post_array;
 }
@@ -170,55 +169,8 @@ class ViajeVL extends CI_Controller{
 
        $Proveedor = $this->proveedor_m->getProveedorXViaje($row->id_viaje);
 
-       $this->session->set_userdata('titulo', "Viaje ".$row->id_viaje." - ".$Proveedor[0]["razon_social"]); 
-       
        return $row->id_viaje." - ".$Proveedor[0]["razon_social"]; 
        //return substr($value,0,40); 
    }
    
-   
-   function prueba3()
-{
-            $this->load->library('grocery_CRUD');
-            $this->load->library('ajax_grocery_CRUD');
-
-//create ajax_grocery_CRUD instead of grocery_CRUD. This extends the functionality with the set_relation_dependency method keeping all original functionality as well
-            $crud = new ajax_grocery_CRUD();
-
-//this is the default grocery CRUD model declaration
-            $crud->set_table('address');
-            $crud->set_relation('ad_country_id','country','c_name');
-            $crud->set_relation('ad_state_id','state','s_name');
-
-//this is the specific line that specifies the relation.
-// 'ad_state_id' is the field (drop down) that depends on the field 'ad_country_id' (also drop down).
-// 's_country_id' is the foreign key field on the state table that specifies state's country
-            $crud->set_relation_dependency('ad_state_id','ad_country_id','s_country_id');
-
-            $output = $crud->render();
-            
-            $this->load->view('example', $output);
-            //$this->_example($output);
-}
-
-function prueba4(){    
-    
-        $this->load->library('grocery_CRUD');
-        $this->load->library('ajax_grocery_CRUD');
-
-//create ajax_grocery_CRUD instead of grocery_CRUD. This extends the functionality with the set_relation_dependency method keeping all original functionality as well
-        $crud = new ajax_grocery_CRUD();
-
-        $crud->set_table('productos_viaje');
-        $crud->set_relation('id_producto', 'producto', 'descripcion');
-        $crud->set_relation('id_variable_logistica', 'variable_logistica', '{descripcion} - {peso}[KG]');
-        
-        $crud->set_relation_dependency('id_variable_logistica','id_producto','id_producto');
-
-        $output = $crud->render();
-            
-        $this->load->view('example', $output);
-    
-}
-
 }

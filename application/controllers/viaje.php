@@ -56,13 +56,7 @@ class Viaje extends CI_Controller{
     $output = $this->grocery_crud->render();
     $this->viaje_output($output);
   }
-  
-  function item_description_callback($value, $row) { 
-      return 'GONZA';  
-      
-      //return substr($value,0,40); 
-  }
-  
+    
   function viaje_output($output = null){
     $this->load->view('mostrarABM', $output);
   }
@@ -90,8 +84,8 @@ class Viaje extends CI_Controller{
   
   
    function distribuidor_callback($post_array) {
-   $post_array['id_distribuidor'] = $this->session->userdata('empresa');//$this->session->userdata('id_producto');//Fijo el Id de producto recibido por parametro
- 
-   return $post_array;
-}
+    $post_array['id_distribuidor'] = $this->session->userdata('empresa');//$this->session->userdata('id_producto');//Fijo el Id de producto recibido por parametro
+
+    return $post_array;
+   }
 }

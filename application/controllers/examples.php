@@ -6,6 +6,7 @@ class Examples extends CI_Controller {
 	{
 		parent::__construct();
 
+                $this->load->library('image_CRUD');    
 		$this->load->database();
 		$this->load->helper('url');
 
@@ -245,5 +246,23 @@ class Examples extends CI_Controller {
 			return $output;
 		}
 	}
+        
+        function example1()
+    {
+        $image_crud = new image_CRUD();
+
+        $image_crud->set_table('usuario');
+
+        //If your table have by default the "id" field name as a primary key this line is not required
+        $image_crud->set_primary_key_field('id');
+
+        $image_crud->set_url_field('url');
+        $image_crud->set_image_path('assets/uploads');
+
+        $output = $image_crud->render();
+
+        $this->_example_output($output);
+    }
+        
 
 }

@@ -19,14 +19,16 @@ class usuario extends CI_Controller{
   
   function index(){
     $this->grocery_crud->set_table('usuario');
-    $this->grocery_crud->edit_fields('nombre','apellido','mail','password','id_tipo_empresa');
-    $this->grocery_crud->add_fields('nombre','apellido','mail','password','id_tipo_empresa');
+    $this->grocery_crud->edit_fields('nombre','apellido','mail','foto','password','id_tipo_empresa');
+    $this->grocery_crud->add_fields('nombre','apellido','mail','foto','password','id_tipo_empresa');
     
     $this->grocery_crud->set_theme('datatables');
    
     $this->grocery_crud->set_subject('Usuario');
     $this->grocery_crud->required_fields('nombre','apellido','mail','password','id_tipo_empresa');
-    $this->grocery_crud->columns('nombre','apellido','mail','id_tipo_empresa');
+    $this->grocery_crud->columns('nombre','apellido','mail','foto','id_tipo_empresa');
+    
+    $this->grocery_crud->set_field_upload('foto','assets/uploads/files');
     
     $this->grocery_crud->display_as('id_tipo_empresa','Tipo Usuario');
         
@@ -73,11 +75,11 @@ class usuario extends CI_Controller{
         switch ($row->id_tipo_empresa)
         {
             case 1:
-                return site_url('usuario_perfil_distribuidor/popUp/'.$row->id);
+                return site_url('usuario_perfil_distribuidor/popUp/'.$row->id.'/'.$row->nombre.'/'.$row->apellido);
             case 2:
-                return site_url('usuario_perfil_cliente/popUp/'.$row->id);
+                return site_url('usuario_perfil_cliente/popUp/'.$row->id.'/'.$row->nombre.'/'.$row->apellido);
             case 3:
-                return site_url('usuario_perfil_proveedor/popUp/'.$row->id);
+                return site_url('usuario_perfil_proveedor/popUp/'.$row->id.'/'.$row->nombre.'/'.$row->apellido);
                 
             default:
                 return base_url().'index.php';
@@ -98,7 +100,9 @@ class usuario extends CI_Controller{
           } else {
               return TRUE;
           }
-      }
+    }
+    
+    
     
 
 }

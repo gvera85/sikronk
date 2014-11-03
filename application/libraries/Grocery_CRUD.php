@@ -346,7 +346,7 @@ class grocery_CRUD_Field_Types
 					$file_url_anchor = '<a href="'.$file_url.'"';
 					if($is_image)
 					{
-						$file_url_anchor .= ' class="image-thumbnail"><img src="'.$file_url.'" height="50px">';
+						$file_url_anchor .= ' class="image-thumbnail"><img src="'.$file_url.'"  style="max-width: 50px; max-height: 50px; border: 2px solid #000;">';
 					}
 					else
 					{

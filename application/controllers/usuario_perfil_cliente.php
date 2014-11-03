@@ -40,7 +40,7 @@ class Usuario_perfil_cliente extends CI_Controller{
     $this->usuario_cliente_output($output);
   }
   
-  function popUp($primary_key){
+  function popUp($primary_key, $nombre, $apellido){
     $this->id_usuario = $primary_key;
     
     if ($this->id_usuario) {
@@ -74,6 +74,8 @@ class Usuario_perfil_cliente extends CI_Controller{
     $this->grocery_crud->callback_before_update(array($this,'usuario_callback'));
     
     $output = $this->grocery_crud->render();
+    
+    $this->session->set_userdata('titulo', "Usuario: ".urldecode($nombre)." ".urldecode($apellido)); 
     $this->usuario_cliente_output($output);
   }
   
@@ -84,6 +86,6 @@ class Usuario_perfil_cliente extends CI_Controller{
 }
   
   function usuario_cliente_output($output = null){
-    $this->load->view('mostrarABM', $output);
+    $this->load->view('mostrarPopUp', $output);
   } 
 }

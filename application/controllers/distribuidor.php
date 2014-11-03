@@ -22,7 +22,7 @@ class distribuidor extends CI_Controller{
     $this->grocery_crud->edit_fields('razon_social', 'cuit');
     $this->grocery_crud->add_fields('razon_social', 'cuit');
     
-    $this->grocery_crud->set_theme('twitter-bootstrap');
+    $this->grocery_crud->set_theme('datatables');
    
     $this->grocery_crud->set_subject('Distribuidores');
     $this->grocery_crud->required_fields('razon_social');
