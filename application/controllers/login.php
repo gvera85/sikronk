@@ -31,6 +31,11 @@ class login extends CI_Controller {
                 $this->show_perfiles($perfiles);//Tiene varios perfiles, hago que el usuario seleccione uno
             }else if (is_array($perfiles) && count($perfiles) == 1){
                 $perfil = $perfiles[0];
+                
+                        
+                $this->session->set_userdata('empresa', $perfil['id_empresa']);                
+                $this->session->set_userdata('DescEmpresa', $perfil['empresa']);
+                
                 $this->asignarPerfil($perfil['id_perfil']);
             }else{
                 if ($email == 'admin')

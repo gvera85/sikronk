@@ -1,6 +1,6 @@
 <?php
 
-class Viaje extends CI_Controller{
+class Reparto extends CI_Controller{
 
   public function __construct()
   {
@@ -28,7 +28,7 @@ class Viaje extends CI_Controller{
    
     $this->grocery_crud->set_subject('Viaje');
     $this->grocery_crud->required_fields('id_proveedor');
-    $this->grocery_crud->columns('numero_de_viaje','id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_empresa_transportista');
+    $this->grocery_crud->columns('id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_empresa_transportista');
     
     $this->grocery_crud->change_field_type('id_distribuidor','invisible');
     
@@ -41,18 +41,22 @@ class Viaje extends CI_Controller{
     $this->grocery_crud->display_as('id_chofer','Chofer');
     $this->grocery_crud->set_relation('id_chofer','chofer','{dni} - {nombre} {apellido} - Tel: {telefono}');
         
-    $this->grocery_crud->add_action('Productos', base_url().'/assets/img/iconoProducto.png', '','ui-icon-image',array($this,'link_hacia_productos'));
+    $this->grocery_crud->add_action('Plan', base_url().'/assets/img/planificacion.png', '','ui-icon-image',array($this,'link_hacia_planificacion'));
+    $this->grocery_crud->add_action('OK', base_url().'/assets/img/okVerde.png', '','ui-icon-image',array($this,'link_hacia_confirmacion'));
     
     $this->grocery_crud->set_rules('patente_semi','Patente semi','callback_validarPatente');
     $this->grocery_crud->set_rules('patente_camion','Patente del camion','callback_validarPatente');
     
-    $this->grocery_crud->fields('id_distribuidor','id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_chofer','id_empresa_transportista','numero_de_viaje');
+    $this->grocery_crud->fields('id_distribuidor','id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_chofer','id_empresa_transportista');
     
     $this->grocery_crud->change_field_type('id_distribuidor','invisible');
-    //$this->grocery_crud->change_field_type('numero_de_viaje','invisible');
     
-    $this->grocery_crud->callback_before_insert(array($this,'distribuidor_insert_callback'));
+    $this->grocery_crud->callback_before_insert(array($this,'distribuidor_callback'));
     $this->grocery_crud->callback_before_update(array($this,'distribuidor_callback'));
+  
+    $this->grocery_crud->unset_add();
+    $this->grocery_crud->unset_edit();
+    $this->grocery_crud->unset_delete();
     
     $output = $this->grocery_crud->render();
     $this->viaje_output($output);
@@ -62,44 +66,19 @@ class Viaje extends CI_Controller{
     $this->load->view('mostrarABM', $output);
   }
   
-  function link_hacia_productos($primary_key , $row)
+  function link_hacia_planificacion($primary_key , $row)
   {
-        return site_url('viajeVL/popUp/'.$row->id.'/'.$row->id_proveedor);
+        return site_url('planificacion/planificacionReparto/'.$row->id);
   }
   
-  public function validarPatente($patenteIngresada) 
+  function link_hacia_confirmacion($primary_key , $row)
   {
-    if ($patenteIngresada)
-    {
-        if (preg_match('/^[A-Z]{3}\d{3}$/', $patenteIngresada))
-        {
-          return TRUE;
-        } else {
-           $this->form_validation->set_message('validarPatente', $patenteIngresada.' no es una patente valida. Formato correcto [ZZZ999]');  
-          return FALSE;
-        } 
-    }  else {
-       return TRUE; 
-    }
+        return site_url('planificacion/confirmacionViaje/'.$row->id);
   }
   
   
    function distribuidor_callback($post_array) {
     $post_array['id_distribuidor'] = $this->session->userdata('empresa');//$this->session->userdata('id_producto');//Fijo el Id de producto recibido por parametro
-
-    return $post_array;
-   }
-   
-   function distribuidor_insert_callback($post_array, $primary_key = null) {
-    $this->load->model('viaje_m');
-
-    $nroViaje = $this->viaje_m->getNroViaje($post_array['id_proveedor']);
-    
-    
-    
-    $post_array['numero_de_viaje'] = $nroViaje;
-    
-    $post_array['id_distribuidor'] = $this->session->userdata('empresa');//Fijo el Id del proveedor segun el perfil logueado
 
     return $post_array;
    }
