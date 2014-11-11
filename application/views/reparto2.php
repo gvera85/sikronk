@@ -50,13 +50,16 @@
 </div>
  
 <script type="text/javascript">
+    
+  
+    
 $(function() {
     var count = 1;
     jQuery("#miform").validationEngine({promptPosition : "centerRight:0,-5"});
 	
    $(document).on("click","#btnadd",function( event ) {  
 	  count++;
-      $('#tblprod tr:last').after('<tr><td>'+count+'</td><td><div class="form-group col-lg-12"><input class="form-control validate[required]" name="prod[]" /></div></td></tr>');
+      $('#tblprod tr:last').after('<tr><td></td><td><div class="form-group col-lg-12">Cliente <select name="gonza"> <option value="COTO">COTO</option> <option value="CARREFOUR">Carrefour</option> <option value="Wallmart">Wallmart</option> </select></div></td><td><div class="form-group col-lg-12"><input class="form-control validate[required]" name="prod[]" /></div></td></tr>');
       event.preventDefault();
    });
    

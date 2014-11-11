@@ -19,8 +19,8 @@ class producto extends CI_Controller{
   
   function index(){
     $this->grocery_crud->set_table('producto');
-    $this->grocery_crud->edit_fields('descripcion','id_proveedor','foto');
-    $this->grocery_crud->add_fields('descripcion','id_proveedor','foto');
+    $this->grocery_crud->edit_fields('descripcion','marca','origen','calidad','id_proveedor','foto');
+    $this->grocery_crud->add_fields('descripcion','marca','origen','calidad','id_proveedor','foto');
     
     //$this->grocery_crud->callback_column('descripcion', array($this, '_callback_desc'));
     
@@ -28,7 +28,7 @@ class producto extends CI_Controller{
    
     $this->grocery_crud->set_subject('Producto');
     $this->grocery_crud->required_fields('descripcion','id_proveedor');
-    $this->grocery_crud->columns('descripcion','id_proveedor','foto');
+    $this->grocery_crud->columns('descripcion','marca','origen','calidad','id_proveedor','foto');
     
     $this->grocery_crud->set_field_upload('foto','assets/uploads/productos');
     
