@@ -14,6 +14,7 @@ class vl extends CI_Controller{
 
     $this->grocery_crud->set_language("spanish");
     
+    $this->session->set_userdata('titulo', 'Variables logisticas');    
              
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');
@@ -76,12 +77,13 @@ class vl extends CI_Controller{
     $this->grocery_crud->required_fields('id_tipo_envase','descripcion','peso','base_pallet','altura_pallet','activa');
     $this->grocery_crud->columns('codigo_vl','id_tipo_envase','descripcion','peso','base_pallet','altura_pallet','activa');
     
-    $this->grocery_crud->fields('id_producto','id_tipo_envase','descripcion','peso','base_pallet','altura_pallet','activa');
+    $this->grocery_crud->fields('id_producto','id_tipo_envase','descripcion','peso','base_pallet','altura_pallet','activa','codigo_vl');
     
     $this->grocery_crud->display_as('id_tipo_envase','Tipo de envase');
     $this->grocery_crud->set_relation('id_tipo_envase','tipo_envase','descripcion');
     
     $this->grocery_crud->change_field_type('id_producto','invisible');
+    $this->grocery_crud->change_field_type('codigo_vl','invisible');
     
     $this->grocery_crud->callback_before_insert(array($this,'insert_producto_callback'));
     //$this->grocery_crud->callback_before_update(array($this,'producto_callback'));
@@ -99,8 +101,6 @@ class vl extends CI_Controller{
     $this->load->model('vl_m');
 
     $codigoVL = $this->vl_m->getCodigoVL($this->session->userdata('id_producto'));
-    
-    $codigoVL = 98;
 
     $post_array['codigo_vl'] = $codigoVL;
 

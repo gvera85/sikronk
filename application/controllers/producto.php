@@ -11,6 +11,8 @@ class producto extends CI_Controller{
     $this->load->helper('url');
 
     $this->grocery_crud->set_language("spanish");
+    
+    $this->session->set_userdata('titulo', 'Productos');
              
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');
@@ -55,7 +57,6 @@ class producto extends CI_Controller{
     
     function link_hacia_vl($primary_key , $row)
     {
-        
         return site_url('vl/popUp/'.$row->id.'/'.$row->descripcion);
     }
 

@@ -11,6 +11,8 @@ class ViajeVL extends CI_Controller{
     $this->load->helper('url');
 
     $this->grocery_crud->set_language("spanish");
+    
+    $this->session->set_userdata('titulo', 'Productos de los viajes');
              
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');

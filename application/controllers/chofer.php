@@ -12,6 +12,8 @@ class chofer extends CI_Controller{
 
     $this->grocery_crud->set_language("spanish");
     
+    $this->session->set_userdata('titulo', 'Choferes');
+    
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');
     }

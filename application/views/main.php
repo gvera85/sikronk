@@ -15,7 +15,7 @@
             <img src="<?php echo $menu['path_icono']?>" title="<?php echo $menu['descripcion']?>" width="158" height="158" />
             </a>
             <p></p>
-            <p><?php echo $menu['descripcion']?></p>
+            <p><?php echo $menu['descripcion']; ?>   </p>
         </div>
                
     <?php endforeach; ?>   

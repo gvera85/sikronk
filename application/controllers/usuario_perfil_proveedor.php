@@ -13,6 +13,8 @@ class Usuario_perfil_proveedor extends CI_Controller{
     $this->load->helper('url');
 
     $this->grocery_crud->set_language("spanish");
+    
+    $this->session->set_userdata('titulo', 'Usuario/perfil/proveedor');
              
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');

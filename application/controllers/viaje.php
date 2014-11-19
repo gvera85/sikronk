@@ -11,6 +11,8 @@ class Viaje extends CI_Controller{
     $this->load->helper('url');
 
     $this->grocery_crud->set_language("spanish");
+    
+    $this->session->set_userdata('titulo', 'Viajes');
              
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');
@@ -49,7 +51,7 @@ class Viaje extends CI_Controller{
     $this->grocery_crud->fields('id_distribuidor','id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_chofer','id_empresa_transportista','numero_de_viaje');
     
     $this->grocery_crud->change_field_type('id_distribuidor','invisible');
-    //$this->grocery_crud->change_field_type('numero_de_viaje','invisible');
+    $this->grocery_crud->change_field_type('numero_de_viaje','invisible');
     
     $this->grocery_crud->callback_before_insert(array($this,'distribuidor_insert_callback'));
     $this->grocery_crud->callback_before_update(array($this,'distribuidor_callback'));

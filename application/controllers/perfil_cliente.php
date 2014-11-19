@@ -11,6 +11,8 @@ class Perfil_cliente extends CI_Controller{
     $this->load->helper('url');
 
     $this->grocery_crud->set_language("spanish");
+    
+    $this->session->set_userdata('titulo', 'Perfiles de cliente');
              
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');
@@ -27,8 +29,8 @@ class Perfil_cliente extends CI_Controller{
     $this->grocery_crud->set_subject('Perfil de cliente');
     $this->grocery_crud->required_fields('descripcion');
     
-    $this->grocery_crud->set_relation_n_n('MenuesDisponibles','menu_cliente','menu','id_perfil_cliente','id_menu','descripcion','orden');
-        
+    $this->grocery_crud->set_relation_n_n('MenuesDisponibles','menu_cliente','menu','id_perfil_cliente','id_menu','descripcion','orden',array('solo_administrador' => 0));
+    
     $this->grocery_crud->columns('descripcion','MenuesDisponibles');
     $this->grocery_crud->fields('descripcion','MenuesDisponibles');
     

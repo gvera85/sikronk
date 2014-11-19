@@ -1,43 +1,26 @@
 <?php
 
-class viaje_m extends CI_Model {
+class cliente_m extends CI_Model {
 
-    public function getNroViaje($idProveedor)
+    public function getClientes()
     {
-         if($idProveedor != FALSE) {
-            $sql = "select MAX(IFNULL(numero_de_viaje,0))+1 nro_viaje
-                    from viaje
-                    where id_proveedor = ?";
+        $sql = "select * from cliente where 1 = ?";
             
-            $query = $this->db->query($sql, array($idProveedor));
-                   
-            
-            $nroViaje = $query->result_array();
-            
-             if ( is_array($nroViaje) && count($nroViaje) == 1 )  {
-              
-              if (empty($nroViaje[0]["nro_viaje"])) {
-                  return 1;
-              }else{
-                  return $nroViaje[0]["nro_viaje"];
-              }
-              
-            }
-            else{
-              return 0;
-            }
-        }else {
-          return FALSE;
-        }    
-            
-        
-       
+        $query = $this->db->query($sql, 1);
+
+        $clientes = $query->result_array();
+
+        if( is_array($clientes) && count($clientes) > 0 ) {
+          return $clientes;
+        }
+
+        return false;
     }
     
     public function getLineasViaje($idViaje)
     {
          if($idViaje != FALSE) {
-          $sql = "select a.id id_linea, b.id id_producto, c.id id_vl, d.id id_viaje, e.id id_proveedor, b.descripcion producto, 
+          $sql = "select a.id id_linea, b.id id_producto, c.id id_vl, e.id id_proveedor, b.descripcion producto, 
                 c.descripcion vl, c.peso, c.base_pallet, c.altura_pallet, a.cantidad_bultos, 
                 a.cantidad_pallets, d.numero_de_viaje, e.razon_social proveedor
                 from productos_viaje a

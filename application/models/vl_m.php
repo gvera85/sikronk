@@ -39,15 +39,14 @@ class vl_m extends CI_Model {
                 if (empty($codigo_vl[0]["codigo_vl"])) {
                     return 1;
                 }else{
-                    10;
-                    //return $codigo_vl[0]["codigo_vl"];
+                    return $codigo_vl[0]["codigo_vl"];
                 }              
             }
             else{
               return 1;
             }
         }else {
-          return 99;
+          return FALSE;
         }    
             
         
