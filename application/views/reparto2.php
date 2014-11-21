@@ -47,16 +47,18 @@
                                           <?php 
                                            foreach( $lineasViaje as $lineas ) : ?>    
 						<tr>
-						  <td><?php echo $lineas['producto'] ?></td>
+						  <td id="producto"><?php echo $lineas['producto'] ?></td>
 						  <TD> <?php echo $lineas['vl']." - ".$lineas['peso']. "[KG]" ?></TD>
                                                   <TD> <?php echo $lineas['cantidad_bultos'] ?></TD>
                                                   <TD> <?php echo $lineas['cantidad_pallets'] ?></TD>
-                                                  <input type="hidden" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
-                                                  <input type="hidden" name="idProducto[]" value="<?php echo $lineas['id_producto'] ?>">
-                                                  <input type="hidden" name="idVL[]" value="<?php echo $lineas['id_vl'] ?>">
+                                                  
+                                                  
+                                                  
 						</tr>
                                                 <tr>
-                                                    <td align="left" colspan="4"><button id="btnadd2" class="btn btn-xs btn-primary">+ Cliente</button></td>
+                                                    <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
+                                                    <input type="hidden" name="idVL[]" value="<?php echo $lineas['id_vl'] ?>">
+                                                    <td align="left" colspan="4"><button id="btnadd2" value="<?php echo $lineas['id_producto'] ?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
                                                 </tr>
                                         <?php endforeach; ?>
 					  </tbody>
@@ -92,6 +94,11 @@ $(function() {
        var idCliente;
        var contador = 1;
        
+       var idProducto = $(this).attr('value');
+       
+       alert (idProducto);
+       var hiddenProducto = '<input type="hidden" id="idProducto" name="idProducto[]" value='+idProducto+'>';
+       
        <?php 
        foreach( $clientes as $cliente ) : ?> 
            
@@ -120,10 +127,29 @@ $(function() {
                         <div class="form-group col-lg-12">\n\
                         <input class="form-control " name="pallets[]" />\n\
                         </div>\n\
-                    </td>\n\
-                  </tr>';
+                    </td>'
+                    +hiddenProducto+
+                    '</tr>';
       
       contador++;
+      
+      
+      
+        //alert($('input#idProducto:eq(2)').val());
+        /*x = ($('input#idProducto').val());
+        
+        x = $( event.target ).closest( "input#idProducto(0)" ).val();*/
+        
+        
+        //$('input[name="pages_title[]"]').each(function() { var aValue = $(this).val(); });
+        
+        /*alert($( event.target ).closest( ':hidden#idProducto' ).val());*/
+        
+       /* alert($('input[name=idViaje[0]]').val());
+        alert($('input[type=hidden]').val());
+        alert($(':hidden#idViaje').val());
+        alert($('input:hidden[name=idViaje]').val());*/
+      
       $( event.target ).closest( "tr" ).after( fila );      
             event.preventDefault();
 
