@@ -48,24 +48,35 @@ class Planificacion extends CI_Controller{
   function grabarReparto(){
     if(isset($_POST['bultos']) && !empty($_POST['bultos'])){
         echo 'Producto: '.join(",",$_POST['idProducto']).'-'; /*Recorrer los productos*/
-        /*Por cada producto recorrer sus clientes*/        
-            echo 'Cliente: '.join(",",$_POST['comboClientes']).'-';
-            echo 'Viaje: '.join(",",$_POST['idViaje']).'-';
-            echo 'VL: '.join(",",$_POST['idVL']).'-';
-            echo 'Bultos: '.join(",",$_POST['bultos']).'-';
-            echo 'Pallets: '.join(",",$_POST['pallets']).'-';
         
-      /*  $data = array(
-   'id_viaje' => 'My title' ,
-   'name' => 'My Name' ,
-   'date' => 'My date'
-);
-        
-        insert into planificacion_reparto (id_viaje, id_cliente, id_producto, id_vl, cant_bultos, cant_pallets)
+    $producto = $_POST['idProducto'];
+    $cliente = $_POST['comboClientes'];
+    $VL = $_POST['idVL'];
+    $bultos = $_POST['bultos'];
+    $pallets = $_POST['pallets'];
 
-$this->db->insert('planificacion_reparto', $data); */
-        
-    }else{
+    //saco el numero de elementos
+    $longitud = count($producto);
+
+    //Recorro todos los elementos
+    for($i=0; $i<$longitud; $i++)
+    {
+        $data = array(
+                        'id_viaje' => $producto[$i] ,
+                        'id_cliente' => $cliente[$i] ,
+                        'id_producto' => $producto[$i],
+                        'id_vl' => $VL[$i],
+                        'cant_bultos' => $bultos[$i],
+                        'cant_pallets' => $pallets[$i]
+                     );
+
+        $this->db->insert('planificacion_reparto', $data);
+
+    }
+     
+    }
+    else
+    {
       echo 'failed';
     }
   }
