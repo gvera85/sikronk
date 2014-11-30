@@ -2,7 +2,6 @@
 .buildpath
 .settings/
 .project
-system/
 application/.htaccess
 application/cache/
 application/config/migration.php
