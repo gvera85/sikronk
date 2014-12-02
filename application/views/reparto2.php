@@ -125,7 +125,9 @@
 					
                                             </div>
                                         </div>
-                            <button id="btnsubmit" type="submit" class="btn btn-success">Guardar</button>
+                            <button id="btnsubmit" type="submit" class="btn btn-success">Guardar</button
+                            <br>
+                            <button id="btnadd3" class="btn btn-xs btn-primary">Agregar combo</button>
                             
                             
                                     <div>
@@ -139,6 +141,9 @@
             
           </select>
         </div>
+                            <div id="divCombo">
+                                
+                            </div>
       </div>
             
             <script type="text/javascript">
@@ -174,9 +179,6 @@ $(function() {
    });
    
    $(document).on("click","#btnadd2",function( event ) {  
-       
-       
-       
        var cliente;
        var idCliente;
        var contador = 1;
@@ -189,34 +191,21 @@ $(function() {
        var hiddenViaje = '<input type="hidden" id="idViaje" name="idViaje[]" value="'+$('input#VL').val()+'">';
        var hiddenVL = '<input type="hidden" id="idVL" name="idVL[]" value="'+$('input#Viaje').val()+'">';
        
-       var combo = '<div><em>Cliente</em>'+
-                        '<select data-placeholder="Seleccione un cliente..." class="chosen-select" style="width: 350px; display: none;" tabindex="-1" name="comboClientes[]>'+
-                        '<option value=-1>A</option>';
+       var combo = '<div>'+
+                        '<em>Cliente</em>'+
+                        '<select data-placeholder="Seleccione un cliente..." class="chosen-select" name="comboClientes[]" style="width: 350px; display: true;" tabindex="-1">'+
+                          '<option value=""></option>';
     
-       
-       buscador = '<a class="chosen-single chosen-default" tabindex="-1"><span>Elegir un cliente...</span><div><b></b></div></a>'+
-                    '<div class="chosen-drop">'+
-                        '<div class="chosen-search">'+
-                            '<input type="text" autocomplete="off" tabindex="2">'+
-                        '</div>'+
-                        '<ul class="chosen-results">';
-       
-       var contador = 0;
+    var contador = 0;
        <?php
        foreach( $clientes as $cliente ) : ?> 
-           contador++;
            idCliente = <?php echo $cliente['id'] ?>;
            cliente = '<?php echo $cliente['razon_social'] ?>';
            combo = combo+'<option value="'+idCliente+'"> '+cliente+'</option>';
-           buscador = buscador + '<li class="active-result" data-option-array-index="'+contador+'">'+cliente+'</li>';
            
        <?php endforeach; ?>
        
-       combo = combo + '</select>';
-       
-       buscador = buscador + '</ul></div></div>'
-       
-       combo = combo + buscador + '</div>';
+       combo = combo + '</select> </div>';
        
        //alert (combo);
        
@@ -237,7 +226,13 @@ $(function() {
                     +hiddenProducto+hiddenViaje+hiddenVL+
                     '</tr>';
   
-              var config = {
+                    
+  
+           
+            
+      $( event.target ).closest( "tr" ).after( fila );   
+      
+         var config = {
                 '.chosen-select'           : {},
                 '.chosen-select-deselect'  : {allow_single_deselect:true},
                 '.chosen-select-no-single' : {disable_search_threshold:10},
@@ -247,11 +242,42 @@ $(function() {
               for (var selector in config) {
                 $(selector).chosen(config[selector]);
               }
-            
-      $( event.target ).closest( "tr" ).after( fila );      
+              
             event.preventDefault();
 
    });
+          
+       
+   $(document).on("click","#btnadd3",function( event ) {  
+	  
+      $( event.target ).closest( "tr" ).after
+         ('<div>'+
+          '<em>Into This</em>'+
+          '<select data-placeholder="Elegir un pais..." class="chosen-select" id="combito" style="width: 350px; display: true;" tabindex="-1">'+
+            '<option value=""></option>'+                                                                                                         
+            '<option value="United States">United States</option>'+
+            '<option value="United Kingdom">United Kingdom</option>'+
+            '<option value="Afghanistan">Afghanistan</option>'+
+            '<option value="Aland Islands">Aland Islands</option>'+            
+          '</select>'+          
+          '</div>');
+
+    var config = {
+                   '.chosen-select'           : {},
+                   '.chosen-select-deselect'  : {allow_single_deselect:true},
+                   '.chosen-select-no-single' : {disable_search_threshold:10},
+                   '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
+                   '.chosen-select-width'     : {width:"95%"}
+                 }
+                 for (var selector in config) {
+                   $(selector).chosen(config[selector]);
+                 }
+                 
+      //$('#combito').prop('disabled', true).trigger("liszt:updated");           
+
+      event.preventDefault();
+   });
+
    
       
    $( "#miform" ).submit(function( event ) {
