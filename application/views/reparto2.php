@@ -92,32 +92,29 @@
                                               <table id="tblprod" class="table table-hover table-bordered">
 					  <thead>
                                                 <tr>
-                                                  <?php $cantidad=1 ?>
-                                                  <th>Fila</th>
-                                                  <th>Producto</th>
-                                                  <th>Presentacion</th>
-                                                  <th>Cantidad bultos</th>
-                                                  <th>Cantidad pallets</th>
+                                                  <?php $cantidad=0 ?>
+                                                  <th width="5%">Acción</th>  
+                                                  <th width="5%">#</th>
+                                                  <th width="25%">Producto</th>
+                                                  <th width="25%">Presentacion</th>
+                                                  <th width="15%"># bultos</th>
+                                                  <th width="15%"># pallets</th>
                                                 </tr>
 					  </thead>
 					  <tbody>
                                           <?php 
                                            foreach( $lineasViaje as $lineas ) : ?>    
-						<tr class="success">
-						  <td><?php echo $cantidad++ ?></td>
+						<?php $cantidad++ ?>
+                                                <tr class="success">
+						  <td align="left"><button id="btnadd2" value="<?php echo $lineas['id_producto'] ?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
+                                                  <td id="linea_<?php echo $cantidad?>" ><?php echo $cantidad?></td>
                                                   <td id="producto"><?php echo $lineas['producto'] ?></td>
 						  <TD> <?php echo $lineas['vl']." - ".$lineas['peso']. "[KG]" ?></TD>
                                                   <TD> <?php echo $lineas['cantidad_bultos'] ?></TD>
                                                   <TD> <?php echo $lineas['cantidad_pallets'] ?></TD>
-                                                  
-                                                  
-                                                  
+                                                  <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
+                                                  <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
 						</tr>
-                                                <tr>
-                                                    <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
-                                                    <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
-                                                    <td align="left" colspan="4"><button id="btnadd2" value="<?php echo $lineas['id_producto'] ?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
-                                                </tr>
                                         <?php endforeach; ?>
 					  </tbody>
                                 </table>
@@ -126,9 +123,6 @@
                                             </div>
                                         </div>
                             <button id="btnsubmit" type="submit" class="btn btn-success">Guardar</button
-                            <br>
-                            <button id="btnadd3" class="btn btn-xs btn-primary">Agregar combo</button>
-                            
                             
                                     <div>
           <em>Into This</em>
@@ -141,9 +135,7 @@
             
           </select>
         </div>
-                            <div id="divCombo">
-                                
-                            </div>
+                            
       </div>
             
             <script type="text/javascript">
@@ -181,7 +173,6 @@ $(function() {
    $(document).on("click","#btnadd2",function( event ) {  
        var cliente;
        var idCliente;
-       var contador = 1;
        
        var idProducto = $(this).attr('value');
        
@@ -192,11 +183,9 @@ $(function() {
        var hiddenVL = '<input type="hidden" id="idVL" name="idVL[]" value="'+$('input#Viaje').val()+'">';
        
        var combo = '<div>'+
-                        '<em>Cliente</em>'+
                         '<select data-placeholder="Seleccione un cliente..." class="chosen-select" name="comboClientes[]" style="width: 350px; display: true;" tabindex="-1">'+
                           '<option value=""></option>';
     
-    var contador = 0;
        <?php
        foreach( $clientes as $cliente ) : ?> 
            idCliente = <?php echo $cliente['id'] ?>;
@@ -208,27 +197,30 @@ $(function() {
        combo = combo + '</select> </div>';
        
        //alert (combo);
-       
-       var fila = '<tr>\n\
-                    <td align="left" colspan="2">'
+              
+       var fila = '<tr>'+
+                    '<td align="center">'+
+                          '<button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button>'+
+                    '</td>'+
+                    '<td align="left" colspan="2">'
                           +combo+
-                    '</td>\n\
-                    <td>\n\
-                        <div class="form-group col-lg-12">\n\
-                        <input class="form-control " name="bultos[]" />\n\
-                        </div>\n\
-                    </td>\n\
-                    <td>\n\
-                        <div class="form-group col-lg-12">\n\
-                        <input class="form-control " name="pallets[]" />\n\
-                        </div>\n\
-                    </td>'
+                    '</td>'+
+                    '<td>'+
+                        '<div class="form-group col-lg-12">'+
+                        '</div>'+
+                    '</td>'+
+                    '<td>'+
+                        '<div>'+
+                        '<input name="bultos[]" />'+
+                        '</div>'+
+                    '</td>'+
+                    '<td>'+
+                        '<div class="form-group col-lg-12">'+
+                        '<input name="pallets[]" />'+
+                        '</div>'+
+                    '</td>'
                     +hiddenProducto+hiddenViaje+hiddenVL+
                     '</tr>';
-  
-                    
-  
-           
             
       $( event.target ).closest( "tr" ).after( fila );   
       
@@ -278,6 +270,40 @@ $(function() {
       event.preventDefault();
    });
 
+
+   $(document).on("click","#btnBorrar",function( event ) {  
+      
+        $( event.target ).closest( "tr" ).remove();
+        
+        //alert($('#linea_3').html());
+        
+        //alert($( event.target ).closest( "td" ).html());
+        var trs=$("#tblprod td").length;
+        
+        alert (trs);
+        
+        var total=0;
+        
+        //valor2 = $("#tblprod tr").find('linea_1').html();
+        
+        //alert(valor2);
+ 
+        //selector >>  $("#GridView1 tr").find('td:eq(1)')
+        //De esta manera utilizando eq seleccionamos la segunda fila, ya que la primera es 0
+        $("#tblprod tr").find('td:eq(1)').each(function () {
+
+         //obtenemos el valor de la celda
+          valor = $(this).html();
+
+         //sumamos, recordar parsear, si no se concatenara.
+         total += parseInt(valor)
+        })
+
+        //mostramos el total
+        //alert(total)
+
+        event.preventDefault();
+   });
    
       
    $( "#miform" ).submit(function( event ) {

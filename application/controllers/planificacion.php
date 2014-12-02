@@ -50,6 +50,7 @@ class Planificacion extends CI_Controller{
         echo 'Producto: '.join(",",$_POST['idProducto']).'-'; /*Recorrer los productos*/
         
     $producto = $_POST['idProducto'];
+    $viaje = $_POST['idViaje'];
     $cliente = $_POST['comboClientes'];
     $VL = $_POST['idVL'];
     $bultos = $_POST['bultos'];
@@ -62,7 +63,7 @@ class Planificacion extends CI_Controller{
     for($i=0; $i<$longitud; $i++)
     {
         $data = array(
-                        'id_viaje' => $producto[$i] ,
+                        'id_viaje' => $viaje[$i] ,
                         'id_cliente' => $cliente[$i] ,
                         'id_producto' => $producto[$i],
                         'id_vl' => $VL[$i],
