@@ -24,10 +24,12 @@ class Planificacion extends CI_Controller{
     $this->load->model('cliente_m');
 
     $lineasViaje = $this->viaje_m->getLineasViaje($idViaje);
+    $lineasReparto = $this->viaje_m->getRepartoViaje($idViaje);
     $clientes = $this->cliente_m->getClientes();
     
     $data['lineasViaje'] = $lineasViaje;
     $data['clientes'] = $clientes;
+    $data['lineasReparto'] = $lineasReparto;
    
     $this->load->view('planificacionReparto',$data);
   }
@@ -37,44 +39,46 @@ class Planificacion extends CI_Controller{
     $this->load->model('cliente_m');
 
     $lineasViaje = $this->viaje_m->getLineasViaje($idViaje);
+    $lineasReparto = $this->viaje_m->getRepartoViaje($idViaje);
     $clientes = $this->cliente_m->getClientes();
     
     $data['lineasViaje'] = $lineasViaje;
     $data['clientes'] = $clientes;
+    $data['lineasReparto'] = $lineasReparto;
 
     $this->load->view('reparto2',$data);
   }
   
   function grabarReparto(){
-    if(isset($_POST['bultos']) && !empty($_POST['bultos'])){
-        echo 'Producto: '.join(",",$_POST['idProducto']).'-'; /*Recorrer los productos*/
-        
-    $producto = $_POST['idProducto'];
-    $viaje = $_POST['idViaje'];
-    $cliente = $_POST['comboClientes'];
-    $VL = $_POST['idVL'];
-    $bultos = $_POST['bultos'];
-    $pallets = $_POST['pallets'];
-
-    //saco el numero de elementos
-    $longitud = count($producto);
-
-    //Recorro todos los elementos
-    for($i=0; $i<$longitud; $i++)
+    if(isset($_POST['bultos']) && !empty($_POST['bultos']))
     {
-        $data = array(
-                        'id_viaje' => $viaje[$i] ,
-                        'id_cliente' => $cliente[$i] ,
-                        'id_producto' => $producto[$i],
-                        'id_vl' => $VL[$i],
-                        'cant_bultos' => $bultos[$i],
-                        'cant_pallets' => $pallets[$i]
-                     );
+        $producto = $_POST['idProducto'];
+        $viaje = $_POST['idViaje'];
+        $cliente = $_POST['comboClientes'];
+        $VL = $_POST['idVL'];
+        $bultos = $_POST['bultos'];
+        $pallets = $_POST['pallets'];
 
-        $this->db->insert('planificacion_reparto', $data);
+        //saco el numero de elementos
+        $longitud = count($producto);
 
-    }
-     
+        //Recorro todos los elementos
+        for($i=0; $i<$longitud; $i++)
+        {
+            $data = array(
+                            'id_viaje' => $viaje[$i] ,
+                            'id_cliente' => $cliente[$i] ,
+                            'id_producto' => $producto[$i],
+                            'id_vl' => $VL[$i],
+                            'cant_bultos' => $bultos[$i],
+                            'cant_pallets' => $pallets[$i]
+                         );
+
+            $this->db->insert('planificacion_reparto', $data);
+
+        }
+        
+        echo "Planificacion guardada correctamente";
     }
     else
     {

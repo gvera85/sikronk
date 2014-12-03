@@ -27,9 +27,9 @@
   <script src="http://localhost/sikronk/assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     
     
-    <!--
+    
     <link href="<?php echo base_url() ?>assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    -->
+    
     <meta charset="utf-8" />
     
     <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
@@ -92,7 +92,10 @@
                                               <table id="tblprod" class="table table-hover table-bordered">
 					  <thead>
                                                 <tr>
-                                                  <?php $cantidad=0 ?>
+                                                  <?php $cantidad=0; 
+                                                  $id_producto_ant = 0;
+                                                  $cantidad2 = 0;
+                                                  ?>
                                                   <th width="5%">Acción</th>  
                                                   <th width="5%">#</th>
                                                   <th width="25%">Producto</th>
@@ -104,55 +107,49 @@
 					  <tbody>
                                           <?php 
                                            foreach( $lineasViaje as $lineas ) : ?>    
-						<?php $cantidad++ ?>
-                                                <tr class="success">
-						  <td align="left"><button id="btnadd2" value="<?php echo $lineas['id_producto'] ?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
-                                                  <td id="linea_<?php echo $cantidad?>" ><?php echo $cantidad?></td>
-                                                  <td id="producto"><?php echo $lineas['producto'] ?></td>
-						  <TD> <?php echo $lineas['vl']." - ".$lineas['peso']. "[KG]" ?></TD>
-                                                  <TD> <?php echo $lineas['cantidad_bultos'] ?></TD>
-                                                  <TD> <?php echo $lineas['cantidad_pallets'] ?></TD>
-                                                  <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
-                                                  <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
-						</tr>
-                                        <?php endforeach; ?>
+						<?php $cantidad++; ?>
+                                                    <tr class="success">
+                                                      <td align="left"><button id="btnadd2" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
+                                                      <td id="linea_<?php echo $cantidad?>" ><?php echo $cantidad?></td>
+                                                      <td id="producto"><?php echo $lineas['producto'] ?></td>
+                                                      <TD> <?php echo $lineas['vl']." - ".$lineas['peso']. "[KG]" ?></TD>
+                                                      <TD> <?php echo $lineas['cantidad_bultos'] ?></TD>
+                                                      <TD> <?php echo $lineas['cantidad_pallets'] ?></TD>
+                                                      <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
+                                                      <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
+                                                    </tr>
+                                                    
+                                                    <?php 
+                                                    if (is_array($lineasReparto))
+                                                    {
+                                                        foreach( $lineasReparto as $reparto ) : 
+                                                        if ($reparto['id_producto'] == $lineas['id_producto'])
+                                                        {
+                                                        ?>  
+                                                            <tr class="warning">
+                                                              <td align="rigth"><button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button></td>
+                                                              <td colspan=3 align="rigth"> <b><?php echo $reparto['razon_social'] ?> </b></td>
+                                                              <TD> <?php echo $reparto['cant_bultos'] ?></TD>
+                                                              <TD> <?php echo $reparto['cant_pallets'] ?></TD>
+                                                            </tr>
+                                                    <?php
+                                                        }
+                                                        endforeach;
+                                                    } ?>
+                                                    
+                                                    
+                                            <?php endforeach; ?>
 					  </tbody>
                                 </table>
 					
 					
                                             </div>
                                         </div>
-                            <button id="btnsubmit" type="submit" class="btn btn-success">Guardar</button
-                            
-                                    <div>
-          <em>Into This</em>
-          <select data-placeholder="Choose a Country..." class="chosen-select" style="width:350px;" tabindex="2">
-            <option value=""></option>
-            <option value="United States">United States</option>
-            <option value="United Kingdom">United Kingdom</option>
-            <option value="Afghanistan">Afghanistan</option>
-            <option value="Aland Islands">Aland Islands</option>
-            
-          </select>
-        </div>
+                            <button id="btnsubmit" type="submit" class="btn btn-success">Guardar</button>
                             
       </div>
             
-            <script type="text/javascript">
-              var config = {
-                '.chosen-select'           : {},
-                '.chosen-select-deselect'  : {allow_single_deselect:true},
-                '.chosen-select-no-single' : {disable_search_threshold:10},
-                '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
-                '.chosen-select-width'     : {width:"95%"}
-              }
-              for (var selector in config) {
-                $(selector).chosen(config[selector]);
-              }
-            </script>
-                            
-                            
-			</form>
+            		</form>
 		</div>
 	</div>
 </div>
@@ -174,16 +171,21 @@ $(function() {
        var cliente;
        var idCliente;
        
-       var idProducto = $(this).attr('value');
+       var miBoton = $(this).attr('value');        
+       
+       var array = miBoton.split("_");
+       
+       var idProducto = array[0];
+       var idVL = array[1];
        
       // alert (idProducto);
        var hiddenProducto = '<input type="hidden" id="idProducto" name="idProducto[]" value='+idProducto+'>';
        
-       var hiddenViaje = '<input type="hidden" id="idViaje" name="idViaje[]" value="'+$('input#VL').val()+'">';
-       var hiddenVL = '<input type="hidden" id="idVL" name="idVL[]" value="'+$('input#Viaje').val()+'">';
+       var hiddenViaje = '<input type="hidden" id="idViaje" name="idViaje[]" value="'+$('input#Viaje').val()+'">';
+       var hiddenVL = '<input type="hidden" id="idVL" name="idVL[]" value="'+idVL+'">';
        
        var combo = '<div>'+
-                        '<select data-placeholder="Seleccione un cliente..." class="chosen-select" name="comboClientes[]" style="width: 350px; display: true;" tabindex="-1">'+
+                        '<select data-placeholder="Seleccione un cliente..." class="chosen-select" name="comboClientes[]" style="display: true;" tabindex="-1">'+
                           '<option value=""></option>';
     
        <?php
@@ -198,16 +200,12 @@ $(function() {
        
        //alert (combo);
               
-       var fila = '<tr>'+
+       var fila = '<tr class="active">'+
                     '<td align="center">'+
                           '<button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button>'+
                     '</td>'+
-                    '<td align="left" colspan="2">'
+                    '<td align="left" colspan="3">'
                           +combo+
-                    '</td>'+
-                    '<td>'+
-                        '<div class="form-group col-lg-12">'+
-                        '</div>'+
                     '</td>'+
                     '<td>'+
                         '<div>'+
@@ -245,7 +243,7 @@ $(function() {
       $( event.target ).closest( "tr" ).after
          ('<div>'+
           '<em>Into This</em>'+
-          '<select data-placeholder="Elegir un pais..." class="chosen-select" id="combito" style="width: 350px; display: true;" tabindex="-1">'+
+          '<select data-placeholder="Elegir un pais..." class="chosen-select" id="combito" style="display: true;" tabindex="-1">'+
             '<option value=""></option>'+                                                                                                         
             '<option value="United States">United States</option>'+
             '<option value="United Kingdom">United Kingdom</option>'+
@@ -280,7 +278,7 @@ $(function() {
         //alert($( event.target ).closest( "td" ).html());
         var trs=$("#tblprod td").length;
         
-        alert (trs);
+        //alert (trs);
         
         var total=0;
         
