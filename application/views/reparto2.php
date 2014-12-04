@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+    <?php $this->load->view('header') ?>
 <head>
     <link rel="stylesheet" href="http://localhost/sikronk/assets/plugins/chosen_v1.2.0/docsupport/style.css">
     <link rel="stylesheet" href="http://localhost/sikronk/assets/plugins/chosen_v1.2.0/docsupport/prism.css">
@@ -32,11 +33,11 @@
     
     <meta charset="utf-8" />
     
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/validationEngine.jquery.css" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/jquery.validationEngine.min.js"></script>
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/languages/jquery.validationEngine-es.js"></script>
+    <link href="http://localhost/sikronk/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://localhost/sikronk/assets/plugins/jquery/validationEngine.jquery.css" rel="stylesheet">
+    <script src="http://localhost/sikronk/assets/plugins/jquery/jquery.min.js"></script>
+	<script src="http://localhost/sikronk/assets/plugins/jquery/jquery.validationEngine.min.js"></script>
+	<script src="http://localhost/sikronk/assets/plugins/jquery/jquery.validationEngine-es.js"></script>
     
         
         <script src="http://localhost/sikronk/assets/plugins/chosen_v1.2.0/chosen.jquery.js"></script>
@@ -313,9 +314,10 @@ $(function() {
 		        .done(function(data){
 		          alert(data);
 			  $(frm)[0].reset();
+                          location.reload();
 			})
 			.fail(function() {
-            alert( "error no pude enviar los datos" );
+                alert( "error no pude enviar los datos" );
 			});
 	  }
 	  event.preventDefault();

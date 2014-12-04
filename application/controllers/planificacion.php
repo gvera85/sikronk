@@ -31,7 +31,7 @@ class Planificacion extends CI_Controller{
     $data['clientes'] = $clientes;
     $data['lineasReparto'] = $lineasReparto;
    
-    $this->load->view('planificacionReparto',$data);
+    $this->load->view('reparto2',$data);
   }
   
   function confirmacionViaje($idViaje){
@@ -75,15 +75,19 @@ class Planificacion extends CI_Controller{
                          );
 
             $this->db->insert('planificacion_reparto', $data);
+            echo "Planificacion guardada correctamente";
 
         }
         
-        echo "Planificacion guardada correctamente";
+        
     }
     else
     {
       echo 'failed';
     }
+    
+   
+        //$this->planificacionReparto($viaje[0]);
   }
   
 }
