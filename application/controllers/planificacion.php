@@ -50,8 +50,9 @@ class Planificacion extends CI_Controller{
   }
   
   function grabarReparto(){
-    if(isset($_POST['bultos']) && !empty($_POST['bultos']))
+    if(isset($_POST['idProducto']) && !empty($_POST['idProducto']))
     {
+    
         $producto = $_POST['idProducto'];
         $viaje = $_POST['idViaje'];
         $cliente = $_POST['comboClientes'];
@@ -62,6 +63,8 @@ class Planificacion extends CI_Controller{
         //saco el numero de elementos
         $longitud = count($producto);
 
+        $this->db->delete('planificacion_reparto', array('id_viaje' => $viaje[0]));
+        
         //Recorro todos los elementos
         for($i=0; $i<$longitud; $i++)
         {
@@ -75,16 +78,16 @@ class Planificacion extends CI_Controller{
                          );
 
             $this->db->insert('planificacion_reparto', $data);
-            echo "Planificacion guardada correctamente";
-
         }
-        
         
     }
     else
     {
-      echo 'failed';
+      $viaje = $_POST['idViaje'];  
+      $this->db->delete('planificacion_reparto', array('id_viaje' => $viaje[0]));
     }
+    
+     echo "Planificacion guardada correctamente";
     
    
         //$this->planificacionReparto($viaje[0]);

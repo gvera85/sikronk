@@ -40,7 +40,7 @@ class viaje_m extends CI_Model {
           $sql = "select a.id id_linea, d.id id_viaje,  b.id id_producto,  b.descripcion producto, 
                     a.cantidad_bultos, a.cantidad_pallets,
                     d.numero_de_viaje, e.razon_social proveedor, c.id id_vl,e.id id_proveedor,
-                    c.descripcion vl, c.peso, c.base_pallet, c.altura_pallet
+                    c.descripcion vl, c.peso, c.base_pallet, c.altura_pallet, c.codigo_vl
                     from productos_viaje a
                     join producto b on a.id_producto = b.id
                     join variable_logistica c on a.id_variable_logistica = c.id
