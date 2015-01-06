@@ -12,8 +12,8 @@
 	$lang['list_search'] 			= 'Buscar';
 	$lang['list_search_all'] 		= 'Buscar todo';
 	$lang['list_clear_filtering'] 	= 'Resetear filtro';
-	$lang['list_delete'] 			= 'Eliminar';
-	$lang['list_edit'] 				= 'Editar';
+	$lang['list_delete'] 			= '';
+	$lang['list_edit'] 				= '';
 	$lang['list_paging_first'] 		= 'Primero';
 	$lang['list_paging_previous'] 	= 'Anterior';
 	$lang['list_paging_next'] 		= 'Siguiente';
@@ -77,4 +77,4 @@
 
 
 	/* Added in version 1.4 */
-	$lang['list_view'] = 'Ver';
+	$lang['list_view'] = '';

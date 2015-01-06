@@ -47,11 +47,36 @@ class vl_m extends CI_Model {
             }
         }else {
           return FALSE;
-        }    
-            
-        
-       
+        }   
     }
+    
+    public function getCantidadPallets($idVL, $cantidadBultos)
+    {
+         if($idVL != FALSE) {
+            $sql = "select ceil( ? / (base_pallet * altura_pallet)) cantidad_pallets
+                    from variable_logistica 
+                    where id = ?";
+            
+            $query = $this->db->query($sql, array($cantidadBultos, $idVL));
+            
+            $cantidadPallets = $query->result_array();
+            
+             if ( is_array($cantidadPallets) && count($cantidadPallets) == 1 )  {
+                if (empty($cantidadPallets[0]["cantidad_pallets"])) {
+                    return 1;
+                }else{
+                    return $cantidadPallets[0]["cantidad_pallets"];
+                }              
+            }
+            else{
+              return 1;
+            }
+        }else {
+          return FALSE;
+        }  
+    }
+    
+    
     
     
 

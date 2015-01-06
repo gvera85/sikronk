@@ -40,6 +40,8 @@ class Viaje extends CI_Controller{
     $this->grocery_crud->display_as('id_empresa_transportista','Transportista');
     $this->grocery_crud->set_relation('id_empresa_transportista','transportista','razon_social');
     
+    $this->grocery_crud->display_as('numero_de_viaje','# Viaje');
+    
     $this->grocery_crud->display_as('id_chofer','Chofer');
     $this->grocery_crud->set_relation('id_chofer','chofer','{dni} - {nombre} {apellido} - Tel: {telefono}');
         
@@ -66,7 +68,7 @@ class Viaje extends CI_Controller{
   
   function link_hacia_productos($primary_key , $row)
   {
-        return site_url('viajeVL/popUp/'.$row->id.'/'.$row->id_proveedor);
+        return site_url('viajeVL/popUp/'.$row->id.'/'.$row->id_proveedor.'/'.$row->numero_de_viaje);
   }
   
   public function validarPatente($patenteIngresada) 
@@ -96,8 +98,6 @@ class Viaje extends CI_Controller{
     $this->load->model('viaje_m');
 
     $nroViaje = $this->viaje_m->getNroViaje($post_array['id_proveedor']);
-    
-    
     
     $post_array['numero_de_viaje'] = $nroViaje;
     

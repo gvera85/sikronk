@@ -97,7 +97,7 @@ class ViajeVL extends CI_Controller{
         $this->usuario_output($output);
     }  
     
-  function popUp($primary_key, $id_proveedor){
+  function popUp($primary_key, $id_proveedor, $nro_viaje){
     $id_viaje = $primary_key;    
     if ($id_viaje) {
             $this->session->set_userdata('id_viaje', $id_viaje);        
@@ -116,22 +116,22 @@ class ViajeVL extends CI_Controller{
     $crud->set_theme('datatables');
     
     $crud->set_table('productos_viaje');
-    $crud->edit_fields('id_viaje','id_producto', 'id_variable_logistica', 'cantidad_bultos');
-    $crud->add_fields('id_viaje','id_producto', 'id_variable_logistica','cantidad_bultos');
+    $crud->edit_fields('id_producto', 'id_variable_logistica', 'cantidad_bultos', 'cantidad_pallets');
+    $crud->add_fields('id_producto', 'id_variable_logistica','cantidad_bultos', 'cantidad_pallets');
     
     //$crud->set_theme('datatables');
    
     $crud->set_subject('Productos del viaje');
     $crud->required_fields('id_producto', 'id_variable_logistica','cantidad_bultos');
-    $crud->columns('id_viaje','id_producto', 'id_variable_logistica','cantidad_bultos');
+    $crud->columns('id_producto', 'id_variable_logistica','cantidad_bultos', 'cantidad_pallets');
     
-    $crud->fields('id_viaje','id_producto', 'id_variable_logistica','cantidad_bultos');
+    $crud->fields('id_viaje','id_producto', 'id_variable_logistica','cantidad_bultos', 'cantidad_pallets');
     $crud->change_field_type('id_viaje','invisible');
     
     $crud->callback_before_insert(array($this,'viaje_callback'));
     $crud->callback_before_update(array($this,'viaje_callback'));
     
-    $crud->display_as('id_viaje','Viaje - Proveedor');
+    //$crud->display_as('id_viaje','Viaje - Proveedor');
     
     $crud->display_as('id_producto','Producto');
     $crud->set_relation('id_producto','producto','{descripcion}',array('id_proveedor' => $id_proveedor));
@@ -139,7 +139,7 @@ class ViajeVL extends CI_Controller{
     $crud->display_as('id_variable_logistica','Peso');
     $crud->set_relation('id_variable_logistica','variable_logistica','{codigo_vl}-{descripcion}-{peso}[KG]-Pallet:{base_pallet}x{altura_pallet}');
     
-    $crud->callback_column('id_viaje',array($this,'item_description_callback'));
+    //$crud->callback_column('id_viaje',array($this,'item_description_callback'));
     
     $crud->set_relation_dependency('id_variable_logistica','id_producto','id_producto');
 
@@ -149,18 +149,25 @@ class ViajeVL extends CI_Controller{
 
     $Proveedor = $this->proveedor_m->getProveedorXViaje($id_viaje);
 
-    $this->session->set_userdata('titulo', "Viaje ".$id_viaje." - ".$Proveedor[0]["razon_social"]); 
+    $this->session->set_userdata('titulo', "Viaje ".$nro_viaje." - ".$Proveedor[0]["razon_social"]); 
         
     $this->usuario_output($output);
   }
   
   function usuario_output($output = null){
-    $this->load->view('mostrarPopUp', $output);
+    $this->load->view('mostrarABM', $output);
   } 
   
   function viaje_callback($post_array) {
    $post_array['id_viaje'] = $this->session->userdata('id_viaje');//Fijo el Id de viaje recibido por parametro
-   $post_array['numero_de_viaje'] = $this->session->userdata('id_viaje');//Fijo el Id de viaje recibido por parametro
+   
+   $this->load->model('vl_m');
+
+   $cantidadPallets = $this->vl_m->getCantidadPallets($post_array['id_variable_logistica'], $post_array['cantidad_bultos']);
+   
+   
+   
+   $post_array['cantidad_pallets'] = $cantidadPallets;
  
    return $post_array;
 }

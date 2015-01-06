@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+    <?php $this->load->view('header') ?>
 <head>
     <link rel="stylesheet" href="http://localhost/sikronk/assets/plugins/chosen_v1.2.0/docsupport/style.css">
     <link rel="stylesheet" href="http://localhost/sikronk/assets/plugins/chosen_v1.2.0/docsupport/prism.css">
@@ -32,11 +33,11 @@
     
     <meta charset="utf-8" />
     
-    <link href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/validationEngine.jquery.css" rel="stylesheet">
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/jquery.validationEngine.min.js"></script>
-	<script src="http://cdnjs.cloudflare.com/ajax/libs/jQuery-Validation-Engine/2.6.4/languages/jquery.validationEngine-es.js"></script>
+    <link href="http://localhost/sikronk/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="http://localhost/sikronk/assets/plugins/jquery/validationEngine.jquery.css" rel="stylesheet">
+    <script src="http://localhost/sikronk/assets/plugins/jquery/jquery.min.js"></script>
+	<script src="http://localhost/sikronk/assets/plugins/jquery/jquery.validationEngine.min.js"></script>
+	<script src="http://localhost/sikronk/assets/plugins/jquery/jquery.validationEngine-es.js"></script>
     
         
         <script src="http://localhost/sikronk/assets/plugins/chosen_v1.2.0/chosen.jquery.js"></script>
@@ -97,9 +98,9 @@
                                                   $cantidad2 = 0;
                                                   ?>
                                                   <th width="5%">Acción</th>  
-                                                  <th width="5%">#</th>
-                                                  <th width="25%">Producto</th>
-                                                  <th width="25%">Presentacion</th>
+                                                  <th width="2%">#</th>
+                                                  <th width="18%">Producto</th>
+                                                  <th width="35%">Variable Logística</th>
                                                   <th width="15%"># bultos</th>
                                                   <th width="15%"># pallets</th>
                                                 </tr>
@@ -112,18 +113,19 @@
                                                       <td align="left"><button id="btnadd2" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
                                                       <td id="linea_<?php echo $cantidad?>" ><?php echo $cantidad?></td>
                                                       <td id="producto"><?php echo $lineas['producto'] ?></td>
-                                                      <TD> <?php echo $lineas['vl']." - ".$lineas['peso']. "[KG]" ?></TD>
+                                                      <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
                                                       <TD> <?php echo $lineas['cantidad_bultos'] ?></TD>
                                                       <TD> <?php echo $lineas['cantidad_pallets'] ?></TD>
                                                       <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
                                                       <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
+                                                      <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
                                                     </tr>
                                                     
                                                     <?php 
                                                     if (is_array($lineasReparto))
                                                     {
                                                         foreach( $lineasReparto as $reparto ) : 
-                                                        if ($reparto['id_producto'] == $lineas['id_producto'])
+                                                        if ($reparto['id_producto'] == $lineas['id_producto'] && $reparto['id_vl'] == $lineas['id_vl'])
                                                         {
                                                         ?>  
                                                             <tr class="warning">
@@ -131,6 +133,14 @@
                                                               <td colspan=3 align="rigth"> <b><?php echo $reparto['razon_social'] ?> </b></td>
                                                               <TD> <?php echo $reparto['cant_bultos'] ?></TD>
                                                               <TD> <?php echo $reparto['cant_pallets'] ?></TD>
+                                                              
+                                                              <input type="hidden" id="idProducto" name="idProducto[]" value=<?php echo $reparto['id_producto'] ?>>
+                                                              <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
+                                                              <input type="hidden" id="idCliente" name="comboClientes[]" value="<?php echo $reparto['id_cliente'] ?>">
+                                                              <input type="hidden" id="idVL" name="idVL[]" value="<?php echo $lineas['id_vl'] ?>">
+                                                              <input type="hidden" id="idBultos" name="bultos[]" value="<?php echo $reparto['cant_bultos'] ?>">
+                                                              <input type="hidden" id="idPallets" name="pallets[]" value="<?php echo $reparto['cant_pallets'] ?>">
+                                                              
                                                             </tr>
                                                     <?php
                                                         }
@@ -313,9 +323,10 @@ $(function() {
 		        .done(function(data){
 		          alert(data);
 			  $(frm)[0].reset();
+                          location.reload();
 			})
 			.fail(function() {
-            alert( "error no pude enviar los datos" );
+                alert( "error no pude enviar los datos" );
 			});
 	  }
 	  event.preventDefault();
