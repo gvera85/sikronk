@@ -11,8 +11,12 @@
                 
                 
         <div class="imagenes" >
-            <a href="<?php echo base_url() ?>index.php/<?php echo $menu['controlador']?>">
-            <img src="<?php echo $menu['path_icono']?>" title="<?php echo $menu['descripcion']?>" width="158" height="158" />
+            <a href="
+                <?php if ($menu['cant_hijos'] == 0) 
+                            echo base_url()."index.php/".$menu['controlador']; 
+                      else 
+                            echo base_url()."index.php/main/recargarMenu/".$menu['id_menu'];  ?>">
+            <img src="<?php echo base_url()."assets/img/".$menu['path_icono']?>" title="<?php echo $menu['descripcion']?>" width="158" height="158" />
             </a>
             <p></p>
             <p><?php echo $menu['descripcion']; ?>   </p>

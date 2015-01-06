@@ -9,6 +9,8 @@ class main extends CI_Controller{
     $this->load->library('grocery_CRUD');
     $this->load->database();
     $this->load->helper('url');
+    
+    $this->load->model('usuario_m');
 
     $this->grocery_crud->set_language("spanish");
              
@@ -26,11 +28,28 @@ class main extends CI_Controller{
     
     $menues = $this->session->userdata('menu');
     
+    $menues = $this->usuario_m->getMenuPorPerfil($this->session->userdata('perfil'), 0);
+    
     //foreach( $menues as $menu ) : 
       //          echo $menu['descripcion'] .' - ' .$menu['path_icono']; 
     //endforeach; 
     
     $data['menues'] = $menues;
+
+    $this->load->helper('form');
+    $this->load->view('main',$data);
+  }
+  
+  function recargarMenu($idMenu) {
+    
+    $menus = $this->usuario_m->getMenuPorPerfil($this->session->userdata('perfil'), $idMenu);
+
+    //echo "Menus:".$this->Usuario[0]["id"]."-".$menus[0]["descripcion"];
+   /* $this->session->set_userdata('menu', $menus);
+      
+    $menues = $this->session->userdata('menu');*/
+    
+    $data['menues'] = $menus;
 
     $this->load->helper('form');
     $this->load->view('main',$data);

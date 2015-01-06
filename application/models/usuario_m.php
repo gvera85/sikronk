@@ -122,22 +122,25 @@ class usuario_m extends CI_Model {
         }   
     }
     
-    public function getMenuPorPerfil($Usuario, $idPerfil)
+    public function getMenuPorPerfil($idPerfil, $idMenuPadre)
     {
-        //var $menues;
-        $id_tipo_empresa = $Usuario["id_tipo_empresa"];
+        $Usr = $this->session->userdata('Usuario');
         
+        $id_tipo_empresa = $Usr["id_tipo_empresa"];
+        
+        if ($idMenuPadre == 0)
+            $idMenuPadre = "is null";
                
         switch($id_tipo_empresa)/*Dependiendo del tipo de empresa voy a buscar un perfil determinado*/
         {
             case DISTRIBUIDOR: /*El usuario es un distribuidor*/
-                $menues = $this->getMenuDistribuidor($idPerfil);
+                $menues = $this->getMenuDistribuidor($idPerfil, $idMenuPadre);
                 break;
             case CLIENTE: /*El usuario es un cliente*/
-                $menues = $this->getMenuCliente($idPerfil);
+                $menues = $this->getMenuCliente($idPerfil, $idMenuPadre);
                 break;
             case PROVEEDOR: /*El usuario es un proveedor*/
-                $menues = $this->getMenuProveedor($idPerfil);
+                $menues = $this->getMenuProveedor($idPerfil, $idMenuPadre);
                 break;
                     
         }
@@ -150,17 +153,32 @@ class usuario_m extends CI_Model {
         
     }
     
-    public function getMenuDistribuidor($idPerfil)
+    public function getMenuDistribuidor($idPerfil, $idMenuPadre)
     {
-        if($idPerfil != FALSE) {
-          $sql = "select b.descripcion , b.path_icono, b.controlador 
-                    from menu_distribuidor a
-                    join menu b on a.id_menu = b.id
-                    where id_perfil_distribuidor = ?
-                    and b.id_menu_padre is null
-                    order by a.orden";
-            
-            $query = $this->db->query($sql, array($idPerfil));
+        if($idPerfil != FALSE) 
+        {
+            if ($idMenuPadre == "is null")
+            {
+                $sql = "select b.id id_menu, b.descripcion , b.path_icono, b.controlador, (select count(*) from menu m where m.id_menu_padre = b.id) cant_hijos 
+                        from menu_distribuidor a
+                        join menu b on a.id_menu = b.id
+                        where id_perfil_distribuidor = ?
+                        and b.id_menu_padre is null
+                        order by a.orden";
+                
+                $query = $this->db->query($sql, array($idPerfil));
+            }
+            else
+            {
+                $sql = "select b.id id_menu, b.descripcion , b.path_icono, b.controlador, (select count(*) from menu m where m.id_menu_padre = b.id) cant_hijos 
+                        from menu_distribuidor a
+                        join menu b on a.id_menu = b.id
+                        where id_perfil_distribuidor = ?
+                        and b.id_menu_padre = ?
+                        order by a.orden";
+                
+                $query = $this->db->query($sql, array($idPerfil,$idMenuPadre));
+            }
                    
             $menues = $query->result_array();
 
@@ -175,17 +193,32 @@ class usuario_m extends CI_Model {
         }   
     }
     
-    public function getMenuProveedor($idPerfil)
+    public function getMenuProveedor($idPerfil, $idMenuPadre)
     {
-        if($idPerfil != FALSE) {
-          $sql = "select b.descripcion , b.path_icono, b.controlador 
-                    from menu_proveedor a
-                    join menu b on a.id_menu = b.id
-                    where id_perfil_proveedor = ?
-                    and b.id_menu_padre is null
-                    order by a.orden";
+        if($idPerfil != FALSE) 
+        {
+          if ($idMenuPadre == "is null")
+          {  
+            $sql = "select b.id id_menu, b.descripcion , b.path_icono, b.controlador, (select count(*) from menu m where m.id_menu_padre = b.id) cant_hijos 
+                      from menu_proveedor a
+                      join menu b on a.id_menu = b.id
+                      where id_perfil_proveedor = ?
+                      and b.id_menu_padre is null
+                      order by a.orden";
             
             $query = $this->db->query($sql, array($idPerfil));
+          }
+          else
+          {
+              $sql = "select b.id id_menu, b.descripcion , b.path_icono, b.controlador, (select count(*) from menu m where m.id_menu_padre = b.id) cant_hijos 
+                      from menu_proveedor a
+                      join menu b on a.id_menu = b.id
+                      where id_perfil_proveedor = ?
+                      and b.id_menu_padre = ?
+                      order by a.orden";
+              
+              $query = $this->db->query($sql, array($idPerfil,$idMenuPadre));
+          }
                    
             $menues = $query->result_array();
 
@@ -200,18 +233,35 @@ class usuario_m extends CI_Model {
         }   
     }
     
-    public function getMenuCliente($idPerfil)
+    public function getMenuCliente($idPerfil, $idMenuPadre)
     {
-        if($idPerfil != FALSE) {
-          $sql = "select b.descripcion , b.path_icono, b.controlador 
+         if ($idMenuPadre != "is null")
+           $idMenuPadre = " = ".$idMenuPadre; 
+        
+        if($idPerfil != FALSE) 
+        {
+          if ($idMenuPadre == "is null")
+          {    
+            $sql = "select b.id id_menu, b.descripcion , b.path_icono, b.controlador, (select count(*) from menu m where m.id_menu_padre = b.id) cant_hijos 
                     from menu_cliente a
                     join menu b on a.id_menu = b.id
                     where id_perfil_cliente = ?
                     and b.id_menu_padre is null
                     order by a.orden";
             
-            $query = $this->db->query($sql, array($idPerfil));
-                   
+            $query = $this->db->query($sql, array($idPerfil,$idMenuPadre));
+          }
+          else
+          {
+               $sql = "select b.id id_menu, b.descripcion , b.path_icono, b.controlador, (select count(*) from menu m where m.id_menu_padre = b.id) cant_hijos 
+                    from menu_cliente a
+                    join menu b on a.id_menu = b.id
+                    where id_perfil_cliente = ?
+                    and b.id_menu_padre = ?
+                    order by a.orden";
+            
+               $query = $this->db->query($sql, array($idPerfil,$idMenuPadre));
+          }
             $menues = $query->result_array();
 
             if( is_array($menues) && count($menues) > 0 ) {

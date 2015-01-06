@@ -138,8 +138,10 @@ class login extends CI_Controller {
         
         $this->Usuario = $this->usuario_m->getUsuario($this->session->userdata('id'));
         
+        $this->session->set_userdata('Usuario', $this->Usuario[0]);
+        
         //echo "Antes de llamar al metodo getMenuPorPerfil [".$this->Usuario[0]["id"]. "]";
-        $menus = $this->usuario_m->getMenuPorPerfil($this->Usuario[0],$perfil);
+        $menus = $this->usuario_m->getMenuPorPerfil($perfil,0);
         chrome_log("Despues de llamar al metodo getMenuPorPerfil","log");
                 
         //echo "Menus:".$this->Usuario[0]["id"]."-".$menus[0]["descripcion"];
