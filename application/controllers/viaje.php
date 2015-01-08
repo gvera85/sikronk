@@ -30,7 +30,7 @@ class Viaje extends CI_Controller{
    
     $this->grocery_crud->set_subject('Viaje');
     $this->grocery_crud->required_fields('id_proveedor');
-    $this->grocery_crud->columns('numero_de_viaje','id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_empresa_transportista');
+    $this->grocery_crud->columns('numero_de_viaje','id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_empresa_transportista','id_estado');
     
     $this->grocery_crud->change_field_type('id_distribuidor','invisible');
     
@@ -44,6 +44,9 @@ class Viaje extends CI_Controller{
     
     $this->grocery_crud->display_as('id_chofer','Chofer');
     $this->grocery_crud->set_relation('id_chofer','chofer','{dni} - {nombre} {apellido} - Tel: {telefono}');
+    
+    $this->grocery_crud->display_as('id_estado','Estado');
+    $this->grocery_crud->set_relation('id_estado','estado','descripcion');
         
     $this->grocery_crud->add_action('Productos', base_url().'/assets/img/iconoProducto.png', '','ui-icon-image',array($this,'link_hacia_productos'));
     
