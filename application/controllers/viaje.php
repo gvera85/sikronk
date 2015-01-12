@@ -50,6 +50,8 @@ class Viaje extends CI_Controller{
         
     $this->grocery_crud->add_action('Productos', base_url().'/assets/img/iconoProducto.png', '','ui-icon-image',array($this,'link_hacia_productos'));
     
+    $this->grocery_crud->add_action('Est', base_url().'/assets/img/iconoProducto.png', '','ui-icon-image',array($this,'cambiarEstado'));
+    
     $this->grocery_crud->set_rules('patente_semi','Patente semi','callback_validarPatente');
     $this->grocery_crud->set_rules('patente_camion','Patente del camion','callback_validarPatente');
     
@@ -72,6 +74,18 @@ class Viaje extends CI_Controller{
   function link_hacia_productos($primary_key , $row)
   {
         return site_url('viajeVL/popUp/'.$row->id.'/'.$row->id_proveedor.'/'.$row->numero_de_viaje);
+  }
+  
+  function cambiarEstado($primary_key , $row)
+  {
+        $this->load->model('viaje_m');
+        
+        $resultado = $this->viaje_m->transicionSimple($row->id);
+        
+        if ($resultado == 1)
+            echo "Transicion erronea";
+  
+        
   }
   
   public function validarPatente($patenteIngresada) 

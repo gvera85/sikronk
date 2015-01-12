@@ -89,6 +89,16 @@ class viaje_m extends CI_Model {
        
     }
     
+    public function transicionSimple($idEntidad)
+    {
+         
+      
+         
+         $this->db->query("select transicionSimple(".$idEntidad.")");
+         
+       
+    }
+    
 
    
 }
