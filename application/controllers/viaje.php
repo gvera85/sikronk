@@ -13,6 +13,8 @@ class Viaje extends CI_Controller{
     $this->grocery_crud->set_language("spanish");
     
     $this->session->set_userdata('titulo', 'Viajes');
+    
+    $this->load->helper('cambio_estados');
              
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');
@@ -30,7 +32,9 @@ class Viaje extends CI_Controller{
    
     $this->grocery_crud->set_subject('Viaje');
     $this->grocery_crud->required_fields('id_proveedor');
-    $this->grocery_crud->columns('numero_de_viaje','id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_empresa_transportista','id_estado');
+    $this->grocery_crud->columns('numero_de_viaje','id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_empresa_transportista','id_estado','cantidad_productos');
+    
+    $this->grocery_crud->callback_column('cantidad_productos',array($this,'_callback_cantidad_productos'));
     
     $this->grocery_crud->change_field_type('id_distribuidor','invisible');
     
@@ -62,10 +66,22 @@ class Viaje extends CI_Controller{
     
     $this->grocery_crud->callback_before_insert(array($this,'distribuidor_insert_callback'));
     $this->grocery_crud->callback_before_update(array($this,'distribuidor_callback'));
+    $this->grocery_crud->callback_after_insert(array($this, 'log_cambio_estado'));
     
     $output = $this->grocery_crud->render();
     $this->viaje_output($output);
   }
+  
+    public function _callback_cantidad_productos($value, $row)
+    {
+      
+        $this->load->model('viaje_m');
+
+        $cantProductos = $this->viaje_m->getCantidadProductos($row->id);
+    
+        
+        return $cantProductos;
+    }
     
   function viaje_output($output = null){
     $this->load->view('mostrarABM', $output);
@@ -76,17 +92,21 @@ class Viaje extends CI_Controller{
         return site_url('viajeVL/popUp/'.$row->id.'/'.$row->id_proveedor.'/'.$row->numero_de_viaje);
   }
   
+  function uno($nombre)
+  {
+      echo "Uno";
+  }
+  
   function cambiarEstado($primary_key , $row)
   {
-        $this->load->model('viaje_m');
-        
-        $resultado = $this->viaje_m->transicionSimple($row->id);
-        
-        if ($resultado == 1)
-            echo "Transicion erronea";
-  
+        return site_url('cambioEstados/transicionAutomatica/'.$row->id.'/'.$row->id_estado.'/viaje');
         
   }
+  
+  
+  
+  
+  
   
   public function validarPatente($patenteIngresada) 
   {
@@ -119,7 +139,15 @@ class Viaje extends CI_Controller{
     $post_array['numero_de_viaje'] = $nroViaje;
     
     $post_array['id_distribuidor'] = $this->session->userdata('empresa');//Fijo el Id del proveedor segun el perfil logueado
-
+    
     return $post_array;
    }
+   
+   function log_cambio_estado($post_array,$primary_key)
+   {
+        transicionSimple($primary_key, 1, "viaje");
+
+        return true;
+   }
+   
 }

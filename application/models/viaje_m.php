@@ -89,16 +89,155 @@ class viaje_m extends CI_Model {
        
     }
     
-    public function transicionSimple($idEntidad)
-    {
-         
-      
-         
-         $this->db->query("select transicionSimple(".$idEntidad.")");
-         
+    public function getEstadoActual($idEntidad)
+    {    
+          if($idEntidad != FALSE) {
+          $sql = "SELECT ID_ESTADO
+                    FROM VIAJE
+                    WHERE ID = ? ";
+            
+            $query = $this->db->query($sql, array($idEntidad));
+                   
+            $idEstadoActual = $query->result_array();
+
+            if( is_array($idEstadoActual) && count($idEstadoActual) > 0 ) {
+              return $idEstadoActual[0]["ID_ESTADO"];
+            }
+            
+            return false;
+        }
+        else {
+          return FALSE;
+        }   
        
     }
     
+    public function getEstadoFuturo($idEstadoActual)
+    {    
+          if($idEstadoActual != FALSE) {
+          $sql = "SELECT ID_ESTADO_FUTURO
+                  FROM TRANSICIONES_POSIBLES
+                  WHERE ID_ESTADO_ACTUAL = ? ";
+            
+            $query = $this->db->query($sql, array($idEstadoActual));
+                   
+            $idEstadoFuturo = $query->result_array();
+
+            if( is_array($idEstadoFuturo) && count($idEstadoFuturo) > 0 ) {
+              return $idEstadoFuturo[0]["ID_ESTADO_FUTURO"];
+            }
+            
+            return false;
+        }
+        else {
+          return FALSE;
+        }   
+       
+    }
+    
+
+  
+        
+    public function getTablayEstadoFuturo($idEstadoActual)
+    {    
+          if($idEstadoActual != FALSE) {
+          $sql = "SELECT ID_ESTADO_FUTURO as id_estado_futuro, NOMBRE_TABLA as nombre_tabla
+                    FROM TRANSICIONES_POSIBLES A
+                    JOIN tipo_estado B ON A.id_tipo_estado = B.ID
+                    WHERE ID_ESTADO_ACTUAL = ?  ";
+            
+            $query = $this->db->query($sql, array($idEstadoActual));
+                   
+            $registro = $query->result_array();
+
+            if( is_array($registro) && count($registro) > 0 ) {
+              return $registro[0];
+            }
+            
+            return false;
+        }
+        else {
+          return FALSE;
+        }   
+       
+    }
+    
+    
+
+    public function updateEstado($idEntidad, $nombreTabla, $idEstado)
+    {    
+          if($idEntidad != FALSE) {
+            
+            $data = array(
+                    'ID_ESTADO' => $idEstado
+                 );
+
+            $this->db->where('id', $idEntidad);
+            $this->db->update($nombreTabla, $data); 
+            
+            return true;
+        }
+        else {
+          return FALSE;
+        }   
+       
+    }
+    
+    public function insertMovimiento($idEntidad, $idEstado, $idUsuario)
+    {    
+          if($idEntidad != FALSE) {
+            
+             $data = array(
+                'id_cabecera' => $idEntidad ,
+                'id_estado' => $idEstado ,
+                'id_usuario' => $idUsuario
+             );
+
+             $this->db->insert('movimientos', $data); 
+            return true;
+        }
+        else {
+          return FALSE;
+        }   
+       
+    }
+    
+    
+    
+    
+            
+    public function getCantidadProductos($idViaje)
+    {
+         if($idViaje != FALSE) {
+            $sql = "select count(distinct id_producto) cant
+                   from productos_viaje 
+                   where id_viaje = ?";
+            
+            $query = $this->db->query($sql, array($idViaje));
+                   
+            
+            $cantidadProductos = $query->result_array();
+            
+             if ( is_array($cantidadProductos) && count($cantidadProductos) == 1 )  {
+              
+              if (empty($cantidadProductos[0]["cant"])) {
+                  return 0;
+              }else{
+                  return $cantidadProductos[0]["cant"];
+              }
+              
+            }
+            else{
+              return 0;
+            }
+        }else {
+          return FALSE;
+        }    
+            
+        
+       
+    }        
+   
 
    
 }
