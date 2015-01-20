@@ -25,7 +25,7 @@ function transicionAutomatica($idEntidad, $idEstado, $nombrePagina)
         // Call a function of the model
         $resultado = $CI->viaje_m->updateEstado($idEntidad, $nombreTabla, $idEstado);
         
-        $resultado = $CI->viaje_m->insertMovimiento($idEntidad, $idEstado, $this->session->userdata('id') );
+        $resultado = $CI->viaje_m->insertMovimiento($idEntidad, $idEstado, $CI->session->userdata('id') );
         
         //redirect($nombrePagina);
       
