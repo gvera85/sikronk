@@ -28,7 +28,7 @@ class estado extends CI_Controller{
    
     $this->grocery_crud->set_subject('Estado');
     $this->grocery_crud->required_fields('id_tipo_estado','descripcion');
-    $this->grocery_crud->columns('id_tipo_estado','descripcion');
+    $this->grocery_crud->columns('id','id_tipo_estado','descripcion');
     
     $this->grocery_crud->display_as('id_tipo_estado','Tabla');
         

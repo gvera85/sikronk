@@ -30,13 +30,16 @@ class Reparto extends CI_Controller{
    
     $this->grocery_crud->set_subject('Viaje');
     $this->grocery_crud->required_fields('id_proveedor');
-    $this->grocery_crud->columns('numero_de_viaje','id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_empresa_transportista');
+    $this->grocery_crud->columns('numero_de_viaje','id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_empresa_transportista','id_estado','cantidad_productos');
     
     $this->grocery_crud->change_field_type('id_distribuidor','invisible');
     
     $this->grocery_crud->display_as('id_proveedor','Proveedor');
     $this->grocery_crud->display_as('numero_de_viaje','# Viaje');
     $this->grocery_crud->set_relation('id_proveedor','proveedor','razon_social');
+    
+    $this->grocery_crud->display_as('id_estado','Estado');
+    $this->grocery_crud->set_relation('id_estado','estado','descripcion');
     
     $this->grocery_crud->display_as('id_empresa_transportista','Transportista');
     $this->grocery_crud->set_relation('id_empresa_transportista','transportista','razon_social');
@@ -56,6 +59,11 @@ class Reparto extends CI_Controller{
     
     $this->grocery_crud->callback_before_insert(array($this,'distribuidor_callback'));
     $this->grocery_crud->callback_before_update(array($this,'distribuidor_callback'));
+    
+    
+    $where = "id_estado IN ('".ESTADO_VIAJE_CREADO."','".ESTADO_VIAJE_PLANIFICADO."')";
+
+    $this->grocery_crud->where($where);
   
     $this->grocery_crud->unset_add();
     $this->grocery_crud->unset_edit();

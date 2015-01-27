@@ -37,5 +37,9 @@ define('FOPEN_WRITE_CREATE_STRICT',				'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
 
+define('ESTADO_VIAJE_CREADO','1');
+define('ESTADO_VIAJE_PLANIFICADO','2');
+define('ESTADO_VIAJE_ARRIBADO','3');
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
