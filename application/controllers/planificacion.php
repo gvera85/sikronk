@@ -13,6 +13,8 @@ class Planificacion extends CI_Controller{
     $this->grocery_crud->set_language("spanish");
     
     $this->session->set_userdata('titulo', 'Planificaciones');
+    
+    $this->load->helper('cambio_estados');
              
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');
@@ -88,6 +90,8 @@ class Planificacion extends CI_Controller{
     }
     
      echo "Planificacion guardada correctamente";
+     
+     transicionAutomatica($viaje[0], 1, "reparto.php");
     
    
         //$this->planificacionReparto($viaje[0]);

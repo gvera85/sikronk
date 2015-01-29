@@ -2,15 +2,19 @@
  
 function transicionAutomatica($idEntidad, $idEstado, $nombrePagina)
   {
-        $this->load->model('viaje_m');
+        // Get a reference to the controller object
+        $CI = get_instance();
+
+        // You may need to load the model if it hasn't been pre-loaded
+        $CI->load->model('viaje_m');
         
-        $registro = $this->viaje_m->getTablayEstadoFuturo($idEstado);
+        $registro = $CI->viaje_m->getTablayEstadoFuturo($idEstado);
         
-        $resultado = $this->viaje_m->updateEstado($idEntidad, $registro['nombre_tabla'], $registro['id_estado_futuro']);
+        $resultado = $CI->viaje_m->updateEstado($idEntidad, $registro['nombre_tabla'], $registro['id_estado_futuro']);
         
-        $resultado = $this->viaje_m->insertMovimiento($idEntidad, $registro['id_estado_futuro'], $this->session->userdata('id') );
+        $resultado = $CI->viaje_m->insertMovimiento($idEntidad, $registro['id_estado_futuro'], $CI->session->userdata('id') );
         
-        redirect($nombrePagina);
+        //redirect($nombrePagina);
         
   }
   
