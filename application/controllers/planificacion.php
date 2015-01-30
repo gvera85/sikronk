@@ -61,6 +61,8 @@ class Planificacion extends CI_Controller{
         $VL = $_POST['idVL'];
         $bultos = $_POST['bultos'];
         $pallets = $_POST['pallets'];
+        
+        
 
         //saco el numero de elementos
         $longitud = count($producto);
@@ -89,8 +91,13 @@ class Planificacion extends CI_Controller{
       $this->db->delete('planificacion_reparto', array('id_viaje' => $viaje[0]));
     }
     
-     echo "Planificacion guardada correctamente";
-     
+    $botonPresionado = $_POST['bacon'];
+    
+    if ($botonPresionado == "botonPlanificacion") 
+        echo "Planificacion CERRADA";
+    else
+        echo "Planificacion guardada correctamente";
+    
      transicionAutomatica($viaje[0], 1, "reparto.php");
     
    

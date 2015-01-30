@@ -155,7 +155,9 @@
 					
                                             </div>
                                         </div>
-                            <button id="btnsubmit" type="submit" class="btn btn-success">Guardar</button>
+                            <button id="btnsubmit" value="1" type="submit" class="btn btn-default">Guardar</button>
+                            <button id="btnPlanificacion" value="2" class="btn btn-success">Guardar planificacion</button>
+                            <input id="bacon" type="hidden" class="bacon" value="botonGuardar" name="bacon">
                             
       </div>
             
@@ -313,12 +315,19 @@ $(function() {
         event.preventDefault();
    });
    
+   $(document).on("click","#btnPlanificacion",function( event ) {  
+      
+        $('input#bacon').val("botonPlanificacion").css('border','3px solid blue');
+        
+        //event.preventDefault();
+   });
+   
       
    $( "#miform" ).submit(function( event ) {
           var frm = $(this);
 	  var formulario = $(this).serialize();
-	  
-	  if($('#miform').validationEngine('validate')){
+     
+        if($('#miform').validationEngine('validate')){
 	  $.post( "<?php echo base_url() ?>index.php/planificacion/grabarReparto", formulario)
 		        .done(function(data){
 		          alert(data);
