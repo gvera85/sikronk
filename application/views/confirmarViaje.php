@@ -86,7 +86,7 @@
     }
     else
     {
-        $titulo = "Planificacion de viaje - Reparto de stock a los clientes. Viaje numero ".$lineasViaje[0]['numero_de_viaje']." - ".$lineasViaje[0]['proveedor'];
+        $titulo = "Confirmación de viaje - Viaje número ".$lineasViaje[0]['numero_de_viaje']." - ".$lineasViaje[0]['proveedor'];
     }             
 ?>    
 
@@ -174,7 +174,7 @@
                             <?php if ($sinProductos == 0) 
                                   {?>
                             <button id="btnsubmit" value="1" type="submit" class="btn btn-default">Guardar</button>
-                            <button id="btnPlanificacion" value="2" class="btn btn-success">Confirmar planificacion</button>
+                            <button id="btnPlanificacion" value="2" class="btn btn-success">Confirmar viaje</button>
                             <input id="botonPresionado" type="hidden" value="botonGuardar" name="botonPresionado">
                             <?php }?>
                             

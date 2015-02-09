@@ -1,6 +1,6 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  
-function transicionAutomatica($idEntidad, $idEstado, $nombrePagina)
+function transicionAutomatica($idEntidad, $idEstado)
   {
         // Get a reference to the controller object
         $CI = get_instance();
@@ -13,8 +13,6 @@ function transicionAutomatica($idEntidad, $idEstado, $nombrePagina)
         $resultado = $CI->viaje_m->updateEstado($idEntidad, $registro['nombre_tabla'], $registro['id_estado_futuro']);
         
         $resultado = $CI->viaje_m->insertMovimiento($idEntidad, $registro['id_estado_futuro'], $CI->session->userdata('id') );
-        
-        //redirect($nombrePagina);
         
   }
   

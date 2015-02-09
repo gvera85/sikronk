@@ -48,21 +48,18 @@ class Planificacion extends CI_Controller{
     $data['clientes'] = $clientes;
     $data['lineasReparto'] = $lineasReparto;
 
-    $this->load->view('reparto2',$data);
+    $this->load->view('confirmarViaje',$data);
   }
   
   function grabarReparto(){
     if(isset($_POST['idProducto']) && !empty($_POST['idProducto']))
     {
-    
         $producto = $_POST['idProducto'];
         $viaje = $_POST['idViaje'];
         $cliente = $_POST['comboClientes'];
         $VL = $_POST['idVL'];
         $bultos = $_POST['bultos'];
         $pallets = $_POST['pallets'];
-        
-        
 
         //saco el numero de elementos
         $longitud = count($producto);
@@ -91,17 +88,20 @@ class Planificacion extends CI_Controller{
       $this->db->delete('planificacion_reparto', array('id_viaje' => $viaje[0]));
     }
     
-    $botonPresionado = $_POST['bacon'];
+    $botonPresionado = $_POST['botonPresionado'];
     
     if ($botonPresionado == "botonPlanificacion") 
-        echo "Planificacion CERRADA";
+    {
+        transicionAutomatica($viaje[0], 2);
+        echo "Planificacion cerrada correctamente";
+    }   
     else
+    {
+        transicionAutomatica($viaje[0], 1);
         echo "Planificacion guardada correctamente";
+    }
     
-     transicionAutomatica($viaje[0], 1, "reparto.php");
     
-   
-        //$this->planificacionReparto($viaje[0]);
   }
   
 }
