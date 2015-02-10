@@ -116,8 +116,8 @@
                                                   <th width="2%">#</th>
                                                   <th width="18%">Producto</th>
                                                   <th width="35%">Variable Logística</th>
-                                                  <th width="15%"># bultos</th>
-                                                  <th width="15%"># pallets</th>
+                                                  <th width="15%" colspan="2"># bultos</th>
+                                                  <th width="15%" colspan="2"># pallets</th>
                                                 </tr>
 					  </thead>
 					  <tbody>
@@ -129,8 +129,8 @@
                                                       <td id="linea_<?php echo $cantidad?>" ><?php echo $cantidad?></td>
                                                       <td id="producto"><?php echo $lineas['producto'] ?></td>
                                                       <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
-                                                      <TD> <?php echo $lineas['cantidad_bultos'] ?></TD>
-                                                      <TD> <?php echo $lineas['cantidad_pallets'] ?></TD>
+                                                      <TD> <?php echo $lineas['cantidad_bultos'] ?> </TD> <TD>  <input style="width:50px; text-align:right" type="text" size="10" value="<?php echo $lineas['cantidad_bultos'] ?>"> </TD>
+                                                      <TD> <?php echo $lineas['cantidad_pallets'] ?> </TD> <TD>  <input style="width:50px; text-align:right" type="text" size="10" value="<?php echo $lineas['cantidad_pallets'] ?>"> </TD>
                                                       <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
                                                       <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
                                                       <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
@@ -146,8 +146,8 @@
                                                             <tr class="warning">
                                                               <td align="rigth"><button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button></td>
                                                               <td colspan=3 align="rigth"> <b><?php echo $reparto['razon_social'] ?> </b></td>
-                                                              <TD> <?php echo $reparto['cant_bultos'] ?></TD>
-                                                              <TD> <?php echo $reparto['cant_pallets'] ?></TD>
+                                                              <TD colspan=2> <?php echo $reparto['cant_bultos'] ?></TD>
+                                                              <TD colspan=2> <?php echo $reparto['cant_pallets'] ?></TD>
                                                               
                                                               <input type="hidden" id="idProducto" name="idProducto[]" value=<?php echo $reparto['id_producto'] ?>>
                                                               <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
@@ -237,12 +237,12 @@ $(function() {
                     '<td align="left" colspan="3">'
                           +combo+
                     '</td>'+
-                    '<td>'+
+                    '<td colspan="2">'+
                         '<div>'+
                         '<input name="bultos[]" />'+
                         '</div>'+
                     '</td>'+
-                    '<td>'+
+                    '<td colspan="2">'+
                         '<div class="form-group col-lg-12">'+
                         '<input name="pallets[]" />'+
                         '</div>'+
