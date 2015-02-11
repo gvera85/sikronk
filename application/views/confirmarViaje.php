@@ -36,6 +36,7 @@
     <link href="http://localhost/sikronk/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://localhost/sikronk/assets/plugins/jquery/validationEngine.jquery.css" rel="stylesheet">
     <script src="http://localhost/sikronk/assets/plugins/jquery/jquery.min.js"></script>
+    <script src="http://localhost/sikronk/assets/plugins/jquery/jquery.numeric.js"></script>
 	<script src="http://localhost/sikronk/assets/plugins/jquery/jquery.validationEngine.min.js"></script>
 	<script src="http://localhost/sikronk/assets/plugins/jquery/jquery.validationEngine-es.js"></script>
     
@@ -48,6 +49,21 @@
 			jQuery(".chosen").data("placeholder","Select Frameworks...").chosen();
 		});
 	</script>
+        
+        <script type="text/javascript">
+        $(document).ready(function(){
+            
+            for (i = 0; i < 10; i++) { 
+               campoBultos = "#cantBultosViaje_" + i; 
+               campoPallets = "#cantPalletsViaje_" + i;
+                
+               $(campoBultos).numeric();
+               $(campoPallets).numeric();
+            }
+            
+            
+        });
+        </script>
 
 
     
@@ -116,8 +132,10 @@
                                                   <th width="2%">#</th>
                                                   <th width="18%">Producto</th>
                                                   <th width="35%">Variable Logística</th>
-                                                  <th width="15%" colspan="2"># bultos</th>
-                                                  <th width="15%" colspan="2"># pallets</th>
+                                                       
+                                                        <th width="15%" colspan="2"># bultos [est vs real]</th>
+                                                        <th width="15%" colspan="2"># pallets [est vs real]</th>
+                                                     
                                                 </tr>
 					  </thead>
 					  <tbody>
@@ -129,11 +147,16 @@
                                                       <td id="linea_<?php echo $cantidad?>" ><?php echo $cantidad?></td>
                                                       <td id="producto"><?php echo $lineas['producto'] ?></td>
                                                       <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
-                                                      <TD> <?php echo $lineas['cantidad_bultos'] ?> </TD> <TD>  <input style="width:50px; text-align:right" type="text" size="10" value="<?php echo $lineas['cantidad_bultos'] ?>"> </TD>
-                                                      <TD> <?php echo $lineas['cantidad_pallets'] ?> </TD> <TD>  <input style="width:50px; text-align:right" type="text" size="10" value="<?php echo $lineas['cantidad_pallets'] ?>"> </TD>
+                                                      <TD> <?php echo $lineas['cantidad_bultos'] ?> </TD> <TD>  <input style="width:50px; text-align:right" id="cantBultosViaje_<?php echo $cantidad?>" name="cantBultosViaje[]" type="text" size="10" value="<?php echo $lineas['cantidad_bultos'] ?>"> </TD>
+                                                      <TD> <?php echo $lineas['cantidad_pallets'] ?> </TD> <TD>  <input style="width:50px; text-align:right" id="cantPalletsViaje_<?php echo $cantidad?>" name="cantPalletsViaje[]" type="text" size="10" value="<?php echo $lineas['cantidad_pallets'] ?>"> </TD>
                                                       <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
                                                       <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
                                                       <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
+                                                      
+                                                      <input type="hidden" id="idProductoViaje" name="idProductoViaje[]" value=<?php echo $lineas['id_producto']?>>
+                                                      <input type="hidden" id="idViajeViaje" name="idViajeViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
+                                                      
+                                                      
                                                     </tr>
                                                     
                                                     <?php 
@@ -239,12 +262,12 @@ $(function() {
                     '</td>'+
                     '<td colspan="2">'+
                         '<div>'+
-                        '<input name="bultos[]" />'+
+                        '<input style="width:50px; text-align:right" name="bultos[]" />'+
                         '</div>'+
                     '</td>'+
                     '<td colspan="2">'+
                         '<div class="form-group col-lg-12">'+
-                        '<input name="pallets[]" />'+
+                        '<input style="width:50px; text-align:right" name="pallets[]" />'+
                         '</div>'+
                     '</td>'
                     +hiddenProducto+hiddenViaje+hiddenVL+
@@ -346,7 +369,7 @@ $(function() {
 	  var formulario = $(this).serialize();
      
         if($('#miform').validationEngine('validate')){
-	  $.post( "<?php echo base_url() ?>index.php/planificacion/grabarReparto", formulario)
+	  $.post( "<?php echo base_url() ?>index.php/planificacion/grabarConfirmacionViaje", formulario)
 		        .done(function(data){
 		          alert(data);
 			  $(frm)[0].reset();
