@@ -1,6 +1,6 @@
 <?php
 
-class ConfirmarViaje extends CI_Controller{
+class Valorizar extends CI_Controller{
 
   public function __construct()
   {
@@ -12,7 +12,7 @@ class ConfirmarViaje extends CI_Controller{
 
     $this->grocery_crud->set_language("spanish");
     
-    $this->session->set_userdata('titulo', 'Confirmar arribo de viajes');
+    $this->session->set_userdata('titulo', 'Valorizar carga de viaje');
              
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');
@@ -47,7 +47,7 @@ class ConfirmarViaje extends CI_Controller{
     $this->grocery_crud->display_as('id_chofer','Chofer');
     $this->grocery_crud->set_relation('id_chofer','chofer','{dni} - {nombre} {apellido} - Tel: {telefono}');
         
-    $this->grocery_crud->add_action('Confirmar', base_url().'/assets/img/okVerde.png', '','ui-icon-image',array($this,'link_hacia_confirmacion'));
+    $this->grocery_crud->add_action('Precio', base_url().'/assets/img/iconoDinero.png', '','ui-icon-image',array($this,'link_hacia_valorizacion'));
     
     $this->grocery_crud->set_rules('patente_semi','Patente semi','callback_validarPatente');
     $this->grocery_crud->set_rules('patente_camion','Patente del camion','callback_validarPatente');
@@ -60,8 +60,8 @@ class ConfirmarViaje extends CI_Controller{
     $this->grocery_crud->callback_before_update(array($this,'distribuidor_callback'));
     
     
-    $where = "id_estado IN ('".ESTADO_VIAJE_CREADO."','".ESTADO_VIAJE_REPARTO_PLANIFICADO."')";
-
+    $where = "id_estado IN ('".ESTADO_VIAJE_STOCK_CONFIRMADO."')";
+    
     $this->grocery_crud->where($where);
   
     $this->grocery_crud->unset_add();
@@ -76,9 +76,9 @@ class ConfirmarViaje extends CI_Controller{
     $this->load->view('mostrarABM', $output);
   }
   
-  function link_hacia_confirmacion($primary_key , $row)
+  function link_hacia_valorizacion($primary_key , $row)
   {
-        return site_url('planificacion/confirmacionViaje/'.$row->id);
+        return site_url('planificacion/valorizarViaje/'.$row->id);
   }
   
   

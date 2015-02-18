@@ -102,7 +102,7 @@
     }
     else
     {
-        $titulo = "Confirmación de viaje - Viaje número ".$lineasViaje[0]['numero_de_viaje']." - ".$lineasViaje[0]['proveedor'];
+        $titulo = "Valorizar viaje - Viaje número ".$lineasViaje[0]['numero_de_viaje']." - ".$lineasViaje[0]['proveedor'];
     }             
 ?>    
 
@@ -128,27 +128,29 @@
                                                   if ($sinProductos == 0)
                                                   {
                                                   ?>
-                                                  <th width="5%">Acción</th>  
+                                                  
                                                   <th width="2%">#</th>
                                                   <th width="18%">Producto</th>
                                                   <th width="35%">Variable Logística</th>
                                                        
-                                                        <th width="15%" colspan="2"># bultos [est vs real]</th>
-                                                        <th width="15%" colspan="2"># pallets [est vs real]</th>
+                                                        <th width="15%"># Bultos </th>
+                                                        <th width="15%"> Precio x bulto [$] </th>
+                                                        <th width="15%"> Precio total [$] </th>
+                                                        <th width="15%" colspan="2"># Pallets </th>
                                                      
                                                 </tr>
 					  </thead>
 					  <tbody>
                                           <?php 
+                                           $cantidadLineasReparto = 0;
                                            foreach( $lineasViaje as $lineas ) : ?>    
 						<?php $cantidad++; ?>
                                                     <tr class="success">
-                                                      <td align="left"><button id="btnadd2" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
                                                       <td id="linea_<?php echo $cantidad?>" ><?php echo $cantidad?></td>
                                                       <td id="producto"><?php echo $lineas['producto'] ?></td>
                                                       <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
-                                                      <TD> <?php echo $lineas['cantidad_bultos'] ?> </TD> <TD>  <input style="width:50px; text-align:right" id="cantBultosViaje_<?php echo $cantidad?>" name="cantBultosViaje[]" type="text" size="10" value="<?php echo $lineas['cantidad_bultos'] ?>"> </TD>
-                                                      <TD> <?php echo $lineas['cantidad_pallets'] ?> </TD> <TD>  <input style="width:50px; text-align:right" id="cantPalletsViaje_<?php echo $cantidad?>" name="cantPalletsViaje[]" type="text" size="10" value="<?php echo $lineas['cantidad_pallets'] ?>"> </TD>
+                                                      <TD colspan="3"> <?php echo $lineas['cantidad_bultos'] ?> </TD> 
+                                                      <TD colspan="2"> <?php echo $lineas['cantidad_pallets'] ?> </TD> 
                                                       <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
                                                       <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
                                                       <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
@@ -167,10 +169,15 @@
                                                         {
                                                         ?>  
                                                             <tr class="warning">
-                                                              <td align="rigth"><button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button></td>
+                                                              <?php $cantidadLineasReparto++; ?>
                                                               <td colspan=3 align="rigth"> <b><?php echo $reparto['razon_social'] ?> </b></td>
-                                                              <TD colspan=2> <?php echo $reparto['cant_bultos'] ?></TD>
-                                                              <TD colspan=2> <?php echo $reparto['cant_pallets'] ?></TD>
+                                                              <TD> <div class="cantidad_linea" id="DivBultos_<?php echo $cantidadLineasReparto?>" name="DivBultos_<?php echo $cantidadLineasReparto?>"> <?php echo $reparto['cant_bultos'] ?> </div> </TD> 
+                                                              
+                                                              <input type="hidden" id="bultos_<?php echo $cantidadLineasReparto?>" value=<?php echo $reparto['cant_bultos'] ?>>
+                                                              
+                                                              <TD>  $ <input class="importe_linea" style="width:50px; text-align:right" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calculo(this.value,bultos_<?php echo $cantidadLineasReparto?>.value,'input#precioTotal_<?php echo $cantidadLineasReparto?>');" name="precioBulto_<?php echo $cantidad?>" type="text" size="10" value="-"> </TD>
+                                                              <TD>  $ <input  type="text"  style="width:50px; text-align:right" id="precioTotal_<?php echo $cantidadLineasReparto?>" type="text" size="10" value="-">  </TD>
+                                                              <TD colspan="2"> <?php echo $reparto['cant_pallets'] ?></TD> 
                                                               
                                                               <input type="hidden" id="idProducto" name="idProducto[]" value=<?php echo $reparto['id_producto'] ?>>
                                                               <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
@@ -197,7 +204,7 @@
                             <?php if ($sinProductos == 0) 
                                   {?>
                             <button id="btnsubmit" value="1" type="submit" class="btn btn-default">Guardar</button>
-                            <button id="btnCierreViaje" value="2" class="btn btn-success">Confirmar viaje</button>
+                            <button id="btnCierreViaje" value="2" class="btn btn-success">Confirmar precio</button>
                             <input id="botonPresionado" type="hidden" value="botonGuardar" name="botonPresionado">
                             <?php }?>
                             
@@ -208,8 +215,41 @@
 	</div>
  
 <script type="text/javascript">
+
+
+function calculo(cantidad,precio,inputtext){
+	
+	/* Parametros:
+	cantidad - entero con la cantidad
+	precio - entero con el precio
+	inputtotal - nombre del elemento del formulario donde ira el total
+	*/
+	
+	// Calculo del subtotal
+	subtotal = precio*cantidad;
+        
+        $(inputtext).val(subtotal);
+        //precioTotal_1.value = subtotal;
+	
+	//Actualizar el total
+	// Utilizamos el eval. Ya que el valor es un texto y si lo tratamos como tal
+	// es como si estuviesemos manipulando una cadena.
+	//total = eval(totaltext.value);
+	//totaltext.value = total + subtotal;
+}
+/*
+$(document).on('change', '#precioBulto_1', function(){
+    var precioDeLinea = 0;
+ 
+    precioDeLinea = $('#bultos_1').html();
     
-   
+    precioDeLinea = $('input#precioBulto_1').val() * precioDeLinea;
+    $('input#precioTotal_1').val(precioDeLinea);
+});
+*/
+
+
+    
 $(function() {
     var count = 1;
     jQuery("#miform").validationEngine({promptPosition : "centerRight:0,-5"});

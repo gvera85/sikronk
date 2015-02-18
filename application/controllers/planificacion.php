@@ -51,6 +51,21 @@ class Planificacion extends CI_Controller{
     $this->load->view('confirmarViaje',$data);
   }
   
+  function valorizarViaje($idViaje){
+    $this->load->model('viaje_m');
+    $this->load->model('cliente_m');
+
+    $lineasViaje = $this->viaje_m->getLineasViaje($idViaje);
+    $lineasReparto = $this->viaje_m->getRepartoViaje($idViaje);
+    $clientes = $this->cliente_m->getClientes();
+    
+    $data['lineasViaje'] = $lineasViaje;
+    $data['clientes'] = $clientes;
+    $data['lineasReparto'] = $lineasReparto;
+   
+    $this->load->view('valorizarViaje',$data);
+  }
+  
   function grabarReparto(){
     if(isset($_POST['idProducto']) && !empty($_POST['idProducto']))
     {
@@ -120,7 +135,7 @@ class Planificacion extends CI_Controller{
         //saco el numero de elementos
         $longitud = count($producto);
 
-        $this->db->delete('planificacion_reparto', array('id_viaje' => $viaje[0]));
+        $this->db->delete('reparto', array('id_viaje' => $viaje[0]));
         
         //Recorro todos los elementos
         for($i=0; $i<$longitud; $i++)
@@ -134,7 +149,7 @@ class Planificacion extends CI_Controller{
                             'cant_pallets' => $pallets[$i]
                          );
 
-            $this->db->insert('planificacion_reparto', $data);
+            $this->db->insert('reparto', $data);
             
             
         }
@@ -158,18 +173,22 @@ class Planificacion extends CI_Controller{
     
     $botonPresionado = $_POST['botonPresionado'];
     
-    
-    
-    if ($botonPresionado == "botonPlanificacion") 
+    if ($botonPresionado == "botonCierreViaje") 
     {
-        transicionAutomatica($viaje[0], 2);
+        transicionAutomatica($viaje[0], 3);
         echo "Planificacion cerrada correctamente";
     }   
     else
     {
-        transicionAutomatica($viaje[0], 1);
+        transicionAutomatica($viaje[0], 3);
         echo "Planificacion guardada correctamente";
     }
+    
+    
+    
+    
+    echo "Viaje cerrado correctamente";
+    
       
   }
   
