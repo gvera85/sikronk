@@ -46,11 +46,21 @@
                         else
                         {
                             $atras = base_url().'index.php/main/show_main';
-                            $texto = "";
-                            $icono = "icon-remove";
+                            $texto = "Volver";
+                            $icono = "icon-arrow-left";
                         }
+                        $atras = $this->session->userdata('urlControlador');
+                            $texto = "Controlador";
+                            $icono = "icon-arrow-left";
+                        
+                            $atras2 = $this->session->userdata('urlAnterior');;
+                            $texto2 = "Anterior";
+                            $icono2 = "icon-arrow-left";
+                        
                     ?>    
                     <li style="font-size: 14px;"><a href="<?php echo $atras ?>"><i class="<?php echo $icono ?>"></i> <?php echo $texto ?> </a></li>
+                    <li style="font-size: 14px;"><a href="<?php echo current_url() ?>"><i class="<?php echo $icono ?>"></i> <?php echo "actual" ?> </a></li>
+                    <li style="font-size: 14px;"><a href="<?php echo $atras2 ?>"><i class="<?php echo $icono2 ?>"></i> <?php echo $texto2 ?> </a></li>
                     
                     
                     
