@@ -43,6 +43,8 @@ class main extends CI_Controller{
   function recargarMenu($idMenu) {
     
     $menus = $this->usuario_m->getMenuPorPerfil($this->session->userdata('perfil'), $idMenu);
+    
+    $this->session->set_userdata('urlAnterior', base_url().'index.php/main/recargarMenu/'.$idMenu);                
 
     //echo "Menus:".$this->Usuario[0]["id"]."-".$menus[0]["descripcion"];
    /* $this->session->set_userdata('menu', $menus);
@@ -54,6 +56,20 @@ class main extends CI_Controller{
     $this->load->helper('form');
     $this->load->view('main',$data);
   }
+  
+  function redireccionarControlador($nombreControlador) {
+      $this->session->set_userdata('urlAnterior', base_url().'index.php/'.$nombreControlador);                
+    
+      redirect('/'.$nombreControlador);
+  }
+  
+  function atras() {
+      $this->load->library('funciones'); //you can put it in the autoloader config
+      $this->funciones->generateRedirectURL(); 
+      
+      redirect($this->session->userdata['redirectUrl']);
+  }
+  
   
 
 }

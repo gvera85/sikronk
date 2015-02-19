@@ -5,7 +5,7 @@ class ConfirmarViaje extends CI_Controller{
   public function __construct()
   {
     parent::__construct();
-                
+    
     $this->load->library('grocery_CRUD');
     $this->load->database();
     $this->load->helper('url');
@@ -78,7 +78,8 @@ class ConfirmarViaje extends CI_Controller{
   
   function link_hacia_confirmacion($primary_key , $row)
   {
-        return site_url('planificacion/confirmacionViaje/'.$row->id);
+        
+      return site_url('planificacion/confirmacionViaje/'.$row->id);
   }
   
   
