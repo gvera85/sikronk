@@ -20,6 +20,9 @@ class Valorizar extends CI_Controller{
   }
   
   function index(){
+      
+     
+      
     $this->grocery_crud->where('id_distribuidor', $this->session->userdata('empresa'));  
      
     $this->grocery_crud->set_table('viaje');
@@ -48,6 +51,8 @@ class Valorizar extends CI_Controller{
     $this->grocery_crud->set_relation('id_chofer','chofer','{dni} - {nombre} {apellido} - Tel: {telefono}');
         
     $this->grocery_crud->add_action('Precio', base_url().'/assets/img/iconoDinero.png', '','ui-icon-image',array($this,'link_hacia_valorizacion'));
+    
+
     
     $this->grocery_crud->set_rules('patente_semi','Patente semi','callback_validarPatente');
     $this->grocery_crud->set_rules('patente_camion','Patente del camion','callback_validarPatente');
@@ -78,7 +83,9 @@ class Valorizar extends CI_Controller{
   
   function link_hacia_valorizacion($primary_key , $row)
   {
-        return site_url('planificacion/valorizarViaje/'.$row->id);
+      
+      return "javascript:window.open('" . base_url('planificacion/valorizarViaje') . '/' . $row->id . "')";
+      //      return site_url('planificacion/valorizarViaje/'.$row->id);
   }
   
   

@@ -78,7 +78,8 @@ class ConfirmarViaje extends CI_Controller{
   
   function link_hacia_confirmacion($primary_key , $row)
   {
-        return site_url('planificacion/confirmacionViaje/'.$row->id);
+      return "javascript:window.open('" . base_url('index.php/planificacion/confirmacionViaje') . '/' . $row->id . "')";  
+      //return site_url('planificacion/confirmacionViaje/'.$row->id);
   }
   
   
