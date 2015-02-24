@@ -37,12 +37,44 @@
                 <a class="brand" href="#" name="top">sikronk</a>
                   <ul class="nav">
                     <li style="font-size: 14px;"><a href="<?php echo base_url() ?>index.php/main/show_main"><i class="icon-home"></i> Home</a></li>
+                    <?php if ( $this->session->userdata('urlAnterior') != current_url()) 
+                        {
+                            $atras = $this->session->userdata('urlAnterior');
+                            $texto = "Volver";
+                            $icono = "icon-arrow-left";
+                        }
+                        else
+                        {
+                            $atras = base_url().'index.php/main/show_main';
+                            $texto = "Volver";
+                            $icono = "icon-arrow-left";
+                        }
+                        $atras = $this->session->userdata('urlControlador');
+                            $texto = "Controlador";
+                            $icono = "icon-arrow-left";
+                        
+                            $atras2 = $this->session->userdata('urlAnterior');;
+                            $texto2 = "Anterior";
+                            $icono2 = "icon-arrow-left";
+                        
+                    ?>    
+                    <li style="font-size: 14px;"><a href="<?php echo $atras ?>"><i class="<?php echo $icono ?>"></i> <?php echo $texto ?> </a></li>
+                    <li style="font-size: 14px;"><a href="<?php echo current_url() ?>"><i class="<?php echo $icono ?>"></i> <?php echo "actual" ?> </a></li>
+                    <li style="font-size: 14px;"><a href="<?php echo $atras2 ?>"><i class="<?php echo $icono2 ?>"></i> <?php echo $texto2 ?> </a></li>
+                    
+                    
+                    
+                    
                     <li class="divider-vertical"></li>
                     <li class="userInfo"><strong><?php echo $this->session->userdata('nombre')." - ".$this->session->userdata('DescEmpresa') ; ?> </strong></li>
                   </ul>
 
                   <div class="btn-group pull-right">
-                    <a href="<?php echo base_url() ?>index.php/login/logout_user"><i class="icon-share"></i>Salir</a>            
+                    <ul class="nav">
+                        <li style="font-size: 14px;">
+                            <a href="<?php echo base_url() ?>index.php/login/logout_user"><i class="icon-share"></i>Salir</a> 
+                        </li>    
+                    </ul>
                   </div>
               </div>
             </div>
