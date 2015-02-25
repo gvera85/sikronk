@@ -5,6 +5,8 @@ class producto extends CI_Controller{
   public function __construct()
   {
     parent::__construct();
+    
+    $this->session->set_userdata('urlControlador', base_url().'index.php/producto');                
                 
     $this->load->library('grocery_CRUD');
     $this->load->database();
@@ -57,7 +59,7 @@ class producto extends CI_Controller{
     
     function link_hacia_vl($primary_key , $row)
     {
-        return site_url('vl/popUp/'.$row->id.'/'.$row->descripcion);
+        return "javascript:window.open('" . base_url('/index.php/vl/popUp') . '/' . $row->id .'/'.$row->descripcion. "')";
     }
 
 }

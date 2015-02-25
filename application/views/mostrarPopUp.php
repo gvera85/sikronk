@@ -4,6 +4,7 @@
 <?php $this->load->view('header') ?>
 <head>
 	<meta charset="utf-8" />
+        <link href="<?php echo base_url() ?>assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 <?php 
 foreach($css_files as $file): ?>
 	<link type="text/css" rel="stylesheet" href="<?php echo $file; ?>" />
@@ -11,22 +12,6 @@ foreach($css_files as $file): ?>
 <?php foreach($js_files as $file): ?>
 	<script src="<?php echo $file; ?>"></script>
 <?php endforeach; ?>
-<style type='text/css'>
-body
-{
-	font-family: Arial;
-	font-size: 14px;
-}
-a {
-    color: blue;
-    text-decoration: none;
-    font-size: 14px;
-}
-a:hover
-{
-	text-decoration: underline;
-}
-</style>
 
 
 </head>
@@ -34,17 +19,18 @@ a:hover
 <body>
 	
     <div style='height:20px;'>
-        
+      
     </div>  
-
-    <div class="panel panel-default">
-  
-      <h2>&nbsp; <?php echo $this->session->userdata('titulo')?>  </h2><hr />
-      <div class="panel-body">
-        <?php echo $output; ?>
-      </div>
+    <div class="panel panel-primary">
+    <div class="panel-heading">
+      <h3 class="panel-title"><?php echo $this->session->userdata('titulo')?></h3>
     </div>
-   
+    <div class="panel-body">
     
+        <div>
+                    <?php echo $output; ?>
+        </div>
+    </div>
+    </div>
 </body>
 </html>

@@ -48,7 +48,6 @@ class Reparto extends CI_Controller{
     $this->grocery_crud->set_relation('id_chofer','chofer','{dni} - {nombre} {apellido} - Tel: {telefono}');
         
     $this->grocery_crud->add_action('Plan', base_url().'/assets/img/planificacion.png', '','ui-icon-image',array($this,'link_hacia_planificacion'));
-    $this->grocery_crud->add_action('OK', base_url().'/assets/img/okVerde.png', '','ui-icon-image',array($this,'link_hacia_confirmacion'));
     
     $this->grocery_crud->set_rules('patente_semi','Patente semi','callback_validarPatente');
     $this->grocery_crud->set_rules('patente_camion','Patente del camion','callback_validarPatente');
@@ -79,12 +78,8 @@ class Reparto extends CI_Controller{
   
   function link_hacia_planificacion($primary_key , $row)
   {
-        return site_url('planificacion/planificacionReparto/'.$row->id);
-  }
-  
-  function link_hacia_confirmacion($primary_key , $row)
-  {
-        return site_url('planificacion/confirmacionViaje/'.$row->id);
+        //return site_url('planificacion/planificacionReparto/'.$row->id);
+        return "javascript:window.open('" . base_url('/index.php/planificacion/planificacionReparto'). '/' .$row->id. "')";
   }
   
   

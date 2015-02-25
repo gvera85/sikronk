@@ -84,7 +84,7 @@ class Valorizar extends CI_Controller{
   function link_hacia_valorizacion($primary_key , $row)
   {
       
-      return "javascript:window.open('" . base_url('planificacion/valorizarViaje') . '/' . $row->id . "')";
+      return "javascript:window.open('" . base_url('/index.php/planificacion/valorizarViaje') . '/' . $row->id . "')";
       //      return site_url('planificacion/valorizarViaje/'.$row->id);
   }
   

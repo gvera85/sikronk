@@ -77,11 +77,14 @@ class usuario extends CI_Controller{
         switch ($row->id_tipo_empresa)
         {
             case 1:
-                return site_url('usuario_perfil_distribuidor/popUp/'.$row->id.'/'.$row->nombre.'/'.$row->apellido);
+                return "javascript:window.open('" . base_url('/index.php/usuario_perfil_distribuidor/popUp') . '/' . $row->id .'/'.$row->nombre.'/'.$row->apellido. "')";
+                //return site_url('usuario_perfil_distribuidor/popUp/'.$row->id.'/'.$row->nombre.'/'.$row->apellido);
             case 2:
-                return site_url('usuario_perfil_cliente/popUp/'.$row->id.'/'.$row->nombre.'/'.$row->apellido);
+                return "javascript:window.open('" . base_url('/index.php/usuario_perfil_cliente/popUp') . '/' . $row->id .'/'.$row->nombre.'/'.$row->apellido. "')";
+                //return site_url('usuario_perfil_cliente/popUp/'.$row->id.'/'.$row->nombre.'/'.$row->apellido);
             case 3:
-                return site_url('usuario_perfil_proveedor/popUp/'.$row->id.'/'.$row->nombre.'/'.$row->apellido);
+                return "javascript:window.open('" . base_url('/index.php/usuario_perfil_proveedor/popUp') . '/' . $row->id .'/'.$row->nombre.'/'.$row->apellido. "')";
+                //return site_url('usuario_perfil_proveedor/popUp/'.$row->id.'/'.$row->nombre.'/'.$row->apellido);
                 
             default:
                 return base_url().'index.php';

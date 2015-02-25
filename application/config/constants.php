@@ -43,5 +43,7 @@ define('ESTADO_VIAJE_REPARTO_PLANIFICADO','3');
 define('ESTADO_VIAJE_ARRIBADO','4');
 define('ESTADO_VIAJE_STOCK_CONFIRMADO','5');
 
+define('IS_AJAX', isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest');
+
 /* End of file constants.php */
 /* Location: ./application/config/constants.php */
