@@ -60,7 +60,7 @@ class Reparto extends CI_Controller{
     $this->grocery_crud->callback_before_update(array($this,'distribuidor_callback'));
     
     
-    $where = "id_estado IN ('".ESTADO_VIAJE_CREADO."','".ESTADO_VIAJE_PLANIFICANDO_REPARTO."')";
+    $where = "id_estado IN ('".ESTADO_VIAJE_REPARTO_PLANIFICADO."','".ESTADO_VIAJE_CONFIRMANDO_STOCK."')";
     
     $this->grocery_crud->where($where);
   

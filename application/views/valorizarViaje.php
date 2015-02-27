@@ -204,7 +204,7 @@
                             <?php if ($sinProductos == 0) 
                                   {?>
                             <button id="btnsubmit" value="1" type="submit" class="btn btn-default">Guardar</button>
-                            <button id="btnCierreViaje" value="2" class="btn btn-success">Confirmar precio</button>
+                            <button id="btnConfirmarPrecio" value="2" class="btn btn-success">Confirmar precio</button>
                             <input id="botonPresionado" type="hidden" value="botonGuardar" name="botonPresionado">
                             <?php }?>
                             
@@ -396,9 +396,9 @@ $(function() {
         event.preventDefault();
    });
    
-   $(document).on("click","#btnPlanificacion",function( event ) {  
+   $(document).on("click","#btnConfirmarPrecio",function( event ) {  
       
-        $('input#botonPresionado').val("botonCierreViaje").css('border','3px solid blue');
+        $('input#botonPresionado').val("botonConfirmarPrecio").css('border','3px solid blue');
         
         //event.preventDefault();
    });
@@ -409,7 +409,7 @@ $(function() {
 	  var formulario = $(this).serialize();
      
         if($('#miform').validationEngine('validate')){
-	  $.post( "<?php echo base_url() ?>index.php/planificacion/grabarConfirmacionViaje", formulario)
+	  $.post( "<?php echo base_url() ?>index.php/planificacion/grabarConfirmacionPrecio", formulario)
 		        .done(function(data){
 		          alert(data);
 			  $(frm)[0].reset();
