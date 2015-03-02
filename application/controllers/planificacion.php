@@ -56,7 +56,7 @@ class Planificacion extends CI_Controller{
     $this->load->model('cliente_m');
 
     $lineasViaje = $this->viaje_m->getLineasViaje($idViaje);
-    $lineasReparto = $this->viaje_m->getRepartoViaje($idViaje);
+    $lineasReparto = $this->viaje_m->getRepartoConfirmado($idViaje);
     $clientes = $this->cliente_m->getClientes();
     
     $data['lineasViaje'] = $lineasViaje;
