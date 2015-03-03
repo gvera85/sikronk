@@ -79,8 +79,7 @@ class Planificacion extends CI_Controller{
         //saco el numero de elementos
         $longitud = count($producto);
 
-        $this->db->delete('planificacion_reparto', array('id_viaje' => $viaje[0]));
-        
+       
         //Recorro todos los elementos
         for($i=0; $i<$longitud; $i++)
         {
@@ -188,69 +187,38 @@ class Planificacion extends CI_Controller{
   function grabarConfirmacionPrecio(){
     if(isset($_POST['idProducto']) && !empty($_POST['idProducto']))
     {
-        $producto = $_POST['idProducto'];
+        $idProducto = $_POST['idProducto'];
+        $idReparto = $_POST['idReparto'];
         $viaje = $_POST['idViaje'];
-        $cliente = $_POST['comboClientes'];
-        $VL = $_POST['idVL'];
-        $bultos = $_POST['bultos'];
-        $pallets = $_POST['pallets'];
-        
-        $cantPalletsViaje = $_POST['cantPalletsViaje'];
-        $cantBultosViaje = $_POST['cantBultosViaje'];
-        $idProductoViaje = $_POST['idProductoViaje'];
-        $idViajeViaje = $_POST['idViajeViaje'];
+        $precioBulto = $_POST['precioBulto'];
         
         //saco el numero de elementos
-        $longitud = count($producto);
-
-        $this->db->delete('reparto', array('id_viaje' => $viaje[0]));
+        $longitud = count($idReparto);
         
         //Recorro todos los elementos
         for($i=0; $i<$longitud; $i++)
         {
-            $data = array(
-                            'id_viaje' => $viaje[$i] ,
-                            'id_cliente' => $cliente[$i] ,
-                            'id_producto' => $producto[$i],
-                            'id_vl' => $VL[$i],
-                            'cant_bultos' => $bultos[$i],
-                            'cant_pallets' => $pallets[$i]
-                         );
-
-            $this->db->insert('reparto', $data);
-            
-            
-        }
-        
-        $longitudItemsViaje = count($idProductoViaje);
-        
-        //Recorro todos los elementos
-        for($i=0; $i<$longitudItemsViaje; $i++)
-        {
             $this->load->model('viaje_m');
   
-            $this->viaje_m->updateCantidadesViaje($cantBultosViaje[$i], $cantPalletsViaje[$i], $idViajeViaje[$i], $idProductoViaje[$i]);
+            $this->viaje_m->updateReparto($precioBulto[$i], $idReparto[$i]);
+        }
+        
+        $botonPresionado = $_POST['botonPresionado'];
+    
+        if ($botonPresionado == "botonCierreViaje") 
+        {
+            transicionSimple($viaje[0], ESTADO_VIAJE_PRECIO_ACORDADO, "viaje");
+            echo "Precios guardados";
+        }   
+        else
+        {
+            transicionSimple($viaje[0], ESTADO_VIAJE_DETERMINANDO_PRECIO, "viaje");
+            echo "Viaje con el precio acordado correctamente";
         }
         
     }
-    else
-    {
-      $viaje = $_POST['idViaje'];  
-      $this->db->delete('planificacion_reparto', array('id_viaje' => $viaje[0]));
-    }
     
-    $botonPresionado = $_POST['botonPresionado'];
     
-    if ($botonPresionado == "botonCierreViaje") 
-    {
-        transicionSimple($viaje[0], ESTADO_VIAJE_STOCK_CONFIRMADO, "viaje");
-        echo "Planificacion cerrada correctamente";
-    }   
-    else
-    {
-        transicionSimple($viaje[0], ESTADO_VIAJE_CONFIRMANDO_STOCK, "viaje");
-        echo "Planificacion guardada correctamente";
-    }
   }
   
   

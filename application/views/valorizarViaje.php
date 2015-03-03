@@ -175,11 +175,12 @@
                                                    
                                                               <input type="hidden" id="bultos_<?php echo $cantidadLineasReparto?>" value=<?php echo $reparto['cantidad_bultos'] ?>>
                                             
-                                                              <TD>  $ <input class="importe_linea" style="width:50px; text-align:right" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calculo(this.value,bultos_<?php echo $cantidadLineasReparto?>.value,'input#precioTotal_<?php echo $cantidadLineasReparto?>');" name="precioBulto_<?php echo $cantidad?>" type="text" size="10" value="-"> </TD>
+                                                              <TD>  $ <input class="importe_linea" style="width:50px; text-align:right" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calculo(this.value,bultos_<?php echo $cantidadLineasReparto?>.value,'input#precioTotal_<?php echo $cantidadLineasReparto?>');" name="precioBulto[]" type="text" size="10" value="-"> </TD>
                                                               <TD>  $ <input  type="text"  style="width:50px; text-align:right" id="precioTotal_<?php echo $cantidadLineasReparto?>" type="text" size="10" value="-">  </TD>
                                                               <TD colspan="2"> <?php echo $reparto['cantidad_pallets'] ?></TD> 
                                                   
                                                               <input type="hidden" id="idProducto" name="idProducto[]" value=<?php echo $reparto['id_producto'] ?>>
+                                                              <input type="hidden" id="idReparto" name="idReparto[]" value=<?php echo $reparto['id'] ?>>
                                                               <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
                                                               <input type="hidden" id="idCliente" name="comboClientes[]" value="<?php echo $reparto['id_cliente'] ?>">
                                                               <input type="hidden" id="idVL" name="idVL[]" value="<?php echo $lineas['id_vl'] ?>">

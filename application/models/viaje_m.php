@@ -94,8 +94,33 @@ class viaje_m extends CI_Model {
     public function getRepartoConfirmado($idViaje)
     {
          if($idViaje != FALSE) {
-          $sql = "select * 
-                    from reparto  a
+          $sql = "select    a.id,
+                            a.stamp,
+                            id_viaje,
+                            id_cliente,
+                            fecha_reparto,
+                            nro_remito,
+                            cantidad_bultos,
+                            cantidad_pallets,
+                            id_producto,
+                            id_variable_logistica,
+                            precio_caja,
+                            porcentaje_ganancia,
+                            b.id id_cliente,
+                            b.stamp,
+                            razon_social,
+                            cuit,
+                            direccion_comercial,
+                            direccion_descarga,
+                            localidad,
+                            mercado,
+                            id_tipo_iva,
+                            id_provincia,
+                            codigo_postal,
+                            telefono1,
+                            telefono2,
+                            mail
+                    from reparto a
                     join cliente b on a.id_cliente = b.id
                     where id_viaje= ? ";
             
@@ -242,7 +267,17 @@ class viaje_m extends CI_Model {
 
     }
     
-    
+    public function updateReparto($precioCaja, $idReparto)
+    {    
+        $data = array(
+                'precio_caja' => $precioCaja
+             );
+
+        $this->db->where('id', $idReparto);
+        
+        $this->db->update("reparto", $data); 
+
+    }
             
     public function getCantidadProductos($idViaje)
     {
