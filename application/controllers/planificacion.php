@@ -78,8 +78,9 @@ class Planificacion extends CI_Controller{
         
         //saco el numero de elementos
         $longitud = count($producto);
-
        
+        $this->db->delete('planificacion_reparto', array('id_viaje' => $viaje[0]));
+        
         //Recorro todos los elementos
         for($i=0; $i<$longitud; $i++)
         {
@@ -133,6 +134,8 @@ class Planificacion extends CI_Controller{
         
         //saco el numero de elementos
         $longitud = count($producto);
+        
+        echo $longitud;
 
         $this->db->delete('reparto', array('id_viaje' => $viaje[0]));
         
@@ -143,9 +146,9 @@ class Planificacion extends CI_Controller{
                             'id_viaje' => $viaje[$i] ,
                             'id_cliente' => $cliente[$i] ,
                             'id_producto' => $producto[$i],
-                            'id_vl' => $VL[$i],
-                            'cant_bultos' => $bultos[$i],
-                            'cant_pallets' => $pallets[$i]
+                            'id_variable_logistica' => $VL[$i],
+                            'cantidad_bultos' => $bultos[$i],
+                            'cantidad_pallets' => $pallets[$i]
                          );
 
             $this->db->insert('reparto', $data);
@@ -205,15 +208,15 @@ class Planificacion extends CI_Controller{
         
         $botonPresionado = $_POST['botonPresionado'];
     
-        if ($botonPresionado == "botonCierreViaje") 
+        if ($botonPresionado == "botonConfirmarPrecio") 
         {
             transicionSimple($viaje[0], ESTADO_VIAJE_PRECIO_ACORDADO, "viaje");
-            echo "Precios guardados";
+            echo "Viaje con el precio acordado correctamente";
         }   
         else
         {
             transicionSimple($viaje[0], ESTADO_VIAJE_DETERMINANDO_PRECIO, "viaje");
-            echo "Viaje con el precio acordado correctamente";
+            echo "Precios guardados";
         }
         
     }

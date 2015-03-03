@@ -175,7 +175,7 @@
                                                    
                                                               <input type="hidden" id="bultos_<?php echo $cantidadLineasReparto?>" value=<?php echo $reparto['cantidad_bultos'] ?>>
                                             
-                                                              <TD>  $ <input class="importe_linea" style="width:50px; text-align:right" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calculo(this.value,bultos_<?php echo $cantidadLineasReparto?>.value,'input#precioTotal_<?php echo $cantidadLineasReparto?>');" name="precioBulto[]" type="text" size="10" value="-"> </TD>
+                                                              <TD>  $ <input class="importe_linea" style="width:50px; text-align:right" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calculo(this.value,bultos_<?php echo $cantidadLineasReparto?>.value,'input#precioTotal_<?php echo $cantidadLineasReparto?>');" name="precioBulto[]" type="text" size="10" value="<?php echo $reparto['precio_caja'] ?>"> </TD>
                                                               <TD>  $ <input  type="text"  style="width:50px; text-align:right" id="precioTotal_<?php echo $cantidadLineasReparto?>" type="text" size="10" value="-">  </TD>
                                                               <TD colspan="2"> <?php echo $reparto['cantidad_pallets'] ?></TD> 
                                                   

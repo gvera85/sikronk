@@ -356,14 +356,14 @@ $(function() {
         event.preventDefault();
    });
    
-   $(document).on("click","#btnPlanificacion",function( event ) {  
+   $(document).on("click","#btnCierreViaje",function( event ) {  
       
         $('input#botonPresionado').val("botonCierreViaje").css('border','3px solid blue');
         
         //event.preventDefault();
    });
    
-      
+      //Nombre del controlador al que se envian los datos
    $( "#miform" ).submit(function( event ) {
           var frm = $(this);
 	  var formulario = $(this).serialize();
