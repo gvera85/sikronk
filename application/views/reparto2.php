@@ -2,24 +2,24 @@
 <html lang="es">
     <?php $this->load->view('header') ?>
 <head>
-    <link rel="stylesheet" href="http://localhost/sikronk/assets/plugins/chosen_v1.2.0/docsupport/style.css">
-    <link rel="stylesheet" href="http://localhost/sikronk/assets/plugins/chosen_v1.2.0/docsupport/prism.css">
-    <link rel="stylesheet" href="http://localhost/sikronk/assets/plugins/chosen_v1.2.0/chosen.css">
-    <link rel="stylesheet" href="http://localhost/sikronk/assets/css/bootstrap.min.css">
-    <link rel="stylesheet" href="http://localhost/sikronk/assets/css/main.css">
+    <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/docsupport/style.css">
+    <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/docsupport/prism.css">
+    <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/chosen.css">
+    <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo base_url() ?>assets/css/main.css">
     <link href="<?php echo base_url() ?>assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://localhost/sikronk/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://localhost/sikronk/assets/plugins/jquery/validationEngine.jquery.css" rel="stylesheet">
+    <link href="<?php echo base_url() ?>assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo base_url() ?>assets/plugins/jquery/validationEngine.jquery.css" rel="stylesheet">
     
-    <script src="http://localhost/sikronk/assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
-     <script src="http://localhost/sikronk/assets/plugins/jquery/jquery.min.js"></script>
-	<script src="http://localhost/sikronk/assets/plugins/jquery/jquery.validationEngine.min.js"></script>
-	<script src="http://localhost/sikronk/assets/plugins/jquery/jquery.validationEngine-es.js"></script>
+    <script src="<?php echo base_url() ?>assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+     <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
+	<script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.validationEngine.min.js"></script>
+	<script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.validationEngine-es.js"></script>
     
         
-        <script src="http://localhost/sikronk/assets/plugins/chosen_v1.2.0/chosen.jquery.js"></script>
+        <script src="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/chosen.jquery.js"></script>
         
-        <script src="http://localhost/sikronk/assets/plugins/chosen_v1.2.0/docsupport/prism.js" type="text/javascript" charset="utf-8"></script>
+        <script src="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/docsupport/prism.js" type="text/javascript" charset="utf-8"></script>
 	<script>
 		jQuery(document).ready(function(){
 			jQuery(".chosen").data("placeholder","Select Frameworks...").chosen();
@@ -131,13 +131,14 @@
                                            foreach( $lineasViaje as $lineas ) : ?>    
 						<?php $cantidad++; ?>
                                                     <tr class="success">
-                                                      <td align="left"><button id="btnadd2" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
+                                                      <td align="left"><button id="btnAgregarCliente" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
                                                       <td id="linea_<?php echo $cantidad?>" ><?php echo $cantidad?></td>
                                                       <td id="producto"><?php echo $lineas['producto'] ?></td>
                                                       <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
                                                       <TD> <?php echo $lineas['cantidad_bultos'] ?></TD>
                                                       <TD> <?php echo $lineas['cantidad_pallets'] ?></TD>
                                                       <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
+                                                      <input type="hidden" id="DescProducto_<?php echo $lineas['id_producto'] ?>" name="DescProducto_<?php echo $lineas['id_producto'] ?>" value="<?php echo $lineas['producto'] ?>">
                                                       <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
                                                       <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
                                                     </tr>
@@ -159,7 +160,7 @@
                                                               <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
                                                               <input type="hidden" id="idCliente" name="comboClientes[]" value="<?php echo $reparto['id_cliente'] ?>">
                                                               <input type="hidden" id="idVL" name="idVL[]" value="<?php echo $lineas['id_vl'] ?>">
-                                                              <input type="hidden" id="idBultos" name="bultos[]" value="<?php echo $reparto['cant_bultos'] ?>">
+                                                              <input type="hidden" class="importe_linea" id="idBultos" name="bultos[]" value="<?php echo $reparto['cant_bultos'] ?>">
                                                               <input type="hidden" id="idPallets" name="pallets[]" value="<?php echo $reparto['cant_pallets'] ?>">
                                                               
                                                             </tr>
@@ -180,6 +181,9 @@
                             <?php if ($sinProductos == 0) 
                                   {?>
                             <button id="btnsubmit" value="1" type="submit" class="btn btn-default">Guardar</button>
+                            <button id="Calcular" value="Calcular" onclick="validarBultos('Naranja',150)" class="btn btn-default">Calcular</button>
+                       
+                            
                             <button id="btnPlanificacion" value="2" class="btn btn-success">Confirmar planificacion</button>
                             <input id="botonPresionado" type="hidden" value="botonGuardar" name="botonPresionado">
                             <?php }?>
@@ -192,27 +196,23 @@
  
 <script type="text/javascript">
 
+
+
     
-$(function() {
-    var count = 1;
-    jQuery("#miform").validationEngine({promptPosition : "centerRight:0,-5"});
-	
-   $(document).on("click","#btnadd",function( event ) {  
-	  count++;
-      $('#tblprod tr:last').after('<tr><td></td><td><div class="form-group col-lg-12">Cliente <select name="gonza"> <option value="COTO">COTO</option> <option value="CARREFOUR">Carrefour</option> <option value="Wallmart">Wallmart</option> </select></div></td><td><div class="form-group col-lg-12"><input class="form-control validate[required]" name="prod[]" /></div></td><td><div class="form-group col-lg-12"><input class="form-control validate[required]" name="prod2[]" /></div></td></tr>');
-      event.preventDefault();
-   });
-   
-   $(document).on("click","#btnadd2",function( event ) {  
+
+
+   $(document).on("click","#btnAgregarCliente",function( event ) {  
        var cliente;
        var idCliente;
        
-       var miBoton = $(this).attr('value');        
+       var miBoton = $(this).attr('value');     
        
        var array = miBoton.split("_");
        
        var idProducto = array[0];
        var idVL = array[1];
+       
+       var descProducto = $("#DescProducto_"+idProducto).val();
        
       // alert (idProducto);
        var hiddenProducto = '<input type="hidden" id="idProducto" name="idProducto[]" value='+idProducto+'>';
@@ -245,7 +245,7 @@ $(function() {
                     '</td>'+
                     '<td>'+
                         '<div>'+
-                        '<input name="bultos[]" />'+
+                        '<input name="bultos[]" type="text"  class="importe_linea" onchange=validarBultos("'+ "Naranja" +'",150);>'+
                         '</div>'+
                     '</td>'+
                     '<td>'+
@@ -272,37 +272,11 @@ $(function() {
             event.preventDefault();
 
    });
-          
-       
-   $(document).on("click","#btnadd3",function( event ) {  
-	  
-      $( event.target ).closest( "tr" ).after
-         ('<div>'+
-          '<em>Into This</em>'+
-          '<select data-placeholder="Elegir un pais..." class="chosen-select" id="combito" style="display: true;" tabindex="-1">'+
-            '<option value=""></option>'+                                                                                                         
-            '<option value="United States">United States</option>'+
-            '<option value="United Kingdom">United Kingdom</option>'+
-            '<option value="Afghanistan">Afghanistan</option>'+
-            '<option value="Aland Islands">Aland Islands</option>'+            
-          '</select>'+          
-          '</div>');
 
-    var config = {
-                   '.chosen-select'           : {},
-                   '.chosen-select-deselect'  : {allow_single_deselect:true},
-                   '.chosen-select-no-single' : {disable_search_threshold:10},
-                   '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
-                   '.chosen-select-width'     : {width:"95%"}
-                 }
-                 for (var selector in config) {
-                   $(selector).chosen(config[selector]);
-                 }
-                 
-      //$('#combito').prop('disabled', true).trigger("liszt:updated");           
-
-      event.preventDefault();
-   });
+   
+   
+   
+  
 
 
    $(document).on("click","#btnBorrar",function( event ) {  
@@ -350,7 +324,7 @@ $(function() {
    $( "#miform" ).submit(function( event ) {
           var frm = $(this);
 	  var formulario = $(this).serialize();
-     
+          
         if($('#miform').validationEngine('validate')){
 	  $.post( "<?php echo base_url() ?>index.php/planificacion/grabarReparto", formulario)
 		        .done(function(data){
@@ -365,8 +339,21 @@ $(function() {
 	  event.preventDefault();
 	});
  
-});
-	</script>
+ function validarBultos(producto, cantidadBultosProducto ){
+	
+	importe_total = 0
+	$(".importe_linea").each(
+		function(index, value) {
+			importe_total = importe_total + eval($(this).val());
+		}
+	);
+
+	if (importe_total > cantidadBultosProducto)
+            alert("La cantidad de bultos a repartir del producto "+producto+" no puede superar los "+cantidadBultosProducto+" bultos");
+       
+}
+ 
+ </script>
  
 </body>
 </html>
