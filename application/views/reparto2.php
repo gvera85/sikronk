@@ -139,6 +139,7 @@
                                                       <TD> <?php echo $lineas['cantidad_pallets'] ?></TD>
                                                       <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
                                                       <input type="hidden" id="DescProducto_<?php echo $lineas['id_producto'] ?>" name="DescProducto_<?php echo $lineas['id_producto'] ?>" value="<?php echo $lineas['producto'] ?>">
+                                                      <input type="hidden" id="cantBultos_<?php echo $lineas['id_producto'] ?>" name="cantBultos_<?php echo $lineas['id_producto'] ?>" value="<?php echo $lineas['cantidad_bultos'] ?>">
                                                       <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
                                                       <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
                                                     </tr>
@@ -213,6 +214,7 @@
        var idVL = array[1];
        
        var descProducto = $("#DescProducto_"+idProducto).val();
+       var cantBultos = $("#cantBultos_"+idProducto).val();
        
       // alert (idProducto);
        var hiddenProducto = '<input type="hidden" id="idProducto" name="idProducto[]" value='+idProducto+'>';
@@ -234,7 +236,6 @@
        
        combo = combo + '</select> </div>';
        
-       //alert (combo);
               
        var fila = '<tr class="active">'+
                     '<td align="center">'+
@@ -244,8 +245,8 @@
                           +combo+
                     '</td>'+
                     '<td>'+
-                        '<div>'+
-                        '<input name="bultos[]" type="text"  class="importe_linea" onchange=validarBultos("'+ "Naranja" +'",150);>'+
+                        '<div>'+ 
+                        '<input name="bultos[]" type="text"  class="importe_linea" onchange="validarBultos(\'' + descProducto + '\','+cantBultos+')";>'+
                         '</div>'+
                     '</td>'+
                     '<td>'+
@@ -255,7 +256,9 @@
                     '</td>'
                     +hiddenProducto+hiddenViaje+hiddenVL+
                     '</tr>';
-            
+      
+      alert(fila);
+      
       $( event.target ).closest( "tr" ).after( fila );   
       
          var config = {
