@@ -3,22 +3,20 @@
     <?php $this->load->view('header') ?>
 <head>
     
-    
-    <title>Valorizar carga del viaje</title>
+    <title>sikronk - Valorizar carga del viaje</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     
-    <title>sikronk</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/chosen_v1.2.0/docsupport/style.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/chosen_v1.2.0/docsupport/prism.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/chosen_v1.2.0/chosen.css">
-    <link href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo base_url() ?>/assets/plugins/jquery/validationEngine.jquery.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/jquery/validationEngine.jquery.css">
     
     <script src="<?php echo base_url() ?>/assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.min.js"></script>
@@ -31,7 +29,7 @@
     <script type="text/javascript">
     $(document).ready(function(){
 
-        for (i = 0; i < 10; i++) { 
+        for (i = 0; i < 100; i++) { 
            campoBultos = "#precioBulto_" + i; 
 
            $(campoBultos).numeric();
