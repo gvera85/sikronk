@@ -33,7 +33,7 @@ class Planificacion extends CI_Controller{
     $data['clientes'] = $clientes;
     $data['lineasReparto'] = $lineasReparto;
    
-    $this->load->view('reparto2',$data);
+    $this->load->view('planificacionRepartoViaje',$data);
   }
   
   function confirmacionViaje($idViaje){
