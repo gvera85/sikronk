@@ -2,94 +2,61 @@
 <html lang="es">
     <?php $this->load->view('header') ?>
 <head>
-    <link rel="stylesheet" href="http://localhost/sikronk/assets/plugins/chosen_v1.2.0/docsupport/style.css">
-    <link rel="stylesheet" href="http://localhost/sikronk/assets/plugins/chosen_v1.2.0/docsupport/prism.css">
-    <link rel="stylesheet" href="http://localhost/sikronk/assets/plugins/chosen_v1.2.0/chosen.css">
-    <title>Repartos</title>
+    <title>sikronk - Reparto de stock a los clientes</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     
-      <meta charset="utf-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-  <title>sikronk</title>
-  <meta name="description" content="">
-  <meta name="viewport" content="width=device-width">
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    
+    <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/docsupport/style.css">
+    <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/docsupport/prism.css">
+    <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/chosen.css">
+    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/jquery/validationEngine.jquery.css">
+    
+    <script src="<?php echo base_url() ?>assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
+    <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
+    <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.numeric.js"></script>
+    <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.validationEngine.min.js"></script>
+    <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.validationEngine-es.js"></script>
+    
+    <script src="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/chosen.jquery.js"></script>
+    <script src="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/docsupport/prism.js" type="text/javascript" charset="utf-8"></script>
 
-  <link rel="stylesheet" href="http://localhost/sikronk/assets/css/bootstrap.min.css">
-  <style>
-    body {
-      padding-top: 60px;
-      padding-bottom: 40px;
-      
-    }
-  </style>
-  <!--<link rel="stylesheet" href="/assets/css/bootstrap-responsive.min.css">-->
-  <link rel="stylesheet" href="http://localhost/sikronk/assets/css/main.css">
-
-  <script src="http://localhost/sikronk/assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
-    
-    
-    
-    <link href="<?php echo base_url() ?>assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    
-    <meta charset="utf-8" />
-    
-    <link href="http://localhost/sikronk/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="http://localhost/sikronk/assets/plugins/jquery/validationEngine.jquery.css" rel="stylesheet">
-    <script src="http://localhost/sikronk/assets/plugins/jquery/jquery.min.js"></script>
-    <script src="http://localhost/sikronk/assets/plugins/jquery/jquery.numeric.js"></script>
-	<script src="http://localhost/sikronk/assets/plugins/jquery/jquery.validationEngine.min.js"></script>
-	<script src="http://localhost/sikronk/assets/plugins/jquery/jquery.validationEngine-es.js"></script>
-    
-        
-        <script src="http://localhost/sikronk/assets/plugins/chosen_v1.2.0/chosen.jquery.js"></script>
-        
-        <script src="http://localhost/sikronk/assets/plugins/chosen_v1.2.0/docsupport/prism.js" type="text/javascript" charset="utf-8"></script>
-	<script>
-		jQuery(document).ready(function(){
-			jQuery(".chosen").data("placeholder","Select Frameworks...").chosen();
-		});
-	</script>
-        
-        <script type="text/javascript">
-        $(document).ready(function(){
-            
-            for (i = 0; i < 10; i++) { 
-               campoBultos = "#cantBultosViaje_" + i; 
-               campoPallets = "#cantPalletsViaje_" + i;
-                
-               $(campoBultos).numeric();
-               $(campoPallets).numeric();
-            }
-            
-            
-        });
-        </script>
-
-
-    
     <script>
-		jQuery(document).ready(function(){
-			jQuery(".chosen").data("placeholder","Select Frameworks...").chosen();
-		});
-	</script>
+        jQuery(document).ready(function(){
+                jQuery(".chosen").data("placeholder","Select Frameworks...").chosen();
+        });
+    </script>
+
+    <style>
+        .top-buffer { 
+                margin-top:20px; 
+        }
+
+        body .panel-primary {
+            /* new custom width */
+            width:1024px;
+            /* must be half of the width, minus scrollbar on the left (30px) */
+            margin-left: -200px;
+        }
+    </style>
     
-    
-	<style>
-		.top-buffer { 
-			margin-top:20px; 
-		}
-                
-                
-                body .panel-primary {
-                    /* new custom width */
-                    width:1024px;
-                    /* must be half of the width, minus scrollbar on the left (30px) */
-                    margin-left: -200px;
-                }
-	</style>
-        
-        
-    
+    <script type="text/javascript">
+    $(document).ready(function(){
+    for (i = 0; i < 10; i++) { 
+           campoBultos = "#cantBultosViaje_" + i; 
+           campoPallets = "#cantPalletsViaje_" + i;
+
+           $(campoBultos).numeric();
+           $(campoPallets).numeric();
+        }
+    });
+    </script>
+
 </head>
 </head>
 <body>
@@ -108,107 +75,90 @@
 
     
 <div id="container ">
-	<div class="row-fluid top-buffer">
-		<div class="col-lg-6 col-lg-offset-3 text-center">
-			<form id="miform" method="post" name="miform" >
-				
-                                        
-                                        <div class="panel panel-primary" width="100%">
-                                            <div class="panel-heading">
-                                              <h3 class="panel-title"><?php echo $titulo  ?> </h3>
-                                            </div>
-                                            <div class="panel-body">
-                                              <table id="tblprod" class="table table-hover table-bordered">
-					  <thead>
-                                                <tr>
-                                                  <?php $cantidad=0; 
-                                                  $id_producto_ant = 0;
-                                                  $cantidad2 = 0;
-                                                  
-                                                  if ($sinProductos == 0)
-                                                  {
-                                                  ?>
-                                                  <th width="5%">Acción</th>  
-                                                  <th width="2%">#</th>
-                                                  <th width="18%">Producto</th>
-                                                  <th width="35%">Variable Logística</th>
-                                                       
-                                                        <th width="15%" colspan="2"># bultos [est vs real]</th>
-                                                        <th width="15%" colspan="2"># pallets [est vs real]</th>
-                                                     
-                                                </tr>
-					  </thead>
-					  <tbody>
-                                          <?php 
-                                           foreach( $lineasViaje as $lineas ) : ?>    
-						<?php $cantidad++; ?>
-                                                    <tr class="success">
-                                                      <td align="left"><button id="btnadd2" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
-                                                      <td id="linea_<?php echo $cantidad?>" ><?php echo $cantidad?></td>
-                                                      <td id="producto"><?php echo $lineas['producto'] ?></td>
-                                                      <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
-                                                      <TD> <?php echo $lineas['cantidad_bultos'] ?> </TD> <TD>  <input style="width:50px; text-align:right" id="cantBultosViaje_<?php echo $cantidad?>" name="cantBultosViaje[]" type="text" size="10" value="<?php echo $lineas['cantidad_bultos'] ?>"> </TD>
-                                                      <TD> <?php echo $lineas['cantidad_pallets'] ?> </TD> <TD>  <input style="width:50px; text-align:right" id="cantPalletsViaje_<?php echo $cantidad?>" name="cantPalletsViaje[]" type="text" size="10" value="<?php echo $lineas['cantidad_pallets'] ?>"> </TD>
-                                                      <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
-                                                      <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
-                                                      <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
-                                                      
-                                                      <input type="hidden" id="idProductoViaje" name="idProductoViaje[]" value=<?php echo $lineas['id_producto']?>>
-                                                      <input type="hidden" id="idViajeViaje" name="idViajeViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
-                                                      
-                                                      
-                                                    </tr>
-                                                    
-                                                    <?php 
-                                                    if (is_array($lineasReparto))
-                                                    {
-                                                        foreach( $lineasReparto as $reparto ) : 
-                                                        if ($reparto['id_producto'] == $lineas['id_producto'] && $reparto['id_vl'] == $lineas['id_vl'])
-                                                        {
-                                                        ?>  
-                                                            <tr class="warning">
-                                                              <td align="rigth"><button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button></td>
-                                                              <td colspan=3 align="rigth"> <b><?php echo $reparto['razon_social'] ?> </b></td>
-                                                              <TD colspan=2> <?php echo $reparto['cant_bultos'] ?></TD>
-                                                              <TD colspan=2> <?php echo $reparto['cant_pallets'] ?></TD>
-                                                              
-                                                              <input type="hidden" id="idProducto" name="idProducto[]" value=<?php echo $reparto['id_producto'] ?>>
-                                                              <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
-                                                              <input type="hidden" id="idCliente" name="comboClientes[]" value="<?php echo $reparto['id_cliente'] ?>">
-                                                              <input type="hidden" id="idVL" name="idVL[]" value="<?php echo $lineas['id_vl'] ?>">
-                                                              <input type="hidden" id="idBultos" name="bultos[]" value="<?php echo $reparto['cant_bultos'] ?>">
-                                                              <input type="hidden" id="idPallets" name="pallets[]" value="<?php echo $reparto['cant_pallets'] ?>">
-                                                              
-                                                            </tr>
-                                                    <?php
-                                                        }
-                                                        endforeach;
-                                                    } ?>
-                                                    
-                                                    
-                                            <?php endforeach; 
-                                            }?>
-					  </tbody>
-                                </table>
-					
-					
-                                            </div>
-                                        </div>
-                            <?php if ($sinProductos == 0) 
-                                  {?>
-                            <button id="btnsubmit" value="1" type="submit" class="btn btn-default">Guardar</button>
-                            <button id="btnCierreViaje" value="2" class="btn btn-success">Confirmar viaje</button>
-                            <input id="botonPresionado" type="hidden" value="botonGuardar" name="botonPresionado">
-                            <?php }?>
-                            
-      </div>
-            
-            		</form>
-		</div>
-	</div>
+    <div class="row-fluid top-buffer">
+	<div class="col-lg-6 col-lg-offset-3 text-center">
+            <form id="miform" method="post" name="miform" >
+	        <div class="panel panel-primary" width="100%">
+                    <div class="panel-heading">
+                        <h3 class="panel-title"><?php echo $titulo  ?> </h3>
+                    </div>
+                        <div class="panel-body">
+                            <table id="tblprod" class="table table-hover table-responsive table-condensed">
+                            <thead>
+                                <tr>
+                                    <?php $cantidad=0; 
+                                    $id_producto_ant = 0;
+                                    $cantidad2 = 0;
+
+                                    if ($sinProductos == 0)
+                                    {
+                                    ?>
+                                    <th width="5%">Acción</th>  
+                                    <th width="2%">#</th>
+                                    <th width="18%">Producto</th>
+                                    <th width="35%">Variable Logística</th>
+                                    <th width="15%" colspan="2"># bultos [est vs real]</th>
+                                    <th width="15%" colspan="2"># pallets [est vs real]</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <?php 
+                            foreach( $lineasViaje as $lineas ) :   
+                            $cantidad++; ?>
+                            <tr class="success">
+                                <td align="left"><button id="btnadd2" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
+                                <td id="linea_<?php echo $cantidad?>" ><?php echo $cantidad?></td>
+                                <td id="producto"><?php echo $lineas['producto'] ?></td>
+                                <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
+                                <TD> <?php echo $lineas['cantidad_bultos'] ?> </TD> <TD>  <input style="width:50px; text-align:right" id="cantBultosViaje_<?php echo $cantidad?>" name="cantBultosViaje[]" type="text" size="10" value="<?php echo $lineas['cantidad_bultos'] ?>"> </TD>
+                                <TD> <?php echo $lineas['cantidad_pallets'] ?> </TD> <TD>  <input style="width:50px; text-align:right" id="cantPalletsViaje_<?php echo $cantidad?>" name="cantPalletsViaje[]" type="text" size="10" value="<?php echo $lineas['cantidad_pallets'] ?>"> </TD>
+                                <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
+                                <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
+                                <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
+                                <input type="hidden" id="idProductoViaje" name="idProductoViaje[]" value=<?php echo $lineas['id_producto']?>>
+                                <input type="hidden" id="idViajeViaje" name="idViajeViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
+                            </tr>
+                            <?php 
+                            if (is_array($lineasReparto))
+                            {
+                                foreach( $lineasReparto as $reparto ) : 
+                                if ($reparto['id_producto'] == $lineas['id_producto'] && $reparto['id_vl'] == $lineas['id_vl'])
+                                {
+                                ?>  
+                                <tr class="warning">
+                                    <td align="rigth"><button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button></td>
+                                    <td colspan=3 align="rigth"> <b><?php echo $reparto['razon_social'] ?> </b></td>
+                                    <TD colspan=2> <?php echo $reparto['cant_bultos'] ?></TD>
+                                    <TD colspan=2> <?php echo $reparto['cant_pallets'] ?></TD>
+                                    <input type="hidden" id="idProducto" name="idProducto[]" value=<?php echo $reparto['id_producto'] ?>>
+                                    <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
+                                    <input type="hidden" id="idCliente" name="comboClientes[]" value="<?php echo $reparto['id_cliente'] ?>">
+                                    <input type="hidden" id="idVL" name="idVL[]" value="<?php echo $lineas['id_vl'] ?>">
+                                    <input type="hidden" id="idBultos" name="bultos[]" value="<?php echo $reparto['cant_bultos'] ?>">
+                                    <input type="hidden" id="idPallets" name="pallets[]" value="<?php echo $reparto['cant_pallets'] ?>">
+                                </tr>
+                            <?php
+                                }
+                                endforeach;
+                            }
+                            endforeach; 
+                            }?>
+                            </tbody>
+                            </table>
+			</div>
+                </div>
+                <?php if ($sinProductos == 0) 
+                      {?>
+                <button id="btnsubmit" value="1" type="submit" class="btn btn-default">Guardar</button>
+                <button id="btnCierreViaje" value="2" class="btn btn-success">Confirmar viaje</button>
+                <input id="botonPresionado" type="hidden" value="botonGuardar" name="botonPresionado">
+                <?php }?>
+            </form>
+        </div>
+    </div>
+</div>
  
 <script type="text/javascript">
-    
    
 $(function() {
     var count = 1;
