@@ -22,6 +22,7 @@
     <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.numeric.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.validationEngine.min.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.validationEngine-es.js"></script>
+    <script src="<?php echo base_url() ?>assets/utils/utils.js"></script>
     
     <script src="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/chosen.jquery.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/docsupport/prism.js" type="text/javascript" charset="utf-8"></script>
@@ -93,7 +94,7 @@
                                 foreach( $lineasViaje as $lineas ) : ?>    
 				<?php $cantidad++; ?>
                                 <tr class="success">
-                                    <td align="left"><button id="btnAgregarCliente" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
+                                    <td align="left"><button id="btnAgregarCliente" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']."_".$lineas['base_pallet']."_".$lineas['altura_pallet']?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
                                     <td id="linea_<?php echo $cantidad?>" ><?php echo $cantidad?></td>
                                     <td id="producto"><?php echo $lineas['producto'] ?></td>
                                     <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
@@ -150,9 +151,13 @@
  
 <script type="text/javascript">
 
+    var nroLineaAgregada = 0;
+
    $(document).on("click","#btnAgregarCliente",function( event ) {  
        var cliente;
        var idCliente;
+       
+       nroLineaAgregada++;
        
        var miBoton = $(this).attr('value');     
        
@@ -160,6 +165,8 @@
        
        var idProducto = array[0];
        var idVL = array[1];
+       var basePallet = array[2];
+       var alturaPallet = array[3];
        
        var descProducto = $("#DescProducto_"+idProducto).val();
        var cantBultos = $("#cantBultos_"+idProducto).val();
@@ -194,12 +201,12 @@
                     '</td>'+
                     '<td>'+
                         '<div>'+ 
-                        '<input name="bultos[]" type="text"  class="importe_linea_'+idProducto+'" onchange="validarBultos('+idProducto+',\'' + descProducto + '\','+cantBultos+',this)";>'+
+                        '<input name="bultos[]" type="text"  style="width:50px; text-align:right;" class="importe_linea_'+idProducto+'" onchange="validarBultos('+nroLineaAgregada+','+idProducto+',\'' + descProducto + '\','+cantBultos+','+basePallet+','+alturaPallet+',this)";>'+
                         '</div>'+
                     '</td>'+
                     '<td>'+
                         '<div class="form-group col-lg-12">'+
-                        '<input name="pallets[]" />'+
+                        '<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text"  style="width:50px; text-align:right;"/>'+
                         '</div>'+
                     '</td>'
                     +hiddenProducto+hiddenViaje+hiddenVL+
@@ -255,19 +262,33 @@
 	  event.preventDefault();
 	});
  
- function validarBultos(idProducto, producto, cantidadBultosProducto, input){
+ function validarBultos(nroLineaAgregada, idProducto, producto, cantidadBultosProducto, basePallet, alturaPallet,  input){
  
         bultosTotal = 0
+        bulosLinea = 0;
 	$(".importe_linea_"+idProducto).each(
 		function(index, value) {
-			bultosTotal = bultosTotal + eval($(this).val());
+                        
+                    if (!$(this).val())
+                        bultosLinea = 0;
+                    else
+                        bultosLinea = eval($(this).val());
+                    
+                    bultosTotal = bultosTotal + bultosLinea;
 		}
 	);
 
 	if (bultosTotal > cantidadBultosProducto)
         {
             alert("La cantidad de bultos a repartir del producto "+producto+" no puede superar los "+cantidadBultosProducto+" bultos. Ustede ingreso "+bultosTotal+" bultos");
+            input.style.backgroundColor = "yellow";    
             input.focus();
+            //input.style.background='#DF0101';"
+        }
+        else
+        {
+            calcularCantidadPallets(input.value, basePallet, alturaPallet, "input#cantPallets_"+nroLineaAgregada);
+            input.style.backgroundColor = "white";    
         }
        
 }

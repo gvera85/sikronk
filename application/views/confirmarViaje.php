@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/chosen.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/jquery/validationEngine.jquery.css">
+    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/estilosReparto.css">
     
     <script src="<?php echo base_url() ?>assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
@@ -107,11 +108,13 @@
                             $cantidad++; ?>
                             <tr class="success">
                                 <td align="left"><button id="btnadd2" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
-                                <td id="linea_<?php echo $cantidad?>" ><?php echo $cantidad?></td>
+                                <td id="linea_<?php echo $cantidad?>"><B><?php echo $cantidad?></B></td>
                                 <td id="producto"><?php echo $lineas['producto'] ?></td>
                                 <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
-                                <TD> <?php echo $lineas['cantidad_bultos'] ?> </TD> <TD>  <input style="width:50px; text-align:right" id="cantBultosViaje_<?php echo $cantidad?>" name="cantBultosViaje[]" type="text" size="10" value="<?php echo $lineas['cantidad_bultos'] ?>"> </TD>
-                                <TD> <?php echo $lineas['cantidad_pallets'] ?> </TD> <TD>  <input style="width:50px; text-align:right" id="cantPalletsViaje_<?php echo $cantidad?>" name="cantPalletsViaje[]" type="text" size="10" value="<?php echo $lineas['cantidad_pallets'] ?>"> </TD>
+                                <TD> <?php echo $lineas['cantidad_bultos'] ?> </TD> 
+                                    <TD>  <input class="textBoxNumerico" id="cantBultosViaje_<?php echo $cantidad?>" name="cantBultosViaje[]" type="text" size="10" value="<?php echo ($lineas['cant_real_bultos'] == 0 ? $lineas['cantidad_bultos'] : $lineas['cant_real_bultos']) ?>" onChange="calcularCantidadPallets(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantPalletsViaje_<?php echo $cantidad?>');"> </TD>
+                                <TD> <?php echo $lineas['cantidad_pallets'] ?> </TD> 
+                                    <TD>  <input class="textBoxNumerico" id="cantPalletsViaje_<?php echo $cantidad?>" name="cantPalletsViaje[]" type="text" size="10" value="<?php echo ($lineas['cant_real_pallets'] == 0 ? $lineas['cantidad_pallets'] : $lineas['cant_real_pallets']) ?>" onChange="calcularCantidadBultos(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantBultosViaje_<?php echo $cantidad?>');" > </TD>
                                 <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
                                 <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
                                 <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
@@ -126,8 +129,9 @@
                                 {
                                 ?>  
                                 <tr class="warning">
+                                    <td></td>
                                     <td align="rigth"><button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button></td>
-                                    <td colspan=3 align="rigth"> <b><?php echo $reparto['razon_social'] ?> </b></td>
+                                    <td colspan=2 align="rigth"> <?php echo $reparto['razon_social'] ?> </td>
                                     <TD colspan=2> <?php echo $reparto['cant_bultos'] ?></TD>
                                     <TD colspan=2> <?php echo $reparto['cant_pallets'] ?></TD>
                                     <input type="hidden" id="idProducto" name="idProducto[]" value=<?php echo $reparto['id_producto'] ?>>
@@ -159,6 +163,20 @@
 </div>
  
 <script type="text/javascript">
+    
+function calcularCantidadPallets(cantidadBultos, basePallet, alturaPallet, inputtext){
+	
+        bultosXPallet = basePallet*alturaPallet;
+	cantPallets = cantidadBultos/bultosXPallet;
+        $(inputtext).val(Math.ceil(cantPallets));
+}  
+
+function calcularCantidadBultos(cantidadPallets, basePallet, alturaPallet, inputtext){
+	
+        bultosXPallet = basePallet*alturaPallet;
+	cantBultos = cantidadPallets * bultosXPallet;
+        $(inputtext).val(Math.ceil(cantBultos));
+}
    
 $(function() {
     var count = 1;
@@ -331,7 +349,7 @@ $(function() {
 	  }
 	  event.preventDefault();
 	});
- 
+        
 });
 	</script>
  
