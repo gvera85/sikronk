@@ -11,7 +11,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     
-    <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/docsupport/style.css">
+    <!--<link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/docsupport/style.css">-->
     <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/docsupport/prism.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/chosen.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css">
@@ -23,6 +23,7 @@
     <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.numeric.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.validationEngine.min.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.validationEngine-es.js"></script>
+    <script src="<?php echo base_url() ?>assets/utils/utils.js"></script>
     
     <script src="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/chosen.jquery.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/docsupport/prism.js" type="text/javascript" charset="utf-8"></script>
@@ -107,7 +108,7 @@
                             foreach( $lineasViaje as $lineas ) :   
                             $cantidad++; ?>
                             <tr class="success">
-                                <td align="left"><button id="btnadd2" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
+                                <td align="left"><button id="btnAgregarCliente" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']."_".$lineas['base_pallet']."_".$lineas['altura_pallet']?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
                                 <td id="linea_<?php echo $cantidad?>"><B><?php echo $cantidad?></B></td>
                                 <td id="producto"><?php echo $lineas['producto'] ?></td>
                                 <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
@@ -117,9 +118,12 @@
                                     <TD>  <input class="textBoxNumerico" id="cantPalletsViaje_<?php echo $cantidad?>" name="cantPalletsViaje[]" type="text" size="10" value="<?php echo ($lineas['cant_real_pallets'] == 0 ? $lineas['cantidad_pallets'] : $lineas['cant_real_pallets']) ?>" onChange="calcularCantidadBultos(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantBultosViaje_<?php echo $cantidad?>');" > </TD>
                                 <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
                                 <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
+                                
                                 <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
                                 <input type="hidden" id="idProductoViaje" name="idProductoViaje[]" value=<?php echo $lineas['id_producto']?>>
                                 <input type="hidden" id="idViajeViaje" name="idViajeViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
+                                <input type="hidden" id="DescProducto_<?php echo $lineas['id_producto'] ?>" name="DescProducto_<?php echo $lineas['id_producto'] ?>" value="<?php echo $lineas['producto'] ?>">
+                                <input type="hidden" id="cantBultos_<?php echo $lineas['id_producto'] ?>" name="cantBultos_<?php echo $lineas['id_producto'] ?>" value="<?php echo $lineas['cantidad_bultos'] ?>">
                             </tr>
                             <?php 
                             if (is_array($lineasReparto))
@@ -140,6 +144,7 @@
                                     <input type="hidden" id="idVL" name="idVL[]" value="<?php echo $lineas['id_vl'] ?>">
                                     <input type="hidden" id="idBultos" name="bultos[]" value="<?php echo $reparto['cant_bultos'] ?>">
                                     <input type="hidden" id="idPallets" name="pallets[]" value="<?php echo $reparto['cant_pallets'] ?>">
+                                    <input type="hidden" class="cantidad_bultos_<?php echo $reparto['id_producto'] ?>" id="idBultos" name="bultos[]" value="<?php echo $reparto['cant_bultos'] ?>">
                                 </tr>
                             <?php
                                 }
@@ -164,33 +169,24 @@
  
 <script type="text/javascript">
     
-function calcularCantidadPallets(cantidadBultos, basePallet, alturaPallet, inputtext){
-	
-        bultosXPallet = basePallet*alturaPallet;
-	cantPallets = cantidadBultos/bultosXPallet;
-        $(inputtext).val(Math.ceil(cantPallets));
-}  
-
-function calcularCantidadBultos(cantidadPallets, basePallet, alturaPallet, inputtext){
-	
-        bultosXPallet = basePallet*alturaPallet;
-	cantBultos = cantidadPallets * bultosXPallet;
-        $(inputtext).val(Math.ceil(cantBultos));
-}
-   
+function validarNumero()
+{
+        $(".numerico").each(
+		function(index, value) {
+                        
+                    $(valor).numeric();
+		}
+	)
+}    
+    
 $(function() {
-    var count = 1;
-    jQuery("#miform").validationEngine({promptPosition : "centerRight:0,-5"});
-	
-   $(document).on("click","#btnadd",function( event ) {  
-	  count++;
-      $('#tblprod tr:last').after('<tr><td></td><td><div class="form-group col-lg-12">Cliente <select name="gonza"> <option value="COTO">COTO</option> <option value="CARREFOUR">Carrefour</option> <option value="Wallmart">Wallmart</option> </select></div></td><td><div class="form-group col-lg-12"><input class="form-control validate[required]" name="prod[]" /></div></td><td><div class="form-group col-lg-12"><input class="form-control validate[required]" name="prod2[]" /></div></td></tr>');
-      event.preventDefault();
-   });
-   
-   $(document).on("click","#btnadd2",function( event ) {  
+    var nroLineaAgregada = 0;
+        
+   $(document).on("click","#btnAgregarCliente",function( event ) {  
        var cliente;
        var idCliente;
+       
+       nroLineaAgregada++;
        
        var miBoton = $(this).attr('value');        
        
@@ -198,6 +194,11 @@ $(function() {
        
        var idProducto = array[0];
        var idVL = array[1];
+       var basePallet = array[2];
+       var alturaPallet = array[3];
+       
+       var descProducto = $("#DescProducto_"+idProducto).val();
+       var cantBultos = $("#cantBultos_"+idProducto).val();
        
       // alert (idProducto);
        var hiddenProducto = '<input type="hidden" id="idProducto" name="idProducto[]" value='+idProducto+'>';
@@ -222,26 +223,29 @@ $(function() {
        //alert (combo);
               
        var fila = '<tr class="active">'+
+                    '<td></td>'+    
                     '<td align="center">'+
                           '<button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button>'+
                     '</td>'+
-                    '<td align="left" colspan="3">'
+                    '<td align="left" colspan="2">'
                           +combo+
                     '</td>'+
                     '<td colspan="2">'+
                         '<div>'+
-                        '<input style="width:50px; text-align:right" name="bultos[]" />'+
+                        '<input id="cantBultos_'+nroLineaAgregada+'" class="cantidad_bultos_'+idProducto+' numerico" type="text" onchange="validarBultos('+nroLineaAgregada+','+idProducto+',\'' + descProducto + '\','+cantBultos+','+basePallet+','+alturaPallet+',this);" style="width:50px; text-align:right" name="bultos[]" />'+
                         '</div>'+
                     '</td>'+
                     '<td colspan="2">'+
                         '<div class="form-group col-lg-12">'+
-                        '<input style="width:50px; text-align:right" name="pallets[]" />'+
+                        '<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text" class="numerico" onchange="calcularCantidadBultos(this.value, '+basePallet+','+ alturaPallet+',cantBultos_'+nroLineaAgregada+');" style="width:50px; text-align:right;"/>'+
                         '</div>'+
                     '</td>'
                     +hiddenProducto+hiddenViaje+hiddenVL+
                     '</tr>';
             
       $( event.target ).closest( "tr" ).after( fila );   
+      
+      //alert(fila);
       
          var config = {
                 '.chosen-select'           : {},
@@ -253,7 +257,13 @@ $(function() {
               for (var selector in config) {
                 $(selector).chosen(config[selector]);
               }
-              
+            
+           jQuery(document).ready(function() {
+                jQuery('.numerico').keypress(function(tecla) {
+                if(tecla.charCode < 48 || tecla.charCode > 57) return false;
+                });
+            });
+    
             event.preventDefault();
 
    });

@@ -11,7 +11,6 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     
-    <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/docsupport/style.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/docsupport/prism.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/chosen.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css">
@@ -114,8 +113,9 @@
                                     {
                                     ?>  
                                     <tr class="warning">
+                                        <td></td>
                                         <td align="rigth"><button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button></td>
-                                        <td colspan=3 align="rigth"><?php echo $reparto['razon_social'] ?></td>
+                                        <td colspan=2 align="rigth"><?php echo $reparto['razon_social'] ?></td>
                                         <TD> <?php echo $reparto['cant_bultos'] ?></TD>
                                         <TD> <?php echo $reparto['cant_pallets'] ?></TD>
 
@@ -123,7 +123,7 @@
                                         <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
                                         <input type="hidden" id="idCliente" name="comboClientes[]" value="<?php echo $reparto['id_cliente'] ?>">
                                         <input type="hidden" id="idVL" name="idVL[]" value="<?php echo $lineas['id_vl'] ?>">
-                                        <input type="hidden" class="importe_linea_<?php echo $reparto['id_producto'] ?>" id="idBultos" name="bultos[]" value="<?php echo $reparto['cant_bultos'] ?>">
+                                        <input type="hidden" class="cantidad_bultos_<?php echo $reparto['id_producto'] ?>" id="idBultos" name="bultos[]" value="<?php echo $reparto['cant_bultos'] ?>">
                                         <input type="hidden" id="idPallets" name="pallets[]" value="<?php echo $reparto['cant_pallets'] ?>">
                                     </tr>
                                 <?php
@@ -193,15 +193,16 @@
        
               
        var fila = '<tr class="active">'+
-                    '<td align="center">'+
+            '<td></td>'+        
+            '<td align="center">'+
                           '<button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button>'+
                     '</td>'+
-                    '<td align="left" colspan="3">'
+                    '<td align="left" colspan="2">'
                           +combo+
                     '</td>'+
                     '<td>'+
                         '<div>'+ 
-                        '<input name="bultos[]" type="text"  style="width:50px; text-align:right;" class="importe_linea_'+idProducto+'" onchange="validarBultos('+nroLineaAgregada+','+idProducto+',\'' + descProducto + '\','+cantBultos+','+basePallet+','+alturaPallet+',this)";>'+
+                        '<input name="bultos[]" type="text"  style="width:50px; text-align:right;" class="cantidad_bultos_'+idProducto+' numerico" onchange="validarBultos('+nroLineaAgregada+','+idProducto+',\'' + descProducto + '\','+cantBultos+','+basePallet+','+alturaPallet+',this)";>'+
                         '</div>'+
                     '</td>'+
                     '<td>'+
@@ -224,6 +225,13 @@
               for (var selector in config) {
                 $(selector).chosen(config[selector]);
               }
+        
+        //Para que solo se puedan ingresar numeros
+        jQuery(document).ready(function() {
+                jQuery('.numerico').keypress(function(tecla) {
+                if(tecla.charCode < 48 || tecla.charCode > 57) return false;
+                });
+            });
               
             event.preventDefault();
 
@@ -262,36 +270,7 @@
 	  event.preventDefault();
 	});
  
- function validarBultos(nroLineaAgregada, idProducto, producto, cantidadBultosProducto, basePallet, alturaPallet,  input){
  
-        bultosTotal = 0
-        bulosLinea = 0;
-	$(".importe_linea_"+idProducto).each(
-		function(index, value) {
-                        
-                    if (!$(this).val())
-                        bultosLinea = 0;
-                    else
-                        bultosLinea = eval($(this).val());
-                    
-                    bultosTotal = bultosTotal + bultosLinea;
-		}
-	);
-
-	if (bultosTotal > cantidadBultosProducto)
-        {
-            alert("La cantidad de bultos a repartir del producto "+producto+" no puede superar los "+cantidadBultosProducto+" bultos. Ustede ingreso "+bultosTotal+" bultos");
-            input.style.backgroundColor = "yellow";    
-            input.focus();
-            //input.style.background='#DF0101';"
-        }
-        else
-        {
-            calcularCantidadPallets(input.value, basePallet, alturaPallet, "input#cantPallets_"+nroLineaAgregada);
-            input.style.backgroundColor = "white";    
-        }
-       
-}
  
  </script>
  
