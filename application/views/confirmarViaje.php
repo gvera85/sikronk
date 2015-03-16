@@ -108,7 +108,7 @@
                             foreach( $lineasViaje as $lineas ) :   
                             $cantidad++; ?>
                             <tr class="success">
-                                <td align="left"><button id="btnAgregarCliente" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']."_".$lineas['base_pallet']."_".$lineas['altura_pallet']?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
+                                <td align="left"><button id="btnAgregarCliente" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']."_".$lineas['base_pallet']."_".$lineas['altura_pallet']."_".$cantidad?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
                                 <td id="linea_<?php echo $cantidad?>"><B><?php echo $cantidad?></B></td>
                                 <td id="producto"><?php echo $lineas['producto'] ?></td>
                                 <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
@@ -196,9 +196,10 @@ $(function() {
        var idVL = array[1];
        var basePallet = array[2];
        var alturaPallet = array[3];
+       var numeroLinea = array[4];
        
        var descProducto = $("#DescProducto_"+idProducto).val();
-       var cantBultos = $("#cantBultos_"+idProducto).val();
+       var cantBultos = $("#cantBultosViaje_"+numeroLinea).val();
        
       // alert (idProducto);
        var hiddenProducto = '<input type="hidden" id="idProducto" name="idProducto[]" value='+idProducto+'>';
