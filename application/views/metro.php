@@ -374,7 +374,7 @@
 			<div id="sidebar-left" class="span2">
 				<div class="nav-collapse sidebar-nav">
 					<ul class="nav nav-tabs nav-stacked main-menu">
-						<li><a href="<?php echo base_url() ?>assets/plugins/metro/index.html"><i class="icon-bar-chart"></i><span class="hidden-tablet"> Dashboard</span></a></li>	
+						<li><a href="<?php echo base_url() ?>assets/plugins/metro/index.html"><i class="icon-bar-chart"></i><span class="hidden-tablet"> Resumen</span></a></li>	
 						<li><a href="<?php echo base_url() ?>assets/plugins/metro/messages.html"><i class="icon-envelope"></i><span class="hidden-tablet"> Messages</span></a></li>
 						<li><a href="<?php echo base_url() ?>assets/plugins/metro/tasks.html"><i class="icon-tasks"></i><span class="hidden-tablet"> Tasks</span></a></li>
 						<li><a href="<?php echo base_url() ?>assets/plugins/metro/ui.html"><i class="icon-eye-open"></i><span class="hidden-tablet"> UI Features</span></a></li>
@@ -801,23 +801,23 @@
 					<div class="content">
 						
 						<div class="browserStat big">
-							<img src="img/browser-chrome-big.png" alt="Chrome">
+							<img src="<?php echo base_url() ?>assets/plugins/metro/img/browser-chrome-big.png" alt="Chrome">
 							<span>34%</span>
 						</div>
 						<div class="browserStat big">
-							<img src="img/browser-firefox-big.png" alt="Firefox">
+							<img src="<?php echo base_url() ?>assets/plugins/metro/img/browser-firefox-big.png" alt="Firefox">
 							<span>34%</span>
 						</div>
 						<div class="browserStat">
-							<img src="img/browser-ie.png" alt="Internet Explorer">
+							<img src="<?php echo base_url() ?>assets/plugins/metro/img/browser-ie.png" alt="Internet Explorer">
 							<span>34%</span>
 						</div>
 						<div class="browserStat">
-							<img src="img/browser-safari.png" alt="Safari">
+							<img src="<?php echo base_url() ?>assets/plugins/metro/img/browser-safari.png" alt="Safari">
 							<span>34%</span>
 						</div>
 						<div class="browserStat">
-							<img src="img/browser-opera.png" alt="Opera">
+							<img src="<?php echo base_url() ?>assets/plugins/metro/img/browser-opera.png" alt="Opera">
 							<span>34%</span>
 						</div>	
 								
