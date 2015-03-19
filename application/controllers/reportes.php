@@ -11,9 +11,14 @@ class Reportes extends CI_Controller {
 	}
 
 	public function index()
-	{
-                       
-            $this->load->view('viajes.php');
+	{   
+            $this->load->model('reporte_ventas_m');
+            
+            $lineasVentas = $this->reporte_ventas_m->getLineasVentasCliente(1);
+            
+            $data['lineasVentas'] = $lineasVentas;
+            
+            $this->load->view('viajes.php',$data);
 	}
 
 	

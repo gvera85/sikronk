@@ -410,7 +410,7 @@
 					<div class="number"><?php echo "$".$total_facturado ?><i class="icon-arrow-up"></i></div>
 					<div class="title">ventas anuales</div>
 					<div class="footer">
-						<a href="#"> ver reporte ampliado</a>
+						<a href="<?php echo base_url() ?>index.php/Reportes"> ver reporte ampliado</a>
 					</div>	
 				</div>
 				<div class="span4 statbox green" onTablet="span6" onDesktop="span4">
@@ -418,7 +418,7 @@
 					<div class="number"><?php echo $total_bultos ?><i class="icon-arrow-up"></i></div>
 					<div class="title">bultos anuales</div>
 					<div class="footer">
-						<a href="#"> ver reporte ampliado</a>
+						<a href="<?php echo base_url() ?>index.php/Reportes"> ver reporte ampliado</a>
 					</div>
 				</div>
 				<div class="span4 statbox blue noMargin" onTablet="span6" onDesktop="span4">
@@ -426,7 +426,7 @@
 					<div class="number"><?php echo $total_pallets ?><i class="icon-arrow-up"></i></div>
 					<div class="title">pallets anuales</div>
 					<div class="footer">
-						<a href="#"> ver reporte ampliado</a>
+						<a href="<?php echo base_url() ?>index.php/Reportes"> ver reporte ampliado</a>
 					</div>
 				</div>
 				
