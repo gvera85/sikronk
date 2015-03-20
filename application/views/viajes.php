@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
 	
 	<!-- start: Meta -->
@@ -13,7 +13,7 @@
 	<!-- start: Mobile Specific -->
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<!-- end: Mobile Specific -->
-        
+	
         
 	
 	<!-- start: CSS -->
@@ -27,7 +27,7 @@
         <link href='http://datatables.net/release-datatables/extensions/Plugins/integration/bootstrap/3/dataTables.bootstrap.css' rel='stylesheet' type='text/css'>
         
         <!-- end: CSS -->
-	
+        
         
 
 	<!-- The HTML5 shim, for IE6-8 support of HTML5 elements -->
@@ -49,8 +49,8 @@
 	
         <style>
             
-            div.DTTT { margin-bottom: 0.5em; float: right; }
-            div.dataTables_wrapper { clear: both; }	
+            div.DTTT { margin-bottom: 0.5em; float: right;  }
+            div.dataTables_wrapper { clear: both; margin: 10px;}	
         </style>
         
         	
@@ -60,7 +60,7 @@
 
 <body>
 	<!-- start: Header -->
-                
+	
 	<div class="navbar">
 		<div class="navbar-inner">
 			<div class="container-fluid">
@@ -70,7 +70,7 @@
 					<span class="icon-bar"></span>
 				</a>
 				<a class="brand" href="index.html"><span>sikronk</span></a>
-								
+
 				<!-- start: Header Menu -->
 				<div class="nav-no-collapse header-nav">
 					<ul class="nav pull-right">
@@ -338,15 +338,15 @@
 					</ul>
 				</div>
 				<!-- end: Header Menu -->
-				
+			
 			</div>
 		</div>
 	</div>
 	<!-- start: Header -->
-	
+		
 		<div class="container-fluid-full">
 		<div class="row-fluid">
-				
+						
 			<!-- start: Main Menu -->
 			<div id="sidebar-left" class="span2">
 				<div class="nav-collapse sidebar-nav">
@@ -385,8 +385,8 @@
 				
 						
 			<!-- <div class="row-fluid"> -->
-<div class="row-fluid">				
-<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%">
+<div class="row-fluid" >				
+<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%" >
     <thead>
         <tr>
             <th>Proveedor</th>
@@ -398,22 +398,9 @@
             <th># Bultos</th>
             <th># Pallets</th>
             <th>$ Bulto</th>
+            <th>$ Total</th>
         </tr>
     </thead>
- 
-    <tfoot>
-        <tr>
-            <th>Proveedor</th>
-            <th>Producto</th>
-            <th>Marca</th>
-            <th>Calidad</th>
-            <th>VL</th>
-            <th>Peso</th>
-            <th># Bultos</th>
-            <th># Pallets</th>
-            <th>$ Bulto</th>
-        </tr>
-    </tfoot>
  
     <tbody>
         
@@ -431,6 +418,7 @@
                         <td><?php echo $lineas['cantidad_bultos'] ?></td>
                         <td><?php echo $lineas['cantidad_pallets'] ?></td>
                         <td><?php echo $lineas['precio_caja'] ?></td>
+                        <td><?php echo $lineas['precio_caja']*$lineas['cantidad_bultos'] ?></td>
                     </tr>
         
         <?php
@@ -445,8 +433,8 @@
 <!-- 			</div> -->
 			
 			
-			
-       
+		
+                
 
 	
 	

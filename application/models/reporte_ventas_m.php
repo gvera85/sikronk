@@ -27,7 +27,7 @@ class reporte_ventas_m extends CI_Model {
         }  
     }
     
-    public function getLineasVentasCliente($idCliente)
+    public function getLineasVentasCliente($idCliente, $idEstado)
     {
          if($idCliente != FALSE) {
             $sql = "select b.descripcion desc_producto, b.marca, b.calidad, 
@@ -50,10 +50,10 @@ class reporte_ventas_m extends CI_Model {
                     join variable_logistica c on a.id_variable_logistica = c.id
                     join viaje d on a.id_viaje = d.id
                     join proveedor e on d.id_proveedor = e.id
-                    where d.id_estado = 6
+                    where d.id_estado = ?
                     and 1=?";
             
-            $query = $this->db->query($sql, array($idCliente));
+            $query = $this->db->query($sql, array($idEstado, $idCliente ));
                    
             $lineasVentas = $query->result_array();
 

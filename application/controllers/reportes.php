@@ -14,7 +14,7 @@ class Reportes extends CI_Controller {
 	{   
             $this->load->model('reporte_ventas_m');
             
-            $lineasVentas = $this->reporte_ventas_m->getLineasVentasCliente(1);
+            $lineasVentas = $this->reporte_ventas_m->getLineasVentasCliente(1, 7);
             
             $data['lineasVentas'] = $lineasVentas;
             
