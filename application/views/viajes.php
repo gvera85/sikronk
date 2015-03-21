@@ -405,7 +405,8 @@
     <tbody>
         
         <?php 
-            
+            if (!empty($lineasVentas[0]['razon_social']))
+            {
                 foreach( $lineasVentas as $lineas ) : ?> 
         
                     <tr>
@@ -423,6 +424,7 @@
         
         <?php
                 endforeach; 
+            }
         ?>  
     </tbody>
 </table>	

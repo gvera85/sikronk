@@ -45,6 +45,34 @@
 <body>
 		<!-- start: Header -->
         <?php 
+            $cantidad = 0;
+            $bultos_mensual = "";
+            $facturado_mensual = "";
+            $pallets_mensual = "";
+            $total_facturado=0;
+            $total_bultos=0;
+            $total_pallets=0;
+            
+                    
+            $cantidadMes=0;
+            foreach( $ventaMes as $mes ) : 
+              
+                    $cantidadMes++;
+                    if ($cantidadMes == 1)
+                    {
+                        
+                        $facturado_mensual2 = round($mes['total_facturado']);
+                       
+                    }
+                    else
+                    {
+                       
+                        $facturado_mensual2 = $facturado_mensual2.','.round($mes['total_facturado']);
+                      
+                    }
+                
+            endforeach;
+                
             if (empty($lineasVentas[0]['mes']))
             {
                 $titulo = "Viaje sin productos asociados. Para asignar productos al viaje debe ir a la pagina de creacion de viajes";
@@ -52,13 +80,6 @@
             }
             else
             {
-                $cantidad = 0;
-                $bultos_mensual = "";
-                $facturado_mensual = "";
-                $pallets_mensual = "";
-                $total_facturado=0;
-                $total_bultos=0;
-                $total_pallets=0;
                 foreach( $lineasVentas as $lineas ) : 
                     $cantidad++;
                     $total_facturado = $total_facturado + $lineas['total_facturado'];
@@ -404,9 +425,9 @@
 			</ul>
 
 			<div class="row-fluid">
-				
+                            
 				<div class="span4 statbox purple" onTablet="span6" onDesktop="span4">
-					<div class="boxchart"><?php echo $facturado_mensual ?></div>
+					<div class="boxchart"><?php echo $facturado_mensual2?></div>
 					<div class="number"><?php echo "$".$total_facturado ?><i class="icon-arrow-up"></i></div>
 					<div class="title">ventas anuales</div>
 					<div class="footer">
@@ -422,7 +443,7 @@
 					</div>
 				</div>
 				<div class="span4 statbox blue noMargin" onTablet="span6" onDesktop="span4">
-					<div class="boxchart"><?php echo $pallets_mensual ?></div>
+					<div class="boxchart">80,2,3,4,5,6,7,8,9,10,11</div>
 					<div class="number"><?php echo $total_pallets ?><i class="icon-arrow-up"></i></div>
 					<div class="title">pallets anuales</div>
 					<div class="footer">
@@ -436,7 +457,7 @@
                         <div class="row-fluid">
 				
 				<div class="span6 statbox purple" onTablet="span6" onDesktop="span6">
-					<div class="boxchart"><?php echo $facturado_mensual ?></div>
+					<div class="boxchart">1,2,3,4,5,6,7,8,9,10,11</div>
 					<div class="number"><?php echo "$".$total_facturado ?><i class="icon-arrow-up"></i></div>
 					<div class="title">pagos adeudados</div>
 					<div class="footer">

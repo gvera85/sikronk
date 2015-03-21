@@ -147,7 +147,23 @@ class login extends CI_Controller {
         //echo "Menus:".$this->Usuario[0]["id"]."-".$menus[0]["descripcion"];
         $this->session->set_userdata('menu', $menus);
         
-        redirect('/main/show_main');
+        $id_tipo_empresa = $this->Usuario[0]["id_tipo_empresa"];
+        
+        switch($id_tipo_empresa)/*Dependiendo del tipo de empresa voy a buscar un perfil determinado*/
+        {
+            case DISTRIBUIDOR: /*El usuario es un distribuidor*/
+                redirect('/main/show_main');
+                break;
+            case CLIENTE: /*El usuario es un cliente*/
+                redirect('/pruebametro/index');
+                break;
+            case PROVEEDOR: /*El usuario es un proveedor*/
+                redirect('/pruebametro/index');
+                break;
+                    
+        }
+        
+        
     }
      
     
