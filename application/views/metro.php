@@ -53,53 +53,30 @@
             $total_bultos=0;
             $total_pallets=0;
             
-                    
-            $cantidadMes=0;
             foreach( $ventaMes as $mes ) : 
-              
-                    $cantidadMes++;
-                    if ($cantidadMes == 1)
-                    {
-                        
-                        $facturado_mensual2 = round($mes['total_facturado']);
-                       
-                    }
-                    else
-                    {
-                       
-                        $facturado_mensual2 = $facturado_mensual2.','.round($mes['total_facturado']);
-                      
-                    }
                 
-            endforeach;
-                
-            if (empty($lineasVentas[0]['mes']))
-            {
-                $titulo = "Viaje sin productos asociados. Para asignar productos al viaje debe ir a la pagina de creacion de viajes";
-                $sinProductos = 1;
-            }
-            else
-            {
-                foreach( $lineasVentas as $lineas ) : 
                     $cantidad++;
-                    $total_facturado = $total_facturado + $lineas['total_facturado'];
-                    $total_bultos = $total_bultos + $lineas['total_bultos'];
-                    $total_pallets = $total_pallets + $lineas['total_pallets'];
+            
+                    $total_facturado = $total_facturado + $mes['total_facturado'];
+                    $total_bultos = $total_bultos + $mes['total_bultos'];
+                    $total_pallets = $total_pallets + $mes['total_pallets'];
+                    
                     if ($cantidad == 1)
                     {
-                        $bultos_mensual = $lineas['total_bultos'];
-                        $facturado_mensual = $lineas['total_facturado'];
-                        $pallets_mensual = $lineas['total_pallets'];
+                        $bultos_mensual = $mes['total_bultos'];
+                        $facturado_mensual = $mes['total_facturado'];
+                        $pallets_mensual = $mes['total_pallets'];
                     }
                     else
                     {
-                        $bultos_mensual = $bultos_mensual.','.$lineas['total_bultos'];
-                        $facturado_mensual = $facturado_mensual.','.$lineas['total_facturado'];
-                        $pallets_mensual = $pallets_mensual.','.$lineas['total_pallets'];
+                        $bultos_mensual = $bultos_mensual.','.$mes['total_bultos'];
+                        $facturado_mensual = $facturado_mensual.','.$mes['total_facturado'];
+                        $pallets_mensual = $pallets_mensual.','.$mes['total_pallets'];
                     }
-                endforeach; 
+              
+                    
                 
-            }   
+            endforeach;
             
         ?>  
                 
@@ -113,7 +90,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</a>
-				<a class="brand" href="index.html"><span>sikronk</span></a>
+				<a class="brand" href="index.html"><img width="30px" src="<?php echo base_url() ?>assets/uploads/logos_clientes/logoKronkis.png" alt="sikronk"><span> sikronk</span></a> 
 								
 				<!-- start: Header Menu -->
 				<div class="nav-no-collapse header-nav">
@@ -379,6 +356,12 @@
 							</ul>
 						</li>
 						<!-- end: User Dropdown -->
+                                                <li class="dropdown">
+                                                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+								<img width="50px" src="<?php echo base_url() ?>assets/uploads/logos_clientes/logoCoto.png" alt="sikronk">                                                
+							</a>
+                                                
+                                                </li>
 					</ul>
 				</div>
 				<!-- end: Header Menu -->
@@ -427,9 +410,9 @@
 			<div class="row-fluid">
                             
 				<div class="span4 statbox purple" onTablet="span6" onDesktop="span4">
-					<div class="boxchart"><?php echo $facturado_mensual2?></div>
+					<div class="boxchart"><?php echo $facturado_mensual?></div>
 					<div class="number"><?php echo "$".$total_facturado ?><i class="icon-arrow-up"></i></div>
-					<div class="title">ventas anuales</div>
+					<div class="title">compras último año</div>
 					<div class="footer">
 						<a href="<?php echo base_url() ?>index.php/Reportes"> ver reporte ampliado</a>
 					</div>	
@@ -437,15 +420,15 @@
 				<div class="span4 statbox green" onTablet="span6" onDesktop="span4">
 					<div class="boxchart"><?php echo $bultos_mensual ?></div>
 					<div class="number"><?php echo $total_bultos ?><i class="icon-arrow-up"></i></div>
-					<div class="title">bultos anuales</div>
+					<div class="title">bultos último año</div>
 					<div class="footer">
 						<a href="<?php echo base_url() ?>index.php/Reportes"> ver reporte ampliado</a>
 					</div>
 				</div>
 				<div class="span4 statbox blue noMargin" onTablet="span6" onDesktop="span4">
-					<div class="boxchart">80,2,3,4,5,6,7,8,9,10,11</div>
+					<div class="boxchart"><?php echo $pallets_mensual ?></div>
 					<div class="number"><?php echo $total_pallets ?><i class="icon-arrow-up"></i></div>
-					<div class="title">pallets anuales</div>
+					<div class="title">pallets último año</div>
 					<div class="footer">
 						<a href="<?php echo base_url() ?>index.php/Reportes"> ver reporte ampliado</a>
 					</div>
@@ -474,521 +457,9 @@
 				</div>
 				
 				
-			</div>		    
-
-			
-			
-			<div class="row-fluid hideInIE8 circleStats">
-				
-				<div class="span2" onTablet="span4" onDesktop="span2">
-                	<div class="circleStatsItemBox yellow">
-						<div class="header">Disk Space Usage</div>
-						<span class="percent">percent</span>
-						<div class="circleStat">
-                    		<input type="text" value="58" class="whiteCircle" />
-						</div>		
-						<div class="footer">
-							<span class="count">
-								<span class="number">20000</span>
-								<span class="unit">MB</span>
-							</span>
-							<span class="sep"> / </span>
-							<span class="value">
-								<span class="number">50000</span>
-								<span class="unit">MB</span>
-							</span>	
-						</div>
-                	</div>
-				</div>
-
-				<div class="span2" onTablet="span4" onDesktop="span2">
-                	<div class="circleStatsItemBox green">
-						<div class="header">Bandwidth</div>
-						<span class="percent">percent</span>
-						<div class="circleStat">
-                    		<input type="text" value="78" class="whiteCircle" />
-						</div>
-						<div class="footer">
-							<span class="count">
-								<span class="number">5000</span>
-								<span class="unit">GB</span>
-							</span>
-							<span class="sep"> / </span>
-							<span class="value">
-								<span class="number">5000</span>
-								<span class="unit">GB</span>
-							</span>	
-						</div>
-                	</div>
-				</div>
-
-				<div class="span2" onTablet="span4" onDesktop="span2">
-                	<div class="circleStatsItemBox greenDark">
-						<div class="header">Memory</div>
-						<span class="percent">percent</span>
-                    	<div class="circleStat">
-                    		<input type="text" value="100" class="whiteCircle" />
-						</div>
-						<div class="footer">
-							<span class="count">
-								<span class="number">64</span>
-								<span class="unit">GB</span>
-							</span>
-							<span class="sep"> / </span>
-							<span class="value">
-								<span class="number">64</span>
-								<span class="unit">GB</span>
-							</span>	
-						</div>
-                	</div>
-				</div>
-
-				<div class="span2 noMargin" onTablet="span4" onDesktop="span2">
-                	<div class="circleStatsItemBox pink">
-						<div class="header">CPU</div>
-						<span class="percent">percent</span>
-                    	<div class="circleStat">
-                    		<input type="text" value="83" class="whiteCircle" />
-						</div>
-						<div class="footer">
-							<span class="count">
-								<span class="number">64</span>
-								<span class="unit">GHz</span>
-							</span>
-							<span class="sep"> / </span>
-							<span class="value">
-								<span class="number">3.2</span>
-								<span class="unit">GHz</span>
-							</span>	
-						</div>
-                	</div>
-				</div>
-
-				<div class="span2" onTablet="span4" onDesktop="span2">
-                	<div class="circleStatsItemBox orange">
-						<div class="header">Memory</div>
-						<span class="percent">percent</span>
-                    	<div class="circleStat">
-                    		<input type="text" value="100" class="whiteCircle" />
-						</div>
-						<div class="footer">
-							<span class="count">
-								<span class="number">64</span>
-								<span class="unit">GB</span>
-							</span>
-							<span class="sep"> / </span>
-							<span class="value">
-								<span class="number">64</span>
-								<span class="unit">GB</span>
-							</span>	
-						</div>
-                	</div>
-				</div>
-
-				<div class="span2" onTablet="span4" onDesktop="span2">
-                	<div class="circleStatsItemBox greenLight">
-						<div class="header">Memory</div>
-						<span class="percent">percent</span>
-                    	<div class="circleStat">
-                    		<input type="text" value="100" class="whiteCircle" />
-						</div>
-						<div class="footer">
-							<span class="count">
-								<span class="number">64</span>
-								<span class="unit">GB</span>
-							</span>
-							<span class="sep"> / </span>
-							<span class="value">
-								<span class="number">64</span>
-								<span class="unit">GB</span>
-							</span>	
-						</div>
-                	</div>
-				</div>
-						
-			</div>		
-						
-			<div class="row-fluid">
-				
-				<div class="widget blue span5" onTablet="span6" onDesktop="span5">
-					
-					<h2><span class="glyphicons globe"><i></i></span> Demographics</h2>
-					
-					<hr>
-					
-					<div class="content">
-						
-						<div class="verticalChart">
-							
-							<div class="singleBar">
-							
-								<div class="bar">
-								
-									<div class="value">
-										<span>37%</span>
-									</div>
-								
-								</div>
-								
-								<div class="title">US</div>
-							
-							</div>
-							
-							<div class="singleBar">
-							
-								<div class="bar">
-								
-									<div class="value">
-										<span>16%</span>
-									</div>
-								
-								</div>
-								
-								<div class="title">PL</div>
-							
-							</div>
-							
-							<div class="singleBar">
-							
-								<div class="bar">
-								
-									<div class="value">
-										<span>12%</span>
-									</div>
-								
-								</div>
-								
-								<div class="title">GB</div>
-							
-							</div>
-							
-							<div class="singleBar">
-							
-								<div class="bar">
-								
-									<div class="value">
-										<span>9%</span>
-									</div>
-								
-								</div>
-								
-								<div class="title">DE</div>
-							
-							</div>
-							
-							<div class="singleBar">
-							
-								<div class="bar">
-								
-									<div class="value">
-										<span>7%</span>
-									</div>
-								
-								</div>
-								
-								<div class="title">NL</div>
-							
-							</div>
-							
-							<div class="singleBar">
-							
-								<div class="bar">
-								
-									<div class="value">
-										<span>6%</span>
-									</div>
-								
-								</div>
-								
-								<div class="title">CA</div>
-							
-							</div>
-							
-							<div class="singleBar">
-							
-								<div class="bar">
-								
-									<div class="value">
-										<span>5%</span>
-									</div>
-								
-								</div>
-								
-								<div class="title">FI</div>
-							
-							</div>
-							
-							<div class="singleBar">
-							
-								<div class="bar">
-								
-									<div class="value">
-										<span>4%</span>
-									</div>
-								
-								</div>
-								
-								<div class="title">RU</div>
-							
-							</div>
-							
-							<div class="singleBar">
-							
-								<div class="bar">
-								
-									<div class="value">
-										<span>3%</span>
-									</div>
-								
-								</div>
-								
-								<div class="title">AU</div>
-							
-							</div>
-							
-							<div class="singleBar">
-							
-								<div class="bar">
-								
-									<div class="value">
-										<span>1%</span>
-									</div>
-								
-								</div>
-								
-								<div class="title">N/A</div>
-							
-							</div>	
-							
-							<div class="clearfix"></div>
-							
-						</div>
-					
-					</div>
-					
-				</div><!--/span-->
-				
-				<div class="widget span3 red" onTablet="span6" onDesktop="span3">
-					
-					<h2><span class="glyphicons pie_chart"><i></i></span> Browsers</h2>
-					
-					<hr>
-					
-					<div class="content">
-						
-						<div class="browserStat big">
-							<img src="<?php echo base_url() ?>assets/plugins/metro/img/browser-chrome-big.png" alt="Chrome">
-							<span>34%</span>
-						</div>
-						<div class="browserStat big">
-							<img src="<?php echo base_url() ?>assets/plugins/metro/img/browser-firefox-big.png" alt="Firefox">
-							<span>34%</span>
-						</div>
-						<div class="browserStat">
-							<img src="<?php echo base_url() ?>assets/plugins/metro/img/browser-ie.png" alt="Internet Explorer">
-							<span>34%</span>
-						</div>
-						<div class="browserStat">
-							<img src="<?php echo base_url() ?>assets/plugins/metro/img/browser-safari.png" alt="Safari">
-							<span>34%</span>
-						</div>
-						<div class="browserStat">
-							<img src="<?php echo base_url() ?>assets/plugins/metro/img/browser-opera.png" alt="Opera">
-							<span>34%</span>
-						</div>	
-								
-						
-					</div>
-				</div>
-				
-				<div class="widget yellow span4 noMargin" onTablet="span12" onDesktop="span4">
-					<h2><span class="glyphicons fire"><i></i></span> Server Load</h2>
-					<hr>
-					<div class="content">
-						 <div id="serverLoad2" style="height:224px;"></div>
-					</div>
-				</div>
-			
-			</div>
-			
-			<div class="row-fluid">
-				
-				<div class="box black span4" onTablet="span6" onDesktop="span4">
-					<div class="box-header">
-						<h2><i class="halflings-icon white list"></i><span class="break"></span>Weekly Stat</h2>
-						<div class="box-icon">
-							<a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
-							<a href="#" class="btn-close"><i class="halflings-icon white remove"></i></a>
-						</div>
-					</div>
-					<div class="box-content">
-						<ul class="dashboard-list metro">
-							<li>
-								<a href="#">
-									<i class="icon-arrow-up green"></i>                               
-									<strong>92</strong>
-									New Comments                                    
-								</a>
-							</li>
-						  <li>
-							<a href="#">
-							  <i class="icon-arrow-down red"></i>
-							  <strong>15</strong>
-							  New Registrations
-							</a>
-						  </li>
-						  <li>
-							<a href="#">
-							  <i class="icon-minus blue"></i>
-							  <strong>36</strong>
-							  New Articles                                    
-							</a>
-						  </li>
-						  <li>
-							<a href="#">
-							  <i class="icon-comment yellow"></i>
-							  <strong>45</strong>
-							  User reviews                                    
-							</a>
-						  </li>
-						  <li>
-							<a href="#">
-							  <i class="icon-arrow-up green"></i>                               
-							  <strong>112</strong>
-							  New Comments                                    
-							</a>
-						  </li>
-						  <li>
-							<a href="#">
-							  <i class="icon-arrow-down red"></i>
-							  <strong>31</strong>
-							  New Registrations
-							</a>
-						  </li>
-						  <li>
-							<a href="#">
-							  <i class="icon-minus blue"></i>
-							  <strong>93</strong>
-							  New Articles                                    
-							</a>
-						  </li>
-						  <li>
-							<a href="#">
-							  <i class="icon-comment yellow"></i>
-							  <strong>256</strong>
-							  User reviews                                    
-							</a>
-						  </li>
-						</ul>
-					</div>
-				</div><!--/span-->
-				
-				<div class="box black span4" onTablet="span6" onDesktop="span4">
-					<div class="box-header">
-						<h2><i class="halflings-icon white user"></i><span class="break"></span>Last Users</h2>
-						<div class="box-icon">
-							<a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
-							<a href="#" class="btn-close"><i class="halflings-icon white remove"></i></a>
-						</div>
-					</div>
-					<div class="box-content">
-						<ul class="dashboard-list metro">
-							<li class="green">
-								<a href="#">
-									<img class="avatar" alt="Dennis Ji" src="<?php echo base_url() ?>assets/plugins/metro/img/avatar.jpg">
-								</a>
-								<strong>Name:</strong> Dennis Ji<br>
-								<strong>Since:</strong> Jul 25, 2012 11:09<br>
-								<strong>Status:</strong> Approved             
-							</li>
-							<li class="yellow">
-								<a href="#">
-									<img class="avatar" alt="Dennis Ji" src="<?php echo base_url() ?>assets/plugins/metro/img/avatar.jpg">
-								</a>
-								<strong>Name:</strong> Dennis Ji<br>
-								<strong>Since:</strong> Jul 25, 2012 11:09<br>
-								<strong>Status:</strong> Pending                                
-							</li>
-							<li class="red">
-								<a href="#">
-									<img class="avatar" alt="Dennis Ji" src="<?php echo base_url() ?>assets/plugins/metro/img/avatar.jpg">
-								</a>
-								<strong>Name:</strong> Dennis Ji<br>
-								<strong>Since:</strong> Jul 25, 2012 11:09<br>
-								<strong>Status:</strong> Banned                                  
-							</li>
-							<li class="blue">
-								<a href="#">
-									<img class="avatar" alt="Dennis Ji" src="<?php echo base_url() ?>assets/plugins/metro/img/avatar.jpg">
-								</a>
-								<strong>Name:</strong> Dennis Ji<br>
-								<strong>Since:</strong> Jul 25, 2012 11:09<br>
-								<strong>Status:</strong> Updated                                 
-							</li>
-						</ul>
-					</div>
-				</div><!--/span-->
-				
-				<div class="box black span4 noMargin" onTablet="span12" onDesktop="span4">
-					<div class="box-header">
-						<h2><i class="halflings-icon white check"></i><span class="break"></span>To Do List</h2>
-						<div class="box-icon">
-							<a href="#" class="btn-setting"><i class="halflings-icon white wrench"></i></a>
-							<a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
-							<a href="#" class="btn-close"><i class="halflings-icon white remove"></i></a>
-						</div>
-					</div>
-					<div class="box-content">
-						<div class="todo metro">
-							<ul class="todo-list">
-								<li class="red">
-									<a class="action icon-check-empty" href="#"></a>	
-									Windows Phone 8 App 
-									<strong>today</strong>
-								</li>
-								<li class="red">
-									<a class="action icon-check-empty" href="#"></a>
-									New frontend layout
-									<strong>today</strong>
-								</li>
-								<li class="yellow">
-									<a class="action icon-check-empty" href="#"></a>
-									Hire developers
-									<strong>tommorow</strong>
-								</li>
-								<li class="yellow">
-									<a class="action icon-check-empty" href="#"></a>
-									Windows Phone 8 App
-									<strong>tommorow</strong>
-								</li>
-								<li class="green">
-									<a class="action icon-check-empty" href="#"></a>
-									New frontend layout
-									<strong>this week</strong>
-								</li>
-								<li class="green">
-									<a class="action icon-check-empty" href="#"></a>
-									Hire developers
-									<strong>this week</strong>
-								</li>
-								<li class="blue">
-									<a class="action icon-check-empty" href="#"></a>
-									New frontend layout
-									<strong>this month</strong>
-								</li>
-								<li class="blue">
-									<a class="action icon-check-empty" href="#"></a>
-									Hire developers
-									<strong>this month</strong>
-								</li>
-							</ul>
-						</div>	
-					</div>
-				</div>
-			
-			</div>
-			
-			<div class="row-fluid">	
+			</div>	
+                            
+                            <div class="row-fluid">	
 
 				<a class="quick-button metro yellow span2">
 					<i class="icon-group"></i>
@@ -996,9 +467,9 @@
 					<span class="badge">237</span>
 				</a>
 				<a class="quick-button metro red span2">
-					<i class="icon-comments-alt"></i>
-					<p>Comments</p>
-					<span class="badge">46</span>
+					<i class="icon-money"></i>
+					<p>Pagos Adeudados</p>
+					<span class="badge">$58000</span>
 				</a>
 				<a class="quick-button metro blue span2">
 					<i class="icon-shopping-cart"></i>
@@ -1022,6 +493,15 @@
 				<div class="clearfix"></div>
 								
 			</div><!--/row-->
+			
+
+			
+			
+					
+						
+			
+			
+			
 			
        
 
@@ -1050,7 +530,7 @@
 	<footer>
 
 		<p>
-			<span style="text-align:left;float:left">&copy; 2015 <a href="#" alt="Bootstrap_Metro_Dashboard">sikronk</a></span>
+			<span style="text-align:left;float:left">&copy; 2015 <a href="#" alt="sikronk">sikronk</a></span>
 			
 		</p>
 
