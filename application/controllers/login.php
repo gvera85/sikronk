@@ -4,6 +4,7 @@
 class login extends CI_Controller {
     
     var $Usuario;
+    var $perfiles = array();
 
     function index() {
         if( $this->session->userdata('isLoggedIn') ) {
@@ -24,17 +25,18 @@ class login extends CI_Controller {
         //Ensure values exist for email and pass, and validate the user's credentials
         if( $email && $pass && $this->user_m->validate_user($email,$pass)) {
             // If the user is valid, redirect to the main view
-            $perfiles = $this->getPerfiles($this->session->userdata('id'));
+            $this->perfiles = $this->getPerfiles($this->session->userdata('id'));
             
-            if( is_array($perfiles) && count($perfiles) > 1 ) {
+            if( is_array($this->perfiles) && count($this->perfiles) > 1 ) {
                 //echo "antes de llamar a show_perfiles";
-                $this->show_perfiles($perfiles);//Tiene varios perfiles, hago que el usuario seleccione uno
-            }else if (is_array($perfiles) && count($perfiles) == 1){
-                $perfil = $perfiles[0];
+                $this->show_perfiles($this->perfiles);//Tiene varios perfiles, hago que el usuario seleccione uno
+            }else if (is_array($this->perfiles) && count($this->perfiles) == 1){
+                $perfil = $this->perfiles[0];
                 
                         
                 $this->session->set_userdata('empresa', $perfil['id_empresa']);                
                 $this->session->set_userdata('DescEmpresa', $perfil['empresa']);
+                $this->session->set_userdata('imagen_logo', $perfil['imagen_logo']);
                 
                 $this->asignarPerfil($perfil['id_perfil']);
             }else{
@@ -103,17 +105,28 @@ class login extends CI_Controller {
     function asignarPerfilSeleccionado()
     {
         //("Antes de obtener el perfil elegido","log");
+        chrome_log("Antes de obtener perfil elegido:","log");
         $EmpresayPerfil = $this->input->post('selectPerfil');
         
         $vector = explode('-', $EmpresayPerfil);
 
-        $perfil = $vector[0];
-        $empresa = $vector[1];
-        $DescEmpresa = $vector[2];
+        $idLineaPerfil = $vector[0];
+        $perfil = $vector[1];
+        $empresa = $vector[2];
+        $DescEmpresa = $vector[3];
         
         $this->session->set_userdata('empresa', $empresa);
         $this->session->set_userdata('DescEmpresa', $DescEmpresa);
         
+        chrome_log("---------------","log");
+        
+        foreach ($this->perfiles as $perf): 
+            echo "gonza";
+            if ($perf['id_linea'] == $idLineaPerfil) {
+                $this->session->set_userdata('imagen_razonsocial', $perf['imagen_logo'] . '***' . $perf['razon_social']);
+            }
+        endforeach;
+
         $this->asignarPerfil($perfil);
         
     }
@@ -121,7 +134,7 @@ class login extends CI_Controller {
     
     function asignarPerfil($perfil) {
        
-        //chrome_log("Antes de obtener el perfil elegido","log");
+        chrome_log("Antes de obtener el perfil elegido","log");
         /*$EmpresayPerfil = $this->input->post('selectPerfil');
         
         $vector = explode('-', $EmpresayPerfil);
@@ -141,6 +154,7 @@ class login extends CI_Controller {
         $this->session->set_userdata('Usuario', $this->Usuario[0]);
         
         //echo "Antes de llamar al metodo getMenuPorPerfil [".$this->Usuario[0]["id"]. "]";
+        chrome_log("Antes menu:","log");
         $menus = $this->usuario_m->getMenuPorPerfil($perfil,0);
         chrome_log("Despues de llamar al metodo getMenuPorPerfil","log");
                 

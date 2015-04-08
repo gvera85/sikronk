@@ -53,7 +53,7 @@ class usuario_m extends CI_Model {
     public function getPerfilProveedor($idUsuario)
     {
         if($idUsuario != FALSE) {
-          $sql = "select a.id_perfil_proveedor id_perfil, b.razon_social empresa, c.descripcion perfil, a.id_proveedor id_empresa, a.id_usuario
+          $sql = "select a.id id_linea, a.id_perfil_proveedor id_perfil, b.razon_social empresa, b.imagen_logo, c.descripcion perfil, a.id_proveedor id_empresa, a.id_usuario
                     from usuario_perfil_proveedor a
                     join proveedor b on a.id_proveedor = b.id
                     join perfil_proveedor c on a.id_perfil_proveedor = c.id
@@ -77,7 +77,7 @@ class usuario_m extends CI_Model {
     public function getPerfilDistribuidor($idUsuario)
     {
         if($idUsuario != FALSE) {
-          $sql = "select a.id_perfil_distribuidor id_perfil, b.razon_social empresa, c.descripcion perfil, a.id_distribuidor id_empresa, a.id_usuario
+          $sql = "select a.id id_linea, a.id_perfil_distribuidor id_perfil, b.razon_social empresa, b.imagen_logo, c.descripcion perfil, a.id_distribuidor id_empresa, a.id_usuario
                     from usuario_perfil_distribuidor a
                     join distribuidor b on a.id_distribuidor = b.id
                     join perfil_distribuidor c on a.id_perfil_distribuidor = c.id
@@ -101,7 +101,7 @@ class usuario_m extends CI_Model {
     public function getPerfilCliente($idUsuario)
     {
         if($idUsuario != FALSE) {
-          $sql = "select a.id_perfil_cliente id_perfil, b.razon_social empresa, c.descripcion perfil, a.id_cliente id_empresa, a.id_usuario
+          $sql = "select a.id id_linea, a.id_perfil_cliente id_perfil, b.razon_social empresa, b.imagen_logo, c.descripcion perfil, a.id_cliente id_empresa, a.id_usuario
                     from usuario_perfil_cliente a
                     join cliente b on a.id_cliente = b.id
                     join perfil_cliente c on a.id_perfil_cliente = c.id

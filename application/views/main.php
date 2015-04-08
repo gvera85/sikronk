@@ -21,11 +21,11 @@
             <p></p>
             <p><?php echo $menu['descripcion']; ?>   </p>
         </div>
-               
+      
     <?php endforeach; ?>   
     
-    
-    
+        
+
   </div>
       
   <div id="navcontainer" style="display:none;">    

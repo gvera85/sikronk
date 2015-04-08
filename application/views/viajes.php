@@ -389,6 +389,8 @@
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%" >
     <thead>
         <tr>
+            <th>Viaje</th>
+            <th>Fecha</th>
             <th>Proveedor</th>
             <th>Producto</th>
             <th>Marca</th>
@@ -410,6 +412,8 @@
                 foreach( $lineasVentas as $lineas ) : ?> 
         
                     <tr>
+                        <td><?php echo $lineas['numero_de_viaje'] ?></td>
+                        <td><?php echo $lineas['fecha_estimada_llegada'] ?></td>
                         <td><?php echo $lineas['razon_social'] ?></td>
                         <td><?php echo $lineas['desc_producto'] ?></td>
                         <td><?php echo $lineas['marca'] ?></td>

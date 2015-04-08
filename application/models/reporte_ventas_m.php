@@ -70,7 +70,9 @@ class reporte_ventas_m extends CI_Model {
                     a.id_producto,
                     a.id_variable_logistica,
                     a.precio_caja,
-                    a.porcentaje_ganancia
+                    a.porcentaje_ganancia,
+                    d.numero_de_viaje,
+                    date_format(d.fecha_estimada_llegada, '%d-%m-%Y') fecha_estimada_llegada
                     from reparto a
                     join producto b on a.id_producto = b.id
                     join variable_logistica c on a.id_variable_logistica = c.id
