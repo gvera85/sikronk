@@ -27,9 +27,27 @@ class login extends CI_Controller {
             // If the user is valid, redirect to the main view
             $this->perfiles = $this->getPerfiles($this->session->userdata('id'));
             
+            chrome_log("lalala:".$this->session->userdata('id'),"log");
+            
+            foreach ($this->perfiles as $perf): 
+            chrome_log("idLinea:".$perf['id_linea'],"log");
+            if ($perf['id_linea'] == 1) {
+                $this->session->set_userdata('imagen_razonsocial', $perf['imagen_logo'] . '***' . $perf['razon_social']);
+            }
+            endforeach;
+            
             if( is_array($this->perfiles) && count($this->perfiles) > 1 ) {
                 //echo "antes de llamar a show_perfiles";
                 $this->show_perfiles($this->perfiles);//Tiene varios perfiles, hago que el usuario seleccione uno
+                
+                
+                foreach ($this->perfiles as $perf): 
+                chrome_log("idLinea2:".$perf['id_linea'],"log");
+                if ($perf['id_linea'] == 1) {
+                    $this->session->set_userdata('imagen_razonsocial', $perf['imagen_logo'] . '***' . $perf['razon_social']);
+                }
+                endforeach;
+                
             }else if (is_array($this->perfiles) && count($this->perfiles) == 1){
                 $perfil = $this->perfiles[0];
                 
@@ -91,6 +109,21 @@ class login extends CI_Controller {
         
         chrome_log("Perfil:".$Perfiles[0]["perfil"],"log");
         
+        $a = 0;
+        
+        foreach ($Perfiles as $perf): 
+           
+                $a = $a + 1;
+        
+                chrome_log("Imagen:".$perf['imagen_logo'],"log");
+                //chrome_log("numero:".$a,"log");
+           
+        endforeach;
+        
+        for ($i=0; $i < 3; $i++)
+        {
+            chrome_log("i:".$i,"log");
+        }
         return $Perfiles;
     }
     
@@ -105,7 +138,6 @@ class login extends CI_Controller {
     function asignarPerfilSeleccionado()
     {
         //("Antes de obtener el perfil elegido","log");
-        chrome_log("Antes de obtener perfil elegido:","log");
         $EmpresayPerfil = $this->input->post('selectPerfil');
         
         $vector = explode('-', $EmpresayPerfil);
@@ -117,16 +149,11 @@ class login extends CI_Controller {
         
         $this->session->set_userdata('empresa', $empresa);
         $this->session->set_userdata('DescEmpresa', $DescEmpresa);
+        $this->session->set_userdata('idLineaPerfil', $idLineaPerfil);
         
-        chrome_log("---------------","log");
-        
-        foreach ($this->perfiles as $perf): 
-            echo "gonza";
-            if ($perf['id_linea'] == $idLineaPerfil) {
-                $this->session->set_userdata('imagen_razonsocial', $perf['imagen_logo'] . '***' . $perf['razon_social']);
-            }
-        endforeach;
+        chrome_log("Gonzalo","log");
 
+        
         $this->asignarPerfil($perfil);
         
     }
@@ -136,9 +163,9 @@ class login extends CI_Controller {
        
         chrome_log("Antes de obtener el perfil elegido","log");
         /*$EmpresayPerfil = $this->input->post('selectPerfil');
-        
+       
         $vector = explode('-', $EmpresayPerfil);
-
+        
         $perfil = $vector[0];
         $empresa = $vector[1];
         $DescEmpresa = $vector[2];*/
@@ -157,6 +184,16 @@ class login extends CI_Controller {
         chrome_log("Antes menu:","log");
         $menus = $this->usuario_m->getMenuPorPerfil($perfil,0);
         chrome_log("Despues de llamar al metodo getMenuPorPerfil","log");
+        
+        $this->session->set_userdata('imagen_razonsocial', '1****1');
+        
+        foreach ($this->perfiles as $perf): 
+            $this->session->set_userdata('imagen_razonsocial', '****');
+            if ($perf['id_linea'] == $this->session->userdata('idLineaPerfil')) {
+                $this->session->set_userdata('imagen_razonsocial', $perf['imagen_logo'] . '***' . $perf['razon_social']);
+            }
+        endforeach;
+
                 
         //echo "Menus:".$this->Usuario[0]["id"]."-".$menus[0]["descripcion"];
         $this->session->set_userdata('menu', $menus);

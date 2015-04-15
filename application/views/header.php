@@ -39,7 +39,7 @@
                     <li style="font-size: 14px;"><a href="<?php echo base_url() ?>index.php/main/show_main"><i class="icon-home"></i> Home</a></li>
                     <li style="font-size: 14px;"><a href="javascript:history.go(-1);"><i class="icon-arrow-left"></i> <?php echo "Atras" ?> </a></li>
                     <li class="divider-vertical"></li>
-                    <li class="userInfo"><strong><?php echo $this->session->userdata('nombre')." - ".$this->session->userdata('imagen_razonsocial') ; ?> </strong></li>
+                    <li class="userInfo"><strong><?php echo $this->session->userdata('nombre')." - ".$this->session->userdata('imagen_razonsocial')." - " ; ?> </strong></li>
                   </ul>
 
                   <div class="btn-group pull-right">
