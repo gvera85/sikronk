@@ -22,9 +22,6 @@ class PruebaMetro extends CI_Controller {
             $anioACalcular = $anioActual -1;
             $mesACalcular = 12-(abs($mesActual - 13));
             
-            
-            
-            
             $ventaMes[]=array();
             
             for ( $i=0; $i <13; $i++)

@@ -358,7 +358,7 @@
 						<!-- end: User Dropdown -->
                                                 <li class="dropdown">
                                                     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
-								<img width="50px" src="<?php echo base_url() ?>assets/uploads/logos_clientes/logoCoto.png" alt="sikronk">                                                
+								<img width="20px" height="20px" src="<?php echo base_url() ?>assets/uploads/logos_clientes/<?php echo $this->session->userdata('imagen_razonsocial')?>" alt="sikronk">                                                
 							</a>
                                                 
                                                 </li>
@@ -461,33 +461,21 @@
                             
                             <div class="row-fluid">	
 
-				<a class="quick-button metro yellow span2">
-					<i class="icon-group"></i>
-					<p>Users</p>
-					<span class="badge">237</span>
-				</a>
+				
 				<a class="quick-button metro red span2">
 					<i class="icon-money"></i>
 					<p>Pagos Adeudados</p>
 					<span class="badge">$58000</span>
 				</a>
-				<a class="quick-button metro blue span2">
-					<i class="icon-shopping-cart"></i>
-					<p>Orders</p>
-					<span class="badge">13</span>
-				</a>
+				
 				<a class="quick-button metro green span2">
 					<i class="icon-barcode"></i>
-					<p>Products</p>
+					<p>Productos</p>
 				</a>
-				<a class="quick-button metro pink span2">
-					<i class="icon-envelope"></i>
-					<p>Messages</p>
-					<span class="badge">88</span>
-				</a>
+				
 				<a class="quick-button metro black span2">
 					<i class="icon-calendar"></i>
-					<p>Calendar</p>
+					<p>Entregas pendientes</p>
 				</a>
 				
 				<div class="clearfix"></div>
