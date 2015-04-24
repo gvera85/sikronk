@@ -60,7 +60,7 @@ class ConfirmarViaje extends CI_Controller{
     $this->grocery_crud->callback_before_update(array($this,'distribuidor_callback'));
     
     
-    $where = "id_estado IN ('".ESTADO_VIAJE_REPARTO_PLANIFICADO."','".ESTADO_VIAJE_CONFIRMANDO_STOCK."')";
+    $where = "id_estado IN ('".ESTADO_VIAJE_REPARTO_PLANIFICADO."','".ESTADO_VIAJE_CONFIRMANDO_STOCK."','".ESTADO_VIAJE_CREADO."')";
 
     $this->grocery_crud->where($where);
   
