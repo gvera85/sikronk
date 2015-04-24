@@ -129,22 +129,22 @@
                             if (is_array($lineasReparto))
                             {
                                 foreach( $lineasReparto as $reparto ) : 
-                                if ($reparto['id_producto'] == $lineas['id_producto'] && $reparto['id_vl'] == $lineas['id_vl'])
+                                if ($reparto['id_producto'] == $lineas['id_producto'] && $reparto['id_variable_logistica'] == $lineas['id_vl'])
                                 {
                                 ?>  
                                 <tr class="warning">
                                     <td></td>
                                     <td align="rigth"><button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button></td>
                                     <td colspan=2 align="rigth"> <?php echo $reparto['razon_social'] ?> </td>
-                                    <TD colspan=2> <?php echo $reparto['cant_bultos'] ?></TD>
-                                    <TD colspan=2> <?php echo $reparto['cant_pallets'] ?></TD>
+                                    <TD colspan=2> <?php echo $reparto['cantidad_bultos'] ?></TD>
+                                    <TD colspan=2> <?php echo $reparto['cantidad_pallets'] ?></TD>
                                     <input type="hidden" id="idProducto" name="idProducto[]" value=<?php echo $reparto['id_producto'] ?>>
                                     <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
                                     <input type="hidden" id="idCliente" name="comboClientes[]" value="<?php echo $reparto['id_cliente'] ?>">
                                     <input type="hidden" id="idVL" name="idVL[]" value="<?php echo $lineas['id_vl'] ?>">
-                                    <input type="hidden" id="idBultos" name="bultos[]" value="<?php echo $reparto['cant_bultos'] ?>">
-                                    <input type="hidden" id="idPallets" name="pallets[]" value="<?php echo $reparto['cant_pallets'] ?>">
-                                    <input type="hidden" class="cantidad_bultos_<?php echo $reparto['id_producto'] ?>" id="idBultos" name="bultos[]" value="<?php echo $reparto['cant_bultos'] ?>">
+                                    <input type="hidden" id="idBultos" name="bultos[]" value="<?php echo $reparto['cantidad_bultos'] ?>">
+                                    <input type="hidden" id="idPallets" name="pallets[]" value="<?php echo $reparto['cantidad_pallets'] ?>">
+                                    <input type="hidden" class="cantidad_bultos_<?php echo $reparto['id_producto'] ?>" id="idBultos" name="bultos[]" value="<?php echo $reparto['cantidad_bultos'] ?>">
                                 </tr>
                             <?php
                                 }

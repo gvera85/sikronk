@@ -41,7 +41,10 @@ class Planificacion extends CI_Controller{
     $this->load->model('cliente_m');
 
     $lineasViaje = $this->viaje_m->getLineasViaje($idViaje);
-    $lineasReparto = $this->viaje_m->getRepartoViaje($idViaje);
+    //$lineasReparto = $this->viaje_m->getRepartoViaje($idViaje);
+    
+    $lineasReparto = $this->viaje_m->getRepartoConfirmado($idViaje);
+    
     $clientes = $this->cliente_m->getClientes();
     
     $data['lineasViaje'] = $lineasViaje;
@@ -80,6 +83,7 @@ class Planificacion extends CI_Controller{
         $longitud = count($producto);
        
         $this->db->delete('planificacion_reparto', array('id_viaje' => $viaje[0]));
+        $this->db->delete('reparto', array('id_viaje' => $viaje[0]));
         
         //Recorro todos los elementos
         for($i=0; $i<$longitud; $i++)
@@ -94,6 +98,18 @@ class Planificacion extends CI_Controller{
                          );
 
             $this->db->insert('planificacion_reparto', $data);
+            
+            
+            $data = array(
+                            'id_viaje' => $viaje[$i] ,
+                            'id_cliente' => $cliente[$i] ,
+                            'id_producto' => $producto[$i],
+                            'id_variable_logistica' => $VL[$i],
+                            'cantidad_bultos' => $bultos[$i],
+                            'cantidad_pallets' => $pallets[$i]
+                         );
+
+            $this->db->insert('reparto', $data);
         }
         
     }
@@ -101,6 +117,8 @@ class Planificacion extends CI_Controller{
     {
       $viaje = $_POST['idViaje'];  
       $this->db->delete('planificacion_reparto', array('id_viaje' => $viaje[0]));
+      
+      $this->db->delete('reparto', array('id_viaje' => $viaje[0]));
     }
     
     $botonPresionado = $_POST['botonPresionado'];
@@ -135,8 +153,6 @@ class Planificacion extends CI_Controller{
         //saco el numero de elementos
         $longitud = count($producto);
         
-        echo $longitud;
-
         $this->db->delete('reparto', array('id_viaje' => $viaje[0]));
         
         //Recorro todos los elementos
@@ -171,6 +187,7 @@ class Planificacion extends CI_Controller{
     {
       $viaje = $_POST['idViaje'];  
       $this->db->delete('planificacion_reparto', array('id_viaje' => $viaje[0]));
+      echo "Borrado";
     }
     
     $botonPresionado = $_POST['botonPresionado'];
@@ -178,12 +195,12 @@ class Planificacion extends CI_Controller{
     if ($botonPresionado == "botonCierreViaje") 
     {
         transicionSimple($viaje[0], ESTADO_VIAJE_STOCK_CONFIRMADO, "viaje");
-        echo "Planificacion cerrada correctamente";
+        echo "Reparto CONFIRMADO correctamente";
     }   
     else
     {
         transicionSimple($viaje[0], ESTADO_VIAJE_CONFIRMANDO_STOCK, "viaje");
-        echo "Planificacion guardada correctamente";
+        echo "Reparto guardado correctamente";
     }
   }
   
