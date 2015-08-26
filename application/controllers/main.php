@@ -34,7 +34,12 @@ class main extends CI_Controller{
       //          echo $menu['descripcion'] .' - ' .$menu['path_icono']; 
     //endforeach; 
     
-    $data['menues'] = $menues;
+    if ($menues) {
+        $data['menues'] = $menues;
+        $data['hayMenu'] = true;
+    }else{
+        $data['hayMenu'] = false;
+    }
 
     $this->load->helper('form');
     $this->load->view('main',$data);
@@ -49,7 +54,13 @@ class main extends CI_Controller{
       
     $menues = $this->session->userdata('menu');*/
     
-    $data['menues'] = $menus;
+    if ($menus) {
+        $data['menues'] = $menus;
+        $data['hayMenu'] = true;
+    }else{
+        $data['hayMenu'] = false;
+    }
+
 
     $this->load->helper('form');
     $this->load->view('main',$data);

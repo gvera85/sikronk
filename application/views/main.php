@@ -7,7 +7,10 @@
   <div>
 
                
-    <?php foreach( $menues as $menu ) : ?> 
+    <?php if ($hayMenu)
+    {
+    
+        foreach( $menues as $menu ) : ?> 
                 
                 
         <div class="imagenes" >
@@ -22,7 +25,17 @@
             <p><?php echo $menu['descripcion']; ?>   </p>
         </div>
       
-    <?php endforeach; ?>   
+    <?php 
+        endforeach; 
+    }
+    else 
+    {?>
+        <div class="imagenes" >
+            <p> No tiene permisos para acceder a ningún punto de este menú</p>            
+        </div>
+    <?php
+    }
+    ?>   
     
         
 
