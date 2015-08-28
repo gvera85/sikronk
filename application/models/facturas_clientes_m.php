@@ -5,15 +5,24 @@ class facturas_clientes_m extends CI_Model {
     public function getFacturasCliente($idCliente)
     {
          if($idCliente != FALSE) {
-          $sql = "select c.razon_social proveedor,  a.id id_viaje, a.numero_de_viaje, b.id_cliente, d.razon_social cliente, 
-                    sum(b.cantidad_bultos * b.precio_caja) valor_total,	
-                    (select ifnull(sum(monto_pagado),0) from pagos_clientes_viajes pcv where pcv.id_viaje = a.id) monto_pagado
+          $sql = "select    B.STAMP FECHA_REPARTO, B.FECHA_VALORIZACION, c.razon_social proveedor,  
+                            a.id id_viaje, a.numero_de_viaje, b.id id_reparto, b.id_cliente, d.razon_social cliente,
+                            b.id_producto, e.descripcion producto, b.id_variable_logistica, f.peso
+                            ,b.cantidad_bultos, b.precio_caja precio_bulto
+                            ,b.cantidad_bultos * b.precio_caja valor_total
+                            ,(	select ifnull(sum(monto_pagado),0) 
+                                    from pagos_cliente_REPARTO pcv 
+                                    where pcv.id_REPARTO = b.id 
+                                    and pcv.id_producto = b.id_producto 
+                                    and pcv.id_variable_logistica = b.id_variable_logistica
+                             ) monto_pagado
                     from viaje a
-                    JOIN reparto b ON a.id = b.id_viaje
+                    join reparto b ON a.id = b.id_viaje
                     join proveedor c on a.id_proveedor = c.id
                     join cliente d on b.id_cliente = d.id
+					join producto e on b.id_producto = e.id
+					join variable_logistica f on b.id_variable_logistica = f.id	
                     where b.id_cliente = ?
-                    group by c.razon_social,  a.id, a.numero_de_viaje, b.id_cliente, d.razon_social
                     order by a.stamp";
             
             $query = $this->db->query($sql, array($idCliente));
@@ -61,7 +70,7 @@ class facturas_clientes_m extends CI_Model {
     {
          if($idPago != FALSE) {
           $sql = "SELECT ifnull(sum(monto_pagado),0) montoImputado
-                    FROM pagos_clientes_viajes
+                    FROM pagos_cliente_reparto
                     where id_pago = ?";
             
             $query = $this->db->query($sql, array($idPago));

@@ -1,5 +1,10 @@
 <html lang="es">
-    <?php $this->load->view('header') ?>
+    <?php 
+        $this->load->view('header');
+      
+      
+   
+    ?>
 <head>
     <title>sikronk - Facturas pendientes del cliente</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -17,7 +22,18 @@
     <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/plugins/jquery/jquery.dataTables.min.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>/assets/bootstrap/js/dataTablesBootstrap.js"></script>
     <script type="text/javascript" charset="utf-8">
+            const COLUMNA_VALOR_TOTAL_LINEA = 7;
+            const COLUMNA_MONTO_PAGADO = 8;
+            const COLUMNA_SALDO = 9;
+            const COLUMNA_ID_REPARTO = 10;
+            const COLUMNA_MONTO_PAGADO_ESTA_FACTURA = 11;
+            const COLUMNA_ID_PRODUCTO = 12;
+            const COLUMNA_ID_VL = 13;
+        
             $(document).ready(function() {
+                    
+                    
+                
                     var t = $('#example').DataTable( {
                                         "columnDefs": [ {
                                             "searchable": false,
@@ -25,10 +41,24 @@
                                             "targets": 0
                                         },
                                             {
-                                                "targets": [ 6 ],
+                                                "targets": [ 10 ],
                                                 "visible": false
                                             }
-                                          
+                                         ,
+                                            {
+                                                "targets": [ 11 ],
+                                                "visible": false
+                                            }
+                                         ,
+                                            {
+                                                "targets": [ 12 ],
+                                                "visible": false
+                                            }
+                                         ,
+                                            {
+                                                "targets": [ 13 ],
+                                                "visible": false
+                                            }   
                                         ]
                                         ,
                                         "order": [[ 1, 'asc' ]],
@@ -48,10 +78,11 @@
 
                                      $('#example tbody').on( 'click', 'tr', function () {
                                         
-                                            valorViaje = Number($(this).find("td").eq(3).html());                                                
-                                            montoPagado = Number($(this).find("td").eq(4).html());                                                
-                                            saldo = Number($(this).find("td").eq(5).html());                                                
-                                            montoPagadoConEstaFactura = Number($(this).find("td").eq(6).html());
+                                            valorTotalLinea = Number($(this).find("td").eq(COLUMNA_VALOR_TOTAL_LINEA).html());                                                
+                                            montoPagado = Number($(this).find("td").eq(COLUMNA_MONTO_PAGADO).html());                                                
+                                            saldo = Number($(this).find("td").eq(COLUMNA_SALDO).html());                                                
+                                            montoPagadoConEstaFactura = Number($(this).find("td").eq(COLUMNA_MONTO_PAGADO).html());
+                                            
                                             montoRestante = Number($("#montoRestante").html());                                       
                                                    
                                         
@@ -59,11 +90,11 @@
                                             {                                                
                                                 $("#montoRestante").html(montoPagadoConEstaFactura + montoRestante);
                                                 
-                                                $(this).find("td").eq(4).html(montoPagado-montoPagadoConEstaFactura); // Actualizo el valor pagado
+                                                $(this).find("td").eq(COLUMNA_MONTO_PAGADO).html(montoPagado-montoPagadoConEstaFactura); // Actualizo el valor pagado
                                                 
-                                                $(this).find("td").eq(5).html(saldo+montoPagadoConEstaFactura); // Actualizo el saldo
+                                                $(this).find("td").eq(COLUMNA_SALDO).html(saldo+montoPagadoConEstaFactura); // Actualizo el saldo
                                                 
-                                                $(this).find("td").eq(6).html(0); // Actualizo el monto pagado con esta factura
+                                                $(this).find("td").eq(COLUMNA_MONTO_PAGADO_ESTA_FACTURA).html(0); // Actualizo el monto pagado con esta factura
                                                 
                                                 //desactivar el resaltado
                                                 $(this).toggleClass('active', false);
@@ -72,8 +103,7 @@
                                             else
                                             {      
                                                 if (montoRestante > 0 && saldo > 0 )
-                                                {
-                                                    valorViaje = Number($(this).find("td").eq(3).html());
+                                                {                                                    
 
                                                     if ( montoRestante > saldo)
                                                         valorADescontar = saldo;
@@ -81,12 +111,20 @@
                                                         valorADescontar = montoRestante;
 
                                                     montoPagadoEnTotal = montoPagado+valorADescontar;
-                                                    saldo = valorViaje - montoPagadoEnTotal;
+                                                    saldo = valorTotalLinea - montoPagadoEnTotal;
 
-                                                    $(this).find("td").eq(4).html(montoPagadoEnTotal); //Actualizo el monto pagado                                       
-                                                    $(this).find("td").eq(5).html(saldo); //Actualizo el saldo
+                                                    $(this).find("td").eq(COLUMNA_MONTO_PAGADO).html(montoPagadoEnTotal); //Actualizo el monto pagado                                       
+                                                    $(this).find("td").eq(COLUMNA_SALDO).html(saldo); //Actualizo el saldo
 
-                                                    $(this).find("td").eq(6).html(valorADescontar);//Esto es lo que se va a pagar con este factura
+                                                    //$(this).find("td").eq(11).html(valorADescontar);//Esto es lo que se va a pagar con este factura
+                                                    
+                                                    oTable = $('#example').dataTable();
+                                                    var aPos   = oTable.fnGetPosition(this);
+                                                    var aData = oTable.fnGetData(aPos);
+                                                    
+                                                    oTable.fnUpdate( valorADescontar, aPos, COLUMNA_MONTO_PAGADO_ESTA_FACTURA ); // //Esto es lo que se va a pagar con este factura
+                                                    
+                                                    //montoPagado = Number(aData[COLUMNA_MONTO_PAGADO_ESTA_FACTURA] ); //$(this).find("td").eq(11).html();        
 
                                                     $("#montoRestante").html(montoRestante-valorADescontar);
 
@@ -94,12 +132,6 @@
                                                     $(this).toggleClass('active', true);
                                                 }
                                             }
-
-                                            
-
-                                           
-                                        
-                                        
                                     } );
 
                                     $('#button').click( function () {
@@ -110,7 +142,7 @@
                                         var contador = 0;
                                         
                                         $( oTable.fnGetNodes() ).each(function(){
-                                            var totalViaje, idViaje, montoPagado;
+                                            var idReparto, montoPagado, montoTotal, idProducto, idVL;
                                                                                         
                                             if ($(this).hasClass('active'))
                                             {
@@ -118,28 +150,33 @@
                                                 var aPos   = oTable.fnGetPosition(this);
                                                 var aData = oTable.fnGetData(aPos);        
                                             
-                                                totalViaje = Number(aData[3]);     
+                                                montoTotal = Number(aData[COLUMNA_VALOR_TOTAL_LINEA]);     
                                                 
-                                                montoPagado = $(this).find("td").eq(6).html();
+                                                montoPagado = Number(aData[COLUMNA_MONTO_PAGADO_ESTA_FACTURA]); //$(this).find("td").eq(11).html();          
                                                 
-                                                
-                                                idViaje = Number(aData[6]);
+                                                idReparto = Number(aData[COLUMNA_ID_REPARTO]);
+                                                idProducto = Number(aData[COLUMNA_ID_PRODUCTO]);
+                                                idVL = Number(aData[COLUMNA_ID_VL]);
                                                                                                
                                                 arrayPagos.push({ 
-                                                                idViaje: idViaje, 
+                                                                idReparto: idReparto, 
                                                                 idPago: $("#idPago").html(), 
-                                                                totalViaje: totalViaje,
-                                                                montoPagado: montoPagado
+                                                                montoTotal: montoTotal,
+                                                                montoPagado: montoPagado,
+                                                                idProducto: idProducto,
+                                                                idVL: idVL
                                                           });  
                                                           
-                                                /*alert ('arrayPagos['+contador+']: idViaje: '+arrayPagos[contador].idViaje+
+                                                /*alert ('arrayPagos['+contador+']: idReparto: '+arrayPagos[contador].idReparto+
                                                       ' idPago: '+arrayPagos[contador].idPago+' totalViaje:'+arrayPagos[contador].totalViaje+
                                                       ' montoPagado'+arrayPagos[contador].montoPagado
                                                       );  */       
                                               
-                                                console.log('arrayPagos['+contador+']: idViaje: '+arrayPagos[contador].idViaje+
-                                                      ' idPago: '+arrayPagos[contador].idPago+' totalViaje:'+arrayPagos[contador].totalViaje+
-                                                      ' montoPagado'+arrayPagos[contador].montoPagado);
+                                                console.log('arrayPagos['+contador+']: idReparto: '+arrayPagos[contador].idReparto+
+                                                      ' idPago: '+arrayPagos[contador].idPago+' montoTotal:'+arrayPagos[contador].montoTotal+
+                                                      ' montoPagado'+arrayPagos[contador].montoPagado+
+                                                      ' idProducto:'+arrayPagos[contador].idProducto+
+                                                      ' idVL:'+arrayPagos[contador].idVL);
                                                           
                                                 $.ajax({
                                                     type:"POST",
@@ -192,7 +229,7 @@
         
 
         <div class="panel panel-primary">
-        <div class="panel-heading">Viajes adeudados - Seleccione los viajes que desea abonar mediante esta factura</div>
+        <div class="panel-heading">Productos adeudados - Seleccione las deudas que desea abonar mediante esta factura</div>
         <div class="panel-body">
         
         <button id="button">Grabar</button>
@@ -201,13 +238,19 @@
                 <thead>
                 <TR>
                     <th>#</th>
-                    <th><b>Proveedor</b></th>
-                    <th><b>Nro de Viaje</b></th>
-                    <th><b>Valor viaje</b></th>
+                    <th><b># Viaje</b></th>
+                    <th><b>Proveedor</b></th>                    
+                    <th><b>Producto</b></th>
+                    <th><b>Peso bulto</b></th>
+                    <th><b>Cantidad</b></th>
+                    <th><b>Precio x bulto</b></th>
+                    <th><b>Total</b></th>
                     <th><b>Monto Pagado</b></th>
                     <th><b>Saldo</b></th>
-                    <th><b>IdViaje</b></th>
+                    <th><b>IdReparto</b></th>
                     <th><b>Pagado con esta factura</b></th>
+                    <th><b>IdProducto</b></th>
+                    <th><b>IdVL</b></th>
                   
                 </TR>
                 </thead>
@@ -216,13 +259,19 @@
                     foreach( $facturasClientes as $lineas ) : ?>
                     <TR>
                         <TD></TD>
-                        <TD> <?php echo $lineas['proveedor'] ?></TD>
                         <TD> <?php echo $lineas['numero_de_viaje'] ?></TD>
+                        <TD> <?php echo $lineas['proveedor'] ?></TD>                       
+                        <TD> <?php echo $lineas['producto'] ?></TD>
+                        <TD> <?php echo $lineas['peso'] ?></TD>
+                        <TD> <?php echo $lineas['cantidad_bultos'] ?></TD>
+                        <TD> <?php echo $lineas['precio_bulto'] ?></TD>
                         <TD> <?php echo $lineas['valor_total'] ?></TD>
                         <TD> <?php echo $lineas['monto_pagado'] ?> </TD>
                         <TD> <?php echo $lineas['valor_total'] - $lineas['monto_pagado'] ?> </TD>
-                        <TD> <?php echo $lineas['id_viaje'] ?> </TD>
+                        <TD> <?php echo $lineas['id_reparto'] ?> </TD>
                         <TD> 0 </TD>
+                        <TD> <?php echo $lineas['id_producto'] ?> </TD>
+                        <TD> <?php echo $lineas['id_variable_logistica'] ?> </TD>
                      
                     </TR>            
                     

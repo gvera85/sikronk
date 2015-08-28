@@ -29,20 +29,24 @@ class procesaPago extends CI_Controller{
   }
   
   function asignarPago(){
-    $id_viaje = $_POST['idViaje'];
+    $idReparto = $_POST['idReparto'];
     $id_pago = $_POST['idPago']; 
-    $monto_viaje = $_POST['totalViaje']; 
+    $monto_total = $_POST['montoTotal']; 
     $monto_pagado = $_POST['montoPagado']; 
+    $id_producto = $_POST['idProducto']; 
+    $id_variable_logistica = $_POST['idVL'];              
     
     
     $data = array(
-               'id_viaje' => $id_viaje,
+               'id_reparto' => $idReparto,
                'id_pago' => $id_pago,
-               'monto_viaje' => $monto_viaje,
-               'monto_pagado' => $monto_pagado
+               'monto_total' => $monto_total,
+               'monto_pagado' => $monto_pagado,
+               'id_producto' => $id_producto,
+               'id_variable_logistica' => $id_variable_logistica   
             );
 
-    $this->db->insert('pagos_clientes_viajes', $data);
+    $this->db->insert('pagos_cliente_reparto', $data);
    
     
     echo "insertado";
