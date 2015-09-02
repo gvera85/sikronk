@@ -67,7 +67,7 @@ class main extends CI_Controller{
   }
   
   function redireccionarControlador($nombreControlador) {
-      redirect('/'.$nombreControlador);
+      redirect('/'.urldecode($nombreControlador));
   }
   
   function atras() {

@@ -16,7 +16,8 @@
         <div class="imagenes" >
             <a href="
                 <?php if ($menu['cant_hijos'] == 0) 
-                            echo base_url()."index.php/main/redireccionarControlador/".$menu['controlador']; 
+                            echo base_url()."index.php/main/redireccionarControlador/".urlencode($menu['controlador']); 
+                            /*echo site_url("main/redireccionarControlador/".urlencode($menu['controlador']));*/
                       else 
                             echo base_url()."index.php/main/recargarMenu/".$menu['id_menu'];  ?>">
             <img src="<?php echo base_url()."assets/img/".$menu['path_icono']?>" title="<?php echo $menu['descripcion']?>" width="158" height="158" />

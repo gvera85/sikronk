@@ -136,67 +136,70 @@
 
                                     $('#button').click( function () {
                                         
-                                        oTable = $('#example').dataTable();
-                                        
-                                        var arrayPagos = []; 
-                                        var contador = 0;
-                                        
-                                        $( oTable.fnGetNodes() ).each(function(){
-                                            var idReparto, montoPagado, montoTotal, idProducto, idVL;
-                                                                                        
-                                            if ($(this).hasClass('active'))
-                                            {
-                                               
-                                                var aPos   = oTable.fnGetPosition(this);
-                                                var aData = oTable.fnGetData(aPos);        
-                                            
-                                                montoTotal = Number(aData[COLUMNA_VALOR_TOTAL_LINEA]);     
-                                                
-                                                montoPagado = Number(aData[COLUMNA_MONTO_PAGADO_ESTA_FACTURA]); //$(this).find("td").eq(11).html();          
-                                                
-                                                idReparto = Number(aData[COLUMNA_ID_REPARTO]);
-                                                idProducto = Number(aData[COLUMNA_ID_PRODUCTO]);
-                                                idVL = Number(aData[COLUMNA_ID_VL]);
-                                                                                               
-                                                arrayPagos.push({ 
-                                                                idReparto: idReparto, 
-                                                                idPago: $("#idPago").html(), 
-                                                                montoTotal: montoTotal,
-                                                                montoPagado: montoPagado,
-                                                                idProducto: idProducto,
-                                                                idVL: idVL
-                                                          });  
-                                                          
-                                                /*alert ('arrayPagos['+contador+']: idReparto: '+arrayPagos[contador].idReparto+
-                                                      ' idPago: '+arrayPagos[contador].idPago+' totalViaje:'+arrayPagos[contador].totalViaje+
-                                                      ' montoPagado'+arrayPagos[contador].montoPagado
-                                                      );  */       
-                                              
-                                                console.log('arrayPagos['+contador+']: idReparto: '+arrayPagos[contador].idReparto+
-                                                      ' idPago: '+arrayPagos[contador].idPago+' montoTotal:'+arrayPagos[contador].montoTotal+
-                                                      ' montoPagado'+arrayPagos[contador].montoPagado+
-                                                      ' idProducto:'+arrayPagos[contador].idProducto+
-                                                      ' idVL:'+arrayPagos[contador].idVL);
-                                                          
-                                                $.ajax({
-                                                    type:"POST",
-                                                    data:  arrayPagos[contador],
-                                                    url:"http://localhost/sikronk/index.php/procesaPago/asignarPago",                                        
-                                                    }).done(function(data){
-                                                            console.log(data);
-                                                            //alert(data);
-                                                });
-                                                
-                                                contador++;
-                                            }                                            
-                                        })
-                                        
-                                                  
+                                        var answer = confirm("¿Está seguro de computar estos pagos?. Luego de aceptar no se podrá revertir los cambios")
 
-                                        
-                                        
+                                        if (answer)
+                                        {
+                                            oTable = $('#example').dataTable();
 
-                                    } );
+                                            var arrayPagos = []; 
+                                            var contador = 0;
+
+                                            $( oTable.fnGetNodes() ).each(function(){
+                                                var idReparto, montoPagado, montoTotal, idProducto, idVL;
+
+                                                if ($(this).hasClass('active'))
+                                                {
+
+                                                    var aPos   = oTable.fnGetPosition(this);
+                                                    var aData = oTable.fnGetData(aPos);        
+
+                                                    montoTotal = Number(aData[COLUMNA_VALOR_TOTAL_LINEA]);     
+
+                                                    montoPagado = Number(aData[COLUMNA_MONTO_PAGADO_ESTA_FACTURA]); //$(this).find("td").eq(11).html();          
+
+                                                    idReparto = Number(aData[COLUMNA_ID_REPARTO]);
+                                                    idProducto = Number(aData[COLUMNA_ID_PRODUCTO]);
+                                                    idVL = Number(aData[COLUMNA_ID_VL]);
+
+                                                    arrayPagos.push({ 
+                                                                    idReparto: idReparto, 
+                                                                    idPago: $("#idPago").html(), 
+                                                                    montoTotal: montoTotal,
+                                                                    montoPagado: montoPagado,
+                                                                    idProducto: idProducto,
+                                                                    idVL: idVL
+                                                              });  
+
+                                                    /*alert ('arrayPagos['+contador+']: idReparto: '+arrayPagos[contador].idReparto+
+                                                          ' idPago: '+arrayPagos[contador].idPago+' totalViaje:'+arrayPagos[contador].totalViaje+
+                                                          ' montoPagado'+arrayPagos[contador].montoPagado
+                                                          );  */       
+
+                                                    console.log('arrayPagos['+contador+']: idReparto: '+arrayPagos[contador].idReparto+
+                                                          ' idPago: '+arrayPagos[contador].idPago+' montoTotal:'+arrayPagos[contador].montoTotal+
+                                                          ' montoPagado'+arrayPagos[contador].montoPagado+
+                                                          ' idProducto:'+arrayPagos[contador].idProducto+
+                                                          ' idVL:'+arrayPagos[contador].idVL);
+
+                                                    $.ajax({
+                                                        type:"POST",
+                                                        data:  arrayPagos[contador],
+                                                        url:"http://localhost/sikronk/index.php/procesaPago/asignarPago",                                        
+                                                        }).done(function(data){
+                                                                console.log(data);
+                                                                //alert(data);
+                                                    });
+
+                                                    contador++;
+                                                } 
+
+                                            }
+                                        )
+                                
+                                        close();    
+                                    }
+                                    } ); //Fin de la funcion del boton
             } );
                     
     </script>
