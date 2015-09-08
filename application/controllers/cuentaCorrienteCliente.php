@@ -28,7 +28,7 @@ class cuentaCorrienteCliente extends CI_Controller{
       
     $this->load->model('facturas_clientes_m');
     
-    $facturasClientes = $this->facturas_clientes_m->getFacturasCliente($idCliente);
+    $facturasClientes = $this->facturas_clientes_m->getLineasCCC($idCliente);
     
     $data['facturasClientes'] = $facturasClientes;
     
