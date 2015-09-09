@@ -20,61 +20,11 @@
     <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>/assets/bootstrap/js/dataTablesBootstrap.js"></script>
     <script type="text/javascript" charset="utf-8">
         
-   
-        
-            const COLUMNA_VALOR_TOTAL_LINEA = 7;
-            const COLUMNA_MONTO_PAGADO = 8;
-            const COLUMNA_SALDO = 9;
-            const COLUMNA_ID_REPARTO = 10;
-            const COLUMNA_MONTO_PAGADO_ESTA_FACTURA = 11;
-            const COLUMNA_ID_PRODUCTO = 12;
-            const COLUMNA_ID_VL = 13;
-        
             $(document).ready(function() {
                     
                     
                 
-                    var t = $('#example').DataTable( {
-                        
-                                        "footerCallback": function ( row, data, start, end, display ) {
-                                            var api = this.api(), data;
-
-                                            // Remove the formatting to get integer data for summation
-                                            var intVal = function ( i ) {
-                                                return typeof i === 'string' ?
-                                                    i.replace(/[\$,]/g, '')*1 :
-                                                    typeof i === 'number' ?
-                                                        i : 0;
-                                            };
-
-                                            // Total over all pages
-                                            total = api
-                                                .column( 11 )
-                                                .data()
-                                                .reduce( function (a, b) {
-                                                    return intVal(a) + intVal(b);
-                                                } );
-
-                                            // Total over this page
-                                            pageTotal = api
-                                                .column( 11, { page: 'current'} )
-                                                .data()
-                                                .reduce( function (a, b) {
-                                                    return intVal(a) + intVal(b);
-                                                }, 0 );
-
-                                            // Update footer
-                                            $( api.column( 11 ).footer() ).html(
-                                                '$'+pageTotal +' ( $'+ total +' total)'
-                                            );    
-                                        },
-                                        "columnDefs": [ {
-                                            "searchable": false,
-                                            "orderable": false,
-                                            "targets": 0
-                                        }
-                                        ]
-                                        ,
+                    var t = $('#example').DataTable( {   
                                         "order": [[ 2, 'desc' ]],
                                         "language": {
                                                         "url": "<?php echo base_url() ?>/assets/bootstrap/json/SpanishDataTable.json"
@@ -82,6 +32,27 @@
                                         
 
                                     } );
+                                    
+                    var x = $('#example2').DataTable( {   
+                                        "order": [[ 0, 'desc' ]],
+                                        "language": {
+                                                        "url": "<?php echo base_url() ?>/assets/bootstrap/json/SpanishDataTable.json"
+                                                    }
+                                        
+
+                                    } );                
+                                    
+                                    
+                    saldo = $("#idSaldo").val();
+                    
+                    if (saldo >= 0)
+                        classSaldo = 'label label-success';
+                    else
+                        classSaldo = 'label label-danger';
+                        
+                     
+                
+                    $("#cabeceraPanel").html($("#cabeceraPanel").html()+' - Saldo: <span class="' +classSaldo+ '" style="font-size:15px;" id="tipoMovimiento">$ '+saldo+'</span>' ); 
             } );
             
  
@@ -90,18 +61,25 @@
     
 </head>
 <body>        
+    
+     <?php 
+          foreach( $cliente as $i_cliente ) :
+                $nombreCliente = $i_cliente['razon_social']; 
+               
+        endforeach; 
+    ?>    
    
     <div class="container">
         
 
         <div class="panel panel-primary">
-        <div class="panel-heading">Cuenta corriente AKON - 05/08/2015 AL 05/09/2015</div>
+        <div class="panel-heading" id="cabeceraPanel">Cuenta corriente <?php echo $nombreCliente ?></div>
         <div class="panel-body">
             
         <table id="example" class="display" cellspacing="0" width="100%">
                 <thead>
                 <TR>
-                    <th>#</th>
+                    <th><b>Tipo</b></th>
                     <th><b>Fecha entrega</b></th>
                     <th><b>Fecha valorizacion</b></th>                    
                     <th><b>Producto</b></th>
@@ -117,15 +95,7 @@
                 </TR>
                 </thead>
                 
-                <tfoot>
-                    <tr>
-                        <th colspan="6" style="text-align:right">Saldo al 05/08/2015: 10000</th>
-                        <th colspan="5" style="text-align:right">Total:</th>
-                        <th></th>
-                    </tr>
-                </tfoot>
-                
-                 <tbody>
+                <tbody>
                 <?php 
                     $saldo = 0;
                     $saldoInicial = 0;
@@ -142,12 +112,19 @@
                     
                     $debe =  $cantidadAPagar * $lineas['precio_bulto'];                    
 
-                    $saldo = $saldo + $debe - $haber;                    
+                    $saldo = $saldo + $debe - $haber;     
+                    
+                    if ($lineas['tipo'] == 'Pago') {
+                        $classTipo = 'label label-success';
+                    } else{
+                        $classTipo = "label label-danger";
+                    }
+                        
                     
                     
                     ?>
                     <TR>
-                            <TD></TD>
+                            <TD> <span class="<?php echo $classTipo ?>" id="tipoMovimiento"> <?php echo $lineas['tipo'] ?></span></TD>
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha']), 'Ymd'); ?></span><?php echo date_format(date_create($lineas['fecha']), 'd/m/Y'); ?></td>
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'Ymd'); ?></span><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'd/m/Y'); ?></td>
                             <TD> <?php echo $lineas['producto'] ?></TD>
@@ -164,15 +141,92 @@
                 <?php           
                     endforeach; 
                 ?>
+                    
+                <input type="hidden" name="idSaldo" id="idSaldo" value=<?php echo $saldo ?>>
                    
                         
                 </tbody>    
             </table>
+             </div>
+        </div>     
+          
+  
+            
+            <div class="panel panel-info">
+            <div class="panel-heading" id="cabeceraPanel">Pendiente de valorizar</div>
+            <div class="panel-body">
+            <table id="example2" class="display" cellspacing="0" width="100%">
+                <thead>
+                <TR>
+                  
+                    <th><b>Fecha entrega</b></th>
+                  
+                    <th><b>Producto</b></th>
+                    <th><b>Peso</b></th>
+                    <th><b>Cantidad</b></th>
+                    <th><b>Cant. con merma</b></th>
+                    <th><b>Cant. a pagar</b></th>
+                    <th><b>Precio</b></th>
+                   
+                  
+                </TR>
+                </thead>
+                
+                <tbody>
+                <?php 
+                    $saldo = 0;
+                    $saldoInicial = 0;
+                    
+                    foreach( $lineasSinValorizar as $lineas ) : 
+                    
+                    //$saldo = $saldoInicial;
+                        
+                    $haber =  $lineas['haber'];
+                    
+                    $cantidad = $lineas['cantidad_bultos'];
+                    $cantidadConMerma = 0;
+                    $cantidadAPagar = $cantidad - $cantidadConMerma;
+                    
+                    $debe =  $cantidadAPagar * $lineas['precio_bulto'];                    
+
+                    $saldo = $saldo + $debe - $haber;     
+                    
+                    if ($lineas['tipo'] == 'Pago') {
+                        $classTipo = 'label label-success';
+                    } else{
+                        $classTipo = "label label-danger";
+                    }
+                        
+                    
+                    
+                    ?>
+                    <TR>
+                            
+                            <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha']), 'Ymd'); ?></span><?php echo date_format(date_create($lineas['fecha']), 'd/m/Y'); ?></td>
+                           
+                            <TD> <?php echo $lineas['producto'] ?></TD>
+                            <TD> <?php echo $lineas['peso'] ?></TD>
+                            <TD> <?php echo $cantidad ?></TD>
+                            <TD> <?php echo $cantidadConMerma ?> </TD>
+                            <TD> <?php echo $cantidadAPagar ?></TD>
+                            <TD> <span class="<?php echo $classTipo ?>" id="tipoMovimiento"> ? </span></TD>                          
+                    </TR>               
+                    
+                <?php           
+                    endforeach; 
+                ?>
+                    
+                <input type="hidden" name="idSaldo" id="idSaldo" value=<?php echo $saldo ?>>
+                   
+                        
+                </tbody>    
+            </table>
+            
          </div>
         </div>     
           
-  </div>
-    
+        
+  </div>  
    
     
   <script type="text/javascript">
@@ -182,7 +236,12 @@
 	// For demo to fit into DataTables site builder...
 	$('#example')
 		.removeClass( 'display' )
-		.addClass('table table-striped table-bordered');
+		.addClass('table table-hover table-bordered table-compact');
+        
+        // For demo to fit into DataTables site builder...
+	$('#example2')
+		.removeClass( 'display' )
+		.addClass('table table-hover table-bordered table-compact');
   </script>  
 
 </body>

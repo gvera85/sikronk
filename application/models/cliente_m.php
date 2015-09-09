@@ -17,6 +17,21 @@ class cliente_m extends CI_Model {
         return false;
     }
     
+    public function getClienteXId($idCliente)
+    {
+        $sql = "select * from cliente where id = ?";
+            
+        $query = $this->db->query($sql, $idCliente);
+
+        $clientes = $query->result_array();
+
+        if( is_array($clientes) && count($clientes) > 0 ) {
+          return $clientes;
+        }
+
+        return false;
+    }
+    
     public function getLineasViaje($idViaje)
     {
          if($idViaje != FALSE) {
