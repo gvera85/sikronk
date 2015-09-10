@@ -71,6 +71,19 @@
    
     <div class="container">
         
+        <?php 
+            if (empty($facturasClientes[0]['id_linea']))
+            {
+                $titulo = "Productos sin valorizar - No hay productos sin valorizar";
+                $sinProductos = 0;
+            }
+            else
+            {
+                $titulo = "Productos sin valorizar";
+                $sinProductos = 1;
+            }             
+        ?>    
+        
 
         <div class="panel panel-primary">
         <div class="panel-heading" id="cabeceraPanel">Cuenta corriente <?php echo $nombreCliente ?></div>
@@ -97,28 +110,30 @@
                 
                 <tbody>
                 <?php 
+                
                     $saldo = 0;
-                    $saldoInicial = 0;
-                    
-                    foreach( $facturasClientes as $lineas ) : 
-                    
-                    //$saldo = $saldoInicial;
-                        
-                    $haber =  $lineas['haber'];
-                    
-                    $cantidad = $lineas['cantidad_bultos'];
-                    $cantidadConMerma = 0;
-                    $cantidadAPagar = $cantidad - $cantidadConMerma;
-                    
-                    $debe =  $cantidadAPagar * $lineas['precio_bulto'];                    
+                
+                    if ($sinProductos == 1)
+                    {
 
-                    $saldo = $saldo + $debe - $haber;     
-                    
-                    if ($lineas['tipo'] == 'Pago') {
-                        $classTipo = 'label label-success';
-                    } else{
-                        $classTipo = "label label-danger";
-                    }
+                        foreach( $facturasClientes as $lineas ) : 
+                       
+
+                        $haber =  $lineas['haber'];
+
+                        $cantidad = $lineas['cantidad_bultos'];
+                        $cantidadConMerma = 0;
+                        $cantidadAPagar = $cantidad - $cantidadConMerma;
+
+                        $debe =  $cantidadAPagar * $lineas['precio_bulto'];                    
+
+                        $saldo = $saldo + $debe - $haber;     
+
+                        if ($lineas['tipo'] == 'Pago') {
+                            $classTipo = 'label label-success';
+                        } else{
+                            $classTipo = "label label-danger";
+                        }
                         
                     
                     
@@ -140,6 +155,7 @@
                     
                 <?php           
                     endforeach; 
+                }
                 ?>
                     
                 <input type="hidden" name="idSaldo" id="idSaldo" value=<?php echo $saldo ?>>
@@ -149,11 +165,24 @@
             </table>
              </div>
         </div>     
+        
+            <?php 
+            if (empty($lineasSinValorizar[0]['id_linea']))
+            {
+                $titulo = "Productos sin valorizar - No hay productos sin valorizar";
+                $sinProductos = 0;
+            }
+            else
+            {
+                $titulo = "Productos sin valorizar";
+                $sinProductos = 1;
+            }             
+            ?>
           
   
             
             <div class="panel panel-info">
-            <div class="panel-heading" id="cabeceraPanel">Pendiente de valorizar</div>
+            <div class="panel-heading" id="cabeceraPanel"><?php echo $titulo ?> </div>
             <div class="panel-body">
             <table id="example2" class="display" cellspacing="0" width="100%">
                 <thead>
@@ -172,34 +201,23 @@
                 </TR>
                 </thead>
                 
-                <tbody>
                 <?php 
-                    $saldo = 0;
-                    $saldoInicial = 0;
-                    
-                    foreach( $lineasSinValorizar as $lineas ) : 
-                    
-                    //$saldo = $saldoInicial;
-                        
-                    $haber =  $lineas['haber'];
-                    
-                    $cantidad = $lineas['cantidad_bultos'];
-                    $cantidadConMerma = 0;
-                    $cantidadAPagar = $cantidad - $cantidadConMerma;
-                    
-                    $debe =  $cantidadAPagar * $lineas['precio_bulto'];                    
+                
+                    if ($sinProductos == 1)
+                    {
+                
+                        foreach( $lineasSinValorizar as $lineas ) :                     
 
-                    $saldo = $saldo + $debe - $haber;     
-                    
-                    if ($lineas['tipo'] == 'Pago') {
-                        $classTipo = 'label label-success';
-                    } else{
-                        $classTipo = "label label-danger";
-                    }
-                        
-                    
-                    
-                    ?>
+
+                        $cantidad = $lineas['cantidad_bultos'];
+                        $cantidadConMerma = 0;
+                        $cantidadAPagar = $cantidad - $cantidadConMerma;    
+
+
+                ?>
+                
+                <tbody>
+                
                     <TR>
                             
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha']), 'Ymd'); ?></span><?php echo date_format(date_create($lineas['fecha']), 'd/m/Y'); ?></td>
@@ -208,18 +226,24 @@
                             <TD> <?php echo $lineas['peso'] ?></TD>
                             <TD> <?php echo $cantidad ?></TD>
                             <TD> <?php echo $cantidadConMerma ?> </TD>
-                            <TD> <?php echo $cantidadAPagar ?></TD>
-                            <TD> <span class="<?php echo $classTipo ?>" id="tipoMovimiento"> ? </span></TD>                          
+                            <TD> <?php echo $cantidadAPagar ?></TD>                         
+                            
+                            <TD> <a href=javascript:window.open('<?php echo base_url('/index.php/planificacion/valorizarViaje').'/'.$lineas['id_viaje']; ?>')> <span class="<?php echo $classTipo ?>" id="tipoMovimiento"> ? </span> </a> </TD>
+                            
+                            
+                                  
                     </TR>               
                     
-                <?php           
-                    endforeach; 
-                ?>
-                    
-                <input type="hidden" name="idSaldo" id="idSaldo" value=<?php echo $saldo ?>>
-                   
+                                  
                         
-                </tbody>    
+                </tbody>  
+                
+                <?php 
+                
+                    endforeach; 
+                    }
+                ?>
+                
             </table>
             
          </div>

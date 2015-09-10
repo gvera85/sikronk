@@ -110,7 +110,8 @@ class facturas_clientes_m extends CI_Model {
                     join cliente d on b.id_cliente = d.id
 					join producto e on b.id_producto = e.id
 					join variable_logistica f on b.id_variable_logistica = f.id	
-                    where b.id_cliente = ?                    
+                    where b.id_cliente = ?     
+                    and b.precio_caja is not null
                     union
                     select 'Pago' tipo, a.id,
                     a.fecha_pago fecha, a.fecha_pago fecha_valorizacion,
@@ -148,26 +149,20 @@ class facturas_clientes_m extends CI_Model {
     public function getLineasSinValorizar($idCliente)
     {
          if($idCliente != FALSE) {
-          $sql = "select 'Entrega' tipo, b.id id_linea, b.stamp fecha, B.fecha_valorizacion, 
-                  c.razon_social proveedor,  
-                            a.id id_viaje, a.numero_de_viaje, b.id id_reparto, b.id_cliente, d.razon_social cliente,
-                            b.id_producto, e.descripcion producto, b.id_variable_logistica, f.peso
-                            ,b.cantidad_bultos, b.precio_caja precio_bulto
-                            ,b.cantidad_bultos * b.precio_caja debe
-                            ,(	select ifnull(sum(monto_pagado),0) 
-                                    from pagos_cliente_reparto pcv 
-                                    where pcv.id_reparto = b.id 
-                                    and pcv.id_producto = b.id_producto 
-                                    and pcv.id_variable_logistica = b.id_variable_logistica
-                             ) haber
+          $sql = "select b.id id_linea, b.stamp fecha, 
+			c.razon_social proveedor,  
+                        a.id id_viaje, a.numero_de_viaje, b.id id_reparto, b.id_cliente, 
+			d.razon_social cliente,
+                        b.id_producto, e.descripcion producto, b.id_variable_logistica, f.peso
+                        ,b.cantidad_bultos                         
                     from viaje a
                     join reparto b ON a.id = b.id_viaje
                     join proveedor c on a.id_proveedor = c.id
                     join cliente d on b.id_cliente = d.id
 					join producto e on b.id_producto = e.id
 					join variable_logistica f on b.id_variable_logistica = f.id	
-                    where b.id_cliente = ?  
-                    ORDER BY 4 ASC";
+                    where b.id_cliente = ?
+                    and b.precio_caja is null";
             
             $query = $this->db->query($sql, array($idCliente));
                    
