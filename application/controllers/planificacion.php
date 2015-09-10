@@ -43,7 +43,7 @@ class Planificacion extends CI_Controller{
     $lineasViaje = $this->viaje_m->getLineasViaje($idViaje);
     //$lineasReparto = $this->viaje_m->getRepartoViaje($idViaje);
     
-    $lineasReparto = $this->viaje_m->getRepartoConfirmado($idViaje);
+    $lineasReparto = $this->viaje_m->getRepartoConfirmado($idViaje, null);
     
     $clientes = $this->cliente_m->getClientes();
     
@@ -59,7 +59,23 @@ class Planificacion extends CI_Controller{
     $this->load->model('cliente_m');
 
     $lineasViaje = $this->viaje_m->getLineasViaje($idViaje);
-    $lineasReparto = $this->viaje_m->getRepartoConfirmado($idViaje);
+    $lineasReparto = $this->viaje_m->getRepartoConfirmado($idViaje, null);
+    $clientes = $this->cliente_m->getClientes();
+    
+    $data['lineasViaje'] = $lineasViaje;
+    $data['clientes'] = $clientes;
+    $data['lineasReparto'] = $lineasReparto;
+   
+    $this->load->view('valorizarViaje',$data);
+  }
+  
+  
+  function valorizarViajeCliente($idViaje, $idCliente){
+    $this->load->model('viaje_m');
+    $this->load->model('cliente_m');
+
+    $lineasViaje = $this->viaje_m->getLineasViaje($idViaje);
+    $lineasReparto = $this->viaje_m->getRepartoConfirmado($idViaje, $idCliente);
     $clientes = $this->cliente_m->getClientes();
     
     $data['lineasViaje'] = $lineasViaje;
@@ -216,10 +232,10 @@ class Planificacion extends CI_Controller{
         $longitud = count($idReparto);
         
         //Recorro todos los elementos
+        $this->load->model('viaje_m');
+        
         for($i=0; $i<$longitud; $i++)
         {
-            $this->load->model('viaje_m');
-  
             $this->viaje_m->updateReparto($precioBulto[$i], $idReparto[$i]);
         }
         

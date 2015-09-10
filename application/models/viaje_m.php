@@ -91,7 +91,7 @@ class viaje_m extends CI_Model {
     }
     
     
-    public function getRepartoConfirmado($idViaje)
+    public function getRepartoConfirmado($idViaje, $idCliente)
     {
          if($idViaje != FALSE) {
           $sql = "select    a.id,
@@ -122,9 +122,10 @@ class viaje_m extends CI_Model {
                             mail
                     from reparto a
                     join cliente b on a.id_cliente = b.id
-                    where id_viaje= ? ";
+                    where id_viaje= ? 
+                    and a.id_cliente = ifnull(?,a.id_cliente)";
             
-            $query = $this->db->query($sql, array($idViaje));
+            $query = $this->db->query($sql, array($idViaje, $idCliente));
                    
             $lineasReparto = $query->result_array();
 
@@ -273,6 +274,8 @@ class viaje_m extends CI_Model {
                 'precio_caja' => $precioCaja
              );
 
+        $this->db->set('fecha_valorizacion', 'NOW()', FALSE);
+        
         $this->db->where('id', $idReparto);
         
         $this->db->update("reparto", $data); 
