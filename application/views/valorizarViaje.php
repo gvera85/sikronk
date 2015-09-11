@@ -89,10 +89,11 @@
                                     {
                                     ?>
                                         <th valign="middle" width="2%">#</th>
-                                        <th valign="middle" width="15%">Producto</th>
-                                        <th valign="middle" width="30%">Variable Logística</th>
+                                        <th valign="middle" width="10%">Producto</th>
+                                        <th valign="middle" width="25%">Variable Logística</th>
                                         <th width="10%"># Bultos </th>
                                         <th width="10%"># Pallets </th>
+                                        <th width="10%"># Bultos con merma </th>
                                         <th colspan="2" width="30%"> Valorización </th>
                                 </tr>
                             </thead>
@@ -107,6 +108,7 @@
                                         <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
                                         <TD> <?php echo $lineas['cant_real_bultos'] ?> </TD> 
                                         <TD> <?php echo $lineas['cant_real_pallets'] ?> </TD> 
+                                        <TD> 0 </TD> 
                                         <TD> <b>Precio x bulto [$]</b> </TD> 
                                         <TD> <b>Precio total [$] </b> </TD> 
                                         <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
@@ -131,8 +133,9 @@
                                               <TD> <div class="cantidad_linea" id="DivBultos_<?php echo $cantidadLineasReparto?>" name="DivBultos_<?php echo $cantidadLineasReparto?>"> <?php echo $reparto['cantidad_bultos'] ?> </div> </TD> 
                                               <input type="hidden" id="bultos_<?php echo $cantidadLineasReparto?>" value=<?php echo $reparto['cantidad_bultos'] ?>>
                                               <TD> <?php echo $reparto['cantidad_pallets'] ?></TD> 
-                                              <TD>  $ <input class="importe_linea" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calcularPrecioLinea(this.value,bultos_<?php echo $cantidadLineasReparto?>.value,'input#precioTotal_<?php echo $cantidadLineasReparto?>');" name="precioBulto[]" type="text" size="10" value="<?php echo $reparto['precio_caja'] ?>"> </TD>
-                                              <?php $precioTotalLinea = $reparto['precio_caja'] * $reparto['cantidad_bultos']; ?>
+                                              <TD> <input class="cant_merma" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_<?php echo $cantidadLineasReparto?>" onChange="calcularPrecioLinea(precioBulto_<?php echo $cantidadLineasReparto?>.value,bultos_<?php echo $cantidadLineasReparto?>.value, this.value, 'input#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMerma[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma'] ?>"> </TD> 
+                                              <TD>  $ <input class="importe_linea" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calcularPrecioLinea(this.value,bultos_<?php echo $cantidadLineasReparto?>.value, cant_merma_<?php echo $cantidadLineasReparto?>.value, 'input#precioTotal_<?php echo $cantidadLineasReparto?>');" name="precioBulto[]" type="text" size="10" value="<?php echo $reparto['precio_caja'] ?>"> </TD>
+                                              <?php $precioTotalLinea = $reparto['precio_caja'] * ( $reparto['cantidad_bultos'] - $reparto['cant_bultos_merma']); ?>
                                               <TD>  $ <input  class="importe_linea" type="text"  style="width:65px; text-align:right" id="precioTotal_<?php echo $cantidadLineasReparto?>" type="text" size="15" value="<?php echo $precioTotalLinea?>" readonly>  </TD>
                                               <input type="hidden" id="idProducto" name="idProducto[]" value=<?php echo $reparto['id_producto'] ?>>
                                               <input type="hidden" id="idReparto" name="idReparto[]" value=<?php echo $reparto['id'] ?>>
@@ -179,7 +182,7 @@ function actualizarPrecioTotalViaje() {
     }
 }
 
-function calcularPrecioLinea(cantidad,precio,inputtext){
+function calcularPrecioLinea(precio, cantidad,  cantidadConMerma, inputtext){
 	/* Parametros:
 	cantidad - entero con la cantidad
 	precio - entero con el precio
@@ -187,7 +190,7 @@ function calcularPrecioLinea(cantidad,precio,inputtext){
 	*/
 	
 	// Calculo del total de la linea
-	subtotal = precio*cantidad;
+	subtotal = precio* (cantidad - cantidadConMerma);
         $(inputtext).val(subtotal);
         
         actualizarPrecioTotalViaje();

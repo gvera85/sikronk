@@ -227,6 +227,8 @@ class Planificacion extends CI_Controller{
         $idReparto = $_POST['idReparto'];
         $viaje = $_POST['idViaje'];
         $precioBulto = $_POST['precioBulto'];
+        $cantMerma = $_POST['cantMerma'];
+        
         
         //saco el numero de elementos
         $longitud = count($idReparto);
@@ -236,7 +238,7 @@ class Planificacion extends CI_Controller{
         
         for($i=0; $i<$longitud; $i++)
         {
-            $this->viaje_m->updateReparto($precioBulto[$i], $idReparto[$i]);
+            $this->viaje_m->updateReparto($precioBulto[$i], $cantMerma[$i], $idReparto[$i]);
         }
         
         $botonPresionado = $_POST['botonPresionado'];

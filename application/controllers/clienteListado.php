@@ -37,7 +37,7 @@ class clienteListado extends CI_Controller{
     $this->grocery_crud->set_relation('id_tipo_iva','tipo_iva','descripcion');
    
     
-    $this->grocery_crud->add_action('CC', base_url().'/assets/img/planificacion.png', '','ui-icon-image',array($this,'link_hacia_cuenta_corriente'));
+    $this->grocery_crud->add_action('CC', base_url().'/assets/img/cuentaCorriente.png', '','ui-icon-image',array($this,'link_hacia_cuenta_corriente'));
     
     $this->grocery_crud->unset_add();
     $this->grocery_crud->unset_edit();

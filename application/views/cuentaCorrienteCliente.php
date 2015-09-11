@@ -122,7 +122,7 @@
                         $haber =  $lineas['haber'];
 
                         $cantidad = $lineas['cantidad_bultos'];
-                        $cantidadConMerma = 0;
+                        $cantidadConMerma = $lineas['cant_bultos_merma'];
                         $cantidadAPagar = $cantidad - $cantidadConMerma;
 
                         $debe =  $cantidadAPagar * $lineas['precio_bulto'];                    
@@ -140,8 +140,8 @@
                     ?>
                     <TR>
                             <TD> <span class="<?php echo $classTipo ?>" id="tipoMovimiento"> <?php echo $lineas['tipo'] ?></span></TD>
-                            <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha']), 'Ymd'); ?></span><?php echo date_format(date_create($lineas['fecha']), 'd/m/Y'); ?></td>
-                            <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'Ymd'); ?></span><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'd/m/Y'); ?></td>
+                            <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha']), 'd/m/Y'); ?></td>
+                            <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'd/m/Y'); ?></td>
                             <TD> <?php echo $lineas['producto'] ?></TD>
                             <TD> <?php echo $lineas['peso'] ?></TD>
                             <TD> <?php echo $cantidad ?></TD>

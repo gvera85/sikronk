@@ -96,7 +96,7 @@ class facturas_clientes_m extends CI_Model {
                   c.razon_social proveedor,  
                             a.id id_viaje, a.numero_de_viaje, b.id id_reparto, b.id_cliente, d.razon_social cliente,
                             b.id_producto, e.descripcion producto, b.id_variable_logistica, f.peso
-                            ,b.cantidad_bultos, b.precio_caja precio_bulto
+                            ,b.cantidad_bultos, b.cant_bultos_merma, b.precio_caja precio_bulto
                             ,b.cantidad_bultos * b.precio_caja debe
                             ,(	select ifnull(sum(monto_pagado),0) 
                                     from pagos_cliente_reparto pcv 
@@ -116,12 +116,14 @@ class facturas_clientes_m extends CI_Model {
                     select 'Pago' tipo, a.id,
                     a.fecha_pago fecha, a.fecha_pago fecha_valorizacion,
                     null proveedor,  
-                                                null id_viaje, null numero_de_viaje, null id_reparto, null id_cliente, 
-                                                                            null cliente,
-                                                null id_producto, 
-                                                                            '-' producto, null id_variable_logistica, '-' peso
-                                                ,'-' cantidad_bultos, null precio_bulto
-                                                ,0 debe,
+                    null id_viaje, null numero_de_viaje, null id_reparto, null id_cliente, 
+                    null cliente,
+                    null id_producto, 
+                    '-' producto, null id_variable_logistica, '-' peso
+                    ,'-' cantidad_bultos
+                    ,'-' cant_bultos_merma,
+                    null precio_bulto
+                    ,0 debe,
                     a.monto - ifnull(sum(monto_pagado),0)  haber
                     from pago_cliente a
                     left join pagos_cliente_REPARTO b on a.id = b.id_pago
