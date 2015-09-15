@@ -355,7 +355,7 @@ $(function() {
                           location.reload();
 			})
 			.fail(function() {
-                alert( "error no pude enviar los datos" );
+                            alert( "Error no pude enviar los datos" );
 			});
 	  }
 	  event.preventDefault();

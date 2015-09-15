@@ -97,7 +97,7 @@
                                     <td id="linea_<?php echo $cantidad?>" ><?php echo $cantidad?></td>
                                     <td id="producto"><?php echo $lineas['producto'] ?></td>
                                     <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
-                                    <TD> <?php echo $lineas['cantidad_bultos'] ?></TD>
+                                    <TD name="tdBultos_<?php echo $lineas['id_producto'] ?>" id="tdBultos_<?php echo $lineas['id_producto'] ?>"> <?php echo $lineas['cantidad_bultos'] ?> (<?php echo $lineas['cantidad_bultos']-$lineas['cant_bultos_plani'] ?> restantes) </TD>
                                     <TD> <?php echo $lineas['cantidad_pallets'] ?></TD>
                                     <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
                                     <input type="hidden" id="DescProducto_<?php echo $lineas['id_producto'] ?>" name="DescProducto_<?php echo $lineas['id_producto'] ?>" value="<?php echo $lineas['producto'] ?>">
