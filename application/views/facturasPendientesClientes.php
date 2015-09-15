@@ -222,7 +222,7 @@
         <div class="panel-body">
             
             <h4>Numero de factura <span class="label label-default" id="idPago"> <?php echo $idPago?></span></h4>
-            <h4>Fecha de pago <span class="label label-default"> <?php echo $fechaPago?></span></h4>
+            <h4>Fecha de pago <span class="label label-default"> <?php echo date_format(date_create($fechaPago), 'd/m/Y');?></span></h4>
             <h4>Monto <span class="label label-success" id="montoPagado"> <?php echo $montoAImputar?></span></h4>
             <h4  style="float: right;">Monto restante de imputar <span class="label label-danger" id="montoRestante"> <?php echo $montoAImputar-$montoImputado[0]['montoImputado']?></span></h4>
           

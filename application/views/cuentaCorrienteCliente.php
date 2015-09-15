@@ -25,7 +25,14 @@
                     
                 
                     var t = $('#example').DataTable( {   
-                                        "order": [[ 2, 'desc' ]],
+                                        "order": [[3,"desc"], [0,"desc"]],
+                                         "columnDefs": [
+                                            {
+                                                "targets": [ 0 ],
+                                                "visible": false,
+                                                "searchable": false
+                                            }
+                                        ],
                                         "language": {
                                                         "url": "<?php echo base_url() ?>/assets/bootstrap/json/SpanishDataTable.json"
                                                     }
@@ -92,6 +99,7 @@
         <table id="example" class="display" cellspacing="0" width="100%">
                 <thead>
                 <TR>
+                    <th><b>IdLinea</b></th>
                     <th><b>Tipo</b></th>
                     <th><b>Fecha entrega</b></th>
                     <th><b>Fecha valorizacion</b></th>                    
@@ -120,12 +128,19 @@
                        
 
                         $haber =  $lineas['haber'];
+                        
+                        
 
                         $cantidad = $lineas['cantidad_bultos'];
                         $cantidadConMerma = $lineas['cant_bultos_merma'];
                         $cantidadAPagar = $cantidad - $cantidadConMerma;
 
-                        $debe =  $cantidadAPagar * $lineas['precio_bulto'];                    
+                        $debe =  $cantidadAPagar * $lineas['precio_bulto'];    
+                        
+                        if ($haber < $debe && $lineas['tipo'] == 'Entrega')
+                            $linkPagos = 1;
+                        else
+                            $linkPagos = 0;
 
                         $saldo = $saldo + $debe - $haber;     
 
@@ -139,6 +154,7 @@
                     
                     ?>
                     <TR>
+                            <TD> <?php echo $lineas['id_linea'] ?></TD>
                             <TD> <span class="<?php echo $classTipo ?>" id="tipoMovimiento"> <?php echo $lineas['tipo'] ?></span></TD>
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha']), 'd/m/Y'); ?></td>
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'd/m/Y'); ?></td>
@@ -149,7 +165,17 @@
                             <TD> <?php echo $cantidadAPagar ?></TD>
                             <TD> <?php echo $lineas['precio_bulto'] ?></TD>
                             <TD> <?php echo $debe  ?></TD>
-                            <TD> <?php echo $haber ?></TD>
+                            <TD> <?php if ($linkPagos ==1) 
+                                        { ?> 
+                               
+                                <span class="label label-danger" id="linkPagos"> <?php echo $haber ?> </span> 
+                             
+                                <?php   } 
+                                        else 
+                                        {  
+                                            echo $haber;                                         
+                                        }?>
+                            </TD>
                             <TD> <?php echo $saldo ?> </TD>
                     </TR>               
                     

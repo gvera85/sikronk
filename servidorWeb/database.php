@@ -49,9 +49,9 @@ $active_group = 'default';
 $active_record = TRUE;
 
 $db['default']['hostname'] = 'localhost';
-$db['default']['username'] = 'sikronkc_0815';
-$db['default']['password'] = 'sikronkGonza2015';
-$db['default']['database'] = 'sikronkc_0815';
+$db['default']['username'] = 'sikronkc_0915';
+$db['default']['password'] = 'QmPDPTT1yKl)';//'sikronkGonza2015';
+$db['default']['database'] = 'sikronkc_0915';//'sikronkc_0815';
 $db['default']['dbdriver'] = 'mysql';
 $db['default']['dbprefix'] = '';
 $db['default']['pconnect'] = TRUE;

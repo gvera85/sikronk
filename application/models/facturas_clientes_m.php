@@ -5,7 +5,7 @@ class facturas_clientes_m extends CI_Model {
     public function getFacturasCliente($idCliente)
     {
          if($idCliente != FALSE) {
-          $sql = "select    B.stamp fecha_reparto, b.fecha_valorizacion, c.razon_social proveedor,  
+          $sql = "select    b.stamp fecha_reparto, b.fecha_valorizacion, c.razon_social proveedor,  
                             a.id id_viaje, a.numero_de_viaje, b.id id_reparto, b.id_cliente, d.razon_social cliente,
                             b.id_producto, e.descripcion producto, b.id_variable_logistica, f.peso
                             ,b.cantidad_bultos, b.precio_caja precio_bulto
@@ -92,7 +92,7 @@ class facturas_clientes_m extends CI_Model {
     public function getLineasCCC($idCliente)
     {
          if($idCliente != FALSE) {
-          $sql = "select 'Entrega' tipo, b.id id_linea, b.stamp fecha, B.fecha_valorizacion, 
+          $sql = "select 'Entrega' tipo, b.id id_linea, b.stamp fecha, b.fecha_valorizacion, 
                   c.razon_social proveedor,  
                             a.id id_viaje, a.numero_de_viaje, b.id id_reparto, b.id_cliente, d.razon_social cliente,
                             b.id_producto, e.descripcion producto, b.id_variable_logistica, f.peso
@@ -126,11 +126,11 @@ class facturas_clientes_m extends CI_Model {
                     ,0 debe,
                     a.monto - ifnull(sum(monto_pagado),0)  haber
                     from pago_cliente a
-                    left join pagos_cliente_REPARTO b on a.id = b.id_pago
+                    left join pagos_cliente_reparto b on a.id = b.id_pago
                     where a.id_cliente = ?
                     group by a.id, a.fecha_pago, a.monto
                     having a.monto - ifnull(sum(monto_pagado),0) != 0
-                    ORDER BY 4 ASC";
+                    ORDER BY 4 ASC, 2 ASC";
             
             $query = $this->db->query($sql, array($idCliente, $idCliente));
                    
