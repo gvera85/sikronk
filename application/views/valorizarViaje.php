@@ -72,7 +72,7 @@
 <div id="container ">
     <div class="row-fluid top-buffer">
         <div class="col-lg-6 col-lg-offset-3 text-center">
-            <form id="formValorizacion" method="post" name="formValorizacion" >
+            <form id="formValorizacion" method="post" name="formValorizacion">
                 <div class="panel panel-primary" width="100%">
                     <div class="panel-heading">
                         <h3 class="panel-title"><?php echo $titulo  ?> <b><div id="precioTotalViaje" name="precioTotalViaje"> </div></b></h3>
@@ -133,7 +133,7 @@
                                               <TD> <div class="cantidad_linea" id="DivBultos_<?php echo $cantidadLineasReparto?>" name="DivBultos_<?php echo $cantidadLineasReparto?>"> <?php echo $reparto['cantidad_bultos'] ?> </div> </TD> 
                                               <input type="hidden" id="bultos_<?php echo $cantidadLineasReparto?>" value=<?php echo $reparto['cantidad_bultos'] ?>>
                                               <TD> <?php echo $reparto['cantidad_pallets'] ?></TD> 
-                                              <TD> <input class="cant_merma" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_<?php echo $cantidadLineasReparto?>" onChange="calcularPrecioLinea(precioBulto_<?php echo $cantidadLineasReparto?>.value,bultos_<?php echo $cantidadLineasReparto?>.value, this.value, 'input#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMerma[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma'] ?>"> </TD> 
+                                              <TD> <input class="cant_merma" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, this);" name="cantMerma[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma'] ?>"> </TD> 
                                               <TD>  $ <input class="importe_linea" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calcularPrecioLinea(this.value,bultos_<?php echo $cantidadLineasReparto?>.value, cant_merma_<?php echo $cantidadLineasReparto?>.value, 'input#precioTotal_<?php echo $cantidadLineasReparto?>');" name="precioBulto[]" type="text" size="10" value="<?php echo $reparto['precio_caja'] ?>"> </TD>
                                               <?php $precioTotalLinea = $reparto['precio_caja'] * ( $reparto['cantidad_bultos'] - $reparto['cant_bultos_merma']); ?>
                                               <TD>  $ <input  class="importe_linea" type="text"  style="width:65px; text-align:right" id="precioTotal_<?php echo $cantidadLineasReparto?>" type="text" size="15" value="<?php echo $precioTotalLinea?>" readonly>  </TD>
@@ -169,6 +169,39 @@
 </div>
  
 <script type="text/javascript">
+
+var hayError = 0;
+
+function validacionFormulario() {
+    
+  cantidadItems = $("#cantidadItems").val();   
+    
+  for (i = 1; i <= cantidadItems; i++) { 
+    campoBultos = "#bultos_" + i; 
+    campoMerma = "#cant_merma_" + i; 
+    
+    campM = "cant_merma_" + i; 
+
+    //alert($(campoBultos).val() + ' '+ $(campoMerma).val());
+    
+    error = validarCantidadMerma($(campoBultos).val(), $(campoMerma).val() ) 
+    
+    if (!error)
+    {
+        alert('La cantidad con merma no puede superar la cantidad de bultos ['+$(campoBultos).val()+']');
+        $(campoMerma).css({background:"#FF0000"})
+        $(campoMerma).focus();
+        return false;  
+    }
+    else
+    {
+        $(campoMerma).css({background:"#FFFFFF"})
+    }
+    
+  }      
+  
+  return true;
+}
     
 function actualizarPrecioTotalViaje() {
     precioTotalViaje = 0;
@@ -197,6 +230,36 @@ function calcularPrecioLinea(precio, cantidad,  cantidadConMerma, inputtext){
        // input#precioTotalViaje.val(4);
 }
 
+function validarCantidadMerma(cantidadBultosLinea,  cantidadConMerma){
+	
+    if (Number(cantidadBultosLinea) < Number(cantidadConMerma))
+    {
+        
+        //inputtext.style.backgroundColor = "yellow";    
+        //inputtext.focus();
+        return false;
+    }
+    
+    return true;
+}
+
+
+function validarCantidadMermaLinea(cantidadBultosLinea,  cantidadConMerma, inputtext)
+{
+    if (!validarCantidadMerma (cantidadBultosLinea,  cantidadConMerma))
+    {
+        alert('La cantidad con merma no puede superar la cantidad de bultos ['+cantidadBultosLinea+']');
+        inputtext.style.backgroundColor = "red";    
+        inputtext.focus();
+        return false;
+    }
+    else
+    {
+        inputtext.style.backgroundColor = "white";   
+    }
+        
+    return true;   
+}
 
 
 
@@ -214,7 +277,7 @@ $(function() {
           var frm = $(this);
 	  var formulario = $(this).serialize();
      
-          if($('#formValorizacion').validationEngine('validate')){
+          if (validacionFormulario()){
             
 	  $.post( "<?php echo base_url() ?>index.php/planificacion/grabarConfirmacionPrecio", formulario)
 		        .done(function(data){
