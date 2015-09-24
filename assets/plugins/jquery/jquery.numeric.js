@@ -59,7 +59,7 @@ $.fn.numeric.keypress = function(e)
 	if(key < 48 || key > 57)
 	{
 		/* '-' only allowed at start */
-		if(key == 45 && this.value.length == 0) return true;
+		if(key == 45 && this.value.length == 0) return false;
 		/* only one decimal separator allowed */
 		if(decimal && key == decimal.charCodeAt(0) && this.value.indexOf(decimal) != -1)
 		{
