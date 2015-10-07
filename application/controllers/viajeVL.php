@@ -134,7 +134,7 @@ class ViajeVL extends CI_Controller{
     //$crud->display_as('id_viaje','Viaje - Proveedor');
     
     $crud->display_as('id_producto','Producto');
-    $crud->set_relation('id_producto','producto','{descripcion}',array('id_proveedor' => $id_proveedor));
+    $crud->set_relation('id_producto','producto','{descripcion} - {marca} - {calidad}',array('id_proveedor' => $id_proveedor));
     
     $crud->display_as('id_variable_logistica','Peso');
     $crud->set_relation('id_variable_logistica','variable_logistica','{codigo_vl}-{descripcion}-{peso}[KG]-Pallet:{base_pallet}x{altura_pallet}');
