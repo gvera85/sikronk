@@ -17,7 +17,10 @@
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/jquery/validationEngine.jquery.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/estilosReparto.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/sweetalert-master/dist/sweetalert.css">
     
+    
+    <script src="<?php echo base_url() ?>/assets/sweetalert-master/dist/sweetalert.min.js"></script>
     <script src="<?php echo base_url() ?>assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
     <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.numeric.js"></script>
@@ -346,19 +349,31 @@ $(function() {
    $( "#miform" ).submit(function( event ) {
           var frm = $(this);
 	  var formulario = $(this).serialize();
+          
+          exito = false;
+          mensaje = "error";
      
-        if($('#miform').validationEngine('validate')){
-	  $.post( "<?php echo base_url() ?>index.php/planificacion/grabarConfirmacionViaje", formulario)
-		        .done(function(data){
-		          alert(data);
-			  $(frm)[0].reset();
-                          location.reload();
-			})
-			.fail(function() {
-                            alert( "Error no pude enviar los datos" );
-			});
-	  }
-	  event.preventDefault();
+        
+        $.post( "<?php echo base_url() ?>index.php/planificacion/grabarConfirmacionViaje", formulario)
+                      .done(function(data){
+
+                        swal("Guardada!", data, "success");
+                
+                        $(frm)[0].reset();
+                        location.reload();
+
+                        exito = true;
+                        mensaje = data;
+
+                      })
+                      .fail(function() {
+                          swal("Oops...", "Algo falló!", "error");
+                      });
+          
+        event.preventDefault();
+        
+              
+          
 	});
         
 });
