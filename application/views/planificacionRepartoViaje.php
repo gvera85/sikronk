@@ -75,7 +75,7 @@
                                 <tr class="active">
                                     <?php $cantidad=0; 
                                     $id_producto_ant = 0;
-                                    $cantidad2 = 0;
+                                    $cantidadClientes = 0;
 
                                     if ($sinProductos == 0)
                                     {
@@ -108,10 +108,13 @@
                                 <?php 
                                 if (is_array($lineasReparto))
                                 {
-                                    foreach( $lineasReparto as $reparto ) : 
+                                    foreach( $lineasReparto as $reparto ) :                                     
                                     if ($reparto['id_producto'] == $lineas['id_producto'] && $reparto['id_vl'] == $lineas['id_vl'])
                                     {
+                                        
+                                        $cantidadClientes ++;
                                     ?>  
+                                    
                                     <tr class="warning">
                                         <td></td>
                                         <td align="rigth"><button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button></td>
@@ -132,7 +135,9 @@
                                 }?>
                                                     
                                 <?php endforeach; 
-                                }?>
+                                }
+                                ?>
+                                <input type="hidden" id="cantidadLineas" name="cantidadLineas" value="<?php echo $cantidadClientes ?>">
                             </tbody>
                         </table>
                     </div>
@@ -150,6 +155,8 @@
 </div>
  
 <script type="text/javascript">
+    
+
 
     var nroLineaAgregada = 0;
 
@@ -257,7 +264,7 @@
           var frm = $(this);
 	  var formulario = $(this).serialize();
           
-        if($('#miform').validationEngine('validate')){
+        if (validacionFormulario()){
 	  $.post( "<?php echo base_url() ?>index.php/planificacion/grabarReparto", formulario)
 		        .done(function(data){
 		          alert(data);
@@ -271,6 +278,38 @@
 	  event.preventDefault();
 	});
  
+ 
+function validacionFormulario() 
+{
+    
+  cantidadItems = $("#cantidadItems").val();   
+    
+  for (i = 1; i <= nroLineaAgregada ; i++) { 
+    campoBultos = "#cantBultos_" + i; 
+    campoMerma = "#cant_merma_" + i; 
+    
+    nombreCampoMerma = "cant_merma_" + i; 
+
+    //alert($(campoBultos).val() + ' '+ $(campoMerma).val());
+    
+    esValido = true;
+    
+    if (esValido)
+    {
+        limpiarInputConError(nombreCampoMerma);
+        
+    }
+    else
+    {
+        
+        marcarInputConError(nombreCampoMerma);
+        return false;  
+    }
+    
+  }      
+  
+  return true;
+}
  
  
  </script>

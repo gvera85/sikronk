@@ -30,7 +30,7 @@ function validarBultos(nroLineaAgregada, idProducto, producto, cantidadBultosPro
 
 	if (bultosTotal > cantidadBultosProducto)
         {
-            alert("La cantidad de bultos a repartir del producto "+producto+" no puede superar los "+cantidadBultosProducto+" bultos. Ustede ingreso "+bultosTotal+" bultos");
+            alert("La cantidad de bultos a repartir del producto "+producto+" no puede superar los "+cantidadBultosProducto+" bultos. Usted ingreso "+bultosTotal+" bultos");
             input.style.backgroundColor = "yellow";    
             input.focus();
             //input.style.background='#DF0101';"

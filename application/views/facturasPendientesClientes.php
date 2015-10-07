@@ -197,7 +197,7 @@
                                             }
                                         )
                                 
-                                        close();    
+                                        //close();    
                                     }
                                     } ); //Fin de la funcion del boton
             } );
@@ -236,7 +236,20 @@
         <div class="panel-body">
         
         <button id="button">Grabar</button>
-            
+        
+        <?php 
+        if (empty($facturasClientes[0]['numero_de_viaje']))
+        {
+            $titulo = "Productos sin valorizar - No hay productos sin valorizar";
+            $sinProductos = 0;
+        }
+        else
+        {
+            $titulo = "Productos sin valorizar";
+            $sinProductos = 1;
+        }   
+        ?>
+        
         <table id="example" class="display" cellspacing="0" width="100%">
                 <thead>
                 <TR>
@@ -259,6 +272,8 @@
                 </thead>
                  <tbody>
                 <?php 
+                    if ($sinProductos == 1)
+                    {
                     foreach( $facturasClientes as $lineas ) : ?>
                     <TR>
                         <TD></TD>
@@ -280,6 +295,7 @@
                     
                 <?php           
                     endforeach; 
+                    }
                 ?>
                 </tbody>    
             </table>
