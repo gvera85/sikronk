@@ -1,6 +1,6 @@
 <?php
 
-class Motivo_merma extends CI_Controller{
+class gastos extends CI_Controller{
 
   public function __construct()
   {
@@ -12,7 +12,7 @@ class Motivo_merma extends CI_Controller{
 
     $this->grocery_crud->set_language("spanish");
     
-    $this->session->set_userdata('titulo', 'Motivos de mermas');
+    $this->session->set_userdata('titulo', 'Gastos de un viaje');
              
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');
@@ -20,23 +20,23 @@ class Motivo_merma extends CI_Controller{
   }
   
   function index(){
-    $this->grocery_crud->set_table('motivos_merma');
+    $this->grocery_crud->set_table('gastos_de_un_viaje');
     $this->grocery_crud->edit_fields('descripcion');
     $this->grocery_crud->add_fields('descripcion');
     
     $this->grocery_crud->set_theme('datatables');
    
-    $this->grocery_crud->set_subject('Motivos de merma');
+    $this->grocery_crud->set_subject('Gastos de un viaje');
     $this->grocery_crud->required_fields('descripcion');
     
     $this->grocery_crud->columns('id','descripcion');
     $this->grocery_crud->fields('descripcion');
     
     $output = $this->grocery_crud->render();
-    $this->motivo_merma($output);
+    $this->gastos_output($output);
   }
   
-  function motivo_merma($output = null){
+  function gastos_output($output = null){
     $this->load->view('mostrarABM',$output);
   } 
 

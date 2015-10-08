@@ -239,7 +239,9 @@ function validarCantidadMerma(cantidadBultosLinea,  cantidadConMerma){
 	
     if (Number(cantidadBultosLinea) < Number(cantidadConMerma))
     {   
-        alert('La cantidad con merma ['+ cantidadConMerma +'] no puede superar la cantidad de bultos ['+cantidadBultosLinea+']');
+        mensaje = 'La cantidad con merma ['+ cantidadConMerma +'] no puede superar la cantidad de bultos ['+cantidadBultosLinea+']';
+        
+        swal("Atención...", mensaje, "error");
         
         return false;
     }
