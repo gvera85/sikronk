@@ -14,15 +14,20 @@
     
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/dataTablesBootstrap.css">
+    
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.css">
 
     <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/plugins/jquery/jquery.dataTables.min.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>/assets/bootstrap/js/dataTablesBootstrap.js"></script>
+    
+    <script type="text/javascript" src="<?php echo base_url() ?>/assets/bootstrap-switch-master/dist/js/bootstrap-switch.js"></script>            
+    
     <script type="text/javascript" charset="utf-8">
-        
+    
             $(document).ready(function() {
-                    
-                    
+                
+                    $("[name='my-checkbox']").bootstrapSwitch();
                 
                     var t = $('#example').DataTable( {   
                                         "order": [[3,"desc"], [0,"desc"]],
@@ -62,6 +67,32 @@
                     $("#cabeceraPanel").html($("#cabeceraPanel").html()+' - Saldo: <span class="' +classSaldo+ '" style="font-size:15px;" id="tipoMovimiento">$ '+saldo+'</span>' ); 
             } );
             
+            
+            
+            
+            $(document).on("click","#btnAgrupado",function( event ) {  
+
+                $.ajax({
+                    type: "POST",
+                    dataType: "json",
+                    url: "<?php echo base_url().'index.php/cuentaCorrienteCliente/cargarLineasCC'; ?>",
+                    data: "id_publicacion=<?php echo "1"; ?>",
+                    success: function(data){
+                                                //alert(data.facturasClientes);    
+                                                
+                                                for(i=0; i < data.length; i++){
+                                                    alert(data[i].facturasClientes);
+                                                }
+                                           }
+                });
+            });
+            
+            
+            $(document).on("click","#btnLineas",function( event ) {  
+                //$('#btnAgrupado').val("botonCierreViaje").css('border','3px solid blue');
+                alert ('la concha de tu madre All boys');
+            
+            });
  
                     
     </script>
@@ -93,7 +124,16 @@
         
 
         <div class="panel panel-primary">
-        <div class="panel-heading" id="cabeceraPanel">Cuenta corriente <?php echo $nombreCliente ?></div>
+        
+        <div class="panel-heading" id="cabeceraPanel"> Cuenta corriente <?php echo $nombreCliente ?>
+        <div class="col-sm-6 col-lg-4">
+            <div class="btn-group">
+              <button type="button" id="btnAgrupado" class="btn btn-danger btn-xs">Ver pagos asignados</button>
+              <button type="button" id="btnLineas" class="btn btn-default btn-xs">Ver en líneas</button>
+            </div>
+        </div>
+        
+        </div>
         <div class="panel-body">
             
         <table id="example" class="display" cellspacing="0" width="100%">
