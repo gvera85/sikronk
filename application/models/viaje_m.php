@@ -312,7 +312,36 @@ class viaje_m extends CI_Model {
         }else {
           return FALSE;
         }    
-    }        
+    }    
+    
+    public function getMontoGastos($idViaje)
+    {
+         if($idViaje != FALSE) {
+            $sql = "SELECT sum(precio_unitario * cantidad ) monto
+                    FROM viaje_gasto
+                    where id_viaje=?";
+            
+            $query = $this->db->query($sql, array($idViaje));
+                   
+            
+            $montoViaje = $query->result_array();
+            
+             if ( is_array($montoViaje) && count($montoViaje) == 1 )  {
+              
+              if (empty($montoViaje[0]["monto"])) {
+                  return 0;
+              }else{
+                  return $montoViaje[0]["monto"];
+              }
+              
+            }
+            else{
+              return 0;
+            }
+        }else {
+          return FALSE;
+        }    
+    }    
    
     public function getLineasRepartoViaje($idViaje)
     {
