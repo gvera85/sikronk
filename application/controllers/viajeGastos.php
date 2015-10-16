@@ -69,7 +69,12 @@ class viajeGastos extends CI_Controller{
    
     $crud->set_subject('Gastos del viaje');
     $crud->required_fields('id_gasto','precio_unitario','cantidad');
-    $crud->columns('id_gasto','precio_unitario','cantidad','observaciones');
+    $crud->columns('id_gasto','precio_unitario','cantidad','total','observaciones');
+    
+    $crud->callback_column('total',array($this,'_callback_monto_total'));
+    
+    $crud->display_as('total','Total [$]');
+    $crud->display_as('precio_unitario','Precio unitario [$]');
     
     $crud->fields('id_viaje','id_gasto','precio_unitario','cantidad','observaciones');
     $crud->change_field_type('id_viaje','invisible');
@@ -79,7 +84,7 @@ class viajeGastos extends CI_Controller{
   
     $crud->display_as('id_gasto','Gasto');
     $crud->set_relation('id_gasto','gastos_de_un_viaje','{descripcion}');
-  
+    
     $output = $crud->render();
     
     $this->load->model('proveedor_m');
@@ -118,5 +123,16 @@ class viajeGastos extends CI_Controller{
        return $row->id_viaje." - ".$Proveedor[0]["razon_social"]; 
        //return substr($value,0,40); 
    }
+   
+   public function _callback_monto_total($value, $row)
+    {
+      
+        $this->load->model('viaje_m');
+
+        $gastos = $row->cantidad * $row->precio_unitario;
+    
+        
+        return $gastos;
+    }
    
 }
