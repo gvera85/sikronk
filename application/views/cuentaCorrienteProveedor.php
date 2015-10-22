@@ -21,13 +21,9 @@
     <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/plugins/jquery/jquery.dataTables.min.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>/assets/bootstrap/js/dataTablesBootstrap.js"></script>
     
-    <script type="text/javascript" src="<?php echo base_url() ?>/assets/bootstrap-switch-master/dist/js/bootstrap-switch.js"></script>            
-    
     <script type="text/javascript" charset="utf-8">
     
             $(document).ready(function() {
-                
-                    $("[name='my-checkbox']").bootstrapSwitch();
                 
                     var t = $('#example').DataTable( {   
                                         "order": [[1,"desc"], [2,"desc"]],
@@ -35,6 +31,11 @@
                                             {
                                                 "targets": [ 0 ],
                                                 "visible": true,
+                                                "searchable": false
+                                            },
+                                            {
+                                                "targets": [ 2 ],
+                                                "visible": false,
                                                 "searchable": false
                                             }
                                         ],
@@ -78,13 +79,7 @@
                 });
             });
             
-            
-            $(document).on("click","#btnLineas",function( event ) {  
-                //$('#btnAgrupado').val("botonCierreViaje").css('border','3px solid blue');
-                alert ('la concha de tu madre All boys');
-            
-            });
- 
+           
                     
     </script>
     
@@ -117,12 +112,7 @@
         <div class="panel panel-primary">
         
         <div class="panel-heading" id="cabeceraPanel"> Cuenta corriente <?php echo $nombreProveedor ?>
-        <div class="col-sm-6 col-lg-4">
-            <div class="btn-group">
-              <button type="button" id="btnAgrupado" class="btn btn-danger btn-xs">Ver pagos asignados</button>
-              <button type="button" id="btnLineas" class="btn btn-default btn-xs">Ver en líneas</button>
-            </div>
-        </div>
+        
         
         </div>
         <div class="panel-body">
@@ -132,6 +122,7 @@
                 <TR>
                     <th><b>Tipo</b></th>
                     <th><b>Fecha</b></th>
+                    <th><b>Stamp</b></th>
                     <th><b>Nro Viaje</b></th>                    
                     <th><b>Debe</b></th>                    
                     <th><b>Haber</b></th>                    
@@ -168,7 +159,7 @@
                     <TR>
                             <TD> <span class="<?php echo $classTipo ?>" id="tipoMovimiento"> <?php echo $lineas['tipo'] ?></span></TD>
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_estimada_salida']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_estimada_salida']), 'd/m/Y'); ?></td>
-                            
+                            <td><span style='display: none;'><?php echo date_format(date_create($lineas['stamp']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['stamp']), 'd/m/Y H:i:s'); ?></td>
                             <TD> <?php echo $lineas['numero_de_viaje'] ?></TD>
                             <TD> <?php echo $debe ?></TD>
                             <TD> <?php echo $haber ?></TD>

@@ -90,7 +90,7 @@
             
             $(document).on("click","#btnLineas",function( event ) {  
                 //$('#btnAgrupado').val("botonCierreViaje").css('border','3px solid blue');
-                alert ('la concha de tu madre All boys');
+                alert ('Este boton mostrará la cuenta corriente sin computar pagos');
             
             });
  
