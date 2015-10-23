@@ -14,18 +14,18 @@ class cajaDistribuidor extends CI_Controller{
   
   function index(){
       
-    $this->load->model('facturas_proveedor_m');
+    $this->load->model('caja_distribuidor_m');
     
-    $idDistribuidor = 6;
+    $idDistribuidor = $this->session->userdata('empresa');
       
     $this->load->model('facturas_proveedor_m');
     
-    $facturasProveedor = $this->facturas_proveedor_m->getLineasCCP($idDistribuidor);    
+    $pagos = $this->caja_distribuidor_m->getLineasCaja($idDistribuidor);    
       
-    $proveedor = $this->facturas_proveedor_m->getProveedorXId($idDistribuidor);    
+    $distribuidor = $this->caja_distribuidor_m->getDistribuidorXId($idDistribuidor);    
     
-    $data['facturasProveedor'] = $facturasProveedor;
-    $data['proveedor'] = $proveedor;
+    $data['pagos'] = $pagos;
+    $data['distribuidor'] = $distribuidor;
       
     $this->load->view('cajaDistribuidor',$data); 
   }

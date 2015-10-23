@@ -87,8 +87,8 @@
 <body>        
     
      <?php 
-          foreach( $proveedor as $i_proveedor ) :
-                $nombreProveedor = $i_proveedor['razon_social']; 
+          foreach( $distribuidor as $i_distribuidor ) :
+                $nombreDistribuidor = $i_distribuidor['razon_social']; 
                
         endforeach; 
     ?>    
@@ -96,7 +96,7 @@
     <div class="container">
         
         <?php 
-            if (empty($facturasProveedor[0]['id_viaje']))
+            if (empty($pagos[0]['id_viaje']))
             {
                 $titulo = "Productos sin valorizar - No hay productos sin valorizar";
                 $sinProductos = 0;
@@ -111,7 +111,7 @@
 
         <div class="panel panel-primary">
         
-        <div class="panel-heading" id="cabeceraPanel"> Cuenta corriente <?php echo $nombreProveedor ?>
+        <div class="panel-heading" id="cabeceraPanel"> Cuenta corriente <?php echo $nombreDistribuidor ?>
         
         
         </div>
@@ -140,7 +140,7 @@
                     if ($sinProductos == 1)
                     {
 
-                        foreach( $facturasProveedor as $lineas ) :     
+                        foreach( $pagos as $lineas ) :     
                             
                         $debe = $lineas['debe'];
                         $haber = $lineas['haber'];

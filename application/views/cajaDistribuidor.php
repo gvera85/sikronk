@@ -92,8 +92,8 @@
 <body>        
     
      <?php 
-          foreach( $proveedor as $i_proveedor ) :
-                $nombreProveedor = $i_proveedor['razon_social']; 
+          foreach( $distribuidor as $i_distribuidor ) :
+                $nombreDistribuidor = $i_distribuidor['razon_social']; 
                
         endforeach; 
     ?>    
@@ -101,9 +101,8 @@
     <div class="container">
         
         <?php 
-            if (empty($facturasProveedor[0]['id_viaje']))
+            if (empty($pagos[0]['id']))
             {
-                $titulo = "Productos sin valorizar - No hay productos sin valorizar";
                 $sinProductos = 0;
             }
             else
@@ -116,13 +115,8 @@
 
         <div class="panel panel-primary">
         
-        <div class="panel-heading" id="cabeceraPanel"> Cuenta corriente <?php echo $nombreProveedor ?>
-        <div class="col-sm-6 col-lg-4">
-            <div class="btn-group">
-              <button type="button" id="btnAgrupado" class="btn btn-danger btn-xs">Ver pagos asignados</button>
-              <button type="button" id="btnLineas" class="btn btn-default btn-xs">Ver en líneas</button>
-            </div>
-        </div>
+        <div class="panel-heading" id="cabeceraPanel"> Cuenta corriente <?php echo $nombreDistribuidor ?>
+       
         
         </div>
         <div class="panel-body">
@@ -132,7 +126,7 @@
                 <TR>
                     <th><b>Tipo</b></th>
                     <th><b>Fecha</b></th>
-                    <th><b>Nro Viaje</b></th>                    
+                    <th><b>Modo pago</b></th>                    
                     <th><b>Debe</b></th>                    
                     <th><b>Haber</b></th>                    
                     <th><b>Saldo parcial</b></th>   
@@ -149,14 +143,14 @@
                     if ($sinProductos == 1)
                     {
 
-                        foreach( $facturasProveedor as $lineas ) :     
+                        foreach( $pagos as $lineas ) :     
                             
                         $debe = $lineas['debe'];
                         $haber = $lineas['haber'];
 
                         $saldo = $saldo + $debe - $haber;     
                         
-                        if ($lineas['tipo'] == 'Pago') {
+                        if ($lineas['tipo'] == 'Ingreso') {
                             $classTipo = 'label label-success';
                         } else{
                             $classTipo = "label label-danger";
@@ -167,9 +161,9 @@
                     ?>
                     <TR>
                             <TD> <span class="<?php echo $classTipo ?>" id="tipoMovimiento"> <?php echo $lineas['tipo'] ?></span></TD>
-                            <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_estimada_salida']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_estimada_salida']), 'd/m/Y'); ?></td>
+                            <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_pago']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_pago']), 'd/m/Y'); ?></td>
                             
-                            <TD> <?php echo $lineas['numero_de_viaje'] ?></TD>
+                            <TD> <?php echo $lineas['descripcion'] ?></TD>
                             <TD> <?php echo $debe ?></TD>
                             <TD> <?php echo $haber ?></TD>
                             <TD> <?php echo $saldo ?></TD>
