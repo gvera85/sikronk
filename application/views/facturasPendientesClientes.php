@@ -259,6 +259,7 @@
                     <th><b>Producto</b></th>
                     <th><b>Peso bulto</b></th>
                     <th><b>Cantidad</b></th>
+                    <th><b>Cant. merma</b></th>
                     <th><b>Precio x bulto</b></th>
                     <th><b>Total</b></th>
                     <th><b>Monto Pagado</b></th>
@@ -282,6 +283,7 @@
                         <TD> <?php echo $lineas['producto'] ?></TD>
                         <TD> <?php echo $lineas['peso'] ?></TD>
                         <TD> <?php echo $lineas['cantidad_bultos'] ?></TD>
+                        <TD> <?php echo $lineas['cant_bultos_merma'] ?></TD>
                         <TD> <?php echo $lineas['precio_bulto'] ?></TD>
                         <TD> <?php echo $lineas['valor_total'] ?></TD>
                         <TD> <?php echo $lineas['monto_pagado'] ?> </TD>

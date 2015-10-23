@@ -45,7 +45,7 @@ class pagoProveedor extends CI_Controller{
     
     $crud->order_by('fecha_pago','desc');
     
-    $crud->add_action('Facturas', base_url().'/assets/img/iconoFactura.png', '','ui-icon-image',array($this,'link_hacia_factura'));
+    //$crud->add_action('Facturas', base_url().'/assets/img/iconoFactura.png', '','ui-icon-image',array($this,'link_hacia_factura'));
     
     $output = $crud->render();
     $this->pago_output($output);

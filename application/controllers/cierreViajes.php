@@ -67,6 +67,10 @@ class cierreViajes extends CI_Controller{
     $this->grocery_crud->callback_before_update(array($this,'distribuidor_callback'));
     $this->grocery_crud->callback_after_insert(array($this, 'log_cambio_estado'));
     
+    $where = "id_estado IN ('".ESTADO_VIAJE_PRECIO_ACORDADO."','".ESTADO_VIAJE_PRECIO_ACORDADO."')";
+    
+    $this->grocery_crud->where($where);
+    
     $this->grocery_crud->unset_add();
     $this->grocery_crud->unset_edit();
     $this->grocery_crud->unset_delete();

@@ -9,13 +9,13 @@ class facturas_clientes_m extends CI_Model {
                             a.id id_viaje, a.numero_de_viaje, b.id id_reparto, b.id_cliente, d.razon_social cliente,
                             b.id_producto, e.descripcion producto, b.id_variable_logistica, f.peso
                             ,b.cantidad_bultos, b.precio_caja precio_bulto
-                            ,b.cantidad_bultos * b.precio_caja valor_total
+                            ,(b.cantidad_bultos - b.cant_bultos_merma) * b.precio_caja valor_total
                             ,(	select ifnull(sum(monto_pagado),0) 
                                     from pagos_cliente_reparto pcv 
                                     where pcv.id_reparto = b.id 
                                     and pcv.id_producto = b.id_producto 
                                     and pcv.id_variable_logistica = b.id_variable_logistica
-                             ) monto_pagado
+                             ) monto_pagado, b.cant_bultos_merma
                     from viaje a
                     join reparto b ON a.id = b.id_viaje
                     join proveedor c on a.id_proveedor = c.id
