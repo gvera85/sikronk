@@ -87,8 +87,8 @@
 <body>        
     
      <?php 
-          foreach( $distribuidor as $i_distribuidor ) :
-                $nombreDistribuidor = $i_distribuidor['razon_social']; 
+          foreach( $proveedor as $i_proveedor ) :
+                $nombreProveedor = $i_proveedor['razon_social']; 
                
         endforeach; 
     ?>    
@@ -96,7 +96,7 @@
     <div class="container">
         
         <?php 
-            if (empty($pagos[0]['id_viaje']))
+            if (empty($facturasProveedor[0]['id_viaje']))
             {
                 $titulo = "Productos sin valorizar - No hay productos sin valorizar";
                 $sinProductos = 0;
@@ -111,7 +111,7 @@
 
         <div class="panel panel-primary">
         
-        <div class="panel-heading" id="cabeceraPanel"> Cuenta corriente <?php echo $nombreDistribuidor ?>
+        <div class="panel-heading" id="cabeceraPanel"> Cuenta corriente <?php echo $nombreProveedor ?>
         
         
         </div>
@@ -140,12 +140,12 @@
                     if ($sinProductos == 1)
                     {
 
-                        foreach( $pagos as $lineas ) :     
+                        foreach( $facturasProveedor as $lineas ) :     
                             
                         $debe = $lineas['debe'];
                         $haber = $lineas['haber'];
 
-                        $saldo = $saldo + $debe - $haber;     
+                        $saldo = $saldo +  $haber - $debe;     
                         
                         if ($lineas['tipo'] == 'Pago') {
                             $classTipo = 'label label-success';
@@ -153,14 +153,32 @@
                             $classTipo = "label label-danger";
                         }
                         
-                    
-                    
                     ?>
                     <TR>
                             <TD> <span class="<?php echo $classTipo ?>" id="tipoMovimiento"> <?php echo $lineas['tipo'] ?></span></TD>
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_estimada_salida']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_estimada_salida']), 'd/m/Y'); ?></td>
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['stamp']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['stamp']), 'd/m/Y H:i:s'); ?></td>
-                            <TD> <?php echo $lineas['numero_de_viaje'] ?></TD>
+                            
+                            <?php
+                            if ($lineas['numero_de_viaje'])
+                            {   
+                            ?>
+                                <TD> 
+                                    <a href=javascript:window.open('<?php echo base_url('/index.php/planificacion/verViaje').'/'.$lineas['id_viaje']; ?>')> 
+                                        <span class="label label-info" id="nroViaje"> <?php echo $lineas['numero_de_viaje'] ?> </span> 
+                                    </a> 
+                                </TD>
+                            <?php
+                            }
+                            else
+                            {   
+                            ?>
+                                <TD> 
+                                        <?php echo $lineas['numero_de_viaje'] ?>
+                                </TD>    
+                            <?php
+                            }
+                            ?>    
                             <TD> <?php echo $debe ?></TD>
                             <TD> <?php echo $haber ?></TD>
                             <TD> <?php echo $saldo ?></TD>

@@ -70,7 +70,7 @@
     }
     else
     {
-        $titulo = "Valorizar viaje - Viaje número ".$lineasViaje[0]['numero_de_viaje']." - ".$lineasViaje[0]['proveedor'];
+        $titulo = "Viaje número ".$lineasViaje[0]['numero_de_viaje']." - ".$lineasViaje[0]['proveedor'];
     }             
 ?>    
     
@@ -138,8 +138,29 @@
                                               <TD> <div class="cantidad_linea" id="DivBultos_<?php echo $cantidadLineasReparto?>" name="DivBultos_<?php echo $cantidadLineasReparto?>"> <?php echo $reparto['cantidad_bultos'] ?> </div> </TD> 
                                               <input type="hidden" id="bultos_<?php echo $cantidadLineasReparto?>" value=<?php echo $reparto['cantidad_bultos'] ?>>
                                               <TD> <?php echo $reparto['cantidad_pallets'] ?></TD> 
+                                              
+                                              <?php 
+                                              
+                                              if ($modo == "edicion")
+                                              {
+                                              ?>
+                                              
                                               <TD> <input class="cant_merma" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, precioBulto_<?php echo $cantidadLineasReparto?>.value, this, 'input#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMerma[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma'] ?>"> </TD> 
                                               <TD>  $ <input class="importe_linea" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calcularPrecioLinea(this.value,bultos_<?php echo $cantidadLineasReparto?>.value, cant_merma_<?php echo $cantidadLineasReparto?>.value, 'input#precioTotal_<?php echo $cantidadLineasReparto?>');" name="precioBulto[]" type="text" size="10" value="<?php echo $reparto['precio_caja'] ?>"> </TD>
+                                              
+                                              <?php
+                                              }
+                                              else
+                                              {
+                                              ?>
+                                              
+                                              <TD> <?php echo $reparto['cant_bultos_merma'] ?> </TD> 
+                                              <TD>  <?php echo $reparto['precio_caja'] ?> </TD>
+                                              
+                                              <?php
+                                              }
+                                              ?>
+                                              
                                               <?php $precioTotalLinea = $reparto['precio_caja'] * ( $reparto['cantidad_bultos'] - $reparto['cant_bultos_merma']); ?>
                                               <TD>  $ <input  class="importe_linea" type="text"  style="width:65px; text-align:right" id="precioTotal_<?php echo $cantidadLineasReparto?>" type="text" size="15" value="<?php echo $precioTotalLinea?>" readonly>  </TD>
                                               <input type="hidden" id="idProducto" name="idProducto[]" value=<?php echo $reparto['id_producto'] ?>>
@@ -162,7 +183,7 @@
                         </table>
                     </div>
                 </div>
-                <?php if ($sinProductos == 0) 
+                <?php if ($sinProductos == 0 && $modo == "edicion") 
                       {?>
                 <button id="btnsubmit" value="1" type="submit" class="btn btn-default">Guardar</button>
                 <button id="btnConfirmarPrecio" value="2" class="btn btn-success">Confirmar precio</button>

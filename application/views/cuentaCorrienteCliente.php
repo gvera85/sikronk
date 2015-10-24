@@ -166,10 +166,7 @@
 
                         foreach( $facturasClientes as $lineas ) : 
                        
-
                         $haber =  $lineas['haber'];
-                        
-                        
 
                         $cantidad = $lineas['cantidad_bultos'];
                         $cantidadConMerma = $lineas['cant_bultos_merma'];
@@ -182,7 +179,7 @@
                         else
                             $linkPagos = 0;
 
-                        $saldo = $saldo + $debe - $haber;     
+                        $saldo = $saldo + $haber - $debe;     
 
                         if ($lineas['tipo'] == 'Pago') {
                             $classTipo = 'label label-success';

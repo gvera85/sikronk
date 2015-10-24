@@ -21,8 +21,6 @@ class Valorizar extends CI_Controller{
   
   function index(){
       
-     
-      
     $this->grocery_crud->where('id_distribuidor', $this->session->userdata('empresa'));  
      
     $this->grocery_crud->set_table('viaje');

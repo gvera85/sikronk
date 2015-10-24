@@ -26,10 +26,10 @@ class cuentaCorrienteCliente extends CI_Controller{
   function getCuentaCorriente($idCliente){
       
     $this->load->model('facturas_clientes_m');
-    $this->load->model('cliente_m');
+    $this->load->model('cliente_m');    
     
-    
-    $facturasClientes = $this->facturas_clientes_m->getLineasCCC($idCliente);
+    //$facturasClientes = $this->facturas_clientes_m->getLineasCCC($idCliente);
+    $facturasClientes = $this->facturas_clientes_m->getLineasIndependientesCCC($idCliente);
     
     $lineasSinValorizar = $this->facturas_clientes_m->getLineasSinValorizar($idCliente);
     

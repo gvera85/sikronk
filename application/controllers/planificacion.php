@@ -65,6 +65,23 @@ class Planificacion extends CI_Controller{
     $data['lineasViaje'] = $lineasViaje;
     $data['clientes'] = $clientes;
     $data['lineasReparto'] = $lineasReparto;
+    $data['modo'] = "edicion";
+   
+    $this->load->view('valorizarViaje',$data);
+  }
+  
+  function verViaje($idViaje){
+    $this->load->model('viaje_m');
+    $this->load->model('cliente_m');
+
+    $lineasViaje = $this->viaje_m->getLineasViaje($idViaje);
+    $lineasReparto = $this->viaje_m->getRepartoConfirmado($idViaje, null);
+    $clientes = $this->cliente_m->getClientes();
+    
+    $data['lineasViaje'] = $lineasViaje;
+    $data['clientes'] = $clientes;
+    $data['lineasReparto'] = $lineasReparto;
+    $data['modo'] = "vista";
    
     $this->load->view('valorizarViaje',$data);
   }
@@ -81,6 +98,7 @@ class Planificacion extends CI_Controller{
     $data['lineasViaje'] = $lineasViaje;
     $data['clientes'] = $clientes;
     $data['lineasReparto'] = $lineasReparto;
+    
    
     $this->load->view('valorizarViaje',$data);
   }
