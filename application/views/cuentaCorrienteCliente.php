@@ -126,12 +126,12 @@
         <div class="panel panel-primary">
         
         <div class="panel-heading" id="cabeceraPanel"> Cuenta corriente <?php echo $nombreCliente ?>
-        <div class="col-sm-6 col-lg-4">
+        <!--<div class="col-sm-6 col-lg-4">
             <div class="btn-group">
               <button type="button" id="btnAgrupado" class="btn btn-danger btn-xs">Ver pagos asignados</button>
               <button type="button" id="btnLineas" class="btn btn-default btn-xs">Ver en líneas</button>
             </div>
-        </div>
+        </div>-->
         
         </div>
         <div class="panel-body">
@@ -197,7 +197,29 @@
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'd/m/Y'); ?></td>
                             <TD> <?php echo $lineas['producto'] ?></TD>
                             <TD> <?php echo $lineas['peso'] ?></TD>
-                            <TD> <?php echo $cantidad ?></TD>
+                            <!--<TD> <?php //echo $cantidad ?></TD>-->
+                            
+                            <?php
+                            if ($lineas['id_viaje'])
+                            {   
+                            ?>
+                                <TD> 
+                                    <a href=javascript:window.open('<?php echo base_url('/index.php/planificacion/verViaje').'/'.$lineas['id_viaje']; ?>')> 
+                                        <span class="label label-info" id="nroViaje"> <?php echo $cantidad ?> </span> 
+                                    </a> 
+                                </TD>
+                            <?php
+                            }
+                            else
+                            {   
+                            ?>
+                                <TD> 
+                                        <?php echo $cantidad ?>
+                                </TD>    
+                            <?php
+                            }
+                            ?>    
+                            
                             <TD> <?php echo $cantidadConMerma ?> </TD>
                             <TD> <?php echo $cantidadAPagar ?></TD>
                             <TD> <?php echo $lineas['precio_bulto'] ?></TD>
