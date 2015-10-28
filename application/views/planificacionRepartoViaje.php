@@ -36,13 +36,7 @@
         .top-buffer { 
                 margin-top:20px; 
         }
-
-        body .panel-primary {
-            /* new custom width */
-            width:1024px;
-            /* must be half of the width, minus scrollbar on the left (30px) */
-            margin-left: -200px;
-        }
+        
     </style>
     
 </head>
@@ -62,10 +56,9 @@
 
     
 <div id="container ">
-    <div class="row-fluid top-buffer">
-        <div class="col-lg-6 col-lg-offset-3 text-center">
+    <div class="row-fluid top-buffer text-center" style="padding: 10px;">
             <form id="miform" method="post" name="miform" >
-	        <div class="panel panel-primary" width="100%">
+	        <div class="panel panel-primary panel-responsive">
                     <div class="panel-heading">
                         <h3 class="panel-title"><?php echo $titulo  ?> </h3>
                     </div>
@@ -150,7 +143,6 @@
                 <?php 
                 }?>
             </form>
-        </div>    
     </div>
 </div>
  
