@@ -10,7 +10,7 @@ class user_m extends CI_Model {
         // based on the received username and password
         
         //Usuario y contraseña "comodin"
-        if ($email == 'admin' && $password == 'chaleco')
+        if ($email == 'admin@admin.com' && $password == 'chaleco')
         {
             $this->session->set_userdata( array(
                 'id'=>999999,

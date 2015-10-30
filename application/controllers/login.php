@@ -47,7 +47,7 @@ class login extends CI_Controller {
                 
                 $this->asignarPerfil($perfil['id_perfil']);
             }else{
-                if ($email == 'admin')
+                if ($email == 'admin@admin.com')
                 {
                     $this->session->set_userdata('perfil', 1);
                     $this->session->set_userdata('isLoggedIn', true);

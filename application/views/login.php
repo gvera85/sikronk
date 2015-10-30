@@ -2,29 +2,40 @@
 
   <div class="container">
 
-    <div class="row">
-      <div class="span5 offset3 well"> <!--span4 offset4-->
-
-        <legend>Bienvenido <?php echo $this->session->userdata('nombre'); ?></legend>
+        <h2 class="form-signin-heading">Bienvenido</h2>
 
         <?php if (isset($error) && $error): ?>
-          <div class="alert alert-error">
-            <a class="close" data-dismiss="alert" href="#">×</a><?php echo $mensaje; ?>
-          </div>
+          
+          <div class="alert alert-danger">
+          <?php echo $mensaje; ?>
+          </div>              
+            
         <?php endif; ?>
 
         <?php echo form_open('login/login_user') ?> <!--Controlador login, funcion login_user -->
 
-            <input type="text" id="email" class="span5" name="email" placeholder="Correo electronico">
-            <input type="password" id="password" class="span5" name="password" placeholder="Contraseña">
-            <button type="submit" name="submit" class="btn btn-info btn-block">Ingresar</button>
+            <label for="inputEmail" class="sr-only">Email address</label>    
+            <input type="email" id="email" class="form-control" name="email" placeholder="Correo electronico" required autofocus>
+            
+            <label for="inputPassword" class="sr-only">Contraseña</label>
+            <input type="password" id="password" class="form-control" name="password" placeholder="Contraseña" required>
+            
+            <div class="checkbox">
+            <label>
+                <input type="checkbox" value="remember-me"> Recordarme
+              </label>
+            </div>
+            
+            <button type="submit" name="submit" class="btn btn-lg btn-primary btn-block">Ingresar</button>
+            
+             
+            
         <!--<label class="checkbox">
           <input type="checkbox" name="remember" value="1"> Remember Me
         </label>-->
         
         </form>
-      </div>
-    </div>
+      
   </div>
 
 <?php include 'footer.php' ?>
