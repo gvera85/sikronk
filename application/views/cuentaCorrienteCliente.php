@@ -313,7 +313,7 @@
                             <TD> <?php echo $cantidadConMerma ?> </TD>
                             <TD> <?php echo $cantidadAPagar ?></TD>                         
                             
-                            <TD> <a href=javascript:window.open('<?php echo base_url('/index.php/planificacion/valorizarViajeCliente').'/'.$lineas['id_viaje'].'/'.$lineas['id_cliente']; ?>')> <span class="<?php echo $classTipo ?>" id="tipoMovimiento"> ? </span> </a> </TD>
+                            <TD> <a href=javascript:window.open('<?php echo base_url('/index.php/planificacion/valorizarViajeCliente').'/'.$lineas['id_viaje'].'/'.$lineas['id_cliente']; ?>')> <span class="label label-danger" id="tipoMovimiento"> ? </span> </a> </TD>
                             
                             
                                   

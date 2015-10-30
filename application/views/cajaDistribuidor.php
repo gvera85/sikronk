@@ -132,6 +132,7 @@
                     <th><b>Tipo</b></th>
                     <th><b>Fecha</b></th>
                     <th><b>Stamp</b></th>
+                    <th><b>Empresa</b></th>                    
                     <th><b>Modo pago</b></th>                    
                     <th><b>Debe</b></th>                    
                     <th><b>Haber</b></th>                    
@@ -172,6 +173,7 @@
                             <TD> <span class="<?php echo $classTipo ?>" id="tipoMovimiento"> <?php echo $lineas['tipo'] ?></span></TD>
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_pago']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_pago']), 'd/m/Y'); ?></td>
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['stamp']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['stamp']), 'd/m/Y'); ?></td>
+                            <TD> <?php echo $lineas['razon_social'] ?></TD>
                             <TD> <?php echo $lineas['descripcion'] ?></TD>
                             <TD> <?php echo $debe ?></TD>
                             <TD> <?php echo $haber ?></TD>

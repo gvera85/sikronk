@@ -22,13 +22,13 @@
     <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/plugins/jquery/jquery.dataTables.min.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>/assets/bootstrap/js/dataTablesBootstrap.js"></script>
     <script type="text/javascript" charset="utf-8">
-            const COLUMNA_VALOR_TOTAL_LINEA = 7;
-            const COLUMNA_MONTO_PAGADO = 8;
-            const COLUMNA_SALDO = 9;
-            const COLUMNA_ID_REPARTO = 10;
-            const COLUMNA_MONTO_PAGADO_ESTA_FACTURA = 11;
-            const COLUMNA_ID_PRODUCTO = 12;
-            const COLUMNA_ID_VL = 13;
+            const COLUMNA_VALOR_TOTAL_LINEA = 8;
+            const COLUMNA_MONTO_PAGADO = 9;
+            const COLUMNA_SALDO = 10;
+            const COLUMNA_ID_REPARTO = 11;
+            const COLUMNA_MONTO_PAGADO_ESTA_FACTURA = 12;
+            const COLUMNA_ID_PRODUCTO = 13;
+            const COLUMNA_ID_VL = 14;
         
             $(document).ready(function() {
                     
@@ -41,11 +41,6 @@
                                             "targets": 0
                                         },
                                             {
-                                                "targets": [ 10 ],
-                                                "visible": false
-                                            }
-                                         ,
-                                            {
                                                 "targets": [ 11 ],
                                                 "visible": false
                                             }
@@ -57,6 +52,11 @@
                                          ,
                                             {
                                                 "targets": [ 13 ],
+                                                "visible": false
+                                            }
+                                         ,
+                                            {
+                                                "targets": [ 14 ],
                                                 "visible": false
                                             }   
                                         ]
@@ -253,7 +253,7 @@
         <table id="example" class="display" cellspacing="0" width="100%">
                 <thead>
                 <TR>
-                    <th>#</th>
+                    <th>#</th> 
                     <th><b># Viaje</b></th>
                     <th><b>Proveedor</b></th>                    
                     <th><b>Producto</b></th>
@@ -268,7 +268,7 @@
                     <th><b>Pagado con esta factura</b></th>
                     <th><b>IdProducto</b></th>
                     <th><b>IdVL</b></th>
-                  
+                    
                 </TR>
                 </thead>
                  <tbody>
