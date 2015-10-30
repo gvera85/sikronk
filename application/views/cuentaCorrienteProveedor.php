@@ -149,8 +149,10 @@
                         
                         if ($lineas['tipo'] == 'Pago') {
                             $classTipo = 'label label-success';
-                        } else{
+                        } else if ($lineas['tipo'] == 'Deuda'){
                             $classTipo = "label label-danger";
+                        } else if ($lineas['tipo'] == 'Gasto'){
+                            $classTipo = "label label-default";
                         }
                         
                     ?>

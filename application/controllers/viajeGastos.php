@@ -22,22 +22,24 @@ class viajeGastos extends CI_Controller{
   function index(){
     $this->grocery_crud->set_table('viaje_gasto');
     
-    $this->grocery_crud->edit_fields('id_viaje','id_gasto','precio_unitario','cantidad','observaciones');
-    $this->grocery_crud->add_fields('id_viaje','id_gasto','precio_unitario','cantidad','observaciones');
+    $this->grocery_crud->edit_fields('id_viaje','id_gasto','id_proveedor_de_servicios' ,'precio_unitario','cantidad','observaciones');
+    $this->grocery_crud->add_fields('id_viaje','id_gasto', 'id_proveedor_de_servicios', 'precio_unitario','cantidad','observaciones');
     
     $this->grocery_crud->set_theme('datatables');
    
     $this->grocery_crud->set_subject('Gastos de un viaje');
     $this->grocery_crud->required_fields('id_viaje','id_gasto','precio_unitario','cantidad','observaciones');
-    $this->grocery_crud->columns('id_viaje','id_gasto','precio_unitario','cantidad','observaciones');
+    $this->grocery_crud->columns('id_viaje','id_gasto', 'id_proveedor_de_servicios', 'precio_unitario','cantidad','observaciones');
     
     $this->grocery_crud->display_as('id_viaje','Viaje - Proveedor');
     $this->grocery_crud->display_as('id_gasto','Gasto');
+    $this->grocery_crud->display_as('id_proveedor_de_servicios','Prov. de servicios');
     
     $this->grocery_crud->callback_column('id_viaje',array($this,'item_description_callback'));
     
     //$this->grocery_crud->set_relation('id_viaje','viaje','id');
     $this->grocery_crud->set_relation('id_gasto','gastos_de_un_viaje','{descripcion}');
+    $this->grocery_crud->set_relation('id_proveedor_de_servicios','proveedor_de_servicios','{razon_social}');
     
     $output = $this->grocery_crud->render();
     $this->usuario_output($output);
@@ -62,28 +64,36 @@ class viajeGastos extends CI_Controller{
     $crud->set_theme('datatables');
     
     $crud->set_table('viaje_gasto');
-    $crud->edit_fields('id_viaje','id_gasto','precio_unitario','cantidad','observaciones');
-    $crud->add_fields('id_viaje','id_gasto','precio_unitario','cantidad','observaciones');
+    $crud->edit_fields('id_viaje','id_gasto','id_proveedor' ,'precio_unitario','cantidad','a_cargo_del_proveedor','observaciones');
+    $crud->add_fields('id_viaje','id_gasto','id_proveedor' ,'precio_unitario','cantidad','a_cargo_del_proveedor','observaciones');
+        
+
     
     //$crud->set_theme('datatables');
    
     $crud->set_subject('Gastos del viaje');
     $crud->required_fields('id_gasto','precio_unitario','cantidad');
-    $crud->columns('id_gasto','precio_unitario','cantidad','total','observaciones');
+    $crud->columns('id_gasto','id_proveedor_de_servicios' ,'precio_unitario','cantidad','total','a_cargo_del_proveedor','observaciones');
     
     $crud->callback_column('total',array($this,'_callback_monto_total'));
     
     $crud->display_as('total','Total [$]');
     $crud->display_as('precio_unitario','Precio unitario [$]');
+    $crud->display_as('id_proveedor_de_servicios','Prov. de servicios');
     
-    $crud->fields('id_viaje','id_gasto','precio_unitario','cantidad','observaciones');
+    $crud->fields('id_viaje','id_gasto','id_proveedor_de_servicios','precio_unitario','cantidad','a_cargo_del_proveedor','observaciones');
+    
     $crud->change_field_type('id_viaje','invisible');
+    $crud->change_field_type('a_cargo_del_proveedor', 'true_false');
     
     $crud->callback_before_insert(array($this,'viaje_callback'));
     $crud->callback_before_update(array($this,'viaje_callback'));
   
     $crud->display_as('id_gasto','Gasto');
-    $crud->set_relation('id_gasto','gastos_de_un_viaje','{descripcion}');
+    $crud->set_relation('id_gasto', 'gastos_de_un_viaje', '{descripcion}');
+    $crud->set_relation('id_proveedor_de_servicios','proveedor_de_servicios','{razon_social}');
+    
+    $crud->change_field_type('a_cargo_del_proveedor', 'true_false');
     
     $output = $crud->render();
     

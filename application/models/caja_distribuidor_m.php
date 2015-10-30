@@ -22,17 +22,25 @@ class caja_distribuidor_m extends CI_Model {
         $idDistribuidor = 1; 
         
         if($idDistribuidor != FALSE) {
-          $sql = "select 'Ingreso' tipo, a.fecha_pago, a.stamp, b.razon_social, c.descripcion, 0 debe, a.monto haber, a.id
-                    from pago_cliente a
-                    join cliente b on a.id_cliente = b.id
-                    join modo_pago c on a.id_modo_pago = c.id
-                    and 1=?
+                $sql = "select 'Ingreso' tipo, a.fecha_pago, a.stamp, b.razon_social, c.descripcion, 0 debe, a.monto haber, a.id
+                        from pago_cliente a
+                        join cliente b on a.id_cliente = b.id
+                        join modo_pago c on a.id_modo_pago = c.id
+                        and 1=?
                     union
-                    select 'Egreso' tipo, a.fecha_pago, a.stamp, b.razon_social, c.descripcion, a.monto debe, 0 haber, a.id
-                    from pago_proveedor a
-                    join proveedor b on a.id_proveedor = b.id
-                    join modo_pago c on a.id_modo_pago = c.id
-                    and 1=1
+                        select 'Egreso' tipo, a.fecha_pago, a.stamp, b.razon_social, c.descripcion, a.monto debe, 0 haber, a.id
+                        from pago_proveedor a
+                        join proveedor b on a.id_proveedor = b.id
+                        join modo_pago c on a.id_modo_pago = c.id
+                        and 1=1
+                    union
+                        select 'Gasto' Tipo, b.fecha_estimada_salida fecha_pago, a.stamp,
+                        c.razon_social, 'Efectivo' Modo,  
+                         precio_unitario * cantidad debe, 0 haber, a.id
+                        from viaje_gasto a
+                        join viaje b on a.id_viaje = b.id
+                        join proveedor_de_servicios c on a.id_proveedor_de_servicios = c.id
+                        where a_cargo_del_proveedor = 0
                     order by 2 asc, 3 asc";
             
             $query = $this->db->query($sql, array($idDistribuidor));

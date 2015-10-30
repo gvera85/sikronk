@@ -155,11 +155,14 @@
                         $haber = $lineas['haber'];
 
                         $saldo = $saldo + $haber - $debe;     
+                       
                         
                         if ($lineas['tipo'] == 'Ingreso') {
                             $classTipo = 'label label-success';
-                        } else{
+                        } else if ($lineas['tipo'] == 'Egreso'){
                             $classTipo = "label label-danger";
+                        } else if ($lineas['tipo'] == 'Gasto'){
+                            $classTipo = "label label-default";
                         }
                         
                     
