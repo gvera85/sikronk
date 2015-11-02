@@ -65,7 +65,7 @@
         </div>
     </div>
     -->
-    <nav class="navbar navbar-default">
+  <nav class="navbar navbar-default" role="navigation">
   <div class="container-fluid">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="navbar-header">
@@ -81,22 +81,15 @@
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
       <ul class="nav navbar-nav">
-        
-        <li><a href="javascript:history.go(-1);">Atrás</a></li>
+        <li><a href="<?php echo base_url() ?>index.php/main/show_main"><span class="glyphicon glyphicon-home"></span>  Home</a></li>
+        <li><a href="javascript:history.go(-1);"><span class="glyphicon glyphicon-arrow-left"></span>  Atrás</a></li>
       </ul>
       
       <ul class="nav navbar-nav navbar-right">
-        <li><a href="#"><?php echo $this->session->userdata('nombre')." - ".$this->session->userdata('DescEmpresa') ; ?></a></li>
-        
-        <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Acciones <span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Ver perfil</a></li>
-            <li><a href="<?php echo base_url() ?>index.php/main/show_main">Menu principal</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="<?php echo base_url() ?>index.php/login/logout_user">Salir</a></li>
-          </ul>
-        </li>
+        <li><a href="#"><?php echo $this->session->userdata('nombre')." - ".$this->session->userdata('DescEmpresa') ; ?></a></li>  
+        <ul class="nav navbar-nav">        
+            <li><a href="<?php echo base_url() ?>index.php/login/logout_user"><span class="glyphicon glyphicon-log-out"></span>  Salir</a></li>
+        </ul>
       </ul>
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->

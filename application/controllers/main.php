@@ -43,6 +43,7 @@ class main extends CI_Controller{
 
     $this->load->helper('form');
     $this->load->view('main',$data);
+    //$this->load->view('menu',$data);
   }
   
   function recargarMenu($idMenu) {
@@ -64,6 +65,7 @@ class main extends CI_Controller{
 
     $this->load->helper('form');
     $this->load->view('main',$data);
+    // $this->load->view('menu',$data);
   }
   
   function redireccionarControlador($nombreControlador) {

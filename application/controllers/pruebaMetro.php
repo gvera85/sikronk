@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class PruebaMetro extends CI_Controller {
+class pruebaMetro extends CI_Controller {
 
 	public function __construct()
 	{

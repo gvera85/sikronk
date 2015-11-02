@@ -1,9 +1,6 @@
 <?php $this->load->view('header') ?>
   
-  <!--/.navbar -->
-  <div class='w1024'>
-  <div class='w980'>
-      
+  
   <div>
 
                
@@ -177,7 +174,6 @@
       
   </div>    
    
-  </div> <!--  <div class='w980'> -->
-  </div> <!--  <div class='w1024'> -->
+ 
   
 <?php $this->load->view('footer') ?>
