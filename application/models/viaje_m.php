@@ -284,6 +284,21 @@ class viaje_m extends CI_Model {
         $this->db->update("reparto", $data); 
 
     }
+    
+    public function getViajeXId($idViaje)
+    {
+        $sql = "select * from viaje where id = ?";
+            
+        $query = $this->db->query($sql, $idViaje);
+
+        $viaje = $query->result_array();
+
+        if( is_array($viaje) && count($viaje) > 0 ) {
+          return $viaje;
+        }
+
+        return false;
+    }
             
     public function getCantidadProductos($idViaje)
     {
@@ -312,7 +327,41 @@ class viaje_m extends CI_Model {
         }else {
           return FALSE;
         }    
-    }    
+    }   
+    
+    
+    public function getMontoTotalViaje($idViaje)
+    {
+        if($idViaje != FALSE) {
+            $sql = " select 
+                        sum((b.cantidad_bultos - b.cant_bultos_merma) * b.precio_caja  ) monto_viaje
+                        from viaje a
+                        join reparto b ON a.id = b.id_viaje                    
+                        where a.id = ?  
+                        and b.precio_caja is not null";
+            
+            $query = $this->db->query($sql, array($idViaje));                   
+            
+            $monto = $query->result_array();
+            
+             if ( is_array($monto) && count($monto) == 1 )  {
+              
+              if (empty($monto[0]["monto_viaje"])) {
+                  return 0;
+              }else{
+                  return $monto[0]["monto_viaje"];
+              }
+              
+            }
+            else{
+              return 0;
+            }
+        }else {
+          return FALSE;
+        }    
+        
+       
+    }
     
     public function getMontoGastos($idViaje)
     {

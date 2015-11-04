@@ -253,6 +253,7 @@ class Planificacion extends CI_Controller{
         
         //Recorro todos los elementos
         $this->load->model('viaje_m');
+        $this->load->model('caja_distribuidor_m');
         
         for($i=0; $i<$longitud; $i++)
         {
@@ -264,6 +265,9 @@ class Planificacion extends CI_Controller{
         if ($botonPresionado == "botonConfirmarPrecio") 
         {
             transicionSimple($viaje[0], ESTADO_VIAJE_PRECIO_ACORDADO, "viaje");
+            
+            $this->caja_distribuidor_m->registrarGanancias($viaje[0]);
+            
             echo "Viaje con el precio acordado correctamente";
         }   
         else

@@ -58,6 +58,68 @@ class caja_distribuidor_m extends CI_Model {
         }   
        
     }
+    
+    public function getGananciasAutomaticas()
+    {   
+            $sql = "SELECT *
+                    FROM ganancias_de_un_viaje 
+                    WHERE activo = 1
+                    AND ganancia_automatica = 1;";
+            
+            $query = $this->db->query($sql);
+                   
+            $ganancias = $query->result_array();
+
+            if( is_array($ganancias) && count($ganancias) > 0 ) {
+              return $ganancias;
+            }
+            
+            return false;
+    }
+    
+    public function insertGananciaViaje($id_distribuidor, $id_viaje, $id_ganancia, $porcentaje_ganancia, $importe, $observaciones)
+    {    
+          
+            
+             $data = array(
+                'id_distribuidor' => $id_distribuidor ,
+                'id_viaje' => $id_viaje ,
+                'id_ganancia' => $id_ganancia,
+                 'porcentaje_ganancia'  => $porcentaje_ganancia,
+                 'importe' => $importe,
+                 'observaciones' => $observaciones
+             );
+
+             $this->db->insert('viaje_ganancia', $data); 
+            return true;
+        
+
+       
+    }
+    
+    public function registrarGanancias($id_viaje)
+    {
+        $ganancias = $this->getGananciasAutomaticas();
+        
+        $valorGanancia = 0;
+        
+        $this->load->model('viaje_m');
+        
+        $viaje = $this->viaje_m->getViajeXId($id_viaje);
+        $valorViaje = $this->viaje_m->getMontoTotalViaje($id_viaje);
+        
+        foreach( $viaje as $i_viaje ) :
+            $idDistribuidor = $i_viaje['id_distribuidor'];
+        endforeach;
+        
+        foreach( $ganancias as $i_ganancias ) :
+                
+                $valorGanancia = $valorViaje * $i_ganancias['porcentaje_ganancia_auto'] / 100;
+                
+                $this->insertGananciaViaje($idDistribuidor, $id_viaje, $i_ganancias['id'], $i_ganancias['porcentaje_ganancia_auto'], $valorGanancia, 'Auto');
+               
+        endforeach; 
+    }
    
 
 }
