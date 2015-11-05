@@ -65,6 +65,10 @@
     else
     {
         $titulo = "Viaje número ".$lineasViaje[0]['numero_de_viaje']." - ".$lineasViaje[0]['proveedor'];
+        
+        if ($lineasViaje[0]['id_estado'] == 7) /* El viaje ya tiene los precios acordados, por eso se ocultan los botones */ {
+            $modo = "viajeConPrecioCerrado";
+        }
     }             
 ?>    
     
@@ -287,8 +291,10 @@ $(function() {
 
     $(document).on("click","#btnConfirmarPrecio",function( event ) {  
         $('input#botonPresionado').val("botonConfirmarPrecio").css('border','3px solid blue');
+        
     });
-      
+    
+         
    $( "#formValorizacion" ).submit(function( event ) {
           var frm = $(this);
 	  var formulario = $(this).serialize();
@@ -298,8 +304,9 @@ $(function() {
 	  $.post( "<?php echo base_url() ?>index.php/planificacion/grabarConfirmacionPrecio", formulario)
 		        .done(function(data){
 		          alert(data);
-			  //$(frm)[0].reset();
-                          //location.reload();
+                  
+			  $(frm)[0].reset();
+                          location.reload();
 			})
 			.fail(function() {
                 alert( "error no pude enviar los datos" );

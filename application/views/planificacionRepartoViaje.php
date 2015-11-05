@@ -51,6 +51,9 @@
     else
     {
         $titulo = "Planificacion de viaje - Reparto de stock a los clientes. Viaje numero ".$lineasViaje[0]['numero_de_viaje']." - ".$lineasViaje[0]['proveedor'];
+         if ($lineasViaje[0]['id_estado'] != 1 && $lineasViaje[0]['id_estado'] != 2) /* El viaje ya tiene los precios acordados, por eso se ocultan los botones */ {
+            $modo = "viajeConRepartoPlanificado";
+        }
     }             
 ?>    
 
@@ -86,7 +89,16 @@
                                 foreach( $lineasViaje as $lineas ) : ?>    
 				<?php $cantidad++; ?>
                                 <tr class="success">
-                                    <td align="left"><button id="btnAgregarCliente" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']."_".$lineas['base_pallet']."_".$lineas['altura_pallet']?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
+                                    <td align="left">
+                                        <?php 
+                                        if ($modo == "edicion")
+                                        {
+                                        ?>
+                                            <button id="btnAgregarCliente" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']."_".$lineas['base_pallet']."_".$lineas['altura_pallet']?>" class="btn btn-xs btn-primary">+ Cliente</button>
+                                        <?php
+                                        }
+                                        ?>
+                                    </td>
                                     <td id="linea_<?php echo $cantidad?>" ><?php echo $cantidad?></td>
                                     <td id="producto"><?php echo $lineas['producto'] ?></td>
                                     <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
@@ -110,7 +122,16 @@
                                     
                                     <tr class="warning">
                                         <td></td>
-                                        <td align="rigth"><button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button></td>
+                                        <td align="rigth">
+                                            <?php                                               
+                                            if ($modo == "edicion")
+                                            {
+                                            ?>
+                                                <button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button>
+                                            <?php
+                                            }
+                                            ?>
+                                        </td>
                                         <td colspan=2 align="rigth"><?php echo $reparto['razon_social'] ?></td>
                                         <TD> <?php echo $reparto['cant_bultos'] ?></TD>
                                         <TD> <?php echo $reparto['cant_pallets'] ?></TD>
@@ -135,7 +156,7 @@
                         </table>
                     </div>
                 </div>
-                <?php if ($sinProductos == 0) 
+                <?php if ($sinProductos == 0 && $modo == "edicion") 
                 {?>
                     <button id="btnsubmit" value="1" type="submit" class="btn btn-default">Guardar</button>
                     <button id="btnPlanificacion" value="2" class="btn btn-success">Confirmar planificacion</button>

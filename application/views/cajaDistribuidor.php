@@ -163,7 +163,10 @@
                         } else if ($lineas['tipo'] == 'Egreso'){
                             $classTipo = "label label-danger";
                         } else if ($lineas['tipo'] == 'Gasto'){
-                            $classTipo = "label label-default";
+                            $classTipo = "label label-default";                            
+                        } else if ($lineas['tipo'] == 'Ganancia'){
+                            $classTipo = "label label-info";
+                            
                         }
                         
                     

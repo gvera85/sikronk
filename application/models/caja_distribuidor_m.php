@@ -41,9 +41,17 @@ class caja_distribuidor_m extends CI_Model {
                         join viaje b on a.id_viaje = b.id
                         join proveedor_de_servicios c on a.id_proveedor_de_servicios = c.id
                         where a_cargo_del_proveedor = 0
+                    union
+                        select 'Ganancia' Tipo, b.fecha_estimada_salida fecha_pago, a.stamp,
+                        c.razon_social, '-' Modo,  
+                         0 debe, importe haber, a.id
+                        from viaje_ganancia a
+                        join viaje b on a.id_viaje = b.id
+                        join proveedor c on b.id_proveedor = c.id
+                        where b.id_distribuidor = ?
                     order by 2 asc, 3 asc";
             
-            $query = $this->db->query($sql, array($idDistribuidor));
+            $query = $this->db->query($sql, array($idDistribuidor, $idDistribuidor));
                    
             $lineasFacturas = $query->result_array();
 
@@ -77,12 +85,11 @@ class caja_distribuidor_m extends CI_Model {
             return false;
     }
     
-    public function insertGananciaViaje($id_distribuidor, $id_viaje, $id_ganancia, $porcentaje_ganancia, $importe, $observaciones)
+    public function insertGananciaViaje($id_viaje, $id_ganancia, $porcentaje_ganancia, $importe, $observaciones)
     {    
           
             
-             $data = array(
-                'id_distribuidor' => $id_distribuidor ,
+             $data = array(               
                 'id_viaje' => $id_viaje ,
                 'id_ganancia' => $id_ganancia,
                  'porcentaje_ganancia'  => $porcentaje_ganancia,
@@ -108,15 +115,11 @@ class caja_distribuidor_m extends CI_Model {
         $viaje = $this->viaje_m->getViajeXId($id_viaje);
         $valorViaje = $this->viaje_m->getMontoTotalViaje($id_viaje);
         
-        foreach( $viaje as $i_viaje ) :
-            $idDistribuidor = $i_viaje['id_distribuidor'];
-        endforeach;
-        
         foreach( $ganancias as $i_ganancias ) :
                 
                 $valorGanancia = $valorViaje * $i_ganancias['porcentaje_ganancia_auto'] / 100;
                 
-                $this->insertGananciaViaje($idDistribuidor, $id_viaje, $i_ganancias['id'], $i_ganancias['porcentaje_ganancia_auto'], $valorGanancia, 'Auto');
+                $this->insertGananciaViaje( $id_viaje, $i_ganancias['id'], $i_ganancias['porcentaje_ganancia_auto'], $valorGanancia, 'Auto');
                
         endforeach; 
     }

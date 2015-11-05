@@ -32,6 +32,7 @@ class Planificacion extends CI_Controller{
     $data['lineasViaje'] = $lineasViaje;
     $data['clientes'] = $clientes;
     $data['lineasReparto'] = $lineasReparto;
+    $data['modo'] = "edicion";
    
     $this->load->view('planificacionRepartoViaje',$data);
   }
@@ -50,6 +51,7 @@ class Planificacion extends CI_Controller{
     $data['lineasViaje'] = $lineasViaje;
     $data['clientes'] = $clientes;
     $data['lineasReparto'] = $lineasReparto;
+    $data['modo'] = "edicion";
 
     $this->load->view('confirmarViaje',$data);
   }
