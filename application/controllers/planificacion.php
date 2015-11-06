@@ -268,9 +268,12 @@ class Planificacion extends CI_Controller{
         {
             transicionSimple($viaje[0], ESTADO_VIAJE_PRECIO_ACORDADO, "viaje");
             
-            $this->caja_distribuidor_m->registrarGanancias($viaje[0]);
+            $retorno = $this->caja_distribuidor_m->registrarGanancias($viaje[0]);
             
-            echo "Viaje con el precio acordado correctamente";
+            if ($retorno != true)
+                echo "Error ".$retorno;
+            else
+                echo "Viaje con el precio acordado correctamente";
         }   
         else
         {

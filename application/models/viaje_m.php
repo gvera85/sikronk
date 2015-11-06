@@ -391,7 +391,36 @@ class viaje_m extends CI_Model {
         }else {
           return FALSE;
         }    
-    }    
+    }   
+    
+    public function getMontoGanancias($idViaje)
+    {
+         if($idViaje != FALSE) {
+            $sql = "SELECT sum(importe ) monto
+                    FROM viaje_ganancia
+                    where id_viaje=?";
+            
+            $query = $this->db->query($sql, array($idViaje));
+                   
+            
+            $montoViaje = $query->result_array();
+            
+             if ( is_array($montoViaje) && count($montoViaje) == 1 )  {
+              
+              if (empty($montoViaje[0]["monto"])) {
+                  return 0;
+              }else{
+                  return $montoViaje[0]["monto"];
+              }
+              
+            }
+            else{
+              return 0;
+            }
+        }else {
+          return FALSE;
+        }    
+    }   
    
     public function getLineasRepartoViaje($idViaje)
     {

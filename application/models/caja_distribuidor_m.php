@@ -87,7 +87,6 @@ class caja_distribuidor_m extends CI_Model {
     
     public function insertGananciaViaje($id_viaje, $id_ganancia, $porcentaje_ganancia, $importe, $observaciones)
     {    
-          
             
              $data = array(               
                 'id_viaje' => $id_viaje ,
@@ -98,10 +97,11 @@ class caja_distribuidor_m extends CI_Model {
              );
 
              $this->db->insert('viaje_ganancia', $data); 
-            return true;
-        
-
-       
+             
+             if($data['error'] = $this->db->_error_message());
+                    return $data;
+             
+             return true;
     }
     
     public function registrarGanancias($id_viaje)
@@ -112,16 +112,23 @@ class caja_distribuidor_m extends CI_Model {
         
         $this->load->model('viaje_m');
         
-        $viaje = $this->viaje_m->getViajeXId($id_viaje);
         $valorViaje = $this->viaje_m->getMontoTotalViaje($id_viaje);
+        
+        if ($valorViaje == false)
+            return $false;
         
         foreach( $ganancias as $i_ganancias ) :
                 
                 $valorGanancia = $valorViaje * $i_ganancias['porcentaje_ganancia_auto'] / 100;
                 
-                $this->insertGananciaViaje( $id_viaje, $i_ganancias['id'], $i_ganancias['porcentaje_ganancia_auto'], $valorGanancia, 'Auto');
+                $retorno = $this->insertGananciaViaje( $id_viaje, $i_ganancias['id'], $i_ganancias['porcentaje_ganancia_auto'], $valorGanancia, 'Auto');
+                
+                if ($retorno != true)
+                    return $retorno;
                
         endforeach; 
+        
+        return true;
     }
    
 
