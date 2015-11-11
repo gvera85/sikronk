@@ -46,7 +46,7 @@ class facturas_clientes_m extends CI_Model {
          if($idPago != FALSE) {
           $sql = "select a.*, b.descripcion modo_pago, c.razon_social cliente
                     from pago_cliente a
-                    join modo_pago b on a.id_modo_pago = b.id
+                    left join modo_pago b on a.id_modo_pago = b.id
                     join cliente c on a.id_cliente = c.id
                     where a.id = ?";
             
@@ -232,4 +232,72 @@ class facturas_clientes_m extends CI_Model {
         }   
        
     }
+    
+    public function getMontoTotal($idPago)
+    {
+         if($idPago != FALSE) {
+            $sql = "select sum(importe) monto_total
+                    from pagos_clientes_lineas 
+                    where id_pago = ?";
+            
+            $query = $this->db->query($sql, array($idPago));
+            
+            $monto = $query->result_array();
+            
+            
+             if ( is_array($monto) && count($monto) == 1 )  {
+              
+              if (empty($monto[0]["monto_total"])) {
+                  return 0;
+              }else{
+                  return $monto[0]["monto_total"];
+              }
+              
+            }
+            else{
+              return 0;
+            }
+        }else {
+          return FALSE;
+        }    
+            
+        
+       
+    }
+    
+    public function updateMontoTotalPago($montoTotal, $idPago)
+    {    
+        $data = array(
+                'monto' => $montoTotal
+             );
+
+        $this->db->where('id', $idPago);
+        
+        $this->db->update("pago_cliente", $data); 
+
+    }
+    
+    public function getClienteXId($idCliente)
+    {
+         if($idCliente != FALSE) {
+          $sql = "select a.* 
+                    from cliente a
+                    where a.id = ?";
+            
+            $query = $this->db->query($sql, array($idCliente));
+                   
+            $cliente = $query->result_array();
+
+            if( is_array($cliente) && count($cliente) > 0 ) {
+              return $cliente;
+            }
+            
+            return false;
+        }
+        else {
+          return FALSE;
+        }   
+       
+    }
+    
 }

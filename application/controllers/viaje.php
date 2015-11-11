@@ -66,6 +66,11 @@ class Viaje extends CI_Controller{
     $this->grocery_crud->callback_before_update(array($this,'distribuidor_callback'));
     $this->grocery_crud->callback_after_insert(array($this, 'log_cambio_estado'));
     
+    $this->grocery_crud->callback_before_delete(array($this,'validacion_delete'));
+    
+    $this->grocery_crud->callback_before_delete(array($this,'cek_before_delete'));
+    $this->grocery_crud->set_lang_string('delete_error_message', 'No se pudo eliminar el viaje debido a que posee planificaciones o repartos activos.');
+    
     $output = $this->grocery_crud->render();
     $this->viaje_output($output);
   }
@@ -91,11 +96,7 @@ class Viaje extends CI_Controller{
         return "javascript:window.open('" . base_url('/index.php/viajeVL/popUp'). '/' .$row->id.'/'.$row->id_proveedor.'/'.$row->numero_de_viaje. "')";
   }
   
-  function uno($nombre)
-  {
-      echo "Uno";
-  }
-  
+    
   
   public function validarPatente($patenteIngresada) 
   {
@@ -114,6 +115,20 @@ class Viaje extends CI_Controller{
   }
   
   
+   function cek_before_delete($primary_key) {
+        $this->db->db_debug = false;
+        $this->db->trans_begin();
+        $this->db->where('id', $primary_key);
+        $this->db->delete('viaje');
+        $num_rows = $this->db->affected_rows();
+        $this->db->trans_rollback();
+        if ($num_rows > 0) {
+            return TRUE;
+        } else {
+            return FALSE;
+        }
+   }
+   
    function distribuidor_callback($post_array) {
     $post_array['id_distribuidor'] = $this->session->userdata('empresa');//$this->session->userdata('id_producto');//Fijo el Id de producto recibido por parametro
 

@@ -454,6 +454,29 @@ class viaje_m extends CI_Model {
        
     }
     
+    public function verificarLineasViaje($idViaje)
+    {
+         if($idViaje != FALSE) {
+          $sql = "select 1
+                    from planificacion_reparto a
+                    where a.id_viaje = ?";
+            
+            $query = $this->db->query($sql, array($idViaje));
+                   
+            $lineasViaje = $query->result_array();
+
+            if( is_array($lineasViaje) && count($lineasViaje) > 0 ) {
+              return true;
+            }
+            
+            return false;
+        }
+        else {
+          return FALSE;
+        }   
+       
+    }
+    
 
    
 }
