@@ -55,7 +55,7 @@
 
 </head>
 </head>
-<body>
+<body onload="checkViajeCerrado()">
 <?php 
     $sinProductos = 0;
     if (empty($lineasViaje[0]['numero_de_viaje']))
@@ -369,13 +369,15 @@ $(function() {
         $.post( "<?php echo base_url() ?>index.php/planificacion/grabarConfirmacionViaje", formulario)
                       .done(function(data){
 
-                        swal("Guardada!", data, "success");
+                        
                 
                         $(frm)[0].reset();
                         location.reload();
 
                         exito = true;
                         mensaje = data;
+                        
+                        swal("Guardada!", data, "success");
 
                       })
                       .fail(function() {
@@ -389,6 +391,21 @@ $(function() {
 	});
         
 });
+
+
+    function checkCookies() {
+        var text = "";
+
+        if (navigator.cookieEnabled == true) {
+           text = "Cookies are enabled.";
+        } else {
+            text = "Cookies are not enabled.";
+        }
+
+        document.getElementById("demo").innerHTML = text;
+    }
+
+
 	</script>
  
 </body>

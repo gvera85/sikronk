@@ -1,6 +1,6 @@
 <?php
 
-class pagoClienteLineas extends CI_Controller{
+class pagoProveedoresLineas extends CI_Controller{
 
   public function __construct()
   {
@@ -12,14 +12,14 @@ class pagoClienteLineas extends CI_Controller{
 
     $this->grocery_crud->set_language("spanish");
     
-    $this->session->set_userdata('titulo', 'Agregar item a pagos de clientes');
+    $this->session->set_userdata('titulo', 'Agregar item a pagos de proveedores');
              
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');
     }
   }
   
-  function popUp($id_cliente, $primary_key){
+  function popUp($id_proveedor, $primary_key){
     $id_pago = $primary_key;    
     if ($id_pago) {
             $this->session->set_userdata('id_pago', $id_pago);        
@@ -37,7 +37,7 @@ class pagoClienteLineas extends CI_Controller{
     
     $crud->set_theme('datatables');
     
-    $crud->set_table('pagos_clientes_lineas');
+    $crud->set_table('pagos_proveedor_lineas');
     $crud->edit_fields( 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
     $crud->add_fields( 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
     
@@ -76,11 +76,11 @@ class pagoClienteLineas extends CI_Controller{
 
     $output = $crud->render();
     
-    $this->load->model('facturas_clientes_m');
+    $this->load->model('facturas_proveedor_m');
 
-    $cliente = $this->facturas_clientes_m->getClienteXId($id_cliente);
+    $proveedor = $this->facturas_proveedor_m->getProveedorXId($id_proveedor);
 
-    $this->session->set_userdata('titulo', "Cliente ".$cliente[0]["razon_social"]." - Factura ".$id_pago." - Agregar items a la factura"); 
+    $this->session->set_userdata('titulo', "Proveedor ".$proveedor[0]["razon_social"]." - Factura ".$id_pago." - Agregar items a la factura"); 
         
     $this->pago_output($output);
   }
@@ -107,7 +107,7 @@ class pagoClienteLineas extends CI_Controller{
 
   function monto_total_callback($post_array) {
    
-   return $this->actualizarMontoTotal(); /*Hace un update de la tabla pago_cliente para actualizar el monto total que suman las lineas de pagos */
+   return $this->actualizarMontoTotal(); /*Hace un update de la tabla pago_proveedor para actualizar el monto total que suman las lineas de pagos */
    
 }
   
@@ -118,11 +118,11 @@ class pagoClienteLineas extends CI_Controller{
   /*Hace un update de la tabla pago_cliente para actualizar el monto total que suman las lineas de pagos */
   function actualizarMontoTotal() {
    
-    $this->load->model('facturas_clientes_m');
+    $this->load->model('facturas_proveedor_m');
 
-    $montoTotal = $this->facturas_clientes_m->getMontoTotal($this->session->userdata('id_pago'));/*Obtengo el monto actual en la BD*/
+    $montoTotal = $this->facturas_proveedor_m->getMontoTotal($this->session->userdata('id_pago'));/*Obtengo el monto actual en la BD*/
     
-    $this->facturas_clientes_m->updateMontoTotalPago($montoTotal, $this->session->userdata('id_pago'));
+    $this->facturas_proveedor_m->updateMontoTotalPago($montoTotal, $this->session->userdata('id_pago'));
    
    
 }

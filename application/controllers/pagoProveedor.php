@@ -12,7 +12,7 @@ class pagoProveedor extends CI_Controller{
 
     $this->grocery_crud->set_language("spanish");
     
-    $this->session->set_userdata('titulo', 'Pago de proveedores');
+    $this->session->set_userdata('titulo', 'Pago de proveedores - Primero se ingresa el encabezado del pago y luego se agregan los distintos tipos de ingresos (cheques, efectivo) con el boton "Items"');
              
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');
@@ -28,24 +28,23 @@ class pagoProveedor extends CI_Controller{
     $crud->set_language("spanish");
     
     $crud->set_table('pago_proveedor');
-    $crud->edit_fields('fecha_pago', 'id_proveedor','id_modo_pago','monto');
-    $crud->add_fields('fecha_pago','id_proveedor', 'id_modo_pago','monto');
+    $crud->edit_fields('fecha_pago', 'id_proveedor','observaciones');
+    $crud->add_fields('fecha_pago','id_proveedor', 'observaciones');
     
     $crud->set_theme('datatables');
    
-    $crud->set_subject('Pago de proveedores');
-    $crud->required_fields('fecha_pago','id_proveedor', 'id_modo_pago','monto');
-    $crud->columns('id','fecha_pago','id_proveedor', 'id_modo_pago','monto');
+    $crud->set_subject('Pago de proveedores (luego agregar los items con importes y tipos de pagos)');
+    $crud->required_fields('fecha_pago','id_proveedor');
+    $crud->columns('id','fecha_pago','id_proveedor', 'monto', 'observaciones');
   
-    $crud->display_as('id_modo_pago','Modo de pago');
     $crud->display_as('id_proveedor','Proveedor');
+    $crud->display_as('id','Nro de factura');
        
-    $crud->set_relation('id_modo_pago','modo_pago','descripcion');
     $crud->set_relation('id_proveedor','proveedor','razon_social');
     
     $crud->order_by('fecha_pago','desc');
     
-    //$crud->add_action('Facturas', base_url().'/assets/img/iconoFactura.png', '','ui-icon-image',array($this,'link_hacia_factura'));
+    $crud->add_action('Items', base_url().'/assets/img/iconoGanancia.png', '','ui-icon-image',array($this,'link_hacia_lineas'));
     
     $output = $crud->render();
     $this->pago_output($output);
@@ -56,9 +55,9 @@ class pagoProveedor extends CI_Controller{
   }
   
   
-  function link_hacia_factura($primary_key , $row)
+  function link_hacia_lineas($primary_key , $row)
   {
-      return "javascript:window.open('" . base_url('index.php/procesaPago/generarFactura') . '/' . $row->id_proveedor . '/' . $row->id . "')";  
+      return "javascript:window.open('" . base_url('/index.php/pagoProveedoresLineas/popUp'). '/' . $row->id_proveedor . '/' . $row->id . "')"; 
       //return site_url('planificacion/confirmacionViaje/'.$row->id);
   }
  

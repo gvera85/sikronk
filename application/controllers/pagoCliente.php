@@ -12,7 +12,7 @@ class pagoCliente extends CI_Controller{
 
     $this->grocery_crud->set_language("spanish");
     
-    $this->session->set_userdata('titulo', 'Pago de clientes');
+    $this->session->set_userdata('titulo', 'Pago de clientes - Primero se ingresa el encabezado del pago y luego se agregan los distintos tipos de ingresos (cheques, efectivo) con el boton "Items"');
              
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');

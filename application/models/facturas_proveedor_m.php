@@ -59,6 +59,50 @@ class facturas_proveedor_m extends CI_Model {
         }   
        
     }
+    
+    public function getMontoTotal($idPago)
+    {
+         if($idPago != FALSE) {
+            $sql = "select sum(importe) monto_total
+                    from pagos_proveedor_lineas 
+                    where id_pago = ?";
+            
+            $query = $this->db->query($sql, array($idPago));
+            
+            $monto = $query->result_array();
+            
+            
+             if ( is_array($monto) && count($monto) == 1 )  {
+              
+              if (empty($monto[0]["monto_total"])) {
+                  return 0;
+              }else{
+                  return $monto[0]["monto_total"];
+              }
+              
+            }
+            else{
+              return 0;
+            }
+        }else {
+          return FALSE;
+        }    
+            
+        
+       
+    }
+    
+    public function updateMontoTotalPago($montoTotal, $idPago)
+    {    
+        $data = array(
+                'monto' => $montoTotal
+             );
+
+        $this->db->where('id', $idPago);
+        
+        $this->db->update("pago_proveedor", $data); 
+
+    }
    
 
 }
