@@ -48,6 +48,19 @@ class caja_distribuidor_m extends CI_Model {
                         join viaje b on a.id_viaje = b.id
                         join proveedor c on b.id_proveedor = c.id
                         where b.id_distribuidor = ?
+                    union
+                        SELECT 'Ajuste' Tipo, fecha, stamp, '-' razon_social,
+                        observaciones descripcion,
+                          CASE tipo 
+                            WHEN 0 THEN importe  
+                                ELSE 0 
+                          END debe,
+                         CASE tipo 
+                            WHEN 1 THEN importe    
+                                ELSE 0 
+                          END haber,  
+                        id
+                        FROM nota_credito_debito 
                     order by 2 asc, 3 asc";
             
             $query = $this->db->query($sql, array($idDistribuidor, $idDistribuidor));

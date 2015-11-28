@@ -83,13 +83,6 @@
                 });
             });
             
-            
-            $(document).on("click","#btnLineas",function( event ) {  
-                //$('#btnAgrupado').val("botonCierreViaje").css('border','3px solid blue');
-                alert ('la concha de tu madre All boys');
-            
-            });
- 
                     
     </script>
     
@@ -166,7 +159,8 @@
                             $classTipo = "label label-default";                            
                         } else if ($lineas['tipo'] == 'Ganancia'){
                             $classTipo = "label label-info";
-                            
+                        } else if ($lineas['tipo'] == 'Ajuste'){
+                            $classTipo = "label label-warning";    
                         }
                         
                     
