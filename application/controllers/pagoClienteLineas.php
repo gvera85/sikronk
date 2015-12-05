@@ -45,7 +45,7 @@ class pagoClienteLineas extends CI_Controller{
    
     $crud->set_subject('Item a la factura');
     $crud->required_fields('id_modo_pago', 'importe');
-    $crud->columns( 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
+    $crud->columns( 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'id_estado','observaciones');
     
     $crud->fields('id_pago', 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
     $crud->change_field_type('id_pago','invisible');
@@ -64,6 +64,9 @@ class pagoClienteLineas extends CI_Controller{
     
     $crud->display_as('id_modo_pago','Tipo de pago');
     $crud->set_relation('id_modo_pago','modo_pago','{descripcion}');
+    
+    $crud->display_as('id_estado','Estado del pago');
+    $crud->set_relation('id_estado','estado','{descripcion}');
     
     $crud->display_as('id_sucursal_bancaria','Sucursal bancaria');
     $crud->set_relation('id_sucursal_bancaria','sucursales_bancarias','{numero_sucursal}-{direccion}');

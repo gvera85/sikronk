@@ -138,10 +138,13 @@ class ViajeVL extends CI_Controller{
     
     $crud->display_as('id_variable_logistica','Peso');
     $crud->set_relation('id_variable_logistica','variable_logistica','{codigo_vl}-{descripcion}-{peso}[KG]-Pallet:{base_pallet}x{altura_pallet}');
-    
-    //$crud->callback_column('id_viaje',array($this,'item_description_callback'));
-    
+   
     $crud->set_relation_dependency('id_variable_logistica','id_producto','id_producto');
+   
+    $crud->callback_before_delete(array($this,'cek_before_delete'));
+    $crud->set_lang_string('delete_error_message', 'No se pudo eliminar el viaje debido a que posee planificaciones o repartos activos.');
+    
+    $crud->set_rules('id_variable_logistica','variable_logistica','callback_validarVL');
 
     $output = $crud->render();
     
@@ -150,7 +153,7 @@ class ViajeVL extends CI_Controller{
     $Proveedor = $this->proveedor_m->getProveedorXViaje($id_viaje);
 
     $this->session->set_userdata('titulo', "Viaje ".$nro_viaje." - ".$Proveedor[0]["razon_social"]); 
-        
+    
     $this->usuario_output($output);
   }
   
@@ -164,8 +167,6 @@ class ViajeVL extends CI_Controller{
    $this->load->model('vl_m');
 
    $cantidadPallets = $this->vl_m->getCantidadPallets($post_array['id_variable_logistica'], $post_array['cantidad_bultos']);
-   
-   
    
    $post_array['cantidad_pallets'] = $cantidadPallets;
  
@@ -181,5 +182,43 @@ class ViajeVL extends CI_Controller{
        return $row->id_viaje." - ".$Proveedor[0]["razon_social"]; 
        //return substr($value,0,40); 
    }
+   
+   function cek_before_delete($primary_key) {
+       
+        $this->db->where('id',$primary_key);
+        $prod_viaje = $this->db->get('productos_viaje')->row();
+
+        $sql = " select * from reparto where id_viaje = ? and id_producto  = ? and id_variable_logistica = ?"; 
+        $query = $this->db->query($sql, array($prod_viaje->id_viaje, $prod_viaje->id_producto, $prod_viaje->id_variable_logistica));
+
+        if ($query->num_rows() > 0)
+        {
+           return FALSE;
+        } else {
+            return TRUE;
+        }       
+        
+   }
+   
+   
+  public function validarVL($id_variable_logistica) 
+  {
+    $id_viaje = $this->session->userdata('id_viaje');  
+    
+    $sql = " select id_variable_logistica from productos_viaje where id_viaje=? and id_variable_logistica=?"; 
+    $query = $this->db->query($sql, array($id_viaje, $id_variable_logistica));
+
+    if ($query->num_rows() > 0)
+    {
+      $this->form_validation->set_message('validarVL', 'Este Producto/Peso ya fue elegido en este viaje');  
+      return false;
+    } else {
+        return TRUE;
+    }       
+      
+      
+     
+  }
+    
    
 }
