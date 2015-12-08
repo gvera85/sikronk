@@ -272,6 +272,15 @@
         //event.preventDefault();
    });
    
+      $(document).on("click","#btnsubmit",function( event ) {  
+      
+        $('input#botonPresionado').val("btnsubmit").css('border','3px solid blue');
+        
+        //event.preventDefault();
+   });
+   
+   
+   
       
    $( "#miform" ).submit(function( event ) {
           var frm = $(this);
@@ -280,12 +289,14 @@
         if (validacionFormulario()){
 	  $.post( "<?php echo base_url() ?>index.php/planificacion/grabarReparto", formulario)
 		        .done(function(data){
-		          alert(data);
+		          swal("Guardada!", data, "success");
 			  $(frm)[0].reset();
                           location.reload();
 			})
-			.fail(function() {
-                alert( "error no pude enviar los datos" );
+			.fail(function(xhr, textStatus, errorThrown) {
+                
+                        
+                        swal("Oops...", errorThrown, "error");
 			});
 	  }
 	  event.preventDefault();

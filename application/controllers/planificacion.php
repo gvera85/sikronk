@@ -117,13 +117,18 @@ class Planificacion extends CI_Controller{
         
         //saco el numero de elementos
         $longitud = count($producto);
+        
+        //start the transaction
+        $this->db->trans_begin();
+        //update user_account table      
        
         $this->db->delete('planificacion_reparto', array('id_viaje' => $viaje[0]));
         $this->db->delete('reparto', array('id_viaje' => $viaje[0]));
         
         //Recorro todos los elementos
         for($i=0; $i<$longitud; $i++)
-        {
+        {   
+            
             $data = array(
                             'id_viaje' => $viaje[$i] ,
                             'id_cliente' => $cliente[$i] ,
@@ -133,8 +138,16 @@ class Planificacion extends CI_Controller{
                             'cant_pallets' => $pallets[$i]
                          );
 
-            $this->db->insert('planificacion_reparto', $data);
+            if (!$this->db->insert('planificacion_reparto', $data))
+            {
             
+              $this->output->set_status_header(500,'Error al grabar el cliente ['.$cliente[$i].'] en la planificacion');
+              $this->db->trans_rollback(); 
+              return false;
+              //$this->output->set_status_header(500,$result);
+            }
+            
+          
             
             $data = array(
                             'id_viaje' => $viaje[$i] ,
@@ -145,7 +158,14 @@ class Planificacion extends CI_Controller{
                             'cantidad_pallets' => $pallets[$i]
                          );
 
-            $this->db->insert('reparto', $data);
+          
+            if (!$this->db->insert('reparto', $data))
+            {
+            
+              $this->output->set_status_header(500,'Error al grabar el cliente ['.$cliente[$i].'] en el reparto');
+              $this->db->trans_rollback(); 
+              return false;
+            }
         }
         
     }
@@ -155,6 +175,18 @@ class Planificacion extends CI_Controller{
       $this->db->delete('planificacion_reparto', array('id_viaje' => $viaje[0]));
       
       $this->db->delete('reparto', array('id_viaje' => $viaje[0]));
+    }
+    
+    
+    //make transaction complete
+    $this->db->trans_complete();
+    //check if transaction status TRUE or FALSE
+    if ($this->db->trans_status() === FALSE) {
+        //if something went wrong, rollback everything
+        $this->db->trans_rollback();    
+    } else {
+        //if everything went right, commit the data to the database
+        $this->db->trans_commit();       
     }
     
     $botonPresionado = $_POST['botonPresionado'];
@@ -189,6 +221,10 @@ class Planificacion extends CI_Controller{
         //saco el numero de elementos
         $longitud = count($producto);
         
+        //start the transaction
+        $this->db->trans_begin();
+        //update user_account table 
+        
         $this->db->delete('reparto', array('id_viaje' => $viaje[0]));
         
         //Recorro todos los elementos
@@ -203,7 +239,14 @@ class Planificacion extends CI_Controller{
                             'cantidad_pallets' => $pallets[$i]
                          );
 
-            $this->db->insert('reparto', $data);
+            if (!$this->db->insert('reparto', $data))
+            {
+            
+              $this->output->set_status_header(500,'Error al grabar el cliente ['.$cliente[$i].'] en el reparto');
+              $this->db->trans_rollback(); 
+              return false;
+              //$this->output->set_status_header(500,$result);
+            }
             
             
         }
@@ -224,6 +267,17 @@ class Planificacion extends CI_Controller{
       $viaje = $_POST['idViaje'];  
       $this->db->delete('planificacion_reparto', array('id_viaje' => $viaje[0]));
       echo "Borrado";
+    }
+    
+    //make transaction complete
+    $this->db->trans_complete();
+    //check if transaction status TRUE or FALSE
+    if ($this->db->trans_status() === FALSE) {
+        //if something went wrong, rollback everything
+        $this->db->trans_rollback();    
+    } else {
+        //if everything went right, commit the data to the database
+        $this->db->trans_commit();       
     }
     
     $botonPresionado = $_POST['botonPresionado'];

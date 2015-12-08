@@ -380,8 +380,8 @@ $(function() {
                         swal("Guardada!", data, "success");
 
                       })
-                      .fail(function() {
-                          swal("Oops...", "Algo falló!", "error");
+                      .fail(function(xhr, textStatus, errorThrown) {
+                          swal("Oops...", errorThrown, "error");
                       });
           
         event.preventDefault();
