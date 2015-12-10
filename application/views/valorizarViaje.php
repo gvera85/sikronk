@@ -16,16 +16,16 @@
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/chosen_v1.2.0/chosen.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/jquery/validationEngine.jquery.css">
-    
+
     <script src="<?php echo base_url() ?>/assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.min.js"></script>
     <script src="<?php echo base_url() ?>/assets/utils/utils.js"></script>
     <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.numeric.js"></script>
     <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.validationEngine.min.js"></script>
     <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.validationEngine-es.js"></script>
+    
 
   
-   
     <script type="text/javascript">
     $(document).ready(function(){
         
@@ -38,8 +38,8 @@
            $(campoBultos).numeric();
            $(campoMerma).numeric();
         }
-
-
+        
+        
     });
     </script>
     
@@ -131,7 +131,22 @@
                                             <tr class="warning">
                                               <?php $cantidadLineasReparto++; ?>
                                               <td align="rigth"> </td>
-                                              <td colspan=2 align="rigth"> <?php echo $reparto['razon_social'] ?> </td>
+                                              <td> 
+                                                <?php    
+                                                if ($modo == "edicion")
+                                                {
+                                                ?>
+                                                   <input type="date" name="fechaValorizacion[]" value=<?php echo $reparto['fecha_valorizacion'] ?>> 
+                                                <?php
+                                                }
+                                                else
+                                                {
+                                                    
+                                                    echo date_format(date_create($reparto['fecha_valorizacion']), 'd/m/Y');
+                                                } 
+                                                ?>
+                                              </td> 
+                                              <td align="rigth"> <?php echo $reparto['razon_social'] ?> </td>
                                               <TD> <div class="cantidad_linea" id="DivBultos_<?php echo $cantidadLineasReparto?>" name="DivBultos_<?php echo $cantidadLineasReparto?>"> <?php echo $reparto['cantidad_bultos'] ?> </div> </TD> 
                                               <input type="hidden" id="bultos_<?php echo $cantidadLineasReparto?>" value=<?php echo $reparto['cantidad_bultos'] ?>>
                                               <TD> <?php echo $reparto['cantidad_pallets'] ?></TD> 
@@ -182,6 +197,7 @@
                 </div>
                 <?php if ($sinProductos == 0 && $modo == "edicion") 
                       {?>
+                <button value="volverAStock" id="btnVolverAConfirmarViaje" class="btn btn-danger">Volver a confirmar viaje</button>
                 <button id="btnsubmit" value="1" type="submit" class="btn btn-default">Guardar</button>
                 <button id="btnConfirmarPrecio" value="2" class="btn btn-success">Confirmar precio</button>
                 <input id="botonPresionado" type="hidden" value="botonGuardar" name="botonPresionado">
@@ -294,22 +310,41 @@ $(function() {
         
     });
     
+    $(document).on("click","#btnVolverAConfirmarViaje",function( event ) {  
+        var answer = confirm("¿Está seguro de que quiere volver a confirmar el stock del viaje?. Luego de aceptar se cerrará esta ventana y podrá ir al punto '3 - Confirmar viajes'")
+        if (answer)
+        {
+            $('input#botonPresionado').val("btnVolverAConfirmarViaje").css('border','3px solid blue');
+        }
+        else
+        {
+            return false;
+        }
+        
+        
+    });
+    
          
    $( "#formValorizacion" ).submit(function( event ) {
           var frm = $(this);
 	  var formulario = $(this).serialize();
      
           if (validacionFormulario()){
-            
+             
 	  $.post( "<?php echo base_url() ?>index.php/planificacion/grabarConfirmacionPrecio", formulario)
 		        .done(function(data){
-		          alert(data);
+		         
+                          if($('input#botonPresionado').val() ==  "btnVolverAConfirmarViaje")
+                          {
+                            alert(data);                  
+                            close();
+                          }
                   
 			  $(frm)[0].reset();
                           location.reload();
 			})
 			.fail(function() {
-                alert( "error no pude enviar los datos" );
+                            alert( "error no pude enviar los datos" );
 			});
 	  }
 	  event.preventDefault();
@@ -317,6 +352,6 @@ $(function() {
  
 });
 </script>
- 
+
 </body>
 </html>

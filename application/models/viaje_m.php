@@ -122,7 +122,8 @@ class viaje_m extends CI_Model {
                             telefono1,
                             telefono2,
                             cant_bultos_merma,
-                            id_motivo_merma
+                            id_motivo_merma,
+                            fecha_valorizacion
                     from reparto a
                     join cliente b on a.id_cliente = b.id
                     where id_viaje= ? 
@@ -271,14 +272,17 @@ class viaje_m extends CI_Model {
 
     }
     
-    public function updateReparto($precioCaja, $cantMerma, $idReparto)
+    public function updateReparto($precioCaja, $cantMerma, $idReparto, $fechaValorizacion)
     {    
+        $this->load->helper('date');
+        
         $data = array(
                 'precio_caja' => $precioCaja,
-                'cant_bultos_merma' => $cantMerma
+                'cant_bultos_merma' => $cantMerma,
+                'fecha_valorizacion' => $fechaValorizacion
              );
 
-        $this->db->set('fecha_valorizacion', 'NOW()', FALSE);
+        //$this->db->set('fecha_valorizacion', 'NOW()', FALSE);
         
         $this->db->where('id', $idReparto);
         

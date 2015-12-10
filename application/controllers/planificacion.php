@@ -297,44 +297,50 @@ class Planificacion extends CI_Controller{
   function grabarConfirmacionPrecio(){
     if(isset($_POST['idProducto']) && !empty($_POST['idProducto']))
     {
+        $botonPresionado = $_POST['botonPresionado'];
         $idProducto = $_POST['idProducto'];
         $idReparto = $_POST['idReparto'];
         $viaje = $_POST['idViaje'];
         $precioBulto = $_POST['precioBulto'];
         $cantMerma = $_POST['cantMerma'];
+        $fechaValorizacion = $_POST['fechaValorizacion'];
         
-        
-        //saco el numero de elementos
-        $longitud = count($idReparto);
-        
-        //Recorro todos los elementos
-        $this->load->model('viaje_m');
-        $this->load->model('caja_distribuidor_m');
-        
-        for($i=0; $i<$longitud; $i++)
+        if ($botonPresionado == "btnVolverAConfirmarViaje") 
         {
-            $this->viaje_m->updateReparto($precioBulto[$i], $cantMerma[$i], $idReparto[$i]);
+            transicionSimple($viaje[0], ESTADO_VIAJE_CONFIRMANDO_STOCK, "viaje");
+            echo "El viaje puede ser confirmado nuevamente";
         }
-        
-        $botonPresionado = $_POST['botonPresionado'];
-    
-        if ($botonPresionado == "botonConfirmarPrecio") 
-        {
-            transicionSimple($viaje[0], ESTADO_VIAJE_PRECIO_ACORDADO, "viaje");
-            
-            $retorno = $this->caja_distribuidor_m->registrarGanancias($viaje[0]);
-            
-            if ($retorno != true)
-                echo "Error ".$retorno;
-            else
-                echo "Viaje con el precio acordado correctamente";
-        }   
         else
         {
-            transicionSimple($viaje[0], ESTADO_VIAJE_DETERMINANDO_PRECIO, "viaje");
-            echo "Precios guardados";
+            //saco el numero de elementos
+            $longitud = count($idReparto);
+
+            //Recorro todos los elementos
+            $this->load->model('viaje_m');
+            $this->load->model('caja_distribuidor_m');
+
+            for($i=0; $i<$longitud; $i++)
+            {
+                $this->viaje_m->updateReparto($precioBulto[$i], $cantMerma[$i], $idReparto[$i], $fechaValorizacion[$i]);
+            }
+
+            if ($botonPresionado == "botonConfirmarPrecio") 
+            {
+                transicionSimple($viaje[0], ESTADO_VIAJE_PRECIO_ACORDADO, "viaje");
+
+                $retorno = $this->caja_distribuidor_m->registrarGanancias($viaje[0]);
+
+                if ($retorno != true)
+                    echo "Error ".$retorno;
+                else
+                    echo "Viaje con el precio acordado correctamente";
+            }   
+            else
+            {
+                transicionSimple($viaje[0], ESTADO_VIAJE_DETERMINANDO_PRECIO, "viaje");
+                echo "Precios guardados";
+            }
         }
-        
     }
     
     
