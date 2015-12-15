@@ -50,7 +50,7 @@ class viaje_m extends CI_Model {
                     join viaje d on a.id_viaje = d.id
                     join proveedor e on d.id_proveedor = e.id
                     where a.id_viaje = ?
-                    order by id_producto, cantidad_bultos ";
+                    order by a.id_producto, a.cantidad_bultos ";
             
             $query = $this->db->query($sql, array($idViaje));
                    

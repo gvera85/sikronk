@@ -33,21 +33,21 @@ class pagoProveedoresLineas extends CI_Controller{
     
     $crud->set_language("spanish");
             
-    $crud->where('id_pago', $id_pago);      
+    $crud->where('pagos_proveedor_lineas.id_pago', $id_pago);      
     
     $crud->set_theme('datatables');
     
     $crud->set_table('pagos_proveedor_lineas');
-    $crud->edit_fields( 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
-    $crud->add_fields( 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
+    $crud->edit_fields( 'id_modo_pago', 'id_cheque_cliente', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
+    $crud->add_fields( 'id_modo_pago', 'id_cheque_cliente', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
     
     //$crud->set_theme('datatables');
    
     $crud->set_subject('Item a la factura');
-    $crud->required_fields('id_modo_pago', 'importe');
+    $crud->required_fields('id_modo_pago');
     $crud->columns( 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
     
-    $crud->fields('id_pago', 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
+    $crud->fields('id_pago', 'id_modo_pago', 'id_cheque_cliente', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
     $crud->change_field_type('id_pago','invisible');
     
     $crud->callback_before_insert(array($this,'lineas_callback'));
@@ -65,6 +65,9 @@ class pagoProveedoresLineas extends CI_Controller{
     $crud->display_as('id_modo_pago','Tipo de pago');
     $crud->set_relation('id_modo_pago','modo_pago','{descripcion}');
     
+    $crud->display_as('id_cheque_cliente','Cheque');
+    $crud->set_relation('id_cheque_cliente','pagos_clientes_lineas','Importe: ${importe} - Numero de cheque:{numero_de_cheque}',array('id_modo_pago' => 2, 'id_estado' => 8));
+    
     $crud->display_as('id_sucursal_bancaria','Sucursal bancaria');
     $crud->set_relation('id_sucursal_bancaria','sucursales_bancarias','{numero_sucursal}-{direccion}');
     
@@ -73,6 +76,8 @@ class pagoProveedoresLineas extends CI_Controller{
     $crud->set_relation_dependency('id_sucursal_bancaria','id_entidad_bancaria','id_entidad_bancaria');
     
     $crud->set_rules('id_entidad_bancaria','Banco','callback_validarPagoEnCheque');
+    
+    $crud->set_rules('id_cheque_cliente','Cheque en cartera','callback_validarPagoEnChequeCartera');
 
     $output = $crud->render();
     
@@ -126,7 +131,7 @@ class pagoProveedoresLineas extends CI_Controller{
    
    
 }
-  
+
   public function validarPagoEnCheque($idBanco) 
   {
       
@@ -135,6 +140,14 @@ class pagoProveedoresLineas extends CI_Controller{
     $id_sucursal_bancaria = $this->input->post('id_sucursal_bancaria'); 
     $cuit = $this->input->post('cuit'); 
     $numero_de_cheque = $this->input->post('numero_de_cheque'); 
+    
+    $importe = $this->input->post('importe');  
+    
+    if ( ($id_modo_pago == 2 || $id_modo_pago == 1) &&  $importe == "" )/*ERROR!!! El importe no puede ser vacio enpago en cheques o efectivo*/
+    {
+        $this->form_validation->set_message('validarPagoEnCheque', ' Es obligatorio colocar el importe para los pagos en CHEQUES y EFECTIVO');  
+        return FALSE;
+    } 
     
             
     if ( $id_modo_pago != 2 && $fecha_de_acreditacion != ""  )/*ERROR!!! El tipo de pago NO es cheque pero seleccionó la fecha de acreditacion*/
@@ -179,5 +192,42 @@ class pagoProveedoresLineas extends CI_Controller{
   }
   
   
+  public function validarPagoEnChequeCartera($idBanco) 
+  {
+      
+    $id_modo_pago = $this->input->post('id_modo_pago');  
+    $id_cheque_cliente = $this->input->post('id_cheque_cliente'); 
+    
+    $importe = $this->input->post('importe');  
+    
+    if ( $id_modo_pago != 3 && $id_cheque_cliente != ""  )/*ERROR!!! El tipo de pago NO es cheque pero seleccionó un cheque en cartera*/
+    {
+        $this->form_validation->set_message('validarPagoEnChequeCartera', ' Solo debe seleccionar un cheque cuando el pago sea del tipo CHEQUE EN CARTERA');  
+        return FALSE;
+    } 
+    
+    if ($id_modo_pago == 3 && ($importe != ""))
+    {
+        $this->form_validation->set_message('validarPagoEnChequeCartera', ' En el tipo de pago CHEQUE EN CARTERA no debe ingresar el importe');  
+        return FALSE;
+    }  
+    
+    
+    if ($id_modo_pago == 3 && ($id_cheque_cliente == ""))
+    {
+        $this->form_validation->set_message('validarPagoEnChequeCartera', ' En el tipo de pago CHEQUE EN CARTERA es obligatorio seleccionar un cheque de la lista');  
+        return FALSE;
+    }  
+    
+    /*Esto lo uso como debugger para imprimir el valor de alguna variable que tenga dudas    
+    
+    $this->form_validation->set_message('validarPagoEnChequeCartera', 'monto total'.$montoTotal);  
+    return false;
+     * 
+     */
+    
+    return TRUE; 
+    
+  }
  
 }

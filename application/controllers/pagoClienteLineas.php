@@ -63,7 +63,7 @@ class pagoClienteLineas extends CI_Controller{
     $crud->set_relation('id_entidad_bancaria','entidad_bancaria','{razon_social}');
     
     $crud->display_as('id_modo_pago','Tipo de pago');
-    $crud->set_relation('id_modo_pago','modo_pago','{descripcion}');
+    $crud->set_relation('id_modo_pago','modo_pago','{descripcion}',array('visto_por_clientes' => 1));
     
     $crud->display_as('id_estado','Estado del pago');
     $crud->set_relation('id_estado','estado','{descripcion}');

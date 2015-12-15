@@ -110,15 +110,15 @@
                                         if ($modo == "edicion")
                                         {
                                         ?>
-                                            <button id="btnAgregarCliente" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']."_".$lineas['base_pallet']."_".$lineas['altura_pallet']."_".$cantidad?>" class="btn btn-xs btn-primary">+ Cliente</button></td>
+                                            <button id="btnAgregarCliente" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']."_".$lineas['base_pallet']."_".$lineas['altura_pallet']."_".$cantidad?>" class="btn btn-xs btn-primary">+ Cliente</button>
                                         <?php
                                         }
                                         ?>
-                                    
+                                </td>    
                                     
                                 <td id="linea_<?php echo $cantidad?>"><B><?php echo $cantidad?></B></td>
-                                <td id="producto"><?php echo $lineas['producto'] ?></td>
-                                <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
+                                <td id="producto" align="left"><?php echo $lineas['producto'] ?></td>
+                                <TD align="left"> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
                                 <TD> <?php echo $lineas['cantidad_bultos'] ?> </TD> 
                                     <TD>  <input class="textBoxNumerico" id="cantBultosViaje_<?php echo $cantidad?>" name="cantBultosViaje[]" type="text" size="10" value="<?php echo ($lineas['cant_real_bultos'] == 0 ? $lineas['cantidad_bultos'] : $lineas['cant_real_bultos']) ?>" onChange="calcularCantidadPallets(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantPalletsViaje_<?php echo $cantidad?>');"> </TD>
                                 <TD> <?php echo $lineas['cantidad_pallets'] ?> </TD> 
@@ -141,7 +141,7 @@
                                 ?>  
                                 <tr class="warning">
                                     <td></td>
-                                    <td align="rigth">
+                                    <td align="left">
                                         <?php                                               
                                         if ($modo == "edicion")
                                         {
@@ -151,7 +151,7 @@
                                         }
                                         ?>
                                     </td>
-                                    <td align="rigth">
+                                    <td align="left">
                                         <?php    
                                                 if ($modo == "edicion")
                                                 {
@@ -171,7 +171,7 @@
                                         ?> 
                                     
                                     </td>
-                                    <td colspan=1 align="rigth"> <?php echo $reparto['razon_social'] ?> </td>
+                                    <td colspan=1 align="left"> <?php echo $reparto['razon_social'] ?> </td>
                                     <TD colspan=2> <?php echo $reparto['cantidad_bultos'] ?></TD>
                                     <TD colspan=2> <?php echo $reparto['cantidad_pallets'] ?></TD>
                                     <input type="hidden" id="idProducto" name="idProducto[]" value=<?php echo $reparto['id_producto'] ?>>
