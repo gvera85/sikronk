@@ -127,7 +127,8 @@ class viaje_m extends CI_Model {
                     from reparto a
                     join cliente b on a.id_cliente = b.id
                     where id_viaje= ? 
-                    and a.id_cliente = ifnull(?,a.id_cliente)";
+                    and a.id_cliente = ifnull(?,a.id_cliente)
+                    order by a.fecha_reparto";
             
             $query = $this->db->query($sql, array($idViaje, $idCliente));
                    

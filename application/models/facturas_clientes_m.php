@@ -5,7 +5,7 @@ class facturas_clientes_m extends CI_Model {
     public function getFacturasCliente($idCliente)
     {
          if($idCliente != FALSE) {
-          $sql = "select    b.stamp fecha_reparto, b.fecha_valorizacion, c.razon_social proveedor,  
+          $sql = "select    b.fecha_reparto, b.fecha_valorizacion, c.razon_social proveedor,  
                             a.id id_viaje, a.numero_de_viaje, b.id id_reparto, b.id_cliente, d.razon_social cliente,
                             b.id_producto, e.descripcion producto, b.id_variable_logistica, f.peso
                             ,b.cantidad_bultos, b.precio_caja precio_bulto
@@ -92,7 +92,7 @@ class facturas_clientes_m extends CI_Model {
     public function getLineasCCC($idCliente)
     {
          if($idCliente != FALSE) {
-          $sql = "select 'Entrega' tipo, b.id id_linea, a.fecha_estimada_llegada fecha, b.fecha_valorizacion, 
+          $sql = "select 'Entrega' tipo, b.id id_linea, a.fecha_estimada_llegada fecha, b.fecha_valorizacion, b.fecha_reparto,
                   c.razon_social proveedor,  
                             a.id id_viaje, a.numero_de_viaje, b.id id_reparto, b.id_cliente, d.razon_social cliente,
                             b.id_producto, e.descripcion producto, b.id_variable_logistica, f.peso
@@ -151,7 +151,7 @@ class facturas_clientes_m extends CI_Model {
     public function getLineasIndependientesCCC($idCliente)
     {
          if($idCliente != FALSE) {
-          $sql = "select 'Entrega' tipo, b.id id_linea, a.fecha_estimada_llegada fecha, b.fecha_valorizacion, 
+          $sql = "select 'Entrega' tipo, b.id id_linea, a.fecha_estimada_llegada fecha, b.fecha_valorizacion, b.fecha_reparto,
                   c.razon_social proveedor,  
                             a.id id_viaje, a.numero_de_viaje, b.id id_reparto, b.id_cliente, d.razon_social cliente,
                             b.id_producto, e.descripcion producto, b.id_variable_logistica, f.peso
@@ -167,8 +167,7 @@ class facturas_clientes_m extends CI_Model {
                     where b.id_cliente = ?    
                     and b.precio_caja is not null
                     union
-                    select 'Pago' tipo, a.id,
-                    a.fecha_pago fecha, a.fecha_pago fecha_valorizacion,
+                    select 'Pago' tipo, a.id, a.fecha_pago fecha_estimada_llegada, a.fecha_pago fecha, a.fecha_pago,
                     null proveedor,  
                     null id_viaje, null numero_de_viaje, null id_reparto, null id_cliente, 
                     null cliente,
@@ -202,7 +201,7 @@ class facturas_clientes_m extends CI_Model {
     public function getLineasSinValorizar($idCliente)
     {
          if($idCliente != FALSE) {
-          $sql = "select b.id id_linea, a.fecha_estimada_llegada fecha, 
+          $sql = "select b.id id_linea, a.fecha_estimada_llegada , b.fecha_reparto fecha,
 			c.razon_social proveedor,  
                         a.id id_viaje, a.numero_de_viaje, b.id id_reparto, b.id_cliente, 
 			d.razon_social cliente,

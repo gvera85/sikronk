@@ -151,13 +151,35 @@
                                         }
                                         ?>
                                     </td>
-                                    <td colspan=2 align="rigth"> <?php echo $reparto['razon_social'] ?> </td>
+                                    <td align="rigth">
+                                        <?php    
+                                                if ($modo == "edicion")
+                                                {
+                                                ?>
+                                                   <input type="date" name="fechaReparto[]" value=<?php echo $reparto['fecha_reparto'] ?>> 
+                                                <?php
+                                                }
+                                                else
+                                                {
+                                                    $f_reparto  = empty($reparto['fecha_reparto']) ? NULL : $reparto['fecha_reparto'];
+                                                    
+                                                    if (!is_null($f_reparto))                                                    
+                                                        echo date_format(date_create($reparto['fecha_reparto']), 'd/m/Y');
+                                                    else
+                                                        echo "Sin fecha";
+                                                } 
+                                        ?> 
+                                    
+                                    </td>
+                                    <td colspan=1 align="rigth"> <?php echo $reparto['razon_social'] ?> </td>
                                     <TD colspan=2> <?php echo $reparto['cantidad_bultos'] ?></TD>
                                     <TD colspan=2> <?php echo $reparto['cantidad_pallets'] ?></TD>
                                     <input type="hidden" id="idProducto" name="idProducto[]" value=<?php echo $reparto['id_producto'] ?>>
                                     <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
                                     <input type="hidden" id="idCliente" name="comboClientes[]" value="<?php echo $reparto['id_cliente'] ?>">
                                     <input type="hidden" id="idVL" name="idVL[]" value="<?php echo $lineas['id_vl'] ?>">
+                                    
+                                    
                                     
                                     <input type="hidden" id="idPallets" name="pallets[]" value="<?php echo $reparto['cantidad_pallets'] ?>">
                                     <input type="hidden" class="cantidad_bultos_<?php echo $reparto['id_producto'] ?>" id="idBultos" name="bultos[]" value="<?php echo $reparto['cantidad_bultos'] ?>">
@@ -243,7 +265,8 @@ $(function() {
                     '<td align="center">'+
                           '<button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button>'+
                     '</td>'+
-                    '<td align="left" colspan="2">'
+                    '<td><input type="date" name="fechaReparto[]" > </td>'+
+                    '<td align="left" colspan="1">'
                           +combo+
                     '</td>'+
                     '<td colspan="2">'+
@@ -378,6 +401,7 @@ $(function() {
                         mensaje = data;
                         
                         swal("Guardada!", data, "success");
+                        //alert(data);
 
                       })
                       .fail(function(xhr, textStatus, errorThrown) {

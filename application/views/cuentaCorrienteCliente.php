@@ -305,7 +305,24 @@
                 
                     <TR>
                             
-                            <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha']), 'Ymd'); ?></span><?php echo date_format(date_create($lineas['fecha']), 'd/m/Y'); ?></td>
+                            <td>
+                                <?php 
+                                                
+                                                $f_reparto  = empty($lineas['fecha']) ? NULL : $lineas['fecha'];
+                                                
+                                                if (! is_null($f_reparto))
+                                                {
+                                                    $f_reparto = date_format(date_create($f_reparto), 'd/m/Y');
+                                                }
+                                                else
+                                                {
+                                                    $f_reparto = "Sin fecha";
+                                                }
+                                                
+                                ?>
+                                <span style='display: none;'><?php echo date_format(date_create($lineas['fecha']), 'Ymd'); ?></span>
+                                <?php echo $f_reparto; ?>
+                            </td>
                            
                             <TD> <?php echo $lineas['producto'] ?></TD>
                             <TD> <?php echo $lineas['peso'] ?></TD>

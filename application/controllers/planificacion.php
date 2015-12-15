@@ -157,8 +157,8 @@ class Planificacion extends CI_Controller{
                             'cantidad_bultos' => $bultos[$i],
                             'cantidad_pallets' => $pallets[$i]
                          );
-
-          
+            
+            
             if (!$this->db->insert('reparto', $data))
             {
             
@@ -218,6 +218,8 @@ class Planificacion extends CI_Controller{
         $idProductoViaje = $_POST['idProductoViaje'];
         $idViajeViaje = $_POST['idViajeViaje'];
         
+        $fechaReparto = $_POST['fechaReparto'];
+        
         //saco el numero de elementos
         $longitud = count($producto);
         
@@ -230,19 +232,22 @@ class Planificacion extends CI_Controller{
         //Recorro todos los elementos
         for($i=0; $i<$longitud; $i++)
         {
+            $f_reparto  = empty($fechaReparto[$i]) ? NULL : $fechaReparto[$i];
+            
             $data = array(
                             'id_viaje' => $viaje[$i] ,
                             'id_cliente' => $cliente[$i] ,
                             'id_producto' => $producto[$i],
                             'id_variable_logistica' => $VL[$i],
                             'cantidad_bultos' => $bultos[$i],
-                            'cantidad_pallets' => $pallets[$i]
+                            'cantidad_pallets' => $pallets[$i],
+                            'fecha_reparto' => $f_reparto
                          );
 
             if (!$this->db->insert('reparto', $data))
             {
             
-              $this->output->set_status_header(500,'Error al grabar el cliente ['.$cliente[$i].'] en el reparto');
+              $this->output->set_status_header(500,'Error al grabar el cliente ['.$cliente[$i].'] en el reparto con fecha:'.$f_reparto);
               $this->db->trans_rollback(); 
               return false;
               //$this->output->set_status_header(500,$result);
