@@ -94,7 +94,11 @@ class pagoClienteLineas extends CI_Controller{
   
   function lineas_callback($post_array) {
    $post_array['id_pago'] = $this->session->userdata('id_pago');//Fijo el Id de pago recibido por parametro
-   $post_array['id_estado'] = 8;
+   
+   if ($post_array['id_modo_pago'] == 2)
+   {
+        $post_array['id_estado'] = 8;
+   }
    
    return $post_array;
 }
