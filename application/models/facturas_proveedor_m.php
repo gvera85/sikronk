@@ -103,6 +103,38 @@ class facturas_proveedor_m extends CI_Model {
         $this->db->update("pago_proveedor", $data); 
 
     }
+    
+    public function getDatosCheque($idChequeCliente)
+    {    
+        $sql = "select * from pagos_clientes_lineas where id = ?";
+            
+        $query = $this->db->query($sql, $idChequeCliente);
+
+        $cheque = $query->result_array();
+        
+        if( is_array($cheque) && count($cheque) > 0 ) {
+          return $cheque;
+        }
+
+        return false;
+    }
+    
+    public function getEstado($idEstado)
+    {    
+        $sql = "select * from estado where id = ?";
+            
+        $query = $this->db->query($sql, $idEstado);
+
+        $estado = $query->result_array();
+        
+        if( is_array($estado) && count($estado) > 0 ) {
+          return $estado;
+        }
+
+        return false;
+    }
+    
+    
    
 
 }

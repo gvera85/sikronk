@@ -13,6 +13,8 @@ class pagoProveedoresLineas extends CI_Controller{
     $this->grocery_crud->set_language("spanish");
     
     $this->session->set_userdata('titulo', 'Agregar item a pagos de proveedores');
+    
+    $this->load->helper('cambio_estados');
              
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');
@@ -91,23 +93,28 @@ class pagoProveedoresLineas extends CI_Controller{
   }
   
   function lineas_callback($post_array) {
-   $post_array['id_pago'] = $this->session->userdata('id_pago');//Fijo el Id de viaje recibido por parametro
+    $post_array['id_pago'] = $this->session->userdata('id_pago');//Fijo el Id de viaje recibido por parametro
+
+    $id_cheque_cliente = $post_array['id_cheque_cliente'];
+    $id_modo_pago = $post_array['id_modo_pago'];
+
+    if ($id_modo_pago == 3)/*Si el pago es cheque en cartera, averiguo todos los datos del cheque y los uso*/
+    {
+        $this->load->model('facturas_proveedor_m');
+
+        $cheque = $this->facturas_proveedor_m->getDatosCheque($id_cheque_cliente);
+
+        $post_array['importe'] = $cheque[0]["importe"];     
+        $post_array['id_entidad_bancaria'] = $cheque[0]["id_entidad_bancaria"];     
+        $post_array['id_sucursal_bancaria'] = $cheque[0]["id_sucursal_bancaria"];     
+        $post_array['fecha_de_acreditacion'] = $cheque[0]["fecha_de_acreditacion"];     
+        $post_array['numero_de_cheque'] = $cheque[0]["numero_de_cheque"];     
+        $post_array['cuit'] = $cheque[0]["cuit"];  
+        
+        transicionSimple($id_cheque_cliente, 9, "pagos_clientes_lineas");
+    }
    
-   if ( $post_array['id_modo_pago'] != 2 )
-   {
-        $post_array['id_entidad_bancaria'] = null;
-        $post_array['id_sucursal_bancaria'] = null;
-        $post_array['fecha_de_acreditacion'] = null;
-        $post_array['numero_de_cheque'] = null;
-        $post_array['cuit'] = null;
-   }
-   
-   if ( $post_array['id_modo_pago'] == 2 && $post_array['id_entidad_bancaria'] == "" && $post_array['fecha_de_acreditacion'] == "")
-   {
-        return FALSE;
-   }
-   
-   return $post_array;
+    return $post_array;
 }
 
   function monto_total_callback($post_array) {
