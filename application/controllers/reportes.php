@@ -25,11 +25,22 @@ class reportes extends CI_Controller {
 	{   
             $this->load->model('reporte_ventas_m');
             
-            $lineasVentas = $this->reporte_ventas_m->getVentasMensualesProveedor($this->session->userdata('empresa'), 7);
+            $lineasVentas = $this->reporte_ventas_m->getVentasMensualesProveedor($this->session->userdata('empresa'));
             
             $data['lineasVentas'] = $lineasVentas;
             
             $this->load->view('ventasMensualesProveedor.php',$data);
+	}
+        
+        public function viajesProveedor()
+	{   
+            $this->load->model('reporte_ventas_m');
+            
+            $lineasVentas = $this->reporte_ventas_m->getViajesProveedor($this->session->userdata('empresa'));
+            
+            $data['lineasVentas'] = $lineasVentas;
+            
+            $this->load->view('viajesProveedor.php',$data);
 	}
 
 	

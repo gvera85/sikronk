@@ -352,7 +352,7 @@
 				<div class="nav-collapse sidebar-nav">
 					<ul class="nav nav-tabs nav-stacked main-menu">
 						<li><a href="<?php echo base_url() ?>index.php/homeProveedor"><i class="icon-bar-chart"></i><span class="hidden-tablet"> Resumen</span></a></li>	
-						<li><a href="<?php echo base_url() ?>index.php/Reportes"><i class="icon-truck"></i><span class="hidden-tablet"> Viajes</span></a></li>
+						<li><a href="<?php echo base_url() ?>index.php/Reportes/viajesProveedor"><i class="icon-truck"></i><span class="hidden-tablet"> Viajes</span></a></li>
 						<li><a href="<?php echo base_url() ?>assets/plugins/metro/tasks.html"><i class="icon-shopping-cart"></i><span class="hidden-tablet"> Mercaderia a recibir</span></a></li>
 						<li><a href="<?php echo base_url() ?>assets/plugins/metro/login.html"><i class="icon-lock"></i><span class="hidden-tablet"> Login Page</span></a></li>
 					</ul>
@@ -389,25 +389,31 @@
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%" >
     <thead>
         <tr>
-            <th>Mes</th>
-            <th>Bultos</th>
-            <th>Pallets</th>
-            <th>Total facturado [$]</th>
+            <th>idViaje</th>
+            <th>Numero viaje</th>
+            <th>Fecha salida</th>
+            <th>Fecha llegada</th>
+            <th>Transportista</th>
+            <th>Monto viaje [$]</th>
+            <th>Estado</th>
         </tr>
     </thead>
  
     <tbody>
         
         <?php 
-            if (!empty($lineasVentas[0]['mes']))
+            if (!empty($lineasVentas[0]['id']))
             {
                 foreach( $lineasVentas as $lineas ) : ?> 
         
                     <tr>
-                        <td><?php echo $lineas['mes_letras'] ?></td>
-                        <td><?php echo $lineas['total_bultos'] ?></td>
-                        <td><?php echo $lineas['total_pallets'] ?></td>
-                        <td><?php echo $lineas['total_facturado'] ?></td>
+                        <td><?php echo $lineas['id'] ?></td>
+                        <td><?php echo $lineas['numero_de_viaje'] ?></td>
+                        <td><?php echo $lineas['fecha_estimada_salida'] ?></td>
+                        <td><?php echo $lineas['fecha_estimada_llegada'] ?></td>
+                        <td><?php echo $lineas['transportista'] ?></td>
+                        <td><?php echo $lineas['montoViaje'] ?></td>
+                        <td><?php echo $lineas['estado'] ?></td>
                     </tr>
         
         <?php

@@ -379,9 +379,9 @@
 				<div class="nav-collapse sidebar-nav">
 					<ul class="nav nav-tabs nav-stacked main-menu">
 						<li><a href="<?php echo base_url() ?>index.php/homeProveedor"><i class="icon-bar-chart"></i><span class="hidden-tablet"> Resumen</span></a></li>	
-						<li><a href="<?php echo base_url() ?>index.php/reportes"><i class="icon-truck"></i><span class="hidden-tablet"> Viajes</span></a></li>
-						<li><a href="<?php echo base_url() ?>assets/plugins/metro/tasks.html"><i class="icon-shopping-cart"></i><span class="hidden-tablet"> Mercaderia a recibir</span></a></li>
-						<li><a href="<?php echo base_url() ?>assets/plugins/metro/login.html"><i class="icon-lock"></i><span class="hidden-tablet"> Login Page</span></a></li>
+						<li><a href="<?php echo base_url() ?>index.php/reportes/viajesProveedor"><i class="icon-truck"></i><span class="hidden-tablet"> Viajes</span></a></li>
+						<li><a href="<?php echo base_url() ?>index.php/homeProveedor"><i class="icon-shopping-cart"></i><span class="hidden-tablet"> Mercaderia sin repartir</span></a></li>
+						<li><a href="<?php echo base_url() ?>index.php/login/logout_user"><i class="icon-lock"></i><span class="hidden-tablet"> Login Page</span></a></li>
 					</ul>
 				</div>
 			</div>

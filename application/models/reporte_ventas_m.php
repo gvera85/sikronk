@@ -164,40 +164,36 @@ class reporte_ventas_m extends CI_Model {
     
     public function getViajesProveedor($idProveedor)
     {
-         if($idProveedor != FALSE) {
-            $sql = "select a.id,
-                    a.stamp,
-                    a.id_proveedor,
-                    a.id_distribuidor,
-                    a.fecha_estimada_salida,
-                    a.fecha_estimada_llegada,
-                    a.patente_semi,
-                    a.patente_camion,
-                    a.id_chofer,
-                    a.id_empresa_transportista,
-                    a.numero_de_viaje,
-                    a.id_estado,
+        $sql = "select a.id id,
+                    a.stamp stamp,
+                    a.id_proveedor id_proveedor,
+                    a.id_distribuidor id_distribuidor,
+                    a.fecha_estimada_salida fecha_estimada_salida,
+                    a.fecha_estimada_llegada fecha_estimada_llegada,
+                    a.patente_semi patente_semi,
+                    a.patente_camion patente_camion,
+                    a.id_chofer id_chofer,
+                    a.id_empresa_transportista id_empresa_transportista,
+                    a.numero_de_viaje numero_de_viaje,
+                    a.id_estado id_estado,
                     b.razon_social transportista,
-                    c.descripcion estado
+                    c.descripcion estado,
+                    getMontoViaje(a.id) montoViaje
                     from viaje a
-                    join transportista b on a.id_empresa_transportista = b.id
+                    left join transportista b on a.id_empresa_transportista = b.id
                     join estado c on a.id_estado = c.id
                     where a.id_proveedor = ?
                     order by a.fecha_estimada_salida";
             
-            $query = $this->db->query($sql, array($idProveedor));
-                   
-            $viajes = $query->row_array();
+        $query = $this->db->query($sql, $idProveedor);
 
-            if( is_array($viajes) && count($viajes) > 0 ) {
-              return $viajes;
-            }
-            
-            return false;
+        $viajes = $query->result_array();
+
+        if( is_array($viajes) && count($viajes) > 0 ) {
+          return $viajes;
         }
-        else {
-          return FALSE;
-        }  
+
+        return false;
     }
     
     
