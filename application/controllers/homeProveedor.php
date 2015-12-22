@@ -1,5 +1,5 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
-class pruebaMetro extends CI_Controller {
+class homeProveedor extends CI_Controller {
 
 	public function __construct()
 	{
@@ -14,7 +14,7 @@ class pruebaMetro extends CI_Controller {
 	{
             $this->load->model('reporte_ventas_m');
             
-            $lineasVentas = $this->reporte_ventas_m->getVentasCliente($this->session->userdata('empresa'),12);
+            $lineasVentas = $this->reporte_ventas_m->getVentasMensualesProveedor($this->session->userdata('empresa'));
             
             $mesActual = date("n");
             $anioActual = date("y");
@@ -27,7 +27,7 @@ class pruebaMetro extends CI_Controller {
             for ( $i=0; $i <13; $i++)
             {
                 //$venta = $this->reporte_ventas_m->getVentasMes($this->session->userdata('empresa'),$anioACalcular,$mesACalcular);
-                $venta = $this->reporte_ventas_m->getVentasMes($this->session->userdata('empresa'),$anioACalcular+2000,$mesACalcular);
+                $venta = $this->reporte_ventas_m->getVentasMesProveedor($this->session->userdata('empresa'),$anioACalcular+2000,$mesACalcular);
                 
                 $ventaMes[$i] = $venta;
 

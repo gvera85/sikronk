@@ -181,10 +181,10 @@ class login extends CI_Controller {
                 redirect('/main/show_main');
                 break;
             case CLIENTE: /*El usuario es un cliente*/
-                redirect('/pruebametro/index');
+                redirect('/homeCliente/index');
                 break;
             case PROVEEDOR: /*El usuario es un proveedor*/
-                redirect('/pruebametro/index');
+                redirect('/homeProveedor/index');
                 break;
                     
         }
