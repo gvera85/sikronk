@@ -53,7 +53,7 @@
             $total_bultos=0;
             $total_pallets=0;
             
-            foreach( $ventaMes as $mes ) : 
+            foreach( $lineasVentas as $mes ) : 
                 
                     $cantidad++;
             

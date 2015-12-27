@@ -389,6 +389,7 @@
 <table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%" >
     <thead>
         <tr>
+            <th>#</th>
             <th>Mes</th>
             <th>Bultos</th>
             <th>Pallets</th>
@@ -404,7 +405,8 @@
                 foreach( $lineasVentas as $lineas ) : ?> 
         
                     <tr>
-                        <td><?php echo $lineas['mes_letras'] ?></td>
+                        <td><?php echo $lineas['numero'] ?></td>
+                        <td><?php echo $lineas['mes'] ?></td>
                         <td><?php echo $lineas['total_bultos'] ?></td>
                         <td><?php echo $lineas['total_pallets'] ?></td>
                         <td><?php echo $lineas['total_facturado'] ?></td>

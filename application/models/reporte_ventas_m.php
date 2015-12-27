@@ -100,7 +100,7 @@ class reporte_ventas_m extends CI_Model {
     
     /******** Distribuidores *************/
     
-    public function getVentasMensualesProveedor($idProveedor)
+    public function getVentasMensualesProveedorOld($idProveedor)
     {
          if($idProveedor != FALSE) {
             $sql ="SET lc_time_names = 'es_AR'"; 
@@ -117,6 +117,37 @@ class reporte_ventas_m extends CI_Model {
                     and b.id_estado >= 7
                     group by MONTH(b.fecha_estimada_salida)
                     order by 1";
+            
+            $query = $this->db->query($sql, array($idProveedor));
+                   
+            $lineasVentas = $query->result_array();
+
+            if( is_array($lineasVentas) && count($lineasVentas) > 0 ) {
+              return $lineasVentas;
+            }
+            
+            return false;
+        }
+        else {
+          return FALSE;
+        }  
+    }
+    
+    public function getVentasMensualesProveedor($idProveedor)
+    {
+         if($idProveedor != FALSE) {
+             
+            $sql = "select m.numero_mes numero, m.mes,
+                    YEAR(b.fecha_estimada_salida),
+                    sum(IFNULL(cantidad_bultos,0)) total_bultos, 
+                    sum(IFNULL(cantidad_pallets,0)) total_pallets, 
+                    sum(IFNULL(precio_caja,0) * IFNULL(cantidad_bultos,0)) total_facturado
+                    from meses m
+                    left join viaje b on MONTH(b.fecha_estimada_salida) = m.numero_mes
+                    left join reparto c on c.id_viaje = b.id and b.id_proveedor = ?
+                    where b.fecha_estimada_salida >= DATE_SUB(CURDATE(), INTERVAL 13 MONTH) or b.fecha_estimada_salida is null
+                    group by m.numero_mes, mes, YEAR(b.fecha_estimada_salida)
+                    order by IFNULL(YEAR(b.fecha_estimada_salida), year(CURDATE())), 1";
             
             $query = $this->db->query($sql, array($idProveedor));
                    
