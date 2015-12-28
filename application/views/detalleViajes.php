@@ -21,6 +21,10 @@
 	<link href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap-responsive.min.css" rel="stylesheet">
 	<link id="base-style" href="<?php echo base_url() ?>assets/plugins/metro/css/style.css" rel="stylesheet">
 	<link id="base-style-responsive" href="<?php echo base_url() ?>assets/plugins/metro/css/style-responsive.css" rel="stylesheet">
+        <link href="../../assets/grocery_crud/themes/datatables/css/demo_table_jui.css" rel="stylesheet" type="text/css"/>
+        
+        
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/dataTablesBootstrap.css">
 	
 	
         <!-- <link href='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>-->
@@ -387,112 +391,148 @@
 			<!-- <div class="row-fluid"> -->
 <div class="row-fluid" >				
 
-    <div class="box black span12 noMargin" onTablet="span12" onDesktop="span12">
-					<div class="box-header">
-						<h2><i class="halflings-icon white list"></i><span class="break"></span>Reparto del viaje 129 - Valor total $135000</h2>
-						<div class="box-icon">
-							<a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
-							<a href="#" class="btn-close"><i class="halflings-icon white remove"></i></a>
-						</div>
-					</div>
-					<div class="box-content">
-						<ul class="tickets metro">
-							<li class="ticket blue">
-								<a href="#">
-									<span class="header">
-                                                                                <span class="avatar"><img src="<?php echo base_url() ?>/assets/uploads/productos/6d0aa-durazno2.jpg" alt="Duranzo de baja calidad"></span>
-										<span class="title">Durazno Pluma - Calidad Alta</span>
-										<span class="number">[ $97000 ]</span>
-									</span>	
-									<span class="content">
-										
-										<span class="name">Procom SRL</span>
-										<span class="status">[10/12/2015] $ x bulto: [ $50 ]</span>
-                                                                                 <span class="status">600 bultos</span>
-										<span class="priority">Total: [ $75000 ]</span>
-										
-									</span>	  
-                                                                       <span class="content">
-										
-										<span class="name">Daloia</span>
-										<span class="status">[12/12/2015] $ x bulto: [ $43 ]</span>
-                                                                                <span class="status">300 bultos</span>
-										<span class="priority">Total: [ $34000 ]</span>
-										
-									</span>	
-                                                                        <span class="content">
-										
-										<span class="name">Akon</span>
-										<span class="status">[15/12/2015] $ x bulto: [ $42 ]</span>
-                                                                                <span class="status">210 bultos</span>
-										<span class="priority">Total: [ $23000 ]</span>
-										
-									</span>	
-								</a>
-							</li>
-						  	<li class="ticket red">
-								<a href="#">
-									<span class="header">
-                                                                                <span class="avatar"><img src="<?php echo base_url() ?>/assets/uploads/productos/511c3-frutilla2.jpg" alt="Duranzo de baja calidad"></span>
-										<span class="title">Frutilla Premium - Calidad Alta - 1100 bultos - 130 kg</span>
-										<span class="number">[ $97000 ]</span>
-									</span>	
-									<span class="content">
-										
-										<span class="name">Procom SRL</span>
-										<span class="status">[10/12/2015] $ x bulto: [ $50 ]</span>
-                                                                                 <span class="status">900 bultos</span>
-										<span class="priority">Total: [ $75000 ]</span>
-										
-									</span>	 
-                                                                       
-                                                                        <span class="content">
-										
-										<span class="name">Akon</span>
-										<span class="status">[15/12/2015] $ x bulto: [ $42 ]</span>
-                                                                                <span class="status">200 bultos</span>
-										<span class="priority">Total: [ $23000 ]</span>
-										
-									</span>	                                                     
-								</a>
-							</li>
-							<li class="ticket blue">
-								<a href="#">
-									<span class="header">
-                                                                                <span class="avatar"><img src="<?php echo base_url() ?>/assets/uploads/productos/7a699-limon_turquia.jpg" alt="Duranzo de baja calidad"></span>
-										<span class="title">Limon del norte - Calidad Media</span>
-										<span class="number">[ $97000 ]</span>
-									</span>	
-									<span class="content">
-										
-										<span class="name">Procom SRL</span>
-										<span class="status">[10/12/2015] $ x bulto: [ $50 ]</span>
-                                                                                 <span class="status">600 bultos</span>
-										<span class="priority">Total: [ $75000 ]</span>
-										
-									</span>	  
-                                                                       <span class="content">
-										
-										<span class="name">Daloia</span>
-										<span class="status">[12/12/2015] $ x bulto: [ $43 ]</span>
-                                                                                <span class="status">300 bultos</span>
-										<span class="priority">Total: [ $34000 ]</span>
-										
-									</span>	
-                                                                        <span class="content">
-										
-										<span class="name">Akon</span>
-										<span class="status">[15/12/2015] $ x bulto: [ $42 ]</span>
-                                                                                <span class="status">210 bultos</span>
-										<span class="priority">Total: [ $23000 ]</span>
-										
-									</span>	                                                       
-								</a>
-							</li>
-							
-						</ul>
-					</div>
-				</div><!--/span-->
+    <!--<div class="box black span12 noMargin" onTablet="span12" onDesktop="span12">
+            <div class="box-header">
+                    <h2><i class="halflings-icon white list"></i><span class="break"></span>Reparto del viaje 129 - Valor total $135000</h2>
+                    <div class="box-icon">
+                            <a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
+                            <a href="#" class="btn-close"><i class="halflings-icon white remove"></i></a>
+                    </div>
+            </div>
+            <div class="box-content">
+                    <ul class="tickets metro">
+                            <li class="ticket blue">
+                                    <a href="#">
+                                            <span class="header">
+                                                    <span class="avatar"><img src="<?php echo base_url() ?>/assets/uploads/productos/6d0aa-durazno2.jpg" alt="Duranzo de baja calidad"></span>
+                                                    <span class="title">Durazno Pluma - Calidad Alta</span>
+                                                    <span class="number">[ $97000 ]</span>
+                                            </span>	
+                                            <span class="content">
+
+                                                    <span class="name">Procom SRL</span>
+                                                    <span class="status">[10/12/2015] $ x bulto: [ $50 ]</span>
+                                                     <span class="status">600 bultos</span>
+                                                    <span class="priority">Total: [ $75000 ]</span>
+
+                                            </span>	  
+                                           <span class="content">
+
+                                                    <span class="name">Daloia</span>
+                                                    <span class="status">[12/12/2015] $ x bulto: [ $43 ]</span>
+                                                    <span class="status">300 bultos</span>
+                                                    <span class="priority">Total: [ $34000 ]</span>
+
+                                            </span>	
+                                            <span class="content">
+
+                                                    <span class="name">Akon</span>
+                                                    <span class="status">[15/12/2015] $ x bulto: [ $42 ]</span>
+                                                    <span class="status">210 bultos</span>
+                                                    <span class="priority">Total: [ $23000 ]</span>
+
+                                            </span>	
+                                    </a>
+                            </li>
+                            <li class="ticket red">
+                                    <a href="#">
+                                            <span class="header">
+                                                    <span class="avatar"><img src="<?php echo base_url() ?>/assets/uploads/productos/511c3-frutilla2.jpg" alt="Duranzo de baja calidad"></span>
+                                                    <span class="title">Frutilla Premium - Calidad Alta - 1100 bultos - 130 kg</span>
+                                                    <span class="number">[ $97000 ]</span>
+                                            </span>	
+                                            <span class="content">
+
+                                                    <span class="name">Procom SRL</span>
+                                                    <span class="status">[10/12/2015] $ x bulto: [ $50 ]</span>
+                                                     <span class="status">900 bultos</span>
+                                                    <span class="priority">Total: [ $75000 ]</span>
+
+                                            </span>	 
+
+                                            <span class="content">
+
+                                                    <span class="name">Akon</span>
+                                                    <span class="status">[15/12/2015] $ x bulto: [ $42 ]</span>
+                                                    <span class="status">200 bultos</span>
+                                                    <span class="priority">Total: [ $23000 ]</span>
+
+                                            </span>	                                                     
+                                    </a>
+                            </li>
+                            <li class="ticket blue">
+                                    <a href="#">
+                                            <span class="header">
+                                                    <span class="avatar"><img src="<?php echo base_url() ?>/assets/uploads/productos/7a699-limon_turquia.jpg" alt="Duranzo de baja calidad"></span>
+                                                    <span class="title">Limon del norte - Calidad Media</span>
+                                                    <span class="number">[ $97000 ]</span>
+                                            </span>	
+                                            <span class="content">
+
+                                                    <span class="name">Procom SRL</span>
+                                                    <span class="status">[10/12/2015] $ x bulto: [ $50 ]</span>
+                                                     <span class="status">600 bultos</span>
+                                                    <span class="priority">Total: [ $75000 ]</span>
+
+                                            </span>	  
+                                           <span class="content">
+
+                                                    <span class="name">Daloia</span>
+                                                    <span class="status">[12/12/2015] $ x bulto: [ $43 ]</span>
+                                                    <span class="status">300 bultos</span>
+                                                    <span class="priority">Total: [ $34000 ]</span>
+
+                                            </span>	
+                                            <span class="content">
+
+                                                    <span class="name">Akon</span>
+                                                    <span class="status">[15/12/2015] $ x bulto: [ $42 ]</span>
+                                                    <span class="status">210 bultos</span>
+                                                    <span class="priority">Total: [ $23000 ]</span>
+
+                                            </span>	                                                       
+                                    </a>
+                            </li>
+
+                    </ul>
+            </div>
+    </div>
+    -->
+    
+    <table id="example" class="table table-bordered" cellspacing="0" width="100%">
+					<thead>
+						<tr>                                                        
+                                                        <th>Cliente</th>
+							<th>Fecha reparto</th>
+                                                        <th>Producto</th>	
+							<th>Precio por bulto[$]</th>
+							<th>Total de bultos</th>
+							<th>Precio total[$]</th>
+						</tr>
+					</thead>
+					<tbody>
+                                        
+                                             <?php 
+                                                if (!empty($lineasReparto[0]['razon_social']))
+                                                {
+                                                    foreach( $lineasReparto as $lineas ) : ?> 
+
+                                                        <tr>
+                                                            <td><?php echo $lineas['razon_social'] ?></td>
+                                                            <td><?php echo $lineas['fecha_reparto'] ?></td>
+                                                            <td><?php echo $lineas['descripcion_producto'] ?></td>
+                                                            <td><?php echo $lineas['precio_caja'] ?></td>
+                                                            <td><?php echo $lineas['cantidad_bultos'] ?></td>
+                                                            <td><?php echo $lineas['precio_caja'] * $lineas['cantidad_bultos'] ?></td>
+                                                            
+                                                        </tr>
+
+                                            <?php
+                                                    endforeach; 
+                                                }
+                                            ?>  
+					</tbody>
+				</table>
     
 </div>								
 				
@@ -606,13 +646,80 @@
 <script type="text/javascript">
         
 $(document).ready(function() {
-    
-    var table = $('#example').DataTable();
-    var tt = new $.fn.dataTable.TableTools( table );
+    var table = $('#example').DataTable({
+        "columnDefs": [
+            { "visible": false, "targets": 2 }
+        ],
+        "order": [[ 2, 'asc' ], [1,'asc']],
+        "displayLength": 25,
+        "drawCallback": function ( settings ) {
+            var api = this.api();
+            var rows = api.rows( {page:'current'} ).nodes();
+            var last=null;
+            
+            var last = null;
+                var subTotal = new Array();
+                var grandTotal = new Array();
+                var groupID = -1;
  
-    $( tt.fnContainer() ).insertBefore('div.dataTables_wrapper');    
-    
-    
+            api.column(2, {page:'current'} ).data().each( function ( group, i ) {
+                if ( last !== group ) {
+                    groupID++;
+                    $(rows).eq( i ).before(
+                        '<tr class="active" ><td colspan="2" class="groupTitle">'+group+' </td></tr>'
+                    );
+ 
+                    last = group;
+                }
+                
+                
+                //Sub-total of each column within the same grouping
+               var val = api.row(api.row($(rows).eq(i)).index()).data(); //Current order index
+                $.each(val, function (colIndex, colValue) {
+                    if (typeof subTotal[groupID] == 'undefined') {
+                        subTotal[groupID] = new Array();
+                    }
+                    if (typeof subTotal[groupID][colIndex] == 'undefined') {
+                        subTotal[groupID][colIndex] = 0;
+                    }
+                    if (typeof grandTotal[colIndex] == 'undefined') {
+                        grandTotal[colIndex] = 0;
+                    }
+
+                    value = colValue ? parseFloat(colValue) : 0;
+                    subTotal[groupID][colIndex] += value;
+                    grandTotal[colIndex] += value;
+                });
+                
+               
+                
+            } );
+            
+             $('tbody').find('.active').each(function (i, v) {
+                var rowCount = $(this).nextUntil('.active').length;
+                var subTotalInfo = "";
+                for (var a = 3; a <= 5; a++) {
+                    subTotalInfo += "<td class='groupTD'>" + subTotal[i][a].toFixed(2) + " / " + grandTotal[a].toFixed(2) + "</td>";
+                }
+                $(this).append(subTotalInfo);
+            });
+            
+                
+            
+                
+        }
+    } );
+ 
+    // Order by the grouping
+    $('#example tbody').on( 'click', 'tr.group', function () {
+        var currentOrder = table.order()[0];
+        if ( currentOrder[0] === 2 && currentOrder[1] === 'asc' ) {
+            table.order( [ 2, 'desc' ] ).draw();
+        }
+        else {
+            table.order( [ 2, 'asc' ] ).draw();
+        }
+    } );
 } );        
 
 </script>        

@@ -43,10 +43,15 @@ class reportes extends CI_Controller {
             $this->load->view('viajesProveedor.php',$data);
 	}
         
-        public function detalleViaje()
+        public function detalleViaje($idViaje)
 	{   
+            $this->load->model('viaje_m');
+    
+            $lineasReparto = $this->viaje_m->getRepartoConfirmado($idViaje, null);
+            
+            $data['lineasReparto'] = $lineasReparto;
                        
-            $this->load->view('detalleViajes.php');
+            $this->load->view('detalleViajes.php', $data);
 	}
 
 	

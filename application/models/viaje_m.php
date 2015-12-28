@@ -123,9 +123,11 @@ class viaje_m extends CI_Model {
                             telefono2,
                             cant_bultos_merma,
                             id_motivo_merma,
-                            fecha_valorizacion
+                            fecha_valorizacion, 
+                            c.descripcion descripcion_producto
                     from reparto a
                     join cliente b on a.id_cliente = b.id
+                    join producto c on a.id_producto = c.id
                     where id_viaje= ? 
                     and a.id_cliente = ifnull(?,a.id_cliente)
                     order by a.fecha_reparto";
