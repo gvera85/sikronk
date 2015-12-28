@@ -21,10 +21,10 @@
 	<link href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap-responsive.min.css" rel="stylesheet">
 	<link id="base-style" href="<?php echo base_url() ?>assets/plugins/metro/css/style.css" rel="stylesheet">
 	<link id="base-style-responsive" href="<?php echo base_url() ?>assets/plugins/metro/css/style-responsive.css" rel="stylesheet">
-	<link href='http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,400,300,600,700,800&subset=latin,cyrillic-ext,latin-ext' rel='stylesheet' type='text/css'>
+	
 	
         <!-- <link href='http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css' rel='stylesheet' type='text/css'>-->
-        <link href='http://datatables.net/release-datatables/extensions/Plugins/integration/bootstrap/3/dataTables.bootstrap.css' rel='stylesheet' type='text/css'>
+        
         
         <!-- end: CSS -->
         
@@ -386,50 +386,114 @@
 						
 			<!-- <div class="row-fluid"> -->
 <div class="row-fluid" >				
-<table id="example" class="table table-striped table-bordered" cellspacing="0" width="100%" >
-    <thead>
-        <tr>
-            <th>idViaje</th>
-            <th>Numero viaje</th>
-            <th>Fecha salida</th>
-            <th>Fecha llegada</th>
-            <th>Transportista</th>
-            <th>Monto viaje [$]</th>
-            <th>Estado</th>
-        </tr>
-    </thead>
- 
-    <tbody>
-        
-        <?php 
-            if (!empty($lineasVentas[0]['id']))
-            {
-                foreach( $lineasVentas as $lineas ) : ?> 
-        
-                    <tr>
-                        <td><?php echo $lineas['id'] ?></td>
-                        <td><?php echo $lineas['numero_de_viaje'] ?></td>
-                        <td><?php echo $lineas['fecha_estimada_salida'] ?></td>
-                        <td><?php echo $lineas['fecha_estimada_llegada'] ?></td>
-                        <td><?php echo $lineas['transportista'] ?></td>
-                        <td><?php echo $lineas['montoViaje'] ?></td>
-                       
-                        
-                        
-                        <TD> 
-                                    <a href=javascript:window.open('<?php echo base_url('/index.php/reportes/detalleViaje').'/'.$lineas['id']; ?>')> 
-                                        <span class="label label-info" id="nroViaje"> <?php echo $lineas['estado'] ?> </span> 
-                                    </a> 
-                                </TD>
-                        
-                    </tr>
-        
-        <?php
-                endforeach; 
-            }
-        ?>  
-    </tbody>
-</table>	
+
+    <div class="box black span12 noMargin" onTablet="span12" onDesktop="span12">
+					<div class="box-header">
+						<h2><i class="halflings-icon white list"></i><span class="break"></span>Reparto del viaje 129 - Valor total $135000</h2>
+						<div class="box-icon">
+							<a href="#" class="btn-minimize"><i class="halflings-icon white chevron-up"></i></a>
+							<a href="#" class="btn-close"><i class="halflings-icon white remove"></i></a>
+						</div>
+					</div>
+					<div class="box-content">
+						<ul class="tickets metro">
+							<li class="ticket blue">
+								<a href="#">
+									<span class="header">
+                                                                                <span class="avatar"><img src="<?php echo base_url() ?>/assets/uploads/productos/6d0aa-durazno2.jpg" alt="Duranzo de baja calidad"></span>
+										<span class="title">Durazno Pluma - Calidad Alta</span>
+										<span class="number">[ $97000 ]</span>
+									</span>	
+									<span class="content">
+										
+										<span class="name">Procom SRL</span>
+										<span class="status">[10/12/2015] $ x bulto: [ $50 ]</span>
+                                                                                 <span class="status">600 bultos</span>
+										<span class="priority">Total: [ $75000 ]</span>
+										
+									</span>	  
+                                                                       <span class="content">
+										
+										<span class="name">Daloia</span>
+										<span class="status">[12/12/2015] $ x bulto: [ $43 ]</span>
+                                                                                <span class="status">300 bultos</span>
+										<span class="priority">Total: [ $34000 ]</span>
+										
+									</span>	
+                                                                        <span class="content">
+										
+										<span class="name">Akon</span>
+										<span class="status">[15/12/2015] $ x bulto: [ $42 ]</span>
+                                                                                <span class="status">210 bultos</span>
+										<span class="priority">Total: [ $23000 ]</span>
+										
+									</span>	
+								</a>
+							</li>
+						  	<li class="ticket red">
+								<a href="#">
+									<span class="header">
+                                                                                <span class="avatar"><img src="<?php echo base_url() ?>/assets/uploads/productos/511c3-frutilla2.jpg" alt="Duranzo de baja calidad"></span>
+										<span class="title">Frutilla Premium - Calidad Alta - 1100 bultos - 130 kg</span>
+										<span class="number">[ $97000 ]</span>
+									</span>	
+									<span class="content">
+										
+										<span class="name">Procom SRL</span>
+										<span class="status">[10/12/2015] $ x bulto: [ $50 ]</span>
+                                                                                 <span class="status">900 bultos</span>
+										<span class="priority">Total: [ $75000 ]</span>
+										
+									</span>	 
+                                                                       
+                                                                        <span class="content">
+										
+										<span class="name">Akon</span>
+										<span class="status">[15/12/2015] $ x bulto: [ $42 ]</span>
+                                                                                <span class="status">200 bultos</span>
+										<span class="priority">Total: [ $23000 ]</span>
+										
+									</span>	                                                     
+								</a>
+							</li>
+							<li class="ticket blue">
+								<a href="#">
+									<span class="header">
+                                                                                <span class="avatar"><img src="<?php echo base_url() ?>/assets/uploads/productos/7a699-limon_turquia.jpg" alt="Duranzo de baja calidad"></span>
+										<span class="title">Limon del norte - Calidad Media</span>
+										<span class="number">[ $97000 ]</span>
+									</span>	
+									<span class="content">
+										
+										<span class="name">Procom SRL</span>
+										<span class="status">[10/12/2015] $ x bulto: [ $50 ]</span>
+                                                                                 <span class="status">600 bultos</span>
+										<span class="priority">Total: [ $75000 ]</span>
+										
+									</span>	  
+                                                                       <span class="content">
+										
+										<span class="name">Daloia</span>
+										<span class="status">[12/12/2015] $ x bulto: [ $43 ]</span>
+                                                                                <span class="status">300 bultos</span>
+										<span class="priority">Total: [ $34000 ]</span>
+										
+									</span>	
+                                                                        <span class="content">
+										
+										<span class="name">Akon</span>
+										<span class="status">[15/12/2015] $ x bulto: [ $42 ]</span>
+                                                                                <span class="status">210 bultos</span>
+										<span class="priority">Total: [ $23000 ]</span>
+										
+									</span>	                                                       
+								</a>
+							</li>
+							
+						</ul>
+					</div>
+				</div><!--/span-->
+    
 </div>								
 				
 				

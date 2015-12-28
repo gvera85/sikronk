@@ -42,6 +42,12 @@ class reportes extends CI_Controller {
             
             $this->load->view('viajesProveedor.php',$data);
 	}
+        
+        public function detalleViaje()
+	{   
+                       
+            $this->load->view('detalleViajes.php');
+	}
 
 	
         

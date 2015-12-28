@@ -9,3 +9,4 @@ application/logs/
 assets/uploads/images/
 application/views/errors/*
 license.txt
+/nbproject/private/
