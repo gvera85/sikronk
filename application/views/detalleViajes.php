@@ -503,10 +503,12 @@
 					<thead>
 						<tr>                                                        
                                                         <th>Cliente</th>
-							<th>Fecha reparto</th>
-                                                        <th>Producto</th>	
+							<th>Fecha de reparto</th>
+                                                        <th>Producto</th>
+                                                        <th>Fecha de valorizacion</th>
 							<th>Precio por bulto[$]</th>
-							<th>Total de bultos</th>
+							<th>Cant. de bultos</th>
+                                                        <th>Cant. merma</th>                                                        
 							<th>Precio total[$]</th>
 						</tr>
 					</thead>
@@ -515,15 +517,21 @@
                                              <?php 
                                                 if (!empty($lineasReparto[0]['razon_social']))
                                                 {
-                                                    foreach( $lineasReparto as $lineas ) : ?> 
+                                                    foreach( $lineasReparto as $lineas ) : 
+                                                        $cantBultosAPagar = ($lineas['cantidad_bultos'] - $lineas['cant_bultos_merma']);
+                                                        $totalAPagar = $cantBultosAPagar * $lineas['precio_caja'];
+                                                        
+                                                        ?> 
 
                                                         <tr>
                                                             <td><?php echo $lineas['razon_social'] ?></td>
                                                             <td><?php echo $lineas['fecha_reparto'] ?></td>
                                                             <td><?php echo $lineas['descripcion_producto'] ?></td>
+                                                            <td><?php echo $lineas['fecha_valorizacion'] ?></td>
                                                             <td><?php echo $lineas['precio_caja'] ?></td>
                                                             <td><?php echo $lineas['cantidad_bultos'] ?></td>
-                                                            <td><?php echo $lineas['precio_caja'] * $lineas['cantidad_bultos'] ?></td>
+                                                            <td><?php echo $lineas['cant_bultos_merma'] ?></td>
+                                                            <td><?php echo $totalAPagar ?></td>
                                                             
                                                         </tr>
 
@@ -666,7 +674,7 @@ $(document).ready(function() {
                 if ( last !== group ) {
                     groupID++;
                     $(rows).eq( i ).before(
-                        '<tr class="active" ><td colspan="2" class="groupTitle">'+group+' </td></tr>'
+                        '<tr class="active" ><td colspan="3" class="groupTitle">'+group+' </td></tr>'
                     );
  
                     last = group;
@@ -695,11 +703,16 @@ $(document).ready(function() {
                 
             } );
             
-             $('tbody').find('.active').each(function (i, v) {
+            /*Recorro las filas buscando los agrupamientos por PLU*/ 
+            $('tbody').find('.active').each(function (i, v) {
                 var rowCount = $(this).nextUntil('.active').length;
                 var subTotalInfo = "";
-                for (var a = 3; a <= 5; a++) {
-                    subTotalInfo += "<td class='groupTD'>" + subTotal[i][a].toFixed(2) + " / " + grandTotal[a].toFixed(2) + "</td>";
+                for (var a = 4; a <= 7; a++) {
+                    
+                    if (a == 5 || a == 6) /*Cantidad de bultos y cantidad con merma NO son decimales*/
+                        subTotalInfo += "<td class='groupTD'>" + subTotal[i][a] + " / " + grandTotal[a] + "</td>";
+                    else
+                        subTotalInfo += "<td class='groupTD'>" + subTotal[i][a].toFixed(2) + " / " + grandTotal[a].toFixed(2) + "</td>";
                 }
                 $(this).append(subTotalInfo);
             });
@@ -711,7 +724,7 @@ $(document).ready(function() {
     } );
  
     // Order by the grouping
-    $('#example tbody').on( 'click', 'tr.group', function () {
+    $('#example tbody').on( 'click', 'tr.active', function () {
         var currentOrder = table.order()[0];
         if ( currentOrder[0] === 2 && currentOrder[1] === 'asc' ) {
             table.order( [ 2, 'desc' ] ).draw();
