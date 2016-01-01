@@ -138,14 +138,17 @@ class reporte_ventas_m extends CI_Model {
          if($idProveedor != FALSE) {
              
             $sql = "select m.numero_mes numero, m.mes,
-                    YEAR(b.fecha_estimada_salida),
+                    IFNULL(YEAR(b.fecha_estimada_salida),2015) anio,
+                    count(distinct b.id) cant_viajes,                    
                     sum(IFNULL(cantidad_bultos,0)) total_bultos, 
                     sum(IFNULL(cantidad_pallets,0)) total_pallets, 
                     sum(IFNULL(precio_caja,0) * IFNULL(cantidad_bultos,0)) total_facturado
                     from meses m
                     left join viaje b on MONTH(b.fecha_estimada_salida) = m.numero_mes
-                    left join reparto c on c.id_viaje = b.id and b.id_proveedor = ?
-                    where b.fecha_estimada_salida >= DATE_SUB(CURDATE(), INTERVAL 13 MONTH) or b.fecha_estimada_salida is null
+                    left join reparto c on c.id_viaje = b.id
+                    where (b.fecha_estimada_salida >= DATE_SUB(CURDATE(), INTERVAL 13 MONTH) or b.fecha_estimada_salida is null)
+                    and (b.id_estado >= 7 or b.id_estado is null)
+                    and (b.id_proveedor = ? or  b.id_proveedor is null)
                     group by m.numero_mes, mes, YEAR(b.fecha_estimada_salida)
                     order by IFNULL(YEAR(b.fecha_estimada_salida), year(CURDATE())), 1";
             
