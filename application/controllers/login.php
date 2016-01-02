@@ -184,7 +184,7 @@ class login extends CI_Controller {
                 redirect('/homeCliente/index');
                 break;
             case PROVEEDOR: /*El usuario es un proveedor*/
-                redirect('/homeProveedor/index');
+                redirect('/reportes/homeProveedor');
                 break;
                     
         }

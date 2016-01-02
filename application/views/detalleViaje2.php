@@ -2,9 +2,13 @@
 <?php 
         $this->load->view('headerProveedor');
 ?>
+    
+<style>
+tr.warning { background-color:red;}
+</style>
 
 
-    <table id="example" class="table table-bordered table-responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
+    <table id="example" class="display responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
         <thead>
                 <tr>                                                        
                         <th>Cliente</th>
@@ -62,7 +66,7 @@ $(document).ready(function() {
             { "visible": false, "targets": 2 }
         ],
         "pagingType": "full_numbers",
-        "order": [[ 2, 'asc' ], [1,'asc']],        
+        "order": [[ 2, 'asc' ], [1,'asc']],   
         "language": {
                         "url": "<?php echo base_url() ?>/assets/bootstrap/json/SpanishDataTable.json"
                     },
@@ -81,7 +85,7 @@ $(document).ready(function() {
                 if ( last !== group ) {
                     groupID++;
                     $(rows).eq( i ).before(
-                        '<tr class="active" ><td colspan="3" class="groupTitle">'+group+' </td></tr>'
+                        '<tr class="warning" style="background-color: #3A3A3A; font-weight: 600; color: white;" ><td colspan="3" class="groupTitle">'+group+' </td></tr>'
                     );
  
                     last = group;
@@ -111,8 +115,8 @@ $(document).ready(function() {
             } );
             
             /*Recorro las filas buscando los agrupamientos por PLU*/ 
-            $('tbody').find('.active').each(function (i, v) {
-                var rowCount = $(this).nextUntil('.active').length;
+            $('tbody').find('.warning').each(function (i, v) {
+                var rowCount = $(this).nextUntil('.warning').length;
                 var subTotalInfo = "";
                 for (var a = 4; a <= 7; a++) {
                     
@@ -131,7 +135,7 @@ $(document).ready(function() {
     } );
  
     // Order by the grouping
-    $('#example tbody').on( 'click', 'tr.active', function () {
+    $('#example tbody').on( 'click', 'tr.warning', function () {
         var currentOrder = table.order()[0];
         if ( currentOrder[0] === 2 && currentOrder[1] === 'asc' ) {
             table.order( [ 2, 'desc' ] ).draw();

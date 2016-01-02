@@ -31,7 +31,9 @@
 	
                 <!-- start: JavaScript-->
 
-    <script src="<?php echo base_url() ?>assets/plugins/metro/js/jquery-1.9.1.min.js"></script>
+    <!--<script src="<?php echo base_url() ?>assets/plugins/metro/js/jquery-1.9.1.min.js"></script>-->
+    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/dataTables/jquery-1.11.3.min.js"></script>
+    
     <script src="<?php echo base_url() ?>assets/plugins/metro/js/jquery-migrate-1.0.0.min.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/metro/js/jquery-ui-1.10.0.custom.min.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/metro/js/jquery.ui.touch-punch.js"></script>
@@ -39,7 +41,7 @@
     <script src="<?php echo base_url() ?>assets/plugins/metro/js/bootstrap.min.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/metro/js/jquery.cookie.js"></script>
     <script src='<?php echo base_url() ?>assets/plugins/metro/js/fullcalendar.min.js'></script>
-    <script src='<?php echo base_url() ?>assets/plugins/metro/js/jquery.dataTables.min.js'></script>
+    <!--<script src='<?php echo base_url() ?>assets/plugins/metro/js/jquery.dataTables.min.js'></script>-->
     <script src="<?php echo base_url() ?>assets/plugins/metro/js/excanvas.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/metro/js/jquery.flot.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/metro/js/jquery.flot.pie.js"></script>
@@ -61,26 +63,14 @@
     <script src="<?php echo base_url() ?>assets/plugins/metro/js/counter.js"></script>	
     <script src="<?php echo base_url() ?>assets/plugins/metro/js/retina.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/metro/js/custom.js"></script>
-    
-    <!--
-    <script src="https://cdn.datatables.net/responsive/2.0.0/js/dataTables.responsive.min.js"></script>
-    <script src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>
-    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-    -->
-    
-    
-    
-    
-    <!-- start: javascrip dataTable -->
-    <!--<script src="http://datatables.net/release-datatables/media/js/jquery.js"></script>-->
-    <!--<script src="http://datatables.net/release-datatables/media/js/jquery.dataTables.js"></script>-->
 
-    <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
-    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/plugins/jquery/jquery.dataTables.min.js"></script>
     
-    <!--<script src="http://datatables.net/release-datatables/extensions/TableTools/js/dataTables.tableTools.js"></script>-->
-    <!--<script src="http://datatables.net/release-datatables/extensions/Plugins/integration/bootstrap/3/dataTables.bootstrap.js"></script>-->
-
+    <!--<script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/plugins/jquery/jquery.dataTables.min.js"></script>-->
+    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/dataTables/jquery.dataTables.min.js"></script> 
+    
+    
+    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/dataTables/dataTables.responsive.min.js"></script>
+   
     <!-- end: javascript dataTable -->
 
 <!-- end: JavaScript-->

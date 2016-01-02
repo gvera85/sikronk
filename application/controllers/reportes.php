@@ -23,6 +23,8 @@ class reportes extends CI_Controller {
         
         public function ventasMensualesProveedor()
 	{   
+            $this->session->set_userdata('ruta', "Resumen > Detalle último año");    
+            
             $this->load->model('reporte_ventas_m');
             
             $lineasVentas = $this->reporte_ventas_m->getVentasMensualesProveedor($this->session->userdata('empresa'));

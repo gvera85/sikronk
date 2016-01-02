@@ -2,7 +2,7 @@
 <?php 
         $this->load->view('headerProveedor');
 ?>				
-<table id="example" class="table table-bordered table-responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
+<table id="example" class="display responsive nowrap" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
     <thead>
         <tr>
             <th>#</th>
@@ -30,6 +30,7 @@
                         <td><?php echo $lineas['total_bultos'] ?></td>
                         <td><?php echo $lineas['total_pallets'] ?></td>
                         <td><?php echo $lineas['total_facturado'] ?></td>
+                        
                     </tr>
         
         <?php

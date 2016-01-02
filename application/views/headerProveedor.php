@@ -20,7 +20,11 @@
 	<link id="base-style" href="<?php echo base_url() ?>assets/plugins/metro/css/style.css" rel="stylesheet">
 	<link id="base-style-responsive" href="<?php echo base_url() ?>assets/plugins/metro/css/style-responsive.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/dataTablesBootstrap.css">
-        <link href="<?php echo base_url() ?>/assets/grocery_crud/themes/datatables/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>
+        
+        <!--<link href="<?php echo base_url() ?>/assets/grocery_crud/themes/datatables/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>-->
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/jquery.dataTables.min.css">
+        
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/responsive.dataTables.min.css">
         
          <!--
             <link href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
@@ -51,8 +55,9 @@
         
         <style>
             
-            div.DTTT { margin-bottom: 0.5em; float: right;  }
-            div.dataTables_wrapper { clear: both; margin: 10px;}	
+            
+            tr.warning { background-color:red;}
+	
         </style>
 		
 </head>
@@ -128,7 +133,7 @@
 			<ul class="breadcrumb">
 				<li>
 					<i class="icon-home"></i>
-					<a href="<?php echo base_url() ?>assets/plugins/metro/index.html">Home</a> 
+					<a href="<?php echo base_url() ?>index.php/reportes/homeProveedor">Home</a> 
 					<i class="icon-angle-right"></i>
 				</li>
 				<li><a href="#"><?php echo $this->session->userdata('ruta') ?></a></li>
