@@ -12,6 +12,7 @@
             <th>Bultos</th>
             <th>Pallets</th>
             <th>Total facturado [$]</th>
+            <th></th>
         </tr>
     </thead>
  
@@ -26,10 +27,26 @@
                         <td><?php echo $lineas['numero'] ?></td>
                         <td><?php echo $lineas['mes'] ?></td>
                         <td><?php echo $lineas['anio'] ?></td>
-                        <td><?php echo $lineas['cant_viajes'] ?></td>
+                        <td>
+                            <?php if ($lineas['cant_viajes'] > 0)
+                            {?>
+                                <a href="<?php echo base_url('/index.php/reportes/viajesMensuales').'/'.$lineas['numero'].'/'.$lineas['anio']; ?>"> 
+                                    <span class="label label-info" id="cantViajes"> <?php echo $lineas['cant_viajes'] ?> </span> 
+                                </a> 
+                            <?php
+                            }else{
+                                   echo $lineas['cant_viajes'];
+                            }
+                            ?>
+                        </td>
                         <td><?php echo $lineas['total_bultos'] ?></td>
                         <td><?php echo $lineas['total_pallets'] ?></td>
                         <td><?php echo $lineas['total_facturado'] ?></td>
+                         <TD> 
+                            <a href="<?php echo base_url('/index.php/reportes/ventasMensualesProdProveedor').'/'.$lineas['numero'].'/'.$lineas['anio']; ?>"> 
+                                <span class="label label-info" id="mesAnio"> + detalle </span> 
+                            </a> 
+                        </TD>
                         
                     </tr>
         

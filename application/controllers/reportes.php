@@ -7,6 +7,10 @@ class reportes extends CI_Controller {
 
 		$this->load->database();
 		$this->load->helper('url');
+                
+                if( !$this->session->userdata('isLoggedIn') ) {
+                   redirect('/login/show_login');
+                }
 
 	}
 
@@ -34,6 +38,19 @@ class reportes extends CI_Controller {
             $this->load->view('ventasMensualesProveedor.php',$data);
 	}
         
+        public function ventasMensualesProdProveedor($mes, $anio)
+	{   
+            $this->session->set_userdata('ruta', "Resumen > Detalle último año > Mes [".$mes."] - Año [".$anio."]");     
+            
+            $this->load->model('reporte_ventas_m');
+    
+            $lineasVentas = $this->reporte_ventas_m->getVentasMensualPorProd($this->session->userdata('empresa'), $mes, $anio);
+            
+            $data['lineasVentas'] = $lineasVentas;
+                       
+            $this->load->view('ventasMensualesProdProveedor.php', $data);
+	}
+        
         
         public function homeProveedor()
 	{   
@@ -54,7 +71,7 @@ class reportes extends CI_Controller {
             
             $this->load->model('reporte_ventas_m');
             
-            $lineasVentas = $this->reporte_ventas_m->getViajesProveedor($this->session->userdata('empresa'));
+            $lineasVentas = $this->reporte_ventas_m->getViajesProveedor($this->session->userdata('empresa'), null, null);
             
             $data['lineasVentas'] = $lineasVentas;
             
@@ -71,7 +88,7 @@ class reportes extends CI_Controller {
             
             $data['lineasReparto'] = $lineasReparto;
                        
-            $this->load->view('detalleViaje2.php', $data);
+            $this->load->view('detalleViaje.php', $data);
 	}
         
         public function mercaderiaSinRepartir()
@@ -116,16 +133,20 @@ class reportes extends CI_Controller {
             $this->load->view('entregasPendientes.php');
 	}
         
-        public function pruebaResponsive()
+        public function viajesMensuales($mes, $anio)
 	{   
-            $this->load->model('reporte_ventas_m');
+            $this->session->set_userdata('ruta', "Resumen > Detalle último año > Viajes del Mes [".$mes."] - Año [".$anio."]");     
             
-            $lineasVentas = $this->reporte_ventas_m->getVentasMensualesProveedor($this->session->userdata('empresa'));
+            $this->load->model('reporte_ventas_m');
+    
+            $lineasVentas = $this->reporte_ventas_m->getViajesProveedor($this->session->userdata('empresa'), $mes, $anio);
             
             $data['lineasVentas'] = $lineasVentas;
             
-            $this->load->view('pruebaResponsive.php',$data);
+            $this->load->view('viajesProveedor.php',$data);
 	}
+        
+        
         
         
         

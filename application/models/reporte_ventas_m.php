@@ -98,61 +98,24 @@ class reporte_ventas_m extends CI_Model {
     
     
     
-    /******** Distribuidores *************/
+    /******** Proveedores *************/
     
-    public function getVentasMensualesProveedorOld($idProveedor)
-    {
-         if($idProveedor != FALSE) {
-            $sql ="SET lc_time_names = 'es_AR'"; 
-            
-            $this->db->query($sql);
-             
-            $sql = "select MONTH(b.fecha_estimada_salida) mes, 
-                    DATE_FORMAT(b.fecha_estimada_salida,'%M') mes_letras,
-                    sum(cantidad_bultos) total_bultos, sum(cantidad_pallets) total_pallets, 
-                    sum((precio_caja * cantidad_bultos)) total_facturado
-                    from reparto a
-                    join viaje b on a.id_viaje = b.id
-                    where id_proveedor = ?
-                    and b.id_estado >= 7
-                    group by MONTH(b.fecha_estimada_salida)
-                    order by 1";
-            
-            $query = $this->db->query($sql, array($idProveedor));
-                   
-            $lineasVentas = $query->result_array();
-
-            if( is_array($lineasVentas) && count($lineasVentas) > 0 ) {
-              return $lineasVentas;
-            }
-            
-            return false;
-        }
-        else {
-          return FALSE;
-        }  
-    }
-    
+        
     public function getVentasMensualesProveedor($idProveedor)
     {
          if($idProveedor != FALSE) {
              
-            $sql = "select m.numero_mes numero, m.mes,
-                    IFNULL(YEAR(b.fecha_estimada_salida),2015) anio,
-                    count(distinct b.id) cant_viajes,                    
-                    sum(IFNULL(cantidad_bultos,0)) total_bultos, 
-                    sum(IFNULL(cantidad_pallets,0)) total_pallets, 
-                    sum(IFNULL(precio_caja,0) * IFNULL(cantidad_bultos,0)) total_facturado
-                    from meses m
-                    left join viaje b on MONTH(b.fecha_estimada_salida) = m.numero_mes
-                    left join reparto c on c.id_viaje = b.id
-                    where (b.fecha_estimada_salida >= DATE_SUB(CURDATE(), INTERVAL 13 MONTH) or b.fecha_estimada_salida is null)
-                    and (b.id_estado >= 7 or b.id_estado is null)
-                    and (b.id_proveedor = ? or  b.id_proveedor is null)
-                    group by m.numero_mes, mes, YEAR(b.fecha_estimada_salida)
-                    order by IFNULL(YEAR(b.fecha_estimada_salida), year(CURDATE())), 1";
+            $sql = "select a.mes_a_evaluar numero, b.mes,
+                    a.anio_a_evaluar anio, 
+                    getBultosProveedorMes(?, a.mes_a_evaluar, a.anio_a_evaluar ) total_bultos ,
+                    getPalletsProveedorMes(?, a.mes_a_evaluar, a.anio_a_evaluar ) total_pallets ,
+                    getVentasProveedorMes(?, a.mes_a_evaluar, a.anio_a_evaluar ) total_facturado,
+                    getCantViajesProveedorMes (?, a.mes_a_evaluar, a.anio_a_evaluar ) cant_viajes
+                    from mesesParaReporteAnual a
+                    join meses b on a.mes_a_evaluar = b.numero_mes
+                    order by anio_a_evaluar, mes_a_evaluar";
             
-            $query = $this->db->query($sql, array($idProveedor));
+            $query = $this->db->query($sql, array($idProveedor, $idProveedor, $idProveedor, $idProveedor));
                    
             $lineasVentas = $query->result_array();
 
@@ -166,6 +129,43 @@ class reporte_ventas_m extends CI_Model {
           return FALSE;
         }  
     }
+    
+    public function getVentasMensualPorProd($idProveedor, $mes, $anio)
+    {
+         if($idProveedor != FALSE) {
+             
+            $sql = "select c.id_producto, d.descripcion, d.marca, d.calidad,
+                    count(distinct a.id) cant_viajes,   
+                    IFNULL(sum(cantidad_bultos),0) total_bultos	,
+                    IFNULL(sum(cantidad_pallets),0) total_pallets,
+                    IFNULL(sum((precio_caja * cantidad_bultos)),0) total_facturado	
+                    from viaje a
+                    join reparto c on c.id_viaje = a.id
+                    join producto d on c.id_producto = d.id 
+                    where a.id_proveedor = ?
+                    and month (a.fecha_estimada_salida) = ?
+                    and year (a.fecha_estimada_salida) = ?
+                    group by id_producto";
+            
+            $query = $this->db->query($sql, array($idProveedor, $mes, $anio));
+                   
+            $lineasVentas = $query->result_array();
+
+            if( is_array($lineasVentas) && count($lineasVentas) > 0 ) {
+              return $lineasVentas;
+            }
+            
+            return false;
+        }
+        else {
+          return FALSE;
+        }  
+    }
+    
+    
+    
+    
+    	
     
     public function getVentasMesProveedor($idProveedor, $anio, $mes)
     {
@@ -196,7 +196,7 @@ class reporte_ventas_m extends CI_Model {
         }  
     }
     
-    public function getViajesProveedor($idProveedor)
+    public function getViajesProveedor($idProveedor, $mes, $anio)
     {
         $sql = "select a.id id,
                     a.stamp stamp,
@@ -217,9 +217,10 @@ class reporte_ventas_m extends CI_Model {
                     left join transportista b on a.id_empresa_transportista = b.id
                     join estado c on a.id_estado = c.id
                     where a.id_proveedor = ?
-                    order by a.fecha_estimada_salida";
+                    and MONTH(a.fecha_estimada_salida) = IFNULL(?,MONTH(a.fecha_estimada_salida))
+                    and	YEAR(a.fecha_estimada_salida) = IFNULL(?,YEAR(a.fecha_estimada_salida))";
             
-        $query = $this->db->query($sql, $idProveedor);
+        $query = $this->db->query($sql, array($idProveedor,$mes,$anio));
 
         $viajes = $query->result_array();
 
