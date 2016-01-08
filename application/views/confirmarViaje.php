@@ -77,6 +77,9 @@
 <div id="container ">
     <div class="row-fluid top-buffer text-center" style="padding: 10px;">
             <form id="miform" method="post" name="miform" >
+                
+                <a href="<?php echo base_url() ?>/index.php/generarPDFConf"> <img src="<?php echo base_url() ?>/assets/img/pdf.png" alt=""/>  </a>
+                  
 	        <div class="panel panel-primary" width="100%">
                     <div class="panel-heading">
                         <h3 class="panel-title"><?php echo $titulo  ?> </h3>

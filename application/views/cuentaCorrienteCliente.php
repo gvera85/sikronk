@@ -3,7 +3,7 @@
         $this->load->view('header');
     ?>
 <head>
-    <title>sikronk - Cuenta corriente del cliente</title>
+    <title>Cuenta corriente del cliente</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     
     <meta charset="utf-8">
@@ -33,6 +33,10 @@
     <script type="text/javascript" src="//cdn.datatables.net/buttons/1.1.0/js/buttons.html5.min.js"></script>  
     <script type="text/javascript" src="//cdn.datatables.net/buttons/1.1.0/js/buttons.print.min.js"></script>  
     
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>  
+    <script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.10.10/sorting/datetime-moment.js"></script>  
+    
+    
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.1.0/css/buttons.dataTables.min.css">
     
 
@@ -47,6 +51,7 @@
     
             $(document).ready(function() {
                 
+                    $.fn.dataTable.moment( 'HH:mm MMM D, YY' );
                     
                 
                     var t = $('#example').DataTable( {   
@@ -74,7 +79,16 @@
                                                     exportOptions: {
                                                         columns: ':visible'
                                                     }
-                                             }
+                                             },
+                                             {
+                                                extend: 'pdfHtml5',
+                                                orientation: 'landscape',
+                                                pageSize: 'A4',
+                                                exportOptions: {
+                                                        columns: ':visible'
+                                                    }
+                                            }
+                                             
                                         ],
                                         "order": [[3,"desc"], [0,"desc"]],
                                          "columnDefs": [
@@ -112,6 +126,22 @@
                 
                     $("#cabeceraPanel").html($("#cabeceraPanel").html()+' - Saldo: <span class="' +classSaldo+ '" style="font-size:15px;" id="tipoMovimiento">$ '+saldo+'</span>' ); 
             } );
+            
+            $.fn.dataTable.moment = function ( format, locale ) {
+                    var types = $.fn.dataTable.ext.type;
+
+                    // Add type detection
+                    types.detect.unshift( function ( d ) {
+                        return moment( d, format, locale, true ).isValid() ?
+                            'moment-'+format :
+                            null;
+                    } );
+
+                    // Add sorting method - use an integer for the sorting
+                    types.order[ 'moment-'+format+'-pre' ] = function ( d ) {
+                        return moment( d, format, locale, true ).unix();
+                    };
+                };
             
             
             
@@ -239,7 +269,7 @@
                     <TR>
                             <TD> <?php echo $lineas['id_linea'] ?></TD>
                             <TD> <span class="<?php echo $classTipo ?>" id="tipoMovimiento"> <?php echo $lineas['tipo'] ?></span></TD>
-                            <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha']), 'd/m/Y'); ?></td>
+                            <td><?php echo date_format(date_create($lineas['fecha']), 'd/m/Y'); ?></td>
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'd/m/Y'); ?></td>
                             <TD> <?php echo $lineas['producto'] ?></TD>
                             <TD> <?php echo $lineas['peso'] ?></TD>

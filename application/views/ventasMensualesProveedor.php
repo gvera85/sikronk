@@ -44,7 +44,7 @@
                         <td><?php echo $lineas['total_facturado'] ?></td>
                          <TD> 
                             <a href="<?php echo base_url('/index.php/reportes/ventasMensualesProdProveedor').'/'.$lineas['numero'].'/'.$lineas['anio']; ?>"> 
-                                <span class="label label-info" id="mesAnio"> + detalle </span> 
+                                <span class="label label-info" id="mesAnio"> Ver Prod. </span> 
                             </a> 
                         </TD>
                         

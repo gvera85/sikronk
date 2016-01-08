@@ -231,6 +231,13 @@ class reporte_ventas_m extends CI_Model {
         return false;
     }
     
+    function getViajesProveedor2()
+    {
+        $this->load->database();
+        $alumnos = $this->db->get('viaje');
+        return $alumnos->result();
+    }
+    
     
     
     
