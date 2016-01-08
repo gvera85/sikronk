@@ -12,17 +12,6 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/dataTablesBootstrap.css">
-    
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.css">
-
-    <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
-    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/plugins/jquery/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>/assets/bootstrap/js/dataTablesBootstrap.js"></script>
-    
-    <script type="text/javascript" src="<?php echo base_url() ?>/assets/bootstrap-switch-master/dist/js/bootstrap-switch.js"></script>  
-    
     <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>  
     <script type="text/javascript" src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>  
     <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.0/js/dataTables.buttons.min.js"></script>  
@@ -36,23 +25,25 @@
     <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>  
     <script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.10.10/sorting/datetime-moment.js"></script>  
     
-    
-    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.1.0/css/buttons.dataTables.min.css">
-    
-
-
-
-
-
-
-
+    <!-- start: CSS -->
+	<link id="bootstrap-style" href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap.min.css" rel="stylesheet">
+	<link href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link id="base-style" href="<?php echo base_url() ?>assets/plugins/metro/css/style.css" rel="stylesheet">
+	<link id="base-style-responsive" href="<?php echo base_url() ?>assets/plugins/metro/css/style-responsive.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/dataTablesBootstrap.css">
+        
+        <!--<link href="<?php echo base_url() ?>/assets/grocery_crud/themes/datatables/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>-->
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/jquery.dataTables.min.css">
+        
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/responsive.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.1.0/css/buttons.dataTables.min.css">
     
     <script type="text/javascript" charset="utf-8">
     
             $(document).ready(function() {
                 
-                    $.fn.dataTable.moment( 'HH:mm MMM D, YY' );
-                    
+                    $.fn.dataTable.moment( 'DD/MM/YYYY' );
+                     
                 
                     var t = $('#example').DataTable( {   
                                         dom: 'Bfrtip',
@@ -64,24 +55,28 @@
                                             'pageLength',
                                              {
                                                     extend: 'print',
+                                                    title: 'Cuenta corriente del cliente <?php echo $this->session->userdata('DescEmpresa') ?>',
                                                     exportOptions: {
                                                         columns: ':visible'
                                                     }
                                              },
                                              {
                                                     extend: 'excel',
+                                                    title: 'Cuenta corriente del cliente <?php echo $this->session->userdata('DescEmpresa') ?>',
                                                     exportOptions: {
                                                         columns: ':visible'
                                                     }
                                              },
                                              {
                                                     extend: 'copy',
+                                                    title: 'Cuenta corriente del cliente <?php echo $this->session->userdata('DescEmpresa') ?>',
                                                     exportOptions: {
                                                         columns: ':visible'
                                                     }
                                              },
                                              {
                                                 extend: 'pdfHtml5',
+                                                title: 'Cuenta corriente del cliente <?php echo $this->session->userdata('DescEmpresa') ?>',
                                                 orientation: 'landscape',
                                                 pageSize: 'A4',
                                                 exportOptions: {
@@ -142,34 +137,6 @@
                         return moment( d, format, locale, true ).unix();
                     };
                 };
-            
-            
-            
-            
-            $(document).on("click","#btnAgrupado",function( event ) {  
-
-                $.ajax({
-                    type: "POST",
-                    dataType: "json",
-                    url: "<?php echo base_url().'index.php/cuentaCorrienteCliente/cargarLineasCC'; ?>",
-                    data: "id_publicacion=<?php echo "1"; ?>",
-                    success: function(data){
-                                                //alert(data.facturasClientes);    
-                                                
-                                                for(i=0; i < data.length; i++){
-                                                    alert(data[i].facturasClientes);
-                                                }
-                                           }
-                });
-            });
-            
-            
-            $(document).on("click","#btnLineas",function( event ) {  
-                //$('#btnAgrupado').val("botonCierreViaje").css('border','3px solid blue');
-                alert ('Este boton mostrará la cuenta corriente sin computar pagos');
-            
-            });
- 
                     
     </script>
     
@@ -202,17 +169,11 @@
         <div class="panel panel-primary">
         
         <div class="panel-heading" id="cabeceraPanel"> Cuenta corriente <?php echo $nombreCliente ?>
-        <!--<div class="col-sm-6 col-lg-4">
-            <div class="btn-group">
-              <button type="button" id="btnAgrupado" class="btn btn-danger btn-xs">Ver pagos asignados</button>
-              <button type="button" id="btnLineas" class="btn btn-default btn-xs">Ver en líneas</button>
-            </div>
-        </div>-->
         
         </div>
         <div class="panel-body">
             
-        <table id="example" class="display" cellspacing="0" width="100%" style="font-size:small; ">
+        <table id="example" class="display responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
                 <thead>
                 <TR>
                     <th><b>IdLinea</b></th>
@@ -270,7 +231,8 @@
                             <TD> <?php echo $lineas['id_linea'] ?></TD>
                             <TD> <span class="<?php echo $classTipo ?>" id="tipoMovimiento"> <?php echo $lineas['tipo'] ?></span></TD>
                             <td><?php echo date_format(date_create($lineas['fecha']), 'd/m/Y'); ?></td>
-                            <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'd/m/Y'); ?></td>
+                            
+                            <td><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'd/m/Y'); ?></td>
                             <TD> <?php echo $lineas['producto'] ?></TD>
                             <TD> <?php echo $lineas['peso'] ?></TD>
                             <!--<TD> <?php //echo $cantidad ?></TD>-->
@@ -299,18 +261,8 @@
                             <TD> <?php echo $cantidadConMerma ?> </TD>
                             <TD> <?php echo $cantidadAPagar ?></TD>
                             <TD> <?php echo $lineas['precio_bulto'] ?></TD>
-                            <TD> <?php echo $debe  ?></TD>
-                            <TD> <?php if ($linkPagos ==1) 
-                                        { ?> 
-                               
-                                <span class="label label-danger" id="linkPagos"> <?php echo $haber ?> </span> 
-                             
-                                <?php   } 
-                                        else 
-                                        {  
-                                            echo $haber;                                         
-                                        }?>
-                            </TD>
+                            <TD style="background-color: #F1ABAB;"> <?php echo $debe  ?></TD>
+                            <TD style="background-color: #B7E4B7;"> <?php  echo $haber; ?></TD>
                             <TD> <?php echo $saldo ?> </TD>
                     </TR>               
                     
@@ -435,15 +387,7 @@
       
      
       
-	// For demo to fit into DataTables site builder...
-	$('#example')
-		.removeClass( 'display' )
-		.addClass('table table-hover table-bordered table-compact');
-        
-        // For demo to fit into DataTables site builder...
-	$('#example2')
-		.removeClass( 'display' )
-		.addClass('table table-hover table-bordered table-compact');
+	
   </script>  
 
 </body>
