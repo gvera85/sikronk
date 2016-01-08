@@ -21,15 +21,61 @@
     <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/plugins/jquery/jquery.dataTables.min.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>/assets/bootstrap/js/dataTablesBootstrap.js"></script>
     
-    <script type="text/javascript" src="<?php echo base_url() ?>/assets/bootstrap-switch-master/dist/js/bootstrap-switch.js"></script>            
+    <script type="text/javascript" src="<?php echo base_url() ?>/assets/bootstrap-switch-master/dist/js/bootstrap-switch.js"></script>  
+    
+    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>  
+    <script type="text/javascript" src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>  
+    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.0/js/dataTables.buttons.min.js"></script>  
+    <script type="text/javascript" src="//cdn.datatables.net/buttons/1.1.0/js/buttons.flash.min.js"></script>  
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>  
+    <script type="text/javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>  
+    <script type="text/javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>  
+    <script type="text/javascript" src="//cdn.datatables.net/buttons/1.1.0/js/buttons.html5.min.js"></script>  
+    <script type="text/javascript" src="//cdn.datatables.net/buttons/1.1.0/js/buttons.print.min.js"></script>  
+    
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.1.0/css/buttons.dataTables.min.css">
+    
+
+
+
+
+
+
+
     
     <script type="text/javascript" charset="utf-8">
     
             $(document).ready(function() {
                 
-                    $("[name='my-checkbox']").bootstrapSwitch();
+                    
                 
                     var t = $('#example').DataTable( {   
+                                        dom: 'Bfrtip',
+                                        lengthMenu: [
+                                            [ 10, 20, 50, -1 ],
+                                            [ '10 filas', '20 filas', '50 filas', 'Show all' ]
+                                        ],
+                                        buttons: [
+                                            'pageLength',
+                                             {
+                                                    extend: 'print',
+                                                    exportOptions: {
+                                                        columns: ':visible'
+                                                    }
+                                             },
+                                             {
+                                                    extend: 'excel',
+                                                    exportOptions: {
+                                                        columns: ':visible'
+                                                    }
+                                             },
+                                             {
+                                                    extend: 'copy',
+                                                    exportOptions: {
+                                                        columns: ':visible'
+                                                    }
+                                             }
+                                        ],
                                         "order": [[3,"desc"], [0,"desc"]],
                                          "columnDefs": [
                                             {
@@ -136,7 +182,7 @@
         </div>
         <div class="panel-body">
             
-        <table id="example" class="display" cellspacing="0" width="100%">
+        <table id="example" class="display" cellspacing="0" width="100%" style="font-size:small; ">
                 <thead>
                 <TR>
                     <th><b>IdLinea</b></th>
