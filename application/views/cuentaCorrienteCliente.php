@@ -12,18 +12,19 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     
-    <script type="text/javascript" src="//code.jquery.com/jquery-1.11.3.min.js"></script>  
-    <script type="text/javascript" src="https://cdn.datatables.net/1.10.10/js/jquery.dataTables.min.js"></script>  
-    <script type="text/javascript" src="https://cdn.datatables.net/buttons/1.1.0/js/dataTables.buttons.min.js"></script>  
-    <script type="text/javascript" src="//cdn.datatables.net/buttons/1.1.0/js/buttons.flash.min.js"></script>  
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jszip/2.5.0/jszip.min.js"></script>  
-    <script type="text/javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/pdfmake.min.js"></script>  
-    <script type="text/javascript" src="//cdn.rawgit.com/bpampuch/pdfmake/0.1.18/build/vfs_fonts.js"></script>  
-    <script type="text/javascript" src="//cdn.datatables.net/buttons/1.1.0/js/buttons.html5.min.js"></script>  
-    <script type="text/javascript" src="//cdn.datatables.net/buttons/1.1.0/js/buttons.print.min.js"></script>  
+    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/dataTables/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/dataTables/jquery.dataTables.min.js"></script> 
     
-    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.8.4/moment.min.js"></script>  
-    <script type="text/javascript" src="//cdn.datatables.net/plug-ins/1.10.10/sorting/datetime-moment.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/dataTables.buttons.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/buttons.flash.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/jszip.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/pdfmake.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/vfs_fonts.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/buttons.html5.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/buttons.print.min.js"></script>  
+    
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/moment.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/datetime-moment.js"></script>  
     
     <!-- start: CSS -->
 	<link id="bootstrap-style" href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap.min.css" rel="stylesheet">
@@ -173,7 +174,7 @@
         </div>
         <div class="panel-body">
             
-        <table id="example" class="display responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
+        <table id="example" class="display compact responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
                 <thead>
                 <TR>
                     <th><b>IdLinea</b></th>
@@ -297,7 +298,7 @@
             <div class="panel panel-info">
             <div class="panel-heading" id="cabeceraPanel"><?php echo $titulo ?> </div>
             <div class="panel-body">
-            <table id="example2" class="display" cellspacing="0" width="100%">
+            <table id="example2" class="display compact responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
                 <thead>
                 <TR>
                   
