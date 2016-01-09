@@ -2,7 +2,7 @@
 <?php 
         $this->load->view('headerProveedor');
 ?>					
-<table id="example" class="display responsive nowrap" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
+<table id="example" class="display compact responsive nowrap" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
     <thead>
         <tr>
             <th>idViaje</th>

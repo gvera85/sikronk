@@ -12,26 +12,88 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/dataTablesBootstrap.css">
+    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/dataTables/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/dataTables/jquery.dataTables.min.js"></script> 
     
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap-switch-master/dist/css/bootstrap3/bootstrap-switch.css">
-
-    <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
-    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/plugins/jquery/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>/assets/bootstrap/js/dataTablesBootstrap.js"></script>
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/dataTables.buttons.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/buttons.flash.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/jszip.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/pdfmake.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/vfs_fonts.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/buttons.html5.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/buttons.print.min.js"></script>  
+    
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/moment.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/datetime-moment.js"></script>  
+    
+    <!-- start: CSS -->
+	<link id="bootstrap-style" href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap.min.css" rel="stylesheet">
+	<link href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap-responsive.min.css" rel="stylesheet">
+	<link id="base-style" href="<?php echo base_url() ?>assets/plugins/metro/css/style.css" rel="stylesheet">
+	<link id="base-style-responsive" href="<?php echo base_url() ?>assets/plugins/metro/css/style-responsive.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/dataTablesBootstrap.css">
+        
+        <!--<link href="<?php echo base_url() ?>/assets/grocery_crud/themes/datatables/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>-->
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/jquery.dataTables.min.css">
+        
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/responsive.dataTables.min.css">
+        <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/buttons/1.1.0/css/buttons.dataTables.min.css">
+    
     
     <script type="text/javascript" charset="utf-8">
     
             $(document).ready(function() {
                 
+                    $.fn.dataTable.moment( 'DD/MM/YYYY' );
+                     
+                
                     var t = $('#example').DataTable( {   
+                                        dom: 'Bfrtip',
+                                        lengthMenu: [
+                                            [ 10, 25, 50, -1 ],
+                                            [ '10 filas', '25 filas', '50 filas', 'Mostrar todas' ]
+                                        ],
+                                        "displayLength": 10,
+                                        buttons: [
+                                            'pageLength',
+                                             {
+                                                    extend: 'print',
+                                                    title: 'Cuenta corriente del proveedor ' + $("#empresaEvaluada").val(),
+                                                    exportOptions: {
+                                                        columns: ':visible'
+                                                    }
+                                             },
+                                             {
+                                                    extend: 'excel',
+                                                    title: 'Cuenta corriente del proveedor ' + $("#empresaEvaluada").val(),
+                                                    exportOptions: {
+                                                        columns: ':visible'
+                                                    }
+                                             },
+                                             {
+                                                    extend: 'copy',
+                                                    title: 'Cuenta corriente del proveedor ' + $("#empresaEvaluada").val(),
+                                                    exportOptions: {
+                                                        columns: ':visible'
+                                                    }
+                                             },
+                                             {
+                                                extend: 'pdfHtml5',
+                                                title: 'Cuenta corriente del proveedor ' + $("#empresaEvaluada").val(),
+                                                orientation: 'landscape',
+                                                pageSize: 'A4',
+                                                exportOptions: {
+                                                        columns: ':visible'
+                                                    }
+                                            }
+                                             
+                                        ],
                                         "order": [[1,"desc"], [2,"desc"]],
                                          "columnDefs": [
                                             {
                                                 "targets": [ 0 ],
                                                 "visible": true,
-                                                "searchable": false
+                                                "searchable": true
                                             },
                                             {
                                                 "targets": [ 2 ],
@@ -45,6 +107,8 @@
                                         
 
                                     } );
+                
+                    
                                     
                                     
                     saldo = $("#idSaldo").val();
@@ -62,22 +126,22 @@
             
             
             
-            $(document).on("click","#btnAgrupado",function( event ) {  
+            $.fn.dataTable.moment = function ( format, locale ) {
+                    var types = $.fn.dataTable.ext.type;
 
-                $.ajax({
-                    type: "POST",
-                    dataType: "json",
-                    url: "<?php echo base_url().'index.php/cuentaCorrienteCliente/cargarLineasCC'; ?>",
-                    data: "id_publicacion=<?php echo "1"; ?>",
-                    success: function(data){
-                                                //alert(data.facturasClientes);    
-                                                
-                                                for(i=0; i < data.length; i++){
-                                                    alert(data[i].facturasClientes);
-                                                }
-                                           }
-                });
-            });
+                    // Add type detection
+                    types.detect.unshift( function ( d ) {
+                        return moment( d, format, locale, true ).isValid() ?
+                            'moment-'+format :
+                            null;
+                    } );
+
+                    // Add sorting method - use an integer for the sorting
+                    types.order[ 'moment-'+format+'-pre' ] = function ( d ) {
+                        return moment( d, format, locale, true ).unix();
+                    };
+                };
+                    
             
            
                     
@@ -117,7 +181,7 @@
         </div>
         <div class="panel-body">
             
-        <table id="example" class="display" cellspacing="0" width="100%">
+        <table id="example" class="display compact responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
                 <thead>
                 <TR>
                     <th><b>Tipo</b></th>
@@ -158,8 +222,8 @@
                     ?>
                     <TR>
                             <TD> <span class="<?php echo $classTipo ?>" id="tipoMovimiento"> <?php echo $lineas['tipo'] ?></span></TD>
-                            <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_estimada_llegada']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_estimada_llegada']), 'd/m/Y'); ?></td>
-                            <td><span style='display: none;'><?php echo date_format(date_create($lineas['stamp']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['stamp']), 'd/m/Y H:i:s'); ?></td>
+                            <td><?php echo date_format(date_create($lineas['fecha_estimada_llegada']), 'd/m/Y'); ?></td>
+                            <td><?php echo date_format(date_create($lineas['stamp']), 'd/m/Y H:i:s'); ?></td>
                             
                             <?php
                             if ($lineas['numero_de_viaje'])
@@ -181,8 +245,8 @@
                             <?php
                             }
                             ?>    
-                            <TD> <?php echo $debe ?></TD>
-                            <TD> <?php echo $haber ?></TD>
+                            <TD style="background-color: #F1ABAB;"> <?php echo $debe ?></TD>
+                            <TD style="background-color: #B7E4B7;"> <?php echo $haber ?></TD>
                             <TD> <?php echo $saldo ?></TD>
                             
                 <?php           
@@ -191,6 +255,7 @@
                 ?>
                     
                 <input type="hidden" name="idSaldo" id="idSaldo" value=<?php echo $saldo ?>>
+                <input type="hidden" name="empresaEvaluada" id="empresaEvaluada" value="<?php echo $nombreProveedor ?>">
                    
                         
                 </tbody>    
@@ -200,15 +265,7 @@
         
   </div>  
    
-    
-  <script type="text/javascript">     
-      
-	// For demo to fit into DataTables site builder...
-	$('#example')
-		.removeClass( 'display' )
-		.addClass('table table-hover table-bordered table-compact');        
-      
-  </script>  
+
 
 </body>
 </html>

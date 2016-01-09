@@ -49,35 +49,36 @@
                     var t = $('#example').DataTable( {   
                                         dom: 'Bfrtip',
                                         lengthMenu: [
-                                            [ 10, 20, 50, -1 ],
-                                            [ '10 filas', '20 filas', '50 filas', 'Show all' ]
+                                            [ 10, 25, 50, -1 ],
+                                            [ '10 filas', '25 filas', '50 filas', 'Mostrar todas' ]
                                         ],
+                                        "displayLength": 10,
                                         buttons: [
                                             'pageLength',
                                              {
                                                     extend: 'print',
-                                                    title: 'Cuenta corriente del cliente <?php echo $this->session->userdata('DescEmpresa') ?>',
+                                                    title: 'Cuenta corriente del cliente ' + $("#empresaEvaluada").val(),
                                                     exportOptions: {
                                                         columns: ':visible'
                                                     }
                                              },
                                              {
                                                     extend: 'excel',
-                                                    title: 'Cuenta corriente del cliente <?php echo $this->session->userdata('DescEmpresa') ?>',
+                                                    title: 'Cuenta corriente del cliente ' + $("#empresaEvaluada").val(),
                                                     exportOptions: {
                                                         columns: ':visible'
                                                     }
                                              },
                                              {
                                                     extend: 'copy',
-                                                    title: 'Cuenta corriente del cliente <?php echo $this->session->userdata('DescEmpresa') ?>',
+                                                    title: 'Cuenta corriente del cliente ' + $("#empresaEvaluada").val(),
                                                     exportOptions: {
                                                         columns: ':visible'
                                                     }
                                              },
                                              {
                                                 extend: 'pdfHtml5',
-                                                title: 'Cuenta corriente del cliente <?php echo $this->session->userdata('DescEmpresa') ?>',
+                                                title: 'Cuenta corriente del cliente ' + $("#empresaEvaluada").val(),
                                                 orientation: 'landscape',
                                                 pageSize: 'A4',
                                                 exportOptions: {
@@ -102,10 +103,52 @@
                                     } );
                                     
                     var x = $('#example2').DataTable( {   
-                                        "order": [[ 0, 'desc' ]],
+                                        dom: 'Bfrtip',
+                                        lengthMenu: [
+                                            [ 10, 25, 50, -1 ],
+                                            [ '10 filas', '25 filas', '50 filas', 'Mostrar todas' ]
+                                        ],
+                                        "displayLength": 10,
+                                        buttons: [
+                                            'pageLength',
+                                             {
+                                                    extend: 'print',
+                                                    title: 'Cuenta corriente del cliente (sin precio) ' + $("#empresaEvaluada").val(),
+                                                    exportOptions: {
+                                                        columns: ':visible'
+                                                    }
+                                             },
+                                             {
+                                                    extend: 'excel',
+                                                    title: 'Cuenta corriente del cliente (sin precio) ' + $("#empresaEvaluada").val(),
+                                                    exportOptions: {
+                                                        columns: ':visible'
+                                                    }
+                                             },
+                                             {
+                                                    extend: 'copy',
+                                                    title: 'Cuenta corriente del cliente (sin precio) ' + $("#empresaEvaluada").val(),
+                                                    exportOptions: {
+                                                        columns: ':visible'
+                                                    }
+                                             },
+                                             {
+                                                extend: 'pdfHtml5',
+                                                title: 'Cuenta corriente del cliente (sin precio) ' + $("#empresaEvaluada").val(),
+                                                orientation: 'landscape',
+                                                pageSize: 'A4',
+                                                exportOptions: {
+                                                        columns: ':visible'
+                                                    }
+                                            }
+                                             
+                                        ],
+                                        "order": [[0,"desc"]],
                                         "language": {
                                                         "url": "<?php echo base_url() ?>/assets/bootstrap/json/SpanishDataTable.json"
                                                     }
+                                        
+
                                         
 
                                     } );                
@@ -273,6 +316,7 @@
                 ?>
                     
                 <input type="hidden" name="idSaldo" id="idSaldo" value=<?php echo $saldo ?>>
+                <input type="hidden" name="empresaEvaluada" id="empresaEvaluada" value="<?php echo $nombreCliente ?>">
                    
                         
                 </tbody>    
@@ -349,7 +393,7 @@
                                                 }
                                                 
                                 ?>
-                                <span style='display: none;'><?php echo date_format(date_create($lineas['fecha']), 'Ymd'); ?></span>
+                                
                                 <?php echo $f_reparto; ?>
                             </td>
                            
