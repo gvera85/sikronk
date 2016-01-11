@@ -34,7 +34,7 @@
                     
                     
                 
-                    var t = $('#example').DataTable( {
+                    var t = $('#example').DataTable( {                                        
                                         "columnDefs": [ {
                                             "searchable": false,
                                             "orderable": false,
@@ -67,9 +67,9 @@
                                                     }
 
                                     } );
-
-
-
+                                    
+                                    $('button').prop('disabled', true);
+                                    
                                     t.on( 'order.dt search.dt', function () {
                                         t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
                                             cell.innerHTML = i+1;
@@ -83,7 +83,9 @@
                                             saldo = Number($(this).find("td").eq(COLUMNA_SALDO).html());                                                
                                             montoPagadoConEstaFactura = Number($(this).find("td").eq(COLUMNA_MONTO_PAGADO).html());
                                             
-                                            montoRestante = Number($("#montoRestante").html());                                       
+                                            montoRestante = Number($("#montoRestante").html());    
+                                            
+                                            $('button').prop('disabled', false);
                                                    
                                         
                                             if ($(this).hasClass('active'))
@@ -98,6 +100,7 @@
                                                 
                                                 //desactivar el resaltado
                                                 $(this).toggleClass('active', false);
+                                                
                                                 
                                             }
                                             else
@@ -185,7 +188,7 @@
                                                     $.ajax({
                                                         type:"POST",
                                                         data:  arrayPagos[contador],
-                                                        url:"http://localhost/sikronk/index.php/procesaPago/asignarPago",                                        
+                                                        url:"<?php echo base_url() ?>index.php/procesaPago/asignarPago",                                        
                                                         }).done(function(data){
                                                                 console.log(data);
                                                                 //alert(data);
@@ -224,18 +227,25 @@
             <h4>Numero de factura <span class="label label-default" id="idPago"> <?php echo $idPago?></span></h4>
             <h4>Fecha de pago <span class="label label-default"> <?php echo date_format(date_create($fechaPago), 'd/m/Y');?></span></h4>
             <h4>Monto <span class="label label-success" id="montoPagado"> <?php echo $montoAImputar?></span></h4>
+            
             <h4  style="float: right;">Monto restante de imputar <span class="label label-danger" id="montoRestante"> <?php echo $montoAImputar-$montoImputado[0]['montoImputado']?></span></h4>
-          
+            
         </div>
         </div> 
     
         
 
         <div class="panel panel-primary">
-        <div class="panel-heading">Productos adeudados - Seleccione las deudas que desea abonar mediante esta factura</div>
+            <div class="panel-heading clearfix">
+                <h4 class="panel-title pull-left" style="padding-top: 7.5px;">Productos adeudados - Seleccione las deudas que desea abonar mediante esta factura</h4>
+                <div class="btn-group pull-right">
+                  <button id="button" class="btn btn-danger">Confirmar pagos</button> 
+                </div>
+            </div>
+        
         <div class="panel-body">
         
-        <button id="button">Grabar</button>
+        
         
         <?php 
         if (empty($facturasClientes[0]['numero_de_viaje']))
@@ -250,7 +260,7 @@
         }   
         ?>
         
-        <table id="example" class="display" cellspacing="0" width="100%">
+        <table id="example" class="table compact table-striped table-bordered" cellspacing="0" width="100%" style="font-size:small;">
                 <thead>
                 <TR>
                     <th>#</th> 
@@ -301,16 +311,12 @@
                 ?>
                 </tbody>    
             </table>
+            
          </div>
         </div>     
           
   </div>
-  <script type="text/javascript">
-	// For demo to fit into DataTables site builder...
-	$('#example')
-		.removeClass( 'display' )
-		.addClass('table table-striped table-bordered');
-  </script>  
+  
 
 </body>
 </html>

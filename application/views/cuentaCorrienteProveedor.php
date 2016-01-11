@@ -160,7 +160,7 @@
     <div class="container">
         
         <?php 
-            if (empty($facturasProveedor[0]['id_viaje']))
+            if (empty($facturasProveedor[0]['tipo']))
             {
                 $titulo = "Productos sin valorizar - No hay productos sin valorizar";
                 $sinProductos = 0;
