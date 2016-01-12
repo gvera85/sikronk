@@ -49,7 +49,7 @@ class procesaPago extends CI_Controller{
     $this->db->insert('pagos_cliente_reparto', $data);
    
     
-    echo "insertado";
+    echo "Pago asignado";
   }
   
 }

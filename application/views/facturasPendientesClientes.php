@@ -35,11 +35,7 @@
                     
                 
                     var t = $('#example').DataTable( {                                        
-                                        "columnDefs": [ {
-                                            "searchable": false,
-                                            "orderable": false,
-                                            "targets": 0
-                                        },
+                                        "columnDefs": [ 
                                             {
                                                 "targets": [ 11 ],
                                                 "visible": false
@@ -69,12 +65,6 @@
                                     } );
                                     
                                     $('button').prop('disabled', true);
-                                    
-                                    t.on( 'order.dt search.dt', function () {
-                                        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                                            cell.innerHTML = i+1;
-                                        } );
-                                    } ).draw();
 
                                      $('#example tbody').on( 'click', 'tr', function () {
                                         
@@ -85,8 +75,6 @@
                                             
                                             montoRestante = Number($("#montoRestante").html());    
                                             
-                                            $('button').prop('disabled', false);
-                                                   
                                         
                                             if ($(this).hasClass('active'))
                                             {                                                
@@ -135,6 +123,20 @@
                                                     $(this).toggleClass('active', true);
                                                 }
                                             }
+                                            
+                                            montoRestante = Number($("#montoRestante").html());    
+                                            montoOriginalRestante = Number($("#montoOriginalRestante").val());    
+                                            
+                                            /*Para habilitar/deshabilitar el boton de "Confirmar"*/
+                                            if (montoOriginalRestante != montoRestante)                                            
+                                            {
+                                                $('button').prop('disabled', false);
+                                            }
+                                            else
+                                            {
+                                                $('button').prop('disabled', true);
+                                            }
+                                            
                                     } );
 
                                     $('#button').click( function () {
@@ -191,6 +193,10 @@
                                                         url:"<?php echo base_url() ?>index.php/procesaPago/asignarPago",                                        
                                                         }).done(function(data){
                                                                 console.log(data);
+                                                                
+                                                                swal("Guardada!", data, "success");
+                                                                
+                                                                location.reload();
                                                                 //alert(data);
                                                     });
 
@@ -214,7 +220,7 @@
                 $idPago = $pagoRecibido['id']; 
                 $montoAImputar = $pagoRecibido['monto'] ;
                 $fechaPago = $pagoRecibido['fecha_pago'] ;
-                $nombreCliente = $pagoRecibido['cliente'] ;
+                $nombreCliente = $pagoRecibido['cliente'] ;                
         endforeach; 
     ?>
     
@@ -229,6 +235,7 @@
             <h4>Monto <span class="label label-success" id="montoPagado"> <?php echo $montoAImputar?></span></h4>
             
             <h4  style="float: right;">Monto restante de imputar <span class="label label-danger" id="montoRestante"> <?php echo $montoAImputar-$montoImputado[0]['montoImputado']?></span></h4>
+            <input type="hidden" name="montoOriginalRestante" id="montoOriginalRestante" value="<?php echo $montoAImputar-$montoImputado[0]['montoImputado']?>">
             
         </div>
         </div> 
@@ -263,8 +270,8 @@
         <table id="example" class="table compact table-striped table-bordered" cellspacing="0" width="100%" style="font-size:small;">
                 <thead>
                 <TR>
-                    <th>#</th> 
-                    <th><b># Viaje</b></th>
+                    <th><b>Fecha entrega<b></th> 
+                    <th><b>Fecha valorizacion</b></th>
                     <th><b>Proveedor</b></th>                    
                     <th><b>Producto</b></th>
                     <th><b>Peso bulto</b></th>
@@ -285,27 +292,34 @@
                 <?php 
                     if ($sinProductos == 1)
                     {
-                    foreach( $facturasClientes as $lineas ) : ?>
-                    <TR>
-                        <TD></TD>
-                        <TD> <?php echo $lineas['numero_de_viaje'] ?></TD>
-                        <TD> <?php echo $lineas['proveedor'] ?></TD>                       
-                        <TD> <?php echo $lineas['producto'] ?></TD>
-                        <TD> <?php echo $lineas['peso'] ?></TD>
-                        <TD> <?php echo $lineas['cantidad_bultos'] ?></TD>
-                        <TD> <?php echo $lineas['cant_bultos_merma'] ?></TD>
-                        <TD> <?php echo $lineas['precio_bulto'] ?></TD>
-                        <TD> <?php echo $lineas['valor_total'] ?></TD>
-                        <TD> <?php echo $lineas['monto_pagado'] ?> </TD>
-                        <TD> <?php echo $lineas['valor_total'] - $lineas['monto_pagado'] ?> </TD>
-                        <TD> <?php echo $lineas['id_reparto'] ?> </TD>
-                        <TD> 0 </TD>
-                        <TD> <?php echo $lineas['id_producto'] ?> </TD>
-                        <TD> <?php echo $lineas['id_variable_logistica'] ?> </TD>
-                     
-                    </TR>            
-                    
-                <?php           
+                    foreach( $facturasClientes as $lineas ) : 
+                        $saldo = 0;
+                        $saldo = $lineas['valor_total'] - $lineas['monto_pagado'];
+
+                        if ($saldo > 0)
+                        {
+                        ?>
+                        <TR>
+                            <TD><?php echo $lineas['fecha_reparto'] ?></TD>
+                            <TD> <?php echo $lineas['fecha_valorizacion'] ?></TD>
+                            <TD> <?php echo $lineas['proveedor'] ?></TD>                       
+                            <TD> <?php echo $lineas['producto'] ?></TD>
+                            <TD> <?php echo $lineas['peso'] ?></TD>
+                            <TD> <?php echo $lineas['cantidad_bultos'] ?></TD>
+                            <TD> <?php echo $lineas['cant_bultos_merma'] ?></TD>
+                            <TD> <?php echo $lineas['precio_bulto'] ?></TD>
+                            <TD> <?php echo $lineas['valor_total'] ?></TD>
+                            <TD> <?php echo $lineas['monto_pagado'] ?> </TD>
+                            <TD> <?php echo $saldo ?> </TD>
+                            <TD> <?php echo $lineas['id_reparto'] ?> </TD>
+                            <TD> 0 </TD>
+                            <TD> <?php echo $lineas['id_producto'] ?> </TD>
+                            <TD> <?php echo $lineas['id_variable_logistica'] ?> </TD>
+
+                        </TR>            
+
+                <?php  
+                        }
                     endforeach; 
                     }
                 ?>
