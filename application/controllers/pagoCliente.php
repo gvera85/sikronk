@@ -36,19 +36,22 @@ class pagoCliente extends CI_Controller{
    
     $crud->set_subject('Pago de clientes (luego agregar los items con importes y tipos de pagos)');
     $crud->required_fields('fecha_pago','id_cliente');
-    $crud->columns('id','fecha_pago','id_cliente', 'monto', 'observaciones');
+    $crud->columns('id','fecha_pago','id_cliente', 'monto', 'monto_asignado' ,'observaciones');
   
     $crud->display_as('id_cliente','Cliente');
     $crud->display_as('monto','Monto total');
+    $crud->display_as('monto_asignado','Monto asignado');
+    
+    $crud->callback_column('monto_asignado',array($this,'_callback_monto_asignado'));
     
     $crud->display_as('id','Nro Factura');
   
     $crud->set_relation('id_cliente','cliente','razon_social');
-    
+        
     $crud->order_by('fecha_pago','desc');
     
     $crud->add_action('Items', base_url().'/assets/img/iconoGanancia.png', '','ui-icon-image',array($this,'link_hacia_lineas'));
-    $crud->add_action('Asignar pago', base_url().'/assets/img/iconoFactura.png', '','ui-icon-image',array($this,'link_hacia_factura'));
+    $crud->add_action('Asignar', base_url().'/assets/img/iconoFactura.png', '','ui-icon-image',array($this,'link_hacia_factura'));
     
     $output = $crud->render();
     $this->pago_output($output);
@@ -70,5 +73,14 @@ class pagoCliente extends CI_Controller{
       return "javascript:window.open('" . base_url('/index.php/pagoClienteLineas/popUp'). '/' . $row->id_cliente . '/' . $row->id . "')"; 
       //return site_url('planificacion/confirmacionViaje/'.$row->id);
   }
+  
+  public function _callback_monto_asignado($value, $row)
+    {
+       $this->load->model('facturas_clientes_m');
+
+       $montoImputado = $this->facturas_clientes_m->getMontoFacturado($row->id);
+
+       return $montoImputado[0]['montoImputado']; 
+    }
  
 }

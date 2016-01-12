@@ -21,6 +21,10 @@
     <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/plugins/jquery/jquery.dataTables.min.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>/assets/bootstrap/js/dataTablesBootstrap.js"></script>
+    
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/moment.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/datetime-moment.js"></script>  
+    
     <script type="text/javascript" charset="utf-8">
             const COLUMNA_VALOR_TOTAL_LINEA = 8;
             const COLUMNA_MONTO_PAGADO = 9;
@@ -32,7 +36,7 @@
         
             $(document).ready(function() {
                     
-                    
+                    $.fn.dataTable.moment( 'DD/MM/YYYY' );
                 
                     var t = $('#example').DataTable( {                                        
                                         "columnDefs": [ 
@@ -210,6 +214,22 @@
                                     }
                                     } ); //Fin de la funcion del boton
             } );
+            
+            $.fn.dataTable.moment = function ( format, locale ) {
+                    var types = $.fn.dataTable.ext.type;
+
+                    // Add type detection
+                    types.detect.unshift( function ( d ) {
+                        return moment( d, format, locale, true ).isValid() ?
+                            'moment-'+format :
+                            null;
+                    } );
+
+                    // Add sorting method - use an integer for the sorting
+                    types.order[ 'moment-'+format+'-pre' ] = function ( d ) {
+                        return moment( d, format, locale, true ).unix();
+                    };
+                };
                     
     </script>
     
@@ -300,8 +320,46 @@
                         {
                         ?>
                         <TR>
-                            <TD><?php echo $lineas['fecha_reparto'] ?></TD>
-                            <TD> <?php echo $lineas['fecha_valorizacion'] ?></TD>
+                             
+                            <td>
+                            
+                                <?php 
+                                                
+                                                $f_reparto  = empty($lineas['fecha_reparto']) ? NULL : $lineas['fecha_reparto'];
+                                                
+                                                if (! is_null($f_reparto))
+                                                {
+                                                    $f_reparto = date_format(date_create($f_reparto), 'd/m/Y');
+                                                }
+                                                else
+                                                {
+                                                    $f_reparto = "-";
+                                                }
+                                                
+                                ?>
+                                
+                                <?php echo $f_reparto; ?>
+                                
+                            </td>
+                            <td>
+                                <?php 
+                                                
+                                                $f_valorizacion  = empty($lineas['fecha_valorizacion']) ? NULL : $lineas['fecha_valorizacion'];
+                                                
+                                                if (! is_null($f_reparto))
+                                                {
+                                                    $f_valorizacion = date_format(date_create($f_valorizacion), 'd/m/Y');
+                                                }
+                                                else
+                                                {
+                                                    $f_valorizacion = "-";
+                                                }
+                                                
+                                ?>
+                                
+                                <?php echo $f_valorizacion; ?>
+                            
+                            </td>
                             <TD> <?php echo $lineas['proveedor'] ?></TD>                       
                             <TD> <?php echo $lineas['producto'] ?></TD>
                             <TD> <?php echo $lineas['peso'] ?></TD>
