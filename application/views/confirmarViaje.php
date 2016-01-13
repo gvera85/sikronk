@@ -55,7 +55,7 @@
 
 </head>
 </head>
-<body onload="checkViajeCerrado()">
+<body>
 <?php 
     $sinProductos = 0;
     if (empty($lineasViaje[0]['numero_de_viaje']))
@@ -78,9 +78,7 @@
     <div class="row-fluid top-buffer text-center" style="padding: 10px;">
             <form id="miform" method="post" name="miform" >
                 
-                <a href="<?php echo base_url() ?>/index.php/generarPDFConf"> <img src="<?php echo base_url() ?>/assets/img/pdf.png" alt=""/>  </a>
-                  
-	        <div class="panel panel-primary" width="100%">
+                <div class="panel panel-primary" width="100%">
                     <div class="panel-heading">
                         <h3 class="panel-title"><?php echo $titulo  ?> </h3>
                     </div>
@@ -91,6 +89,7 @@
                                     <?php $cantidad=0; 
                                     $id_producto_ant = 0;
                                     $cantidad2 = 0;
+                                    $cantidadClientes = 0;
 
                                     if ($sinProductos == 0)
                                     {
@@ -141,6 +140,7 @@
                                 foreach( $lineasReparto as $reparto ) : 
                                 if ($reparto['id_producto'] == $lineas['id_producto'] && $reparto['id_variable_logistica'] == $lineas['id_vl'])
                                 {
+                                     $cantidadClientes ++;
                                 ?>  
                                 <tr class="warning">
                                     <td></td>
@@ -159,7 +159,7 @@
                                                 if ($modo == "edicion")
                                                 {
                                                 ?>
-                                                   <input type="date" name="fechaReparto[]" value=<?php echo $reparto['fecha_reparto'] ?>> 
+                                                   <input type="date" name="fechaReparto[]" id="fecha_reparto_html_<?php echo $cantidadClientes?>" value=<?php echo $reparto['fecha_reparto'] ?>> 
                                                 <?php
                                                 }
                                                 else
@@ -193,6 +193,7 @@
                             }
                             endforeach; 
                             }?>
+                            <input type="hidden" id="cantidadLineas" name="cantidadLineas" value="<?php echo $cantidadClientes ?>">
                             </tbody>
                             </table>
 			</div>
@@ -208,7 +209,9 @@
 </div>
  
 <script type="text/javascript">
-    
+
+var nroLineaAgregada = 0;
+
 function validarNumero()
 {
         $(".numerico").each(
@@ -217,10 +220,61 @@ function validarNumero()
                     $(valor).numeric();
 		}
 	)
-}    
+}  
+
+function validacionFormulario() 
+{
+    
+  cantidadItems = $("#cantidadLineas").val();   
+    
+  for (i = 1; i <= nroLineaAgregada ; i++) { 
+    fecha = "#fecha_reparto_" + i; 
+    
+    
+    
+    if ($(fecha).val() == null || $(fecha).val().length == 0)
+    {
+        mensaje = 'La fecha de reparto agregada no puede ser vacia';
+        
+        swal("Atención...", mensaje, "error");
+    
+        marcarInputConError(fecha);
+        return false;
+    }
+    else
+    {
+        limpiarInputConError(fecha);  
+    }
+    
+    
+  }     
+  
+  for (i = 1; i <= cantidadItems ; i++) { 
+    fecha = "#fecha_reparto_html_" + i; 
+    
+    nombreCampoFecha = "fecha_reparto_html_" + i; 
+    
+    if ($(fecha).val() == null || $(fecha).val().length == 0)
+    {
+        mensaje = 'La fecha de reparto no puede ser vacia';
+        
+        swal("Atención...", mensaje, "error");
+    
+        marcarInputConError(fecha);
+        return false;
+    }
+    else
+    {
+        limpiarInputConError(fecha);  
+    }
+    
+  }     
+  
+  return true;
+}
     
 $(function() {
-    var nroLineaAgregada = 0;
+    
         
    $(document).on("click","#btnAgregarCliente",function( event ) {  
        var cliente;
@@ -268,7 +322,7 @@ $(function() {
                     '<td align="center">'+
                           '<button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button>'+
                     '</td>'+
-                    '<td><input type="date" name="fechaReparto[]" > </td>'+
+                    '<td><input type="date" name="fechaReparto[]" id="fecha_reparto_'+nroLineaAgregada+'"> </td>'+
                     '<td align="left" colspan="1">'
                           +combo+
                     '</td>'+
@@ -388,21 +442,14 @@ $(function() {
           var frm = $(this);
 	  var formulario = $(this).serialize();
           
-          exito = false;
-          mensaje = "error";
-     
-        
-        $.post( "<?php echo base_url() ?>index.php/planificacion/grabarConfirmacionViaje", formulario)
+          if (validacionFormulario()){
+         
+                $.post( "<?php echo base_url() ?>index.php/planificacion/grabarConfirmacionViaje", formulario)
                       .done(function(data){
-
-                        
                 
                         $(frm)[0].reset();
                         location.reload();
 
-                        exito = true;
-                        mensaje = data;
-                        
                         swal("Guardada!", data, "success");
                         //alert(data);
 
@@ -410,10 +457,8 @@ $(function() {
                       .fail(function(xhr, textStatus, errorThrown) {
                           swal("Oops...", errorThrown, "error");
                       });
-          
-        event.preventDefault();
-        
-              
+                  }
+            event.preventDefault();
           
 	});
         
@@ -430,6 +475,18 @@ $(function() {
         }
 
         document.getElementById("demo").innerHTML = text;
+    }
+    
+    function marcarInputConError(inputtext)
+{
+    $(inputtext).css({background:"#FF0000"})    
+    
+    $(inputtext).focus();
+}
+
+    function limpiarInputConError(inputtext)
+    {
+        $(inputtext).css({background:"#FFFFFF"})    
     }
 
 

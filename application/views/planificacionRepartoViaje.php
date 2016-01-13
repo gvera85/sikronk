@@ -198,7 +198,7 @@
        var hiddenVL = '<input type="hidden" id="idVL" name="idVL[]" value="'+idVL+'">';
        
        var combo = '<div>'+
-                        '<select data-placeholder="Seleccione un cliente..." class="chosen-select" name="comboClientes[]" style="display: true;" tabindex="-1">'+
+                        '<select data-placeholder="Seleccione un cliente..." class="chosen-select" name="comboClientes[]" style="display: true;" tabindex="-1" id="cliente_'+nroLineaAgregada+'">'+
                           '<option value=""></option>';
     
        <?php
@@ -306,29 +306,37 @@
 function validacionFormulario() 
 {
     
-  cantidadItems = $("#cantidadItems").val();   
+  cantidadItems = $("#cantidadLineas").val();   
     
   for (i = 1; i <= nroLineaAgregada ; i++) { 
     campoBultos = "#cantBultos_" + i; 
-    campoMerma = "#cant_merma_" + i; 
+    campoPallet = "#cantPallets_" + i; 
+    cliente = "#cliente_" + i; 
     
-    nombreCampoMerma = "cant_merma_" + i; 
-
-    //alert($(campoBultos).val() + ' '+ $(campoMerma).val());
+    nombreCampoCliente = "cliente_" + i; 
     
-    esValido = true;
-    
-    if (esValido)
-    {
-        limpiarInputConError(nombreCampoMerma);
+    if ($(cliente).val() == null || $(cliente).val().length == 0)
+    {   
+        mensaje = 'El cliente no puede ser vacio';
         
+        swal("Atención...", mensaje, "error");
+        
+        $(nombreCampoCliente).focus();
+        
+        return false;
+    }
+    
+    /*if (esValido)
+    {
+        //limpiarInputConError(nombreCampoMerma);
+        return true;
     }
     else
     {
         
         marcarInputConError(nombreCampoMerma);
         return false;  
-    }
+    }*/
     
   }      
   
