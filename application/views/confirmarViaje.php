@@ -266,6 +266,8 @@ $(function() {
        var descProducto = $("#DescProducto_"+idProducto).val();
        var cantBultos = $("#cantBultosViaje_"+numeroLinea).val();
        
+       var nomCampoBultos = "#cantBultosViaje_"+numeroLinea;
+       
       // alert (idProducto);
        var hiddenProducto = '<input type="hidden" id="idProducto" name="idProducto[]" value='+idProducto+'>';
        
@@ -299,12 +301,12 @@ $(function() {
                     '</td>'+
                     '<td colspan="2">'+
                         '<div>'+
-                        '<input id="cantBultos_'+nroLineaAgregada+'" class="cantidad_bultos_'+idProducto+' numerico" type="text" onchange="validarBultos('+nroLineaAgregada+','+idProducto+',\'' + descProducto + '\','+cantBultos+','+basePallet+','+alturaPallet+',this);" style="width:50px; text-align:right" name="bultos[]" >'+
+                        '<input id="cantBultos_'+nroLineaAgregada+'" class="cantidad_bultos_'+idProducto+' numerico" type="text" onchange="validarBultos('+nroLineaAgregada+','+idProducto+',\'' + descProducto + '\',\''+nomCampoBultos+'\','+basePallet+','+alturaPallet+',this);" style="width:50px; text-align:right" name="bultos[]" >'+
                         '</div>'+
                     '</td>'+
                     '<td colspan="2">'+
                         '<div>'+
-                        '<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text" class="numerico" onchange="calcularCantidadBultos2('+nroLineaAgregada+','+idProducto+',\'' + descProducto + '\','+cantBultos+',this.value, '+basePallet+','+ alturaPallet+',cantBultos_'+nroLineaAgregada+');" style="width:50px; text-align:right;">'+
+                        '<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text" class="numerico" onchange="calcularCantidadBultos2('+nroLineaAgregada+','+idProducto+',\'' + descProducto + '\',\''+nomCampoBultos+'\',this.value, '+basePallet+','+ alturaPallet+',cantBultos_'+nroLineaAgregada+');" style="width:50px; text-align:right;">'+
                         '</div>'+
                     '</td>'
                     +hiddenProducto+hiddenViaje+hiddenVL+

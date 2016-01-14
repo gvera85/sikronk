@@ -191,6 +191,8 @@
        var descProducto = $("#DescProducto_"+idProducto).val();
        var cantBultos = $("#cantBultos_"+idProducto).val();
        
+       var nomCampoBultos = "#cantBultos_"+idProducto;
+       
       // alert (idProducto);
        var hiddenProducto = '<input type="hidden" id="idProducto" name="idProducto[]" value='+idProducto+'>';
        
@@ -222,13 +224,13 @@
                     '</td>'+
                     '<td>'+
                         '<div>'+ 
-                        '<input id="cantBultos_'+nroLineaAgregada+'" name="bultos[]" type="text"  style="width:50px; text-align:right;" class="cantidad_bultos_'+idProducto+' numerico" onchange="validarBultos('+nroLineaAgregada+','+idProducto+',\'' + descProducto + '\','+cantBultos+','+basePallet+','+alturaPallet+',this)";>'+
+                        '<input id="cantBultos_'+nroLineaAgregada+'" name="bultos[]" type="text"  style="width:50px; text-align:right;" class="cantidad_bultos_'+idProducto+' numerico" onchange="validarBultos('+nroLineaAgregada+','+idProducto+',\'' + descProducto + '\',\''+nomCampoBultos+'\','+basePallet+','+alturaPallet+',this)";>'+
                         '</div>'+
                     '</td>'+
                     '<td>'+
                         '<div class="form-group col-lg-12">'+
                         //'<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text"  style="width:50px; text-align:right;"/>'+
-                        '<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text" class="numerico" onchange="calcularCantidadBultos2('+nroLineaAgregada+','+idProducto+',\'' + descProducto + '\','+cantBultos+',this.value, '+basePallet+','+ alturaPallet+',cantBultos_'+nroLineaAgregada+');" style="width:50px; text-align:right;">'+
+                        '<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text" class="numerico" onchange="calcularCantidadBultos2('+nroLineaAgregada+','+idProducto+',\'' + descProducto + '\',\''+nomCampoBultos+'\',this.value, '+basePallet+','+ alturaPallet+',cantBultos_'+nroLineaAgregada+');" style="width:50px; text-align:right;">'+
                         '</div>'+
                     '</td>'
                     +hiddenProducto+hiddenViaje+hiddenVL+

@@ -12,20 +12,23 @@ function calcularCantidadBultos(cantidadPallets, basePallet, alturaPallet, input
         $(inputtext).val(Math.ceil(cantBultos));
 }
 
-function calcularCantidadBultos2(nroLineaAgregada, idProducto, producto, cantidadBultosProducto, cantidadPallets, basePallet, alturaPallet, inputtext){
+function calcularCantidadBultos2(nroLineaAgregada, idProducto, producto, nomCampoBultos, cantidadPallets, basePallet, alturaPallet, inputtext){
 	
         bultosXPallet = basePallet*alturaPallet;
 	cantBultos = cantidadPallets * bultosXPallet;
         $(inputtext).val(Math.ceil(cantBultos));
         
-        validarBultos(nroLineaAgregada, idProducto, producto, cantidadBultosProducto, basePallet, alturaPallet, inputtext);
+        validarBultos(nroLineaAgregada, idProducto, producto, nomCampoBultos, basePallet, alturaPallet, inputtext);
         
 }
 
-function validarBultos(nroLineaAgregada, idProducto, producto, cantidadBultosProducto, basePallet, alturaPallet,  input){
+function validarBultos(nroLineaAgregada, idProducto, producto, nomCampoBultos, basePallet, alturaPallet,  input){
  
         bultosTotal = 0
         bulosLinea = 0;
+        
+        cantidadBultosProducto = $(nomCampoBultos).val();
+        
 	$(".cantidad_bultos_"+idProducto).each(
 		function(index, value) {
                         
