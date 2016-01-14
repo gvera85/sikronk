@@ -12,6 +12,16 @@ function calcularCantidadBultos(cantidadPallets, basePallet, alturaPallet, input
         $(inputtext).val(Math.ceil(cantBultos));
 }
 
+function calcularCantidadBultos2(nroLineaAgregada, idProducto, producto, cantidadBultosProducto, cantidadPallets, basePallet, alturaPallet, inputtext){
+	
+        bultosXPallet = basePallet*alturaPallet;
+	cantBultos = cantidadPallets * bultosXPallet;
+        $(inputtext).val(Math.ceil(cantBultos));
+        
+        validarBultos(nroLineaAgregada, idProducto, producto, cantidadBultosProducto, basePallet, alturaPallet, inputtext);
+        
+}
+
 function validarBultos(nroLineaAgregada, idProducto, producto, cantidadBultosProducto, basePallet, alturaPallet,  input){
  
         bultosTotal = 0
@@ -31,6 +41,7 @@ function validarBultos(nroLineaAgregada, idProducto, producto, cantidadBultosPro
 	if (bultosTotal > cantidadBultosProducto)
         {
             swal("Oops...","La cantidad de bultos a repartir del producto "+producto+" no puede superar los "+cantidadBultosProducto+" bultos. Usted ingreso "+bultosTotal+" bultos", "error");
+            input.value = 0;
             input.style.backgroundColor = "yellow";    
             input.focus();
             //input.style.background='#DF0101';"

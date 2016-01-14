@@ -15,14 +15,13 @@
     <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/docsupport/prism.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/chosen.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/jquery/validationEngine.jquery.css">
+    
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/estilosReparto.css">
     
     <script src="<?php echo base_url() ?>assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
     <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.numeric.js"></script>
-    <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.validationEngine.min.js"></script>
-    <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.validationEngine-es.js"></script>
+    
     <script src="<?php echo base_url() ?>assets/utils/utils.js"></script>
     
     <script src="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/chosen.jquery.js"></script>
@@ -122,9 +121,30 @@
                                 <td id="producto" align="left"><?php echo $lineas['producto'] ?></td>
                                 <TD align="left"> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
                                 <TD> <?php echo $lineas['cantidad_bultos'] ?> </TD> 
-                                    <TD>  <input class="textBoxNumerico" id="cantBultosViaje_<?php echo $cantidad?>" name="cantBultosViaje[]" type="text" size="10" value="<?php echo ($lineas['cant_real_bultos'] == 0 ? $lineas['cantidad_bultos'] : $lineas['cant_real_bultos']) ?>" onChange="calcularCantidadPallets(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantPalletsViaje_<?php echo $cantidad?>');"> </TD>
+                                <TD>   
+                                    <?php 
+                                    if ($modo == "edicion")
+                                    {
+                                    ?>    
+                                      <input class="textBoxNumerico" id="cantBultosViaje_<?php echo $cantidad?>" name="cantBultosViaje[]" type="text" size="10" value="<?php echo ($lineas['cant_real_bultos'] == 0 ? $lineas['cantidad_bultos'] : $lineas['cant_real_bultos']) ?>" onChange="calcularCantidadPallets(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantPalletsViaje_<?php echo $cantidad?>');"> </TD>
+                                    <?php
+                                    }
+                                    ?>
+                                    <?php echo ($lineas['cant_real_bultos'] == 0 ? $lineas['cantidad_bultos'] : $lineas['cant_real_bultos']) ?>
+                                </TD> 
                                 <TD> <?php echo $lineas['cantidad_pallets'] ?> </TD> 
-                                    <TD>  <input class="textBoxNumerico" id="cantPalletsViaje_<?php echo $cantidad?>" name="cantPalletsViaje[]" type="text" size="10" value="<?php echo ($lineas['cant_real_pallets'] == 0 ? $lineas['cantidad_pallets'] : $lineas['cant_real_pallets']) ?>" onChange="calcularCantidadBultos(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantBultosViaje_<?php echo $cantidad?>');" > </TD>
+                                <TD>  
+                                    
+                                    <?php 
+                                    if ($modo == "edicion")
+                                    {
+                                    ?>    
+                                      <input class="textBoxNumerico" id="cantPalletsViaje_<?php echo $cantidad?>" name="cantPalletsViaje[]" type="text" size="10" value="<?php echo ($lineas['cant_real_pallets'] == 0 ? $lineas['cantidad_pallets'] : $lineas['cant_real_pallets']) ?>" onChange="calcularCantidadBultos(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantBultosViaje_<?php echo $cantidad?>');" > 
+                                    <?php
+                                    }
+                                    ?>
+                                    <?php echo ($lineas['cant_real_pallets'] == 0 ? $lineas['cantidad_pallets'] : $lineas['cant_real_pallets']) ?>
+                                </TD>
                                 <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
                                 <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
                                 
@@ -222,56 +242,7 @@ function validarNumero()
 	)
 }  
 
-function validacionFormulario() 
-{
-    
-  cantidadItems = $("#cantidadLineas").val();   
-    
-  for (i = 1; i <= nroLineaAgregada ; i++) { 
-    fecha = "#fecha_reparto_" + i; 
-    
-    
-    
-    if ($(fecha).val() == null || $(fecha).val().length == 0)
-    {
-        mensaje = 'La fecha de reparto agregada no puede ser vacia';
-        
-        swal("Atención...", mensaje, "error");
-    
-        marcarInputConError(fecha);
-        return false;
-    }
-    else
-    {
-        limpiarInputConError(fecha);  
-    }
-    
-    
-  }     
-  
-  for (i = 1; i <= cantidadItems ; i++) { 
-    fecha = "#fecha_reparto_html_" + i; 
-    
-    nombreCampoFecha = "fecha_reparto_html_" + i; 
-    
-    if ($(fecha).val() == null || $(fecha).val().length == 0)
-    {
-        mensaje = 'La fecha de reparto no puede ser vacia';
-        
-        swal("Atención...", mensaje, "error");
-    
-        marcarInputConError(fecha);
-        return false;
-    }
-    else
-    {
-        limpiarInputConError(fecha);  
-    }
-    
-  }     
-  
-  return true;
-}
+
     
 $(function() {
     
@@ -302,7 +273,7 @@ $(function() {
        var hiddenVL = '<input type="hidden" id="idVL" name="idVL[]" value="'+idVL+'">';
        
        var combo = '<div>'+
-                        '<select data-placeholder="Seleccione un cliente..." class="chosen-select" name="comboClientes[]" style="display: true;" tabindex="-1">'+
+                        '<select data-placeholder="Seleccione un cliente..." class="chosen-select" name="comboClientes[]" style="display: true;" tabindex="-1" id="cliente_'+nroLineaAgregada+'">'+
                           '<option value=""></option>';
     
        <?php
@@ -333,7 +304,7 @@ $(function() {
                     '</td>'+
                     '<td colspan="2">'+
                         '<div>'+
-                        '<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text" class="numerico" onchange="calcularCantidadBultos(this.value, '+basePallet+','+ alturaPallet+',cantBultos_'+nroLineaAgregada+');" style="width:50px; text-align:right;">'+
+                        '<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text" class="numerico" onchange="calcularCantidadBultos2('+nroLineaAgregada+','+idProducto+',\'' + descProducto + '\','+cantBultos+',this.value, '+basePallet+','+ alturaPallet+',cantBultos_'+nroLineaAgregada+');" style="width:50px; text-align:right;">'+
                         '</div>'+
                     '</td>'
                     +hiddenProducto+hiddenViaje+hiddenVL+
@@ -363,38 +334,6 @@ $(function() {
             event.preventDefault();
 
    });
-          
-       
-   $(document).on("click","#btnadd3",function( event ) {  
-	  
-      $( event.target ).closest( "tr" ).after
-         ('<div>'+
-          '<em>Into This</em>'+
-          '<select data-placeholder="Elegir un pais..." class="chosen-select" id="combito" style="display: true;" tabindex="-1">'+
-            '<option value=""></option>'+                                                                                                         
-            '<option value="United States">United States</option>'+
-            '<option value="United Kingdom">United Kingdom</option>'+
-            '<option value="Afghanistan">Afghanistan</option>'+
-            '<option value="Aland Islands">Aland Islands</option>'+            
-          '</select>'+          
-          '</div>');
-
-    var config = {
-                   '.chosen-select'           : {},
-                   '.chosen-select-deselect'  : {allow_single_deselect:true},
-                   '.chosen-select-no-single' : {disable_search_threshold:10},
-                   '.chosen-select-no-results': {no_results_text:'Oops, nothing found!'},
-                   '.chosen-select-width'     : {width:"95%"}
-                 }
-                 for (var selector in config) {
-                   $(selector).chosen(config[selector]);
-                 }
-                 
-      //$('#combito').prop('disabled', true).trigger("liszt:updated");           
-
-      event.preventDefault();
-   });
-
 
    $(document).on("click","#btnBorrar",function( event ) {  
       
@@ -464,30 +403,88 @@ $(function() {
         
 });
 
+function validacionFormulario() 
+{
+    
+  cantidadItems = $("#cantidadLineas").val();   
+  
+  /*Valido todas las lineas agregadas en tiempo de ejecucion*/
+  for (i = 1; i <= nroLineaAgregada ; i++) { 
+    fecha = "#fecha_reparto_" + i; 
+    fechaid = "fecha_reparto_" + i; 
+    cliente = "#cliente_" + i; 
+    bultos = "#cantBultos_" + i; 
+    pallets = "#cantPallets_" + i; 
+    
+    if(document.getElementById(fechaid) !== null) /*La linea completa fue eliminada por el usuario*/
+    {
+        if ($(fecha).val() == null || $(fecha).val().length == 0)
+        {
+            mensaje = 'La fecha de reparto agregada no puede ser vacia';
 
-    function checkCookies() {
-        var text = "";
+            swal("Atención...", mensaje, "error");
 
-        if (navigator.cookieEnabled == true) {
-           text = "Cookies are enabled.";
-        } else {
-            text = "Cookies are not enabled.";
+            marcarInputConError(fecha);
+            return false;
+        }
+        else
+        {
+            limpiarInputConError(fecha);  
         }
 
-        document.getElementById("demo").innerHTML = text;
+        if ($(cliente).val() == null || $(cliente).val().length == 0)
+        {   
+            mensaje = 'Debe seleccionar un cliente';
+            swal("Atención...", mensaje, "error");
+            return false;
+        }
+
+        if ($(bultos).val() == null || $(bultos).val().length == 0 || $(bultos).val() <= 0)
+        {
+            mensaje = 'La cantidad de bultos debe ser mayor a 0 (cero)';
+
+            swal("Atención...", mensaje, "error");
+
+            marcarInputConError(bultos);
+            return false;
+        }
+        else
+        {
+            limpiarInputConError(bultos);  
+        }
     }
     
-    function marcarInputConError(inputtext)
-{
-    $(inputtext).css({background:"#FF0000"})    
     
-    $(inputtext).focus();
+  }     
+  
+  /*Valido todas las lineas que ya existian en BD */
+  for (i = 1; i <= cantidadItems ; i++) { 
+    fecha = "#fecha_reparto_html_" + i; 
+    fechaid = "fecha_reparto_html_" + i; 
+    nombreCampoFecha = "fecha_reparto_html_" + i; 
+    
+    if(document.getElementById(fechaid) !== null) /*La linea completa fue eliminada por el usuario*/
+    {
+        if ($(fecha).val() == null || $(fecha).val().length == 0)
+        {
+            mensaje = 'La fecha de reparto no puede ser vacia';
+
+            swal("Atención...", mensaje, "error");
+
+            marcarInputConError(fecha);
+            return false;
+        }
+        else
+        {
+            limpiarInputConError(fecha);  
+        }
+    } //Fin if(document.getElementById(fechaid) !== null)
+  }
+  
+  return true;
 }
 
-    function limpiarInputConError(inputtext)
-    {
-        $(inputtext).css({background:"#FFFFFF"})    
-    }
+
 
 
 	</script>

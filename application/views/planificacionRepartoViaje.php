@@ -228,7 +228,7 @@
                     '<td>'+
                         '<div class="form-group col-lg-12">'+
                         //'<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text"  style="width:50px; text-align:right;"/>'+
-                        '<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text" class="numerico" onchange="calcularCantidadBultos(this.value, '+basePallet+','+ alturaPallet+',cantBultos_'+nroLineaAgregada+');" style="width:50px; text-align:right;">'+
+                        '<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text" class="numerico" onchange="calcularCantidadBultos2('+nroLineaAgregada+','+idProducto+',\'' + descProducto + '\','+cantBultos+',this.value, '+basePallet+','+ alturaPallet+',cantBultos_'+nroLineaAgregada+');" style="width:50px; text-align:right;">'+
                         '</div>'+
                     '</td>'
                     +hiddenProducto+hiddenViaje+hiddenVL+
@@ -309,38 +309,49 @@ function validacionFormulario()
   cantidadItems = $("#cantidadLineas").val();   
     
   for (i = 1; i <= nroLineaAgregada ; i++) { 
-    campoBultos = "#cantBultos_" + i; 
-    campoPallet = "#cantPallets_" + i; 
+    bultos = "#cantBultos_" + i; 
+    pallets = "#cantPallets_" + i; 
     cliente = "#cliente_" + i; 
+    
+    clienteId = "cliente_" + i; 
+    
     
     nombreCampoCliente = "cliente_" + i; 
     
-    if ($(cliente).val() == null || $(cliente).val().length == 0)
-    {   
-        mensaje = 'El cliente no puede ser vacio';
+    if(document.getElementById(clienteId) !== null) /*La linea completa fue eliminada por el usuario*/
+    {
+        if ($(cliente).val() == null || $(cliente).val().length == 0)
+        {   
+            mensaje = 'El cliente no puede ser vacio';
+
+            swal("Atención...", mensaje, "error");
+
+            $(nombreCampoCliente).focus();
+
+            return false;
+        }
         
-        swal("Atención...", mensaje, "error");
+        if ($(bultos).val() == null || $(bultos).val().length == 0 || $(bultos).val() <= 0)
+        {
+            mensaje = 'La cantidad de bultos debe ser mayor a 0 (cero)';
+
+            swal("Atención...", mensaje, "error");
+
+            marcarInputConError(bultos);
+            return false;
+        }
+        else
+        {
+            limpiarInputConError(bultos);  
+        }
         
-        $(nombreCampoCliente).focus();
-        
-        return false;
     }
     
-    /*if (esValido)
-    {
-        //limpiarInputConError(nombreCampoMerma);
-        return true;
-    }
-    else
-    {
-        
-        marcarInputConError(nombreCampoMerma);
-        return false;  
-    }*/
-    
-  }      
+  }
   
   return true;
+  
+  
 }
  
  
