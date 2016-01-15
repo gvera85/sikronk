@@ -136,7 +136,7 @@
                                                 if ($modo == "edicion")
                                                 {
                                                 ?>
-                                                   <input type="date" name="fechaValorizacion[]" value=<?php echo $reparto['fecha_valorizacion'] ?>> 
+                                                   <input required type="date" style="height:25px;" name="fechaValorizacion[]" max="<?php echo date("Y-m-d");?>" id="fecha_valor_html_<?php echo $cantidadLineasReparto?>" value=<?php echo $reparto['fecha_valorizacion'] ?>> 
                                                 <?php
                                                 }
                                                 else
@@ -158,7 +158,7 @@
                                               ?>
                                               
                                               <TD> <input class="cant_merma" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, precioBulto_<?php echo $cantidadLineasReparto?>.value, this, 'input#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMerma[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma'] ?>"> </TD> 
-                                              <TD>  $ <input class="importe_linea" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calcularPrecioLinea(this.value,bultos_<?php echo $cantidadLineasReparto?>.value, cant_merma_<?php echo $cantidadLineasReparto?>.value, 'input#precioTotal_<?php echo $cantidadLineasReparto?>');" name="precioBulto[]" type="text" size="10" value="<?php echo $reparto['precio_caja'] ?>"> </TD>
+                                              <TD>  $ <input class="importe_linea" required style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calcularPrecioLinea(this.value,bultos_<?php echo $cantidadLineasReparto?>.value, cant_merma_<?php echo $cantidadLineasReparto?>.value, 'input#precioTotal_<?php echo $cantidadLineasReparto?>');" name="precioBulto[]" type="text" size="10" value="<?php echo $reparto['precio_caja'] ?>"> </TD>
                                               
                                               <?php
                                               }
@@ -217,6 +217,8 @@ function validacionFormulario() {
   for (i = 1; i <= cantidadItems; i++) { 
     campoBultos = "#bultos_" + i; 
     campoMerma = "#cant_merma_" + i; 
+    fecha = "#fecha_valor_html_" + i; 
+    precioBulto = "#precioBulto_" + i; 
     
     nombreCampoMerma = "cant_merma_" + i; 
 
@@ -235,6 +237,37 @@ function validacionFormulario() {
         marcarInputConError(nombreCampoMerma);
         return false;  
     }
+    
+    /*Validar que las fechas sean todas distintas de vacio*/
+    if ($(fecha).val() == null || $(fecha).val().length == 0)
+    {
+        mensaje = 'La fecha de valorizacion no puede ser vacia';
+
+        swal("Atención...", mensaje, "error");
+
+        marcarInputConError(fecha);
+        return false;
+    }
+    else
+    {
+        limpiarInputConError(fecha);  
+    }
+    
+    /*Validar que los campos bultos sean > 0 y vacios*/
+    if ($(precioBulto).val() == null || $(precioBulto).val().length == 0 || $(precioBulto).val() <= 0)
+    {
+        mensaje = 'El precio debe ser mayor a 0 (cero)';
+
+        swal("Atención...", mensaje, "error");
+
+        marcarInputConError(precioBulto);
+        return false;
+    }
+    else
+    {
+        limpiarInputConError(precioBulto);  
+    }
+    
     
   }      
   

@@ -126,11 +126,14 @@
                                     if ($modo == "edicion")
                                     {
                                     ?>    
-                                      <input class="textBoxNumerico" id="cantBultosViaje_<?php echo $cantidad?>" name="cantBultosViaje[]" type="text" size="10" value="<?php echo ($lineas['cant_real_bultos'] == 0 ? $lineas['cantidad_bultos'] : $lineas['cant_real_bultos']) ?>" onChange="calcularCantidadPallets(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantPalletsViaje_<?php echo $cantidad?>');"> </TD>
+                                      <input required class="textBoxNumerico" id="cantBultosViaje_<?php echo $cantidad?>" name="cantBultosViaje[]" type="text" size="10" value="<?php echo ($lineas['cant_real_bultos'] == 0 ? $lineas['cantidad_bultos'] : $lineas['cant_real_bultos']) ?>" onChange="calcularCantidadPallets(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantPalletsViaje_<?php echo $cantidad?>');"> </TD>
                                     <?php
                                     }
+                                    else
+                                    {
+                                         echo ($lineas['cant_real_bultos'] == 0 ? $lineas['cantidad_bultos'] : $lineas['cant_real_bultos']) ;
+                                    }
                                     ?>
-                                    <?php echo ($lineas['cant_real_bultos'] == 0 ? $lineas['cantidad_bultos'] : $lineas['cant_real_bultos']) ?>
                                 </TD> 
                                 <TD> <?php echo $lineas['cantidad_pallets'] ?> </TD> 
                                 <TD>  
@@ -139,11 +142,14 @@
                                     if ($modo == "edicion")
                                     {
                                     ?>    
-                                      <input class="textBoxNumerico" id="cantPalletsViaje_<?php echo $cantidad?>" name="cantPalletsViaje[]" type="text" size="10" value="<?php echo ($lineas['cant_real_pallets'] == 0 ? $lineas['cantidad_pallets'] : $lineas['cant_real_pallets']) ?>" onChange="calcularCantidadBultos(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantBultosViaje_<?php echo $cantidad?>');" > 
+                                      <input required class="textBoxNumerico" id="cantPalletsViaje_<?php echo $cantidad?>" name="cantPalletsViaje[]" type="text" size="10" value="<?php echo ($lineas['cant_real_pallets'] == 0 ? $lineas['cantidad_pallets'] : $lineas['cant_real_pallets']) ?>" onChange="calcularCantidadBultos(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantBultosViaje_<?php echo $cantidad?>');" > 
                                     <?php
                                     }
+                                    else
+                                    {
+                                        echo ($lineas['cant_real_pallets'] == 0 ? $lineas['cantidad_pallets'] : $lineas['cant_real_pallets']) ;
+                                    }
                                     ?>
-                                    <?php echo ($lineas['cant_real_pallets'] == 0 ? $lineas['cantidad_pallets'] : $lineas['cant_real_pallets']) ?>
                                 </TD>
                                 <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
                                 <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
@@ -179,7 +185,7 @@
                                                 if ($modo == "edicion")
                                                 {
                                                 ?>
-                                                   <input type="date" name="fechaReparto[]" id="fecha_reparto_html_<?php echo $cantidadClientes?>" value=<?php echo $reparto['fecha_reparto'] ?>> 
+                                                   <input required type="date" style="height:25px;" name="fechaReparto[]" max="<?php echo date("Y-m-d");?>" id="fecha_reparto_html_<?php echo $cantidadClientes?>" value=<?php echo $reparto['fecha_reparto'] ?>> 
                                                 <?php
                                                 }
                                                 else
@@ -290,12 +296,12 @@ $(function() {
        
        //alert (combo);
               
-       var fila = '<tr class="active">'+
+       var fila = '<tr class="warning">'+
                     '<td></td>'+    
                     '<td align="center">'+
                           '<button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button>'+
                     '</td>'+
-                    '<td><input type="date" name="fechaReparto[]" id="fecha_reparto_'+nroLineaAgregada+'"> </td>'+
+                    '<td align="left"><input required type="date" style="height:25px;" name="fechaReparto[]" max="<?php echo date("Y-m-d");?>" id="fecha_reparto_'+nroLineaAgregada+'"> </td>'+
                     '<td align="left" colspan="1">'
                           +combo+
                     '</td>'+
