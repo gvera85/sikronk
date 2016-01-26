@@ -39,7 +39,6 @@ class caja_distribuidor_m extends CI_Model {
                         from viaje_gasto a
                         join viaje b on a.id_viaje = b.id
                         join proveedor_de_servicios c on a.id_proveedor_de_servicios = c.id
-                        where a_cargo_del_proveedor = 0
                     union
                         select 'Ganancia' Tipo, b.fecha_estimada_salida fecha_pago, a.stamp,
                         c.razon_social, '-' Modo,  

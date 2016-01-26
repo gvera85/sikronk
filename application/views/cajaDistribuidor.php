@@ -35,7 +35,7 @@
                                             {
                                                 "targets": [ 0 ],
                                                 "visible": true,
-                                                "searchable": false
+                                                "searchable": true
                                             },
                                             {
                                                 "targets": [ 2 ],
