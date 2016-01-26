@@ -212,7 +212,7 @@ class reporte_ventas_m extends CI_Model {
                     a.id_estado id_estado,
                     b.razon_social transportista,
                     c.descripcion estado,
-                    getMontoViaje(a.id) montoViaje
+                    getMontoViaje(a.id) - getMontoGastosProveedor(a.id) montoViaje
                     from viaje a
                     left join transportista b on a.id_empresa_transportista = b.id
                     join estado c on a.id_estado = c.id
@@ -231,11 +231,45 @@ class reporte_ventas_m extends CI_Model {
         return false;
     }
     
-    function getViajesProveedor2()
+    public function getResumenViaje($idViaje)
     {
-        $this->load->database();
-        $alumnos = $this->db->get('viaje');
-        return $alumnos->result();
+        $sql = "select a.id, a.numero_de_viaje, a.fecha_estimada_salida,
+                getMontoViaje(a.id) valor_mercaderia, 
+                getMontoGastosProveedor(a.id) valor_gastos_proveedor,
+                getMontoGastosDistribuidor(a.id) valor_gastos_distribuidor
+                from viaje a 
+                where id = ?";
+            
+        $query = $this->db->query($sql, $idViaje);
+
+        $viaje = $query->result_array();
+
+        if( is_array($viaje) && count($viaje) > 0 ) {
+          return $viaje;
+        }
+
+        return false;
+    }
+    
+    public function getGastos($idViaje)
+    {
+        $sql = "select a.id, a.precio_unitario, a.cantidad, 
+                a.a_cargo_del_proveedor, b.descripcion gasto, 
+                a.id_modo_pago, c.descripcion modo_pago
+                from viaje_gasto a
+                join gastos_de_un_viaje b on a.id_gasto = b.id
+                join modo_pago c on a.id_modo_pago = c.id
+                where id_viaje = ?";
+            
+        $query = $this->db->query($sql, $idViaje);
+
+        $gastos = $query->result_array();
+
+        if( is_array($gastos) && count($gastos) > 0 ) {
+          return $gastos;
+        }
+
+        return false;
     }
     
     

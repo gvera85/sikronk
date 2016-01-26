@@ -83,10 +83,15 @@ class reportes extends CI_Controller {
             $this->session->set_userdata('ruta', "Viajes > Detalle viaje con Id [".$idViaje."]");                
             
             $this->load->model('viaje_m');
+            $this->load->model('reporte_ventas_m');
     
+            $resumenViaje = $this->reporte_ventas_m->getResumenViaje($idViaje);
             $lineasReparto = $this->viaje_m->getRepartoConfirmado($idViaje, null);
+            $lineasGastos = $this->reporte_ventas_m->getGastos($idViaje);
             
             $data['lineasReparto'] = $lineasReparto;
+            $data['resumenViaje'] = $resumenViaje;
+            $data['lineasGastos'] = $lineasGastos;
                        
             $this->load->view('detalleViaje.php', $data);
 	}

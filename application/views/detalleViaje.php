@@ -3,6 +3,83 @@
         $this->load->view('headerProveedor');
 ?>
     
+    <?php 
+        if (!empty($resumenViaje[0]['id']))
+        {
+            foreach( $resumenViaje as $resumen ) : 
+                $idViaje = $resumen['id'];
+                $nroViaje = $resumen['numero_de_viaje'];
+                $fechaSalida = date_format(date_create($resumen['fecha_estimada_salida']), 'd/m/Y');
+                $valorMercaderia = $resumen['valor_mercaderia'];
+                $valorGastosProveedor = $resumen['valor_gastos_proveedor'];
+                $valorGastosDistribuidor = $resumen['valor_gastos_distribuidor'];
+                $valorAPagarAlProveedor = $valorMercaderia - $valorGastosProveedor;
+            endforeach; 
+        }
+        
+        $gastosDelProveedor = "";
+        $gastosDelDistribuidor = "";
+        
+        if (!empty($lineasGastos[0]['id']))
+        {
+            foreach( $lineasGastos as $gastos ) : 
+                $valorGasto = $gastos['precio_unitario']*$gastos['cantidad'];
+                
+                if ($gastos['a_cargo_del_proveedor']==1){
+                    $gastosDelProveedor = $gastosDelProveedor." ".$gastos['gasto'].": $".$valorGasto;
+                }
+                else {
+                    $gastosDelDistribuidor = $gastosDelDistribuidor." ".$gastos['gasto'].": $".$valorGasto;
+                }
+                
+            endforeach; 
+        }
+    ?>  
+    
+    
+    <div class="box span12">
+        <div class="box-header">
+                <h2><i class="halflings-icon plus"></i><span class="break"></span><?php echo "Resumen del viaje número ".$nroViaje." - Fecha: ".$fechaSalida ?> </h2>
+                <div class="box-icon">
+                        <a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
+                </div>
+        </div>
+        <div class="box-content">
+                <table class="table table-bordered compact table-striped" style="font-size:small;">
+                        <tr>
+                                <td>Valor total de la mercadería</td>
+                                <td>
+                                        <a href="#" title="Ver detalle en la tabla situada en la parte inferior de la pantalla" style="font-size:small;"  data-rel="tooltip" class="btn btn-small btn-success">$<?php echo $valorMercaderia ?></a>
+                                </td>
+                        </tr>
+                        <tr>
+                                <td>Valor total de los gastos a cargo del proveedor</td>
+                                <td>
+                                    <a href="#" style="font-size:small;" class="btn btn-small btn-danger" data-rel="popover"  data-content="<?php echo $gastosDelProveedor ?>" title="Detalle de los gastos">$<?php echo $valorGastosProveedor ?></a>                                    
+                                </td>
+                        </tr>
+                        <tr>
+                                <td>Valor total de los gastos a cargo del distribuidor</td>
+                                <td>
+                                    <a href="#" style="font-size:small;" class="btn btn-small btn-warning" data-rel="popover"  data-content="<?php echo $gastosDelDistribuidor ?>" title="Detalle de los gastos">$<?php echo $valorGastosDistribuidor ?></a>
+                                </td>
+                        </tr>
+                        <tr>
+                                <td><b><i>Valor total a abonar al proveedor</i></b></td>
+                                <td>  
+                                    <a href="#" title="Es el valor total de la mercadería, restandole los gastos a cargo del proveedor" style="font-size:small;"  data-rel="tooltip" class="btn btn-small btn-success">$<?php echo $valorAPagarAlProveedor ?></a>
+                                </td>
+                        </tr>
+                </table>
+        </div>	
+    </div><!--/span-->
+    <div class="box-header">
+                <h2><i class="halflings-icon plus"></i><span class="break"></span>Detalle</h2>
+                <div class="box-icon">
+                        <a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
+                </div>
+        </div>
+        <div class="box-content">
     <table id="example" class="display responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
         <thead>
                 <tr>                                                        
@@ -45,6 +122,7 @@
             ?>  
         </tbody>
     </table>    
+    </div>	
 
                            
     

@@ -15,19 +15,21 @@
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/chosen_v1.2.0/docsupport/prism.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/chosen_v1.2.0/chosen.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/jquery/validationEngine.jquery.css">
+    
 
     <script src="<?php echo base_url() ?>/assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.min.js"></script>
     <script src="<?php echo base_url() ?>/assets/utils/utils.js"></script>
     <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.numeric.js"></script>
-    <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.validationEngine.min.js"></script>
-    <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.validationEngine-es.js"></script>
+    <script src="<?php echo base_url() ?>/assets/bootstrap/js/bootstrap.js"></script>
     
 
   
     <script type="text/javascript">
     $(document).ready(function(){
+       
+       $('[data-toggle="popover"]').popover(); 
+       $('[data-toggle="tooltip"]').tooltip()
         
        cantidad = $("#cantidadItems").val();
 
@@ -50,12 +52,55 @@
                 margin-top:20px; 
         }
         
+        .panel-heading .accordion-toggle:after {
+            /* symbol for "opening" panels */
+            font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+            content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+            float: right;        /* adjust as needed */
+            color: white;         /* adjust as needed */
+        }
+        .panel-heading .accordion-toggle.collapsed:after {
+            /* symbol for "collapsed" panels */
+            content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+        }
+        
     </style>
     
 </head>
 <body onload="actualizarPrecioTotalViaje()">
     
-<?php 
+<?php
+    if (!empty($resumenViaje[0]['id']))
+    {
+        foreach( $resumenViaje as $resumen ) : 
+            $idViaje = $resumen['id'];
+            $nroViaje = $resumen['numero_de_viaje'];
+            $fechaSalida = date_format(date_create($resumen['fecha_estimada_salida']), 'd/m/Y');
+            $valorMercaderia = $resumen['valor_mercaderia'];
+            $valorGastosProveedor = $resumen['valor_gastos_proveedor'];
+            $valorGastosDistribuidor = $resumen['valor_gastos_distribuidor'];
+            $valorAPagarAlProveedor = $valorMercaderia - $valorGastosProveedor;
+        endforeach; 
+    }      
+    
+    $gastosDelProveedor = "";
+    $gastosDelDistribuidor = "";
+    
+    if (!empty($lineasGastos[0]['id']))
+    {
+        foreach( $lineasGastos as $gastos ) : 
+            $valorGasto = $gastos['precio_unitario']*$gastos['cantidad'];
+
+            if ($gastos['a_cargo_del_proveedor']==1){
+                $gastosDelProveedor = $gastosDelProveedor." ".$gastos['gasto'].": $".$valorGasto;
+            }
+            else {
+                $gastosDelDistribuidor = $gastosDelDistribuidor." ".$gastos['gasto'].": $".$valorGasto;
+            }
+
+        endforeach; 
+    }
+
     $sinProductos = 0;
     if (empty($lineasViaje[0]['numero_de_viaje']))
     {
@@ -72,137 +117,191 @@
     }             
 ?>    
     
-<div id="container ">
-    <div class="row-fluid top-buffer text-center" style="padding: 10px;">
-            <form id="formValorizacion" method="post" name="formValorizacion">
-                <div class="panel panel-primary">
+<div id="container" style="padding: 10px;">
+            <?php if ($modo != "edicion") { ?>
+            <div class="panel panel-primary">
                     <div class="panel-heading">
-                        <h3 class="panel-title"><?php echo $titulo  ?> <b><div id="precioTotalViaje" name="precioTotalViaje"> </div></b></h3>
+                        <h3 class="panel-title"> 
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse1"><?php echo "Resumen ".$titulo  ?></a>
+                        </h3>
                     </div>
+                <div id="collapse1" class="panel-collapse collapse in">    
                     <div class="panel-body">
-                        <table id="tblprod" class="table table-hover table-responsive table-condensed">
-                            <thead>
-                                <tr class="active">
-                                    <?php $cantidad=0; 
-                                    $id_producto_ant = 0;
-                                    $cantidad2 = 0;
-
-                                    if ($sinProductos == 0)
-                                    {
-                                    ?>
-                                        <th valign="middle" width="2%">#</th>
-                                        <th valign="middle" width="10%">Producto</th>
-                                        <th valign="middle" width="25%">Variable Logística</th>
-                                        <th width="10%"># Bultos </th>
-                                        <th width="10%"># Pallets </th>
-                                        <th width="10%"># Bultos con merma </th>
-                                        <th colspan="2" width="30%"> Valorización </th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                            <?php 
-                             $cantidadLineasReparto = 0;
-                             foreach( $lineasViaje as $lineas ) : ?>    
-                                <?php $cantidad++; ?>
-                                    <tr class="success">
-                                        <td id="linea_<?php echo $cantidad?>" ><b><?php echo $cantidad?></b></td>
-                                        <td id="producto"><?php echo $lineas['producto'] ?></td>
-                                        <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
-                                        <TD> <?php echo $lineas['cant_real_bultos'] ?> </TD> 
-                                        <TD> <?php echo $lineas['cant_real_pallets'] ?> </TD> 
-                                        <TD> 0 </TD> 
-                                        <TD> <b>Precio x bulto [$]</b> </TD> 
-                                        <TD> <b>Precio total [$] </b> </TD> 
-                                        <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
-                                        <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
-                                        <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
-
-                                        <input type="hidden" id="idProductoViaje" name="idProductoViaje[]" value=<?php echo $lineas['id_producto']?>>
-                                        <input type="hidden" id="idViajeViaje" name="idViajeViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
-                                    </tr>
-                                    
-                                    <?php 
-                                    if (is_array($lineasReparto))
-                                    {
-                                        foreach( $lineasReparto as $reparto ) : 
-                                        if ($reparto['id_producto'] == $lineas['id_producto'] && $reparto['id_variable_logistica'] == $lineas['id_vl'])
-                                        {
-                                        ?>  
-                                            <tr class="warning">
-                                              <?php $cantidadLineasReparto++; ?>
-                                              <td align="rigth"> </td>
-                                              <td> 
-                                                <?php    
-                                                if ($modo == "edicion")
-                                                {
-                                                ?>
-                                                   <input required type="date" style="height:25px;" name="fechaValorizacion[]" max="<?php echo date("Y-m-d");?>" id="fecha_valor_html_<?php echo $cantidadLineasReparto?>" value=<?php echo $reparto['fecha_valorizacion'] ?>> 
-                                                <?php
-                                                }
-                                                else
-                                                {
-                                                    
-                                                    echo date_format(date_create($reparto['fecha_valorizacion']), 'd/m/Y');
-                                                } 
-                                                ?>
-                                              </td> 
-                                              <td align="rigth"> <?php echo $reparto['razon_social'] ?> </td>
-                                              <TD> <div class="cantidad_linea" id="DivBultos_<?php echo $cantidadLineasReparto?>" name="DivBultos_<?php echo $cantidadLineasReparto?>"> <?php echo $reparto['cantidad_bultos'] ?> </div> </TD> 
-                                              <input type="hidden" id="bultos_<?php echo $cantidadLineasReparto?>" value=<?php echo $reparto['cantidad_bultos'] ?>>
-                                              <TD> <?php echo $reparto['cantidad_pallets'] ?></TD> 
-                                              
-                                              <?php 
-                                              
-                                              if ($modo == "edicion")
-                                              {
-                                              ?>
-                                              
-                                              <TD> <input class="cant_merma" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, precioBulto_<?php echo $cantidadLineasReparto?>.value, this, 'input#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMerma[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma'] ?>"> </TD> 
-                                              <TD>  $ <input class="importe_linea" required style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calcularPrecioLinea(this.value,bultos_<?php echo $cantidadLineasReparto?>.value, cant_merma_<?php echo $cantidadLineasReparto?>.value, 'input#precioTotal_<?php echo $cantidadLineasReparto?>');" name="precioBulto[]" type="text" size="10" value="<?php echo $reparto['precio_caja'] ?>"> </TD>
-                                              
-                                              <?php
-                                              }
-                                              else
-                                              {
-                                              ?>
-                                              
-                                              <TD> <?php echo $reparto['cant_bultos_merma'] ?> </TD> 
-                                              <TD>  <?php echo $reparto['precio_caja'] ?> </TD>
-                                              
-                                              <?php
-                                              }
-                                              ?>
-                                              
-                                              <?php $precioTotalLinea = $reparto['precio_caja'] * ( $reparto['cantidad_bultos'] - $reparto['cant_bultos_merma']); ?>
-                                              <TD>  $ <input  class="importe_linea" type="text"  style="width:65px; text-align:right" id="precioTotal_<?php echo $cantidadLineasReparto?>" type="text" size="15" value="<?php echo $precioTotalLinea?>" readonly>  </TD>
-                                              <input type="hidden" id="idProducto" name="idProducto[]" value=<?php echo $reparto['id_producto'] ?>>
-                                              <input type="hidden" id="idReparto" name="idReparto[]" value=<?php echo $reparto['id'] ?>>
-                                              <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
-                                              <input type="hidden" id="idCliente" name="comboClientes[]" value="<?php echo $reparto['id_cliente'] ?>">
-                                              <input type="hidden" id="idVL" name="idVL[]" value="<?php echo $lineas['id_vl'] ?>">
-                                              <input type="hidden" id="idBultos" name="bultos[]" value="<?php echo $reparto['cantidad_bultos'] ?>">
-                                              <input type="hidden" id="idPallets" name="pallets[]" value="<?php echo $reparto['cantidad_pallets'] ?>">
-                                              
-                                            </tr>
-                                        <?php
-                                        }
-                                        endforeach;
-                                        } ?>
-                              <?php endforeach; 
-                              }?>
-                                            <input type="hidden" id="cantidadItems" name="cantidadItems" value="<?php echo $cantidadLineasReparto ?>">
-                            </tbody>
+                        <table class="table compact table-striped" style="font-size:small; text-align: left">
+                            <tr>
+                                    <td>Valor total de la mercadería</td>
+                                    <td>    
+                                            <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-success" style="font-size:small;" title="Ver detalle en la tabla situada en la parte inferior de la pantalla">$<?php echo $valorMercaderia ?></button>
+                                    </td>
+                            </tr>
+                            <tr>
+                                    <td>Valor total de los gastos a cargo del proveedor</td>
+                                    <td>
+                                        <a href="#" class="btn btn-xs btn-danger" data-toggle="popover" title="Detalle de los gastos" data-content="<?php echo $gastosDelProveedor ?>">$<?php echo $valorGastosProveedor ?></a>
+                                    </td>
+                            </tr>
+                            <tr>
+                                    <td>Valor total de los gastos a cargo del distribuidor</td>
+                                    <td>
+                                        <a href="#" class="btn btn-xs btn-warning" data-toggle="popover" title="Detalle de los gastos" data-content="<?php echo $gastosDelDistribuidor ?>">$<?php echo $valorGastosDistribuidor ?></a>
+                                    </td>
+                            </tr>
+                            <tr>
+                                    <td><b><i>Valor total a abonar al proveedor</i></b></td>
+                                    <td>
+                                        <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-success" style="font-size:small;" title="Es el valor total de la mercadería, restandole los gastos a cargo del proveedor">$<?php echo $valorAPagarAlProveedor ?></button>
+                                    </td>
+                            </tr>
                         </table>
                     </div>
                 </div>
+            </div>      
+            <?}?>
+            <form id="formValorizacion" method="post" name="formValorizacion">
+                <div class="panel panel-primary">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">
+                            <a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapse2"> <span id="precioTotalViaje" name="precioTotalViaje"> </span> </a>
+                        </h3>
+                        
+                    </div>
+                    <div id="collapse2" class="panel-collapse collapse in">
+                        <div class="panel-body">
+                            <table id="tblprod" class="table compact table-striped table-hover table-condensed table-responsive">
+                                <thead>
+                                    <tr class="succes">
+                                        <?php $cantidad=0; 
+                                        $id_producto_ant = 0;
+                                        $cantidad2 = 0;
+
+                                        if ($sinProductos == 0)
+                                        {
+                                        ?>
+                                            <th rowspan="2" style="vertical-align: middle;">#</th>
+                                            <th>Producto</th>
+                                            <th>Presentación</th>
+                                            <th rowspan="2" style="vertical-align: middle;"># Bultos </th>
+                                            <th rowspan="2" style="vertical-align: middle;"># Pallets </th>
+                                            <th rowspan="2" style="vertical-align: middle;"># Bultos con merma </th>
+                                            <th colspan="2" rowspan="2" style="vertical-align: middle;"> Valorización </th>
+                                    </tr>
+                                    <tr class="succes">
+                                        
+                                        <th>Fecha valorización</th>
+                                        <th>Clientes</th>
+                                        
+                                        
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <?php 
+                                 $cantidadLineasReparto = 0;
+                                 foreach( $lineasViaje as $lineas ) : ?>    
+                                    <?php $cantidad++; ?>
+                                        <tr class="danger">
+                                            <td id="linea_<?php echo $cantidad?>" ><b><?php echo $cantidad?></b></td>
+                                            <td id="producto"><?php echo $lineas['producto'] ?></td>
+                                            <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
+                                            <TD> <?php echo $lineas['cant_real_bultos'] ?> </TD> 
+                                            <TD> <?php echo $lineas['cant_real_pallets'] ?> </TD> 
+                                            <TD> 0 </TD> 
+                                            <TD> <b>Precio x bulto [$]</b> </TD> 
+                                            <TD> <b>Precio total [$] </b> </TD> 
+                                            <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
+                                            <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
+                                            <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
+
+                                            <input type="hidden" id="idProductoViaje" name="idProductoViaje[]" value=<?php echo $lineas['id_producto']?>>
+                                            <input type="hidden" id="idViajeViaje" name="idViajeViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
+                                        </tr>
+
+                                        <?php 
+                                        if (is_array($lineasReparto))
+                                        {
+                                            foreach( $lineasReparto as $reparto ) : 
+                                            if ($reparto['id_producto'] == $lineas['id_producto'] && $reparto['id_variable_logistica'] == $lineas['id_vl'])
+                                            {
+                                            ?>  
+                                                <tr class="warning">
+                                                  <?php $cantidadLineasReparto++; ?>
+                                                  <td> </td>
+                                                  <td> 
+                                                    <?php    
+                                                    if ($modo == "edicion")
+                                                    {
+                                                    ?>
+                                                       <input required type="date" style="height:25px;" name="fechaValorizacion[]" max="<?php echo date("Y-m-d");?>" id="fecha_valor_html_<?php echo $cantidadLineasReparto?>" value=<?php echo $reparto['fecha_valorizacion'] ?>> 
+                                                    <?php
+                                                    }
+                                                    else
+                                                    {
+
+                                                        echo date_format(date_create($reparto['fecha_valorizacion']), 'd/m/Y');
+                                                    } 
+                                                    ?>
+                                                  </td> 
+                                                  <td align="rigth"> <?php echo $reparto['razon_social'] ?> </td>
+                                                  <TD> <div class="cantidad_linea" id="DivBultos_<?php echo $cantidadLineasReparto?>" name="DivBultos_<?php echo $cantidadLineasReparto?>"> <?php echo $reparto['cantidad_bultos'] ?> </div> </TD> 
+                                                  <input type="hidden" id="bultos_<?php echo $cantidadLineasReparto?>" value=<?php echo $reparto['cantidad_bultos'] ?>>
+                                                  <TD> <?php echo $reparto['cantidad_pallets'] ?></TD> 
+
+                                                  <?php 
+
+                                                  if ($modo == "edicion")
+                                                  {
+                                                  ?>
+
+                                                  <TD> <input class="cant_merma" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, precioBulto_<?php echo $cantidadLineasReparto?>.value, this, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMerma[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma'] ?>"> </TD> 
+                                                  <TD>  $ <input class="importe_linea" required style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calcularPrecioLinea(this.value,bultos_<?php echo $cantidadLineasReparto?>.value, cant_merma_<?php echo $cantidadLineasReparto?>.value, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="precioBulto[]" type="text" size="10" value="<?php echo $reparto['precio_caja'] ?>"> </TD>
+
+                                                  <?php
+                                                  }
+                                                  else
+                                                  {
+                                                  ?>
+
+                                                  <TD> <?php echo $reparto['cant_bultos_merma'] ?> </TD> 
+                                                  <TD>  <?php echo $reparto['precio_caja'] ?> </TD>
+
+                                                  <?php
+                                                  }
+                                                  ?>
+
+                                                  <?php $precioTotalLinea = $reparto['precio_caja'] * ( $reparto['cantidad_bultos'] - $reparto['cant_bultos_merma']); ?>
+                                                  <!--<TD>  $ <input  class="importe_linea" type="text"  style="width:65px; text-align:right" id="precioTotal_<?php echo $cantidadLineasReparto?>" type="text" size="15" value="<?php echo $precioTotalLinea?>" readonly>  </TD>-->
+                                                  <TD>   <div id="precioTotal_<?php echo $cantidadLineasReparto?>" value="<?php echo $precioTotalLinea?>"> <?php echo $precioTotalLinea?></div> </TD>
+                                                  <input type="hidden" id="idProducto" name="idProducto[]" value=<?php echo $reparto['id_producto'] ?>>
+                                                  <input type="hidden" id="idReparto" name="idReparto[]" value=<?php echo $reparto['id'] ?>>
+                                                  <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
+                                                  <input type="hidden" id="idCliente" name="comboClientes[]" value="<?php echo $reparto['id_cliente'] ?>">
+                                                  <input type="hidden" id="idVL" name="idVL[]" value="<?php echo $lineas['id_vl'] ?>">
+                                                  <input type="hidden" id="idBultos" name="bultos[]" value="<?php echo $reparto['cantidad_bultos'] ?>">
+                                                  <input type="hidden" id="idPallets" name="pallets[]" value="<?php echo $reparto['cantidad_pallets'] ?>">
+
+                                                </tr>
+                                            <?php
+                                            }
+                                            endforeach;
+                                            } ?>
+                                  <?php endforeach; 
+                                  }?>
+                                                <input type="hidden" id="cantidadItems" name="cantidadItems" value="<?php echo $cantidadLineasReparto ?>">
+                                </tbody>
+                            </table>
+                        </div>    
+                    </div>
+                </div>
+                
                 <?php if ($sinProductos == 0 && $modo == "edicion") 
                       {?>
-                <button value="volverAStock" id="btnVolverAConfirmarViaje" class="btn btn-danger">Volver a confirmar viaje</button>
-                <button id="btnsubmit" value="1" type="submit" class="btn btn-default">Guardar</button>
-                <button id="btnConfirmarPrecio" value="2" class="btn btn-success">Confirmar precio</button>
-                <input id="botonPresionado" type="hidden" value="botonGuardar" name="botonPresionado">
+                <div class="row-fluid top-buffer text-center" >
+                    <button value="volverAStock" id="btnVolverAConfirmarViaje" class="btn btn-danger">Volver a confirmar viaje</button>
+                    <button id="btnsubmit" value="1" type="submit" class="btn btn-default">Guardar</button>
+                    <button id="btnConfirmarPrecio" value="2" class="btn btn-success">Confirmar precio</button>
+                    <input id="botonPresionado" type="hidden" value="botonGuardar" name="botonPresionado">
+                </div>                    
                 <?php }?>
-            </div>
+            
         </form>    
 </div>
  
@@ -279,9 +378,11 @@ function actualizarPrecioTotalViaje() {
     cantidad = $("#cantidadItems").val();
     for(i=1; i <= cantidad; i++)
     {
-       inputPrecio = "input#precioTotal_"+i;
-       precioTotalViaje += parseInt($(inputPrecio).val());
-       $("#precioTotalViaje").html("Valor total del viaje: $"+precioTotalViaje);
+       inputPrecio = "div#precioTotal_"+i;
+       precioTotalViaje += parseInt($(inputPrecio).html());
+       $("#precioTotalViaje").html("Valor total de la mercadería: <span style='font-size:15px;' class='label label-success'> $"+precioTotalViaje+"</span>");
+       
+       
 
     }
 }
@@ -295,7 +396,7 @@ function calcularPrecioLinea(precio, cantidad,  cantidadConMerma, inputtext){
 	
 	// Calculo del total de la linea
 	subtotal = precio* (cantidad - cantidadConMerma);
-        $(inputtext).val(subtotal);
+        $(inputtext).html(subtotal);
         
         actualizarPrecioTotalViaje();
        // input#precioTotalViaje.val(4);
@@ -336,7 +437,6 @@ function validarCantidadMermaLinea(cantidadBultosLinea,  cantidadConMerma, preci
     
 $(function() {
     var count = 1;
-    jQuery("#formValorizacion").validationEngine({promptPosition : "centerRight:0,-5"});
 
     $(document).on("click","#btnConfirmarPrecio",function( event ) {  
         $('input#botonPresionado').val("botonConfirmarPrecio").css('border','3px solid blue');
