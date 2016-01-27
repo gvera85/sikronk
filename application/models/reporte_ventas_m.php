@@ -258,7 +258,7 @@ class reporte_ventas_m extends CI_Model {
                 a.id_modo_pago, c.descripcion modo_pago
                 from viaje_gasto a
                 join gastos_de_un_viaje b on a.id_gasto = b.id
-                join modo_pago c on a.id_modo_pago = c.id
+                left join modo_pago c on a.id_modo_pago = c.id
                 where id_viaje = ?";
             
         $query = $this->db->query($sql, $idViaje);

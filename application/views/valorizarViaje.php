@@ -169,7 +169,7 @@
                         <div class="panel-body">
                             <table id="tblprod" class="table compact table-striped table-hover table-condensed table-responsive">
                                 <thead>
-                                    <tr class="succes">
+                                    <tr class="info">
                                         <?php $cantidad=0; 
                                         $id_producto_ant = 0;
                                         $cantidad2 = 0;
@@ -185,7 +185,7 @@
                                             <th rowspan="2" style="vertical-align: middle;"># Bultos con merma </th>
                                             <th colspan="2" rowspan="2" style="vertical-align: middle;"> Valorización </th>
                                     </tr>
-                                    <tr class="succes">
+                                    <tr class="info">
                                         
                                         <th>Fecha valorización</th>
                                         <th>Clientes</th>
