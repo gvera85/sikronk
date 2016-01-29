@@ -59,6 +59,7 @@ class ConfirmarViaje extends CI_Controller{
     $this->grocery_crud->callback_before_insert(array($this,'distribuidor_callback'));
     $this->grocery_crud->callback_before_update(array($this,'distribuidor_callback'));
     
+    $this->grocery_crud->add_action('Gastos', base_url().'/assets/img/iconoGastosViaje.png', '','ui-icon-image',array($this,'link_hacia_gastos'));
     
     $where = "id_estado IN ('".ESTADO_VIAJE_REPARTO_PLANIFICADO."','".ESTADO_VIAJE_CONFIRMANDO_STOCK."','".ESTADO_VIAJE_CREADO."')";
 
@@ -88,4 +89,10 @@ class ConfirmarViaje extends CI_Controller{
 
     return $post_array;
    }
+   
+  function link_hacia_gastos($primary_key , $row)
+  {
+        //return site_url('viajeVL/popUp/'.$row->id.'/'.$row->id_proveedor.'/'.$row->numero_de_viaje);
+        return "javascript:window.open('" . base_url('/index.php/viajeGastos/popUp'). '/' .$row->id.'/'.$row->id_proveedor.'/'.$row->numero_de_viaje. "')";
+  }
 }

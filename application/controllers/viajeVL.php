@@ -136,7 +136,7 @@ class ViajeVL extends CI_Controller{
     $crud->display_as('id_producto','Producto');
     $crud->set_relation('id_producto','producto','{descripcion} - {marca} - {calidad}',array('id_proveedor' => $id_proveedor));
     
-    $crud->display_as('id_variable_logistica','Peso');
+    $crud->display_as('id_variable_logistica','Presentación');
     $crud->set_relation('id_variable_logistica','variable_logistica','{codigo_vl}-{descripcion}-{peso}[KG]-Pallet:{base_pallet}x{altura_pallet}');
    
     $crud->set_relation_dependency('id_variable_logistica','id_producto','id_producto');
@@ -212,12 +212,33 @@ class ViajeVL extends CI_Controller{
     {
       $this->form_validation->set_message('validarVL', 'Este Producto/Peso ya fue elegido en este viaje');  
       return false;
-    } else {
-        return TRUE;
+    } 
+    
+    if ($id_variable_logistica == "")
+    {
+        $this->form_validation->set_message('validarVL', 'Debe seleccionar la presentación del producto');  
+        return false;
     }       
+    
+    return true; 
       
       
      
+  }
+  
+  public function validarEstadoNoNulo($idEstado) 
+  {
+      
+    $id_estado = $this->input->post('id_estado');  
+    
+    if (  $id_estado == "" )/*ERROR!!! El importe no puede ser vacio enpago en cheques o efectivo*/
+    {
+        $this->form_validation->set_message('validarEstadoNoNulo', 'Si desea dejar el cheque *sin usar* presione el botón cancelar');  
+        return FALSE;
+    } 
+    
+    return TRUE; 
+    
   }
     
    

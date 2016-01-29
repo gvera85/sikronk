@@ -43,6 +43,7 @@ class viaje_m extends CI_Model {
                     d.numero_de_viaje, e.razon_social proveedor, c.id id_vl,e.id id_proveedor,
                     c.descripcion vl, c.peso, c.base_pallet, c.altura_pallet, c.codigo_vl,
                     getCantBultosPlanificados(d.id, b.id, c.id) cant_bultos_plani,
+                    getCantBultosRepartidos(d.id, b.id, c.id) cant_repartida,
                     d.id_estado
                     from productos_viaje a
                     join producto b on a.id_producto = b.id
@@ -124,7 +125,8 @@ class viaje_m extends CI_Model {
                             cant_bultos_merma,
                             id_motivo_merma,
                             fecha_valorizacion, 
-                            c.descripcion descripcion_producto
+                            c.descripcion descripcion_producto,
+                            getCantBultosRepartidos(a.id_viaje, a.id_producto, a.id_variable_logistica) cant_repartida
                     from reparto a
                     join cliente b on a.id_cliente = b.id
                     join producto c on a.id_producto = c.id

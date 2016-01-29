@@ -77,7 +77,7 @@ function actualizarBultosRestantes(idVL, cantidadBultosProducto){
 	);
 	
         bultosRestantes =  cantidadBultosProducto - bultosTotal;
-        $("#tdBultos_"+idVL).html(cantidadBultosProducto + " (" + (bultosRestantes) + ") restantes");
+        $("#tdBultos_"+idVL).html(" (" + (bultosRestantes) + " restantes)");
         
        
 }

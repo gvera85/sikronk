@@ -25,6 +25,9 @@ class producto extends CI_Controller{
     $this->grocery_crud->set_table('producto');
     $this->grocery_crud->edit_fields('descripcion','marca','origen','calidad','id_proveedor','foto');
     $this->grocery_crud->add_fields('descripcion','marca','origen','calidad','id_proveedor','foto');
+    $this->grocery_crud->fields('descripcion','marca','origen','calidad','id_proveedor','foto','id_usuario');
+    
+    $this->grocery_crud->change_field_type('id_usuario','invisible');
     
     //$this->grocery_crud->callback_column('descripcion', array($this, '_callback_desc'));
     
@@ -42,6 +45,8 @@ class producto extends CI_Controller{
     
     $this->grocery_crud->add_action('VL', base_url().'/assets/img/vl.png', '','ui-icon-image',array($this,'link_hacia_vl'));
     
+    $this->grocery_crud->callback_before_insert(array($this,'producto_callback'));
+    
     $output = $this->grocery_crud->render();
     
     $this->producto_output($output);
@@ -50,6 +55,12 @@ class producto extends CI_Controller{
   function producto_output($output = null){
     $this->load->view('mostrarABM',$output);
   } 
+  
+  function producto_callback($post_array) {
+   $post_array['id_usuario'] = $this->session->userdata('id');//Fijo el Id de usuario que dio de alta el producto
+ 
+   return $post_array;
+}
   
   //FANCYBOX TEST
     public function _callback_desc($value, $row)
