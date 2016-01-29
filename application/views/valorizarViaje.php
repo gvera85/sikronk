@@ -373,6 +373,8 @@ function validacionFormulario() {
   return true;
 }
     
+   
+    
 function actualizarPrecioTotalViaje() {
     precioTotalViaje = 0;
     cantidad = $("#cantidadItems").val();
@@ -380,7 +382,7 @@ function actualizarPrecioTotalViaje() {
     {
        inputPrecio = "div#precioTotal_"+i;
        precioTotalViaje += parseInt($(inputPrecio).html());
-       $("#precioTotalViaje").html("Valor total de la mercadería: <span style='font-size:15px;' class='label label-success'> $"+precioTotalViaje+"</span>");
+       $("#precioTotalViaje").html("<?php echo $titulo ?> - Valor total de la mercadería: <span style='font-size:15px;' class='label label-success'> $"+precioTotalViaje+"</span>");
        
        
 

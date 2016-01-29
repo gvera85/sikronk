@@ -2,6 +2,8 @@
 <?php 
         $this->load->view('headerProveedor');
 ?>					
+<a href="<?php echo "javascript:window.open('".base_url('/index.php/viaje/viajeProveedor/1/9')."');"?>" style="font-size:small;" class="btn btn-small btn-success"><?php echo "+ Link hacia creación de viajes" ?></a>
+<div style="padding: 10px;"></div>
 <table id="example" class="display compact responsive nowrap" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
     <thead>
         <tr>

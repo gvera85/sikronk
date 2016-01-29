@@ -66,7 +66,8 @@
                         <h3 class="panel-title"><?php echo $titulo  ?> </h3>
                     </div>
                     <div class="panel-body">
-                        <table id="tblprod" class="table table-hover table-responsive table-condensed">
+                        
+                        <table id="tblprod" class="table compact table-striped" style="font-size:small; text-align: left">    
                             <thead>
                                 <tr class="active">
                                     <?php $cantidad=0; 
@@ -76,13 +77,20 @@
                                     if ($sinProductos == 0)
                                     {
                                     ?>
-                                    <th width="5%">Acción</th>  
-                                    <th width="2%">#</th>
-                                    <th width="18%">Producto</th>
-                                    <th width="35%">Variable Logística</th>
-                                    <th width="15%"># bultos</th>
-                                    <th width="15%"># pallets</th>
+                                    <th rowspan="2" style="vertical-align: middle;">Acción</th>  
+                                    <th rowspan="2" style="vertical-align: middle;">#</th>
+                                    <th>Producto</th>
+                                    <th rowspan="2" style="vertical-align: middle;">Presentación</th>
+                                    <th rowspan="2" style="vertical-align: middle;"># Bultos</th>
+                                    <th rowspan="2" style="vertical-align: middle;"># Pallets</th>
                                 </tr>
+                                <tr class="active">
+
+                                       <th>Cliente</th>
+                                      
+
+
+                                   </tr>
                             </thead>
                             <tbody>
                             <?php 
@@ -102,11 +110,11 @@
                                     <td id="linea_<?php echo $cantidad?>" ><?php echo $cantidad?></td>
                                     <td id="producto"><?php echo $lineas['producto'] ?></td>
                                     <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
-                                    <TD name="tdBultos_<?php echo $lineas['id_producto'] ?>" id="tdBultos_<?php echo $lineas['id_producto'] ?>"> <?php echo $lineas['cantidad_bultos'] ?> (<?php echo $lineas['cantidad_bultos']-$lineas['cant_bultos_plani'] ?> restantes) </TD>
+                                    <TD name="tdBultos_<?php echo $lineas['id_vl'] ?>" id="tdBultos_<?php echo $lineas['id_vl'] ?>"> <?php echo $lineas['cantidad_bultos'] ?> (<?php echo $lineas['cantidad_bultos']-$lineas['cant_bultos_plani'] ?> restantes) </TD>
                                     <TD> <?php echo $lineas['cantidad_pallets'] ?></TD>
                                     <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
-                                    <input type="hidden" id="DescProducto_<?php echo $lineas['id_producto'] ?>" name="DescProducto_<?php echo $lineas['id_producto'] ?>" value="<?php echo $lineas['producto'] ?>">
-                                    <input type="hidden" id="cantBultos_<?php echo $lineas['id_producto'] ?>" name="cantBultos_<?php echo $lineas['id_producto'] ?>" value="<?php echo $lineas['cantidad_bultos'] ?>">
+                                    <input type="hidden" id="DescProducto_<?php echo $lineas['id_vl'] ?>" name="DescProducto_<?php echo $lineas['id_vl'] ?>" value="<?php echo $lineas['producto'] ?>">
+                                    <input type="hidden" id="cantBultos_<?php echo $lineas['id_vl'] ?>" name="cantBultos_<?php echo $lineas['id_vl'] ?>" value="<?php echo $lineas['cantidad_bultos'] ?>">
                                     <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
                                     <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
                                 </tr>
@@ -140,7 +148,7 @@
                                         <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
                                         <input type="hidden" id="idCliente" name="comboClientes[]" value="<?php echo $reparto['id_cliente'] ?>">
                                         <input type="hidden" id="idVL" name="idVL[]" value="<?php echo $lineas['id_vl'] ?>">
-                                        <input type="hidden" class="cantidad_bultos_<?php echo $reparto['id_producto'] ?>" id="idBultos" name="bultos[]" value="<?php echo $reparto['cant_bultos'] ?>">
+                                        <input type="hidden" class="cantidad_bultos_<?php echo $reparto['id_vl'] ?>" id="idBultos" name="bultos[]" value="<?php echo $reparto['cant_bultos'] ?>">
                                         <input type="hidden" id="idPallets" name="pallets[]" value="<?php echo $reparto['cant_pallets'] ?>">
                                     </tr>
                                 <?php
@@ -188,10 +196,10 @@
        var basePallet = array[2];
        var alturaPallet = array[3];
        
-       var descProducto = $("#DescProducto_"+idProducto).val();
-       var cantBultos = $("#cantBultos_"+idProducto).val();
+       var descProducto = $("#DescProducto_"+idVL).val();
+       var cantBultos = $("#cantBultos_"+idVL).val();
        
-       var nomCampoBultos = "#cantBultos_"+idProducto;
+       var nomCampoBultos = "#cantBultos_"+idVL;
        
       // alert (idProducto);
        var hiddenProducto = '<input type="hidden" id="idProducto" name="idProducto[]" value='+idProducto+'>';
@@ -224,13 +232,13 @@
                     '</td>'+
                     '<td>'+
                         '<div>'+ 
-                        '<input id="cantBultos_'+nroLineaAgregada+'" name="bultos[]" type="text"  style="width:50px; text-align:right;" class="cantidad_bultos_'+idProducto+' numerico" onchange="validarBultos('+nroLineaAgregada+','+idProducto+',\'' + descProducto + '\',\''+nomCampoBultos+'\','+basePallet+','+alturaPallet+',this)";>'+
+                        '<input id="cantBultos_'+nroLineaAgregada+'" name="bultos[]" type="text"  style="width:50px; text-align:right;" class="cantidad_bultos_'+idVL+' numerico" onchange="validarBultos('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\','+basePallet+','+alturaPallet+',this)";>'+
                         '</div>'+
                     '</td>'+
                     '<td>'+
                         '<div class="form-group col-lg-12">'+
                         //'<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text"  style="width:50px; text-align:right;"/>'+
-                        '<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text" class="numerico" onchange="calcularCantidadBultos2('+nroLineaAgregada+','+idProducto+',\'' + descProducto + '\',\''+nomCampoBultos+'\',this.value, '+basePallet+','+ alturaPallet+',cantBultos_'+nroLineaAgregada+');" style="width:50px; text-align:right;">'+
+                        '<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text" class="numerico" onchange="calcularCantidadBultos2('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\',this.value, '+basePallet+','+ alturaPallet+',cantBultos_'+nroLineaAgregada+');" style="width:50px; text-align:right;">'+
                         '</div>'+
                     '</td>'
                     +hiddenProducto+hiddenViaje+hiddenVL+

@@ -90,7 +90,7 @@
  									<span>Configuración</span>
 								</li>
 								<li><a href="#"><i class="halflings-icon user"></i> Datos del usuario</a></li>
-								<li><a href="<?php echo base_url() ?>index.php/login/logout_user"><i class="halflings-icon off"></i> Logout</a></li>
+								<li><a href="<?php echo base_url() ?>index.php/login/logout_user"><i class="halflings-icon off"></i> Cerrar sesión</a></li>
 							</ul>
 						</li>
 						
@@ -113,7 +113,7 @@
 						<li><a href="<?php echo base_url() ?>index.php/reportes/homeProveedor"><i class="icon-bar-chart"></i><span class="hidden-tablet"> Resumen</span></a></li>	
 						<li><a href="<?php echo base_url() ?>index.php/reportes/viajesProveedor"><i class="icon-truck"></i><span class="hidden-tablet"> Viajes</span></a></li>
 						<li><a href="<?php echo base_url() ?>index.php/reportes/mercaderiaSinRepartir"><i class="icon-shopping-cart"></i><span class="hidden-tablet"> Mercaderia sin repartir</span></a></li>
-						<li><a href="<?php echo base_url() ?>index.php/login/logout_user"><i class="icon-lock"></i><span class="hidden-tablet"> Login Page</span></a></li>
+						<li><a href="<?php echo base_url() ?>index.php/login/logout_user"><i class="icon-lock"></i><span class="hidden-tablet"> Cerrar sesión</span></a></li>
 					</ul>
 				</div>
 			</div>

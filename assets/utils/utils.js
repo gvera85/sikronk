@@ -12,24 +12,24 @@ function calcularCantidadBultos(cantidadPallets, basePallet, alturaPallet, input
         $(inputtext).val(Math.ceil(cantBultos));
 }
 
-function calcularCantidadBultos2(nroLineaAgregada, idProducto, producto, nomCampoBultos, cantidadPallets, basePallet, alturaPallet, inputtext){
+function calcularCantidadBultos2(nroLineaAgregada, idVL, producto, nomCampoBultos, cantidadPallets, basePallet, alturaPallet, inputtext){
 	
         bultosXPallet = basePallet*alturaPallet;
 	cantBultos = cantidadPallets * bultosXPallet;
         $(inputtext).val(Math.ceil(cantBultos));
         
-        validarBultos(nroLineaAgregada, idProducto, producto, nomCampoBultos, basePallet, alturaPallet, inputtext);
+        validarBultos(nroLineaAgregada, idVL, producto, nomCampoBultos, basePallet, alturaPallet, inputtext);
         
 }
 
-function validarBultos(nroLineaAgregada, idProducto, producto, nomCampoBultos, basePallet, alturaPallet,  input){
+function validarBultos(nroLineaAgregada, idVL, producto, nomCampoBultos, basePallet, alturaPallet,  input){
  
         bultosTotal = 0
         bulosLinea = 0;
         
         cantidadBultosProducto = $(nomCampoBultos).val();
         
-	$(".cantidad_bultos_"+idProducto).each(
+	$(".cantidad_bultos_"+idVL).each(
 		function(index, value) {
                         
                     if (!$(this).val())
@@ -54,17 +54,17 @@ function validarBultos(nroLineaAgregada, idProducto, producto, nomCampoBultos, b
             calcularCantidadPallets(input.value, basePallet, alturaPallet, "input#cantPallets_"+nroLineaAgregada);
             input.style.backgroundColor = "white";    
             
-            actualizarBultosRestantes (idProducto, cantidadBultosProducto);
+            actualizarBultosRestantes (idVL, cantidadBultosProducto);
                   
         }
        
 }
 
-function actualizarBultosRestantes(idProducto, cantidadBultosProducto){
+function actualizarBultosRestantes(idVL, cantidadBultosProducto){
  
         bultosTotal = 0
         bulosLinea = 0;
-	$(".cantidad_bultos_"+idProducto).each(
+	$(".cantidad_bultos_"+idVL).each(
 		function(index, value) {
                         
                     if (!$(this).val())
@@ -77,7 +77,7 @@ function actualizarBultosRestantes(idProducto, cantidadBultosProducto){
 	);
 	
         bultosRestantes =  cantidadBultosProducto - bultosTotal;
-        $("#tdBultos_"+idProducto).html(cantidadBultosProducto + " (" + (bultosRestantes) + ") restantes");
+        $("#tdBultos_"+idVL).html(cantidadBultosProducto + " (" + (bultosRestantes) + ") restantes");
         
        
 }
