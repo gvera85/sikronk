@@ -52,7 +52,8 @@ class Viaje extends CI_Controller{
     $this->grocery_crud->display_as('id_estado','Estado');
     $this->grocery_crud->set_relation('id_estado','estado','descripcion');
         
-    $this->grocery_crud->add_action('Productos', base_url().'/assets/img/iconoProducto.png', '','ui-icon-image',array($this,'link_hacia_productos'));
+    $this->grocery_crud->add_action('Prod', base_url().'/assets/img/iconoProducto.png', '','ui-icon-image',array($this,'link_hacia_productos'));
+    $this->grocery_crud->add_action('Img', base_url().'/assets/img/iconoImagenes.png', '','ui-icon-image',array($this,'link_hacia_imagenes'));
     
     $this->grocery_crud->set_rules('patente_semi','Patente semi','callback_validarPatente');
     $this->grocery_crud->set_rules('patente_camion','Patente del camion','callback_validarPatente');
@@ -94,6 +95,15 @@ class Viaje extends CI_Controller{
   {
         //return site_url('viajeVL/popUp/'.$row->id.'/'.$row->id_proveedor.'/'.$row->numero_de_viaje);
         return "javascript:window.open('" . base_url('/index.php/viajeVL/popUp'). '/' .$row->id.'/'.$row->id_proveedor.'/'.$row->numero_de_viaje. "')";
+  }
+  
+  function link_hacia_imagenes($primary_key , $row)
+  {
+        
+       
+        
+        //return site_url('viajeVL/popUp/'.$row->id.'/'.$row->id_proveedor.'/'.$row->numero_de_viaje);
+        return "javascript:window.open('" . base_url('/index.php/imagenes/viaje'). '/' .$row->id. "')";
   }
   
     
@@ -145,6 +155,7 @@ class Viaje extends CI_Controller{
     $this->grocery_crud->set_relation('id_estado','estado','descripcion');
         
     $this->grocery_crud->add_action('Productos', base_url().'/assets/img/iconoProducto.png', '','ui-icon-image',array($this,'link_hacia_productos'));
+    
     
     $this->grocery_crud->set_rules('patente_semi','Patente semi','callback_validarPatente');
     $this->grocery_crud->set_rules('patente_camion','Patente del camion','callback_validarPatente');

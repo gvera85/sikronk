@@ -4,7 +4,7 @@
  *
  * A Codeigniter library that creates an instant photo gallery CRUD automatically with just few lines of code.
  *
- * Copyright (C) 2011 through 2012  John Skoumbourdis. 
+ * Copyright (C) 2011 through 2012  John Skoumbourdis.
  *
  * LICENSE
  *
@@ -34,7 +34,10 @@ class image_CRUD {
 	protected $views_as_string = '';
 	protected $css_files = array();
 	protected $js_files = array();
-	
+
+	protected $max_width = 1024;
+	protected $max_height = 768;
+
 	/* Unsetters */
 	protected $unset_delete = false;
 	protected $unset_upload = false;
@@ -77,6 +80,8 @@ class image_CRUD {
 	function set_primary_key_field($field_name)
 	{
 		$this->primary_key = $field_name;
+
+		return $this;
 	}
 
 	function set_subject($subject)
@@ -107,13 +112,25 @@ class image_CRUD {
 		return $this;
 	}
 
+	function set_max_width($value)
+	{
+		$this->max_width = $value;
+		return $this;
+	}
+
+	function set_max_height($value)
+	{
+		$this->max_height = $value;
+		return $this;
+	}
+
 	function set_thumbnail_prefix($prefix)
 	{
 		$this->thumbnail_prefix = $prefix;
 
 		return $this;
 	}
-	
+
 	/**
 	 * Unsets the delete operation from the gallery
 	 *
@@ -122,10 +139,10 @@ class image_CRUD {
 	public function unset_delete()
 	{
 		$this->unset_delete = true;
-	
+
 		return $this;
-	}	
-	
+	}
+
 	/**
 	 * Unsets the upload functionality from the gallery
 	 *
@@ -134,10 +151,10 @@ class image_CRUD {
 	public function unset_upload()
 	{
 		$this->unset_upload = true;
-	
+
 		return $this;
-	}	
-	
+	}
+
 	public function set_css($css_file)
 	{
 		$this->css_files[sha1($css_file)] = base_url().$css_file;
@@ -261,9 +278,9 @@ class image_CRUD {
 	}
 
 	protected function _upload_file($upload_dir) {
-		
+
 		$reg_exp = '/(\\.|\\/)(gif|jpeg|jpg|png)$/i';
-		
+
 		$options = array(
 				'upload_dir' 		=> $upload_dir.'/',
 				'param_name'		=> 'qqfile',
@@ -272,7 +289,7 @@ class image_CRUD {
 		);
 		$upload_handler = new ImageUploadHandler($options);
 		$uploader_response = $upload_handler->post();
-		
+
 		if(is_array($uploader_response))
 		{
 			foreach($uploader_response as &$response)
@@ -280,33 +297,33 @@ class image_CRUD {
 				unset($response->delete_url);
 				unset($response->delete_type);
 			}
-			
+
 			$upload_response = $uploader_response[0];
 		} else {
 			$upload_response = false;
-		}	
-		
+		}
+
 		if (!empty($upload_response)) {
 			$ci = &get_instance();
 			$ci->load->library('image_moo');
-			
+
 			$filename = $upload_response->name;
-			
+
 			$path = $upload_dir.'/'.$filename;
-			
+
 			/* Resizing to 1024 x 768 if its required */
 			list($width, $height) = getimagesize($path);
-			if($width > 1024 || $height > 768)
+			if($width > $this->max_width || $height > $this->max_height)
 			{
-				$ci->image_moo->load($path)->resize(1024,768)->save($path,true);
+				$ci->image_moo->load($path)->resize($this->max_width,$this->max_height)->save($path,true);
 			}
-			/* ------------------------------------- */		
+			/* ------------------------------------- */
 
 			return $filename;
 		} else {
 			return false;
 		}
-       
+
     }
 
     protected function _changing_priority($post_array)
@@ -518,22 +535,22 @@ class image_CRUD {
 					{
 						throw new Exception('This user is not allowed to do this operation', 1);
 						die();
-					}					
-					
+					}
+
 					$file_name = $this->_upload_file( $this->image_path);
-					
+
 					if ($file_name !== false) {
 						$this->_create_thumbnail( $this->image_path.'/'.$file_name , $this->image_path.'/'.$this->thumbnail_prefix.$file_name );
 						$this->_insert_table($file_name, $state_info->relation_value);
-						
+
 						$result = true;
 					} else {
 						$result = false;
-					} 
+					}
 
 					@ob_end_clean();
-					echo json_encode((object)array('success' => $result));					
-					
+					echo json_encode((object)array('success' => $result));
+
 					die();
 				break;
 

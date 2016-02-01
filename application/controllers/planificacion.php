@@ -209,6 +209,8 @@ class Planificacion extends CI_Controller{
   }
   
   function grabarConfirmacionViaje(){
+    $upd=""; //variable para debug
+    
     if(isset($_POST['idProducto']) && !empty($_POST['idProducto']))
     {
         $producto = $_POST['idProducto'];
@@ -222,8 +224,11 @@ class Planificacion extends CI_Controller{
         $cantBultosViaje = $_POST['cantBultosViaje'];
         $idProductoViaje = $_POST['idProductoViaje'];
         $idViajeViaje = $_POST['idViajeViaje'];
+        $IdVLViaje = $_POST['VL'];
         
         $fechaReparto = $_POST['fechaReparto'];
+        
+        
         
         //saco el numero de elementos
         $longitud = count($producto);
@@ -261,21 +266,23 @@ class Planificacion extends CI_Controller{
             
         }
         
-        $longitudItemsViaje = count($idProductoViaje);
+        $longitudItemsViaje = count($IdVLViaje);
         
         //Recorro todos los elementos
         for($i=0; $i<$longitudItemsViaje; $i++)
         {
             $this->load->model('viaje_m');
   
-            $this->viaje_m->updateCantidadesViaje($cantBultosViaje[$i], $cantPalletsViaje[$i], $idViajeViaje[$i], $idProductoViaje[$i]);
+            $this->viaje_m->updateCantidadesViaje($cantBultosViaje[$i], $cantPalletsViaje[$i], $idViajeViaje[$i], $idProductoViaje[$i], $IdVLViaje[$i]);
+            
+            $upd = $upd.$cantBultosViaje[$i]."-".$cantPalletsViaje[$i]."-".$idViajeViaje[$i]."-".$idProductoViaje[$i]."-".$IdVLViaje[$i]."****";
         }
         
     }
     else
     {
       $viaje = $_POST['idViaje'];  
-      $this->db->delete('planificacion_reparto', array('id_viaje' => $viaje[0]));
+      $this->db->delete('reparto', array('id_viaje' => $viaje[0]));
       echo "Borrado";
     }
     
@@ -300,7 +307,7 @@ class Planificacion extends CI_Controller{
     else
     {
         transicionSimple($viaje[0], ESTADO_VIAJE_CONFIRMANDO_STOCK, "viaje");
-        echo "Reparto guardado correctamente";
+        echo "Reparto guardado correctamente ".$upd;
     }
   }
   

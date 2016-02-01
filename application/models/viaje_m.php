@@ -263,7 +263,7 @@ class viaje_m extends CI_Model {
        
     }
     
-    public function updateCantidadesViaje($cantBultos, $cantPallets, $idViaje, $idProducto)
+    public function updateCantidadesViaje($cantBultos, $cantPallets, $idViaje, $idProducto, $idVL)
     {    
         $data = array(
                 'cant_real_bultos' => $cantBultos,
@@ -272,6 +272,7 @@ class viaje_m extends CI_Model {
 
         $this->db->where('id_viaje', $idViaje);
         $this->db->where('id_producto', $idProducto);
+        $this->db->where('id_variable_logistica', $idVL);        
         
         $this->db->update("productos_viaje", $data); 
 

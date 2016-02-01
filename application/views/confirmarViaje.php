@@ -165,7 +165,7 @@
                                     ?>
                                 </TD>
                                 <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
-                                <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
+                                <input type="hidden" id="VL" name="VL[]" value="<?php echo $lineas['id_vl'] ?>">
                                 
                                 <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
                                 <input type="hidden" id="idProductoViaje" name="idProductoViaje[]" value=<?php echo $lineas['id_producto']?>>
