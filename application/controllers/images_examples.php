@@ -20,11 +20,6 @@ class Images_examples extends CI_Controller {
 		$this->load->view('example.php',$output);	
 	}
 	
-	function index()
-	{
-		$this->_example_output((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
-	}	
-	
 	function example1()
 	{
 		$image_crud = new image_CRUD();

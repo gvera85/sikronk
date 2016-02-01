@@ -16,19 +16,24 @@ class imagenes extends CI_Controller {
                 
 	}
 	
-	function _example_output($output = null)
+	function distribuidor_output($output = null)
 	{
 		$this->load->view('galeriaDeImagenes.php',$output);	
+	}
+        
+        function proveedor_output($output = null)
+	{
+		$this->load->view('galeriaImagenesProveedor.php',$output);	
 	}
 	
 	function index()
 	{
-		$this->_example_output((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
+		$this->distribuidor_output((object)array('output' => '' , 'js_files' => array() , 'css_files' => array()));
 	}		
 	
 	function viaje($idViaje)
 	{
-		$image_crud = new image_CRUD();	
+              	$image_crud = new image_CRUD();	
                 
                 $this->load->model('proveedor_m');
 
@@ -50,11 +55,42 @@ class imagenes extends CI_Controller {
                 
                 $image_crud->set_primary_key_field('id');
 		$image_crud->set_url_field('path');
-                $image_crud->set_title_field('titulo');
 			
 		$output = $image_crud->render();
 	
-		$this->_example_output($output);
+		$this->distribuidor_output($output);
+	}
+        
+        function verImagenesViaje($idViaje)
+	{
+		$image_crud = new image_CRUD();	
+                
+                $this->load->model('proveedor_m');
+
+                $Proveedor = $this->proveedor_m->getProveedorXViaje($idViaje);
+                
+                $this->load->model('viaje_m');
+                
+                $viaje = $this->viaje_m->getViajeXId($idViaje);
+                
+                $this->session->set_userdata('titulo', "Viaje ".$viaje[0]["numero_de_viaje"]." - ".$Proveedor[0]["razon_social"]); 
+                
+                $image_crud->set_language('spanish');
+		
+		$image_crud->set_table('imagenes_viaje')
+		->set_relation_field('id_viaje')
+		->set_image_path('assets/uploads');
+                
+                $image_crud->set_primary_key_field('id');
+		$image_crud->set_url_field('path');
+                $image_crud->set_title_field('titulo');
+                
+                $image_crud->unset_delete();
+                $image_crud->unset_upload();
+			
+		$output = $image_crud->render();
+	
+		$this->proveedor_output($output);
 	}
         
        

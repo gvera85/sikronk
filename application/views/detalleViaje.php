@@ -39,7 +39,7 @@
     
     <div class="box span12">
         <div class="box-header">
-                <h2><i class="halflings-icon plus"></i><span class="break"></span><?php echo "Resumen del viaje número ".$nroViaje." - Fecha: ".$fechaSalida ?> </h2>
+                <h2><i class="halflings-icon plus"></i><span class="break"></span><?php echo "Viaje número ".$nroViaje." - Fecha: ".$fechaSalida ?> </h2>
                 <div class="box-icon">
                         <a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
                 </div>
@@ -69,6 +69,14 @@
                                 <td>  
                                     <a href="#" title="Es el valor total de la mercadería, restandole los gastos a cargo del proveedor" style="font-size:small;"  data-rel="tooltip" class="btn btn-small btn-success">$<?php echo $valorAPagarAlProveedor ?></a>
                                 </td>
+                        </tr>
+                        <tr>
+                                
+                            <TD colspan="2" style="text-align: center;"> 
+                                    <a href="<?php echo base_url('/index.php/imagenes/verImagenesViaje').'/'.$idViaje; ?>"> 
+                                        <span class="label label-info" id="imgagenesViaje"> Ver imagenes </span> 
+                                    </a> 
+                                </TD>
                         </tr>
                 </table>
         </div>	

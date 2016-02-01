@@ -73,7 +73,7 @@
 					<span class="icon-bar"></span>
 					<span class="icon-bar"></span>
 				</a>
-				<a class="brand" href="index.html"><img width="30px" src="<?php echo base_url() ?>assets/uploads/logos_clientes/logoKronkis.png" alt="sikronk"><span> sikronk</span></a> 
+				<a class="brand" href="<?php echo base_url() ?>index.php/reportes/homeProveedor"><img width="30px" src="<?php echo base_url() ?>assets/uploads/logos_clientes/logoKronkis.png" alt="sikronk"><span> sikronk</span></a> 
 								
 				<!-- start: Header Menu -->
 				<div class="nav-no-collapse header-nav">
