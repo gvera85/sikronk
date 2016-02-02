@@ -32,7 +32,7 @@ class cierreViajes extends CI_Controller{
    
     $this->grocery_crud->set_subject('Viaje');
     $this->grocery_crud->required_fields('id_proveedor');
-    $this->grocery_crud->columns('id','numero_de_viaje','id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','id_empresa_transportista','id_estado','cantidad_productos', 'monto_gastos', 'monto_ganancias');
+    $this->grocery_crud->columns('id','numero_de_viaje','id_proveedor','fecha_estimada_salida','patente_semi','id_empresa_transportista','id_estado','cantidad_productos', 'monto_gastos', 'monto_ganancias');
     
     $this->grocery_crud->callback_column('cantidad_productos',array($this,'_callback_cantidad_productos'));
     $this->grocery_crud->callback_column('monto_gastos',array($this,'_callback_monto_gastos'));
@@ -55,7 +55,8 @@ class cierreViajes extends CI_Controller{
     $this->grocery_crud->set_relation('id_estado','estado','descripcion');
         
     $this->grocery_crud->add_action('Gastos', base_url().'/assets/img/iconoGastosViaje.png', '','ui-icon-image',array($this,'link_hacia_gastos'));
-    $this->grocery_crud->add_action('Ganancias', base_url().'/assets/img/iconoGanancia.png', '','ui-icon-image',array($this,'link_hacia_ganancias'));
+    $this->grocery_crud->add_action('Gan.', base_url().'/assets/img/iconoGanancia.png', '','ui-icon-image',array($this,'link_hacia_ganancias'));
+    $this->grocery_crud->add_action('Img', base_url().'/assets/img/iconoImagenes.png', '','ui-icon-image',array($this,'link_hacia_imagenes'));
     
     $this->grocery_crud->set_rules('patente_semi','Patente semi','callback_validarPatente');
     $this->grocery_crud->set_rules('patente_camion','Patente del camion','callback_validarPatente');
@@ -171,5 +172,10 @@ class cierreViajes extends CI_Controller{
 
         return true;
    }
+   
+   function link_hacia_imagenes($primary_key , $row)
+    {
+          return "javascript:window.open('" . base_url('/index.php/imagenes/viaje'). '/' .$row->id. "')";
+    }
    
 }

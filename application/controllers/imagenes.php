@@ -44,14 +44,16 @@ class imagenes extends CI_Controller {
                 
                 $viaje = $this->viaje_m->getViajeXId($idViaje);
                 
-                $this->session->set_userdata('titulo', "Viaje ".$viaje[0]["numero_de_viaje"]." - ".$Proveedor[0]["razon_social"]); 
+                $this->session->set_userdata('titulo', "Imagenes del viaje ".$viaje[0]["numero_de_viaje"]." - ".$Proveedor[0]["razon_social"]. " (Tamaño máximo imagen: 1024 x 768)"); 
                 
                 $image_crud->set_language('spanish');
 		
 		$image_crud->set_table('imagenes_viaje')
 		->set_relation_field('id_viaje')
 		->set_ordering_field('orden')
-		->set_image_path('assets/uploads');
+		->set_image_path('assets/uploads/viajes');
+                
+                $image_crud->set_title_field('titulo');
                 
                 $image_crud->set_primary_key_field('id');
 		$image_crud->set_url_field('path');
@@ -65,21 +67,17 @@ class imagenes extends CI_Controller {
 	{
 		$image_crud = new image_CRUD();	
                 
-                $this->load->model('proveedor_m');
-
-                $Proveedor = $this->proveedor_m->getProveedorXViaje($idViaje);
-                
                 $this->load->model('viaje_m');
                 
                 $viaje = $this->viaje_m->getViajeXId($idViaje);
                 
-                $this->session->set_userdata('titulo', "Viaje ".$viaje[0]["numero_de_viaje"]." - ".$Proveedor[0]["razon_social"]); 
+                $this->session->set_userdata('titulo', "Imagenes del viaje ".$viaje[0]["numero_de_viaje"]." - ".date_format(date_create($viaje[0]["fecha_estimada_salida"]), 'd/m/Y')); 
                 
                 $image_crud->set_language('spanish');
 		
 		$image_crud->set_table('imagenes_viaje')
 		->set_relation_field('id_viaje')
-		->set_image_path('assets/uploads');
+		->set_image_path('assets/uploads/viajes');
                 
                 $image_crud->set_primary_key_field('id');
 		$image_crud->set_url_field('path');

@@ -31,7 +31,7 @@ class Valorizar extends CI_Controller{
    
     $this->grocery_crud->set_subject('Viaje');
     $this->grocery_crud->required_fields('id_proveedor');
-    $this->grocery_crud->columns('id','numero_de_viaje','id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_empresa_transportista','id_estado','cantidad_productos');
+    $this->grocery_crud->columns('id','numero_de_viaje','id_proveedor','fecha_estimada_salida','patente_semi','patente_camion','id_empresa_transportista','id_estado','cantidad_productos');
     
     $this->grocery_crud->change_field_type('id_distribuidor','invisible');
     
@@ -50,7 +50,7 @@ class Valorizar extends CI_Controller{
         
     $this->grocery_crud->add_action('Precio', base_url().'/assets/img/iconoDinero.png', '','ui-icon-image',array($this,'link_hacia_valorizacion'));
     
-
+    $this->grocery_crud->callback_column('cantidad_productos',array($this,'_callback_cantidad_productos'));
     
     $this->grocery_crud->set_rules('patente_semi','Patente semi','callback_validarPatente');
     $this->grocery_crud->set_rules('patente_camion','Patente del camion','callback_validarPatente');
@@ -64,6 +64,7 @@ class Valorizar extends CI_Controller{
     
     
     $this->grocery_crud->add_action('Gastos', base_url().'/assets/img/iconoGastosViaje.png', '','ui-icon-image',array($this,'link_hacia_gastos'));
+    $this->grocery_crud->add_action('Img', base_url().'/assets/img/iconoImagenes.png', '','ui-icon-image',array($this,'link_hacia_imagenes'));
     
     $where = "id_estado IN ('".ESTADO_VIAJE_STOCK_CONFIRMADO."','".ESTADO_VIAJE_DETERMINANDO_PRECIO."')";
     
@@ -100,4 +101,21 @@ class Valorizar extends CI_Controller{
 
     return $post_array;
    }
+   
+   public function _callback_cantidad_productos($value, $row)
+    {
+
+        $this->load->model('viaje_m');
+
+        $cantProductos = $this->viaje_m->getCantidadProductos($row->id);
+
+
+        return $cantProductos;
+    }
+    
+  function link_hacia_imagenes($primary_key , $row)
+  {
+        return "javascript:window.open('" . base_url('/index.php/imagenes/viaje'). '/' .$row->id. "')";
+  }
+   
 }

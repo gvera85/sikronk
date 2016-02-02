@@ -99,10 +99,6 @@ class Viaje extends CI_Controller{
   
   function link_hacia_imagenes($primary_key , $row)
   {
-        
-       
-        
-        //return site_url('viajeVL/popUp/'.$row->id.'/'.$row->id_proveedor.'/'.$row->numero_de_viaje);
         return "javascript:window.open('" . base_url('/index.php/imagenes/viaje'). '/' .$row->id. "')";
   }
   
