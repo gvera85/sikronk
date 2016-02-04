@@ -23,7 +23,8 @@ class facturas_proveedor_m extends CI_Model {
             $sql = "    select 'Deuda' tipo, a.fecha_estimada_llegada, a.stamp, a.id id_viaje, a.id_proveedor,
                         a.numero_de_viaje,
                         sum((b.cantidad_bultos - b.cant_bultos_merma) * b.precio_caja  ) - (getMontoGastosProveedor(a.id))debe,
-                        0 haber
+                        0 haber,
+                        DATE_FORMAT(a.fecha_estimada_llegada,'%Y%m%d') fecha_cc
                         from viaje a
                         join reparto b ON a.id = b.id_viaje                    
                         where a.id_proveedor = ?  
@@ -32,7 +33,8 @@ class facturas_proveedor_m extends CI_Model {
                         ,a.id, a.id_proveedor, a.numero_de_viaje
                     union
                         select 'Pago' tipo, pp.fecha_pago, pp.stamp, null id_viaje, pp.id_proveedor,
-                                   null numero_de_viaje, 0 debe, pp.monto haber
+                                   null numero_de_viaje, 0 debe, pp.monto haber,
+                                   DATE_FORMAT(pp.fecha_pago,'%Y%m%d') fecha_cc
                         from pago_proveedor pp
                         where pp.id_proveedor = ?
                     ORDER BY 2 ASC, 3 ASC";

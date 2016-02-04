@@ -3,6 +3,26 @@
         $this->load->view('header');
     ?>
 <head>
+    
+    <style>
+        .top-buffer { 
+                margin-top:20px; 
+        }
+        
+        .panel-heading .accordion-toggle:after {
+            /* symbol for "opening" panels */
+            font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
+            content: "\e114";    /* adjust as needed, taken from bootstrap.css */
+            float: right;        /* adjust as needed */
+            color: white;         /* adjust as needed */
+        }
+        .panel-heading .accordion-toggle.collapsed:after {
+            /* symbol for "collapsed" panels */
+            content: "\e080";    /* adjust as needed, taken from bootstrap.css */
+        }
+        
+    </style>
+    
     <title>sikronk - Cuenta corriente del cliente</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     
@@ -154,11 +174,19 @@
                 $nombreProveedor = $i_proveedor['razon_social']; 
                
         endforeach; 
-    ?>    
-   
+    ?>   
+  
+    
     <div class="container">
         
         <?php 
+        
+            /*El controlador me envia los datos filtrados en estos vectores*/
+            $fechaFiltroDesde = $filtros['fecha_desde'];
+            $fechaFiltroHasta = $filtros['fecha_hasta'];
+            $idProveedorFiltro = $filtros['id_proveedor'];
+            $saldoTotal = $saldo['saldo_total'];
+                    
             if (empty($facturasProveedor[0]['tipo']))
             {
                 $titulo = "Productos sin valorizar - No hay productos sin valorizar";
@@ -171,7 +199,33 @@
             }             
         ?>    
         
+        <form id="formFiltros" method="post" action="<?php echo base_url() ?>/index.php/cuentaCorrienteProveedor/getCuentaCorrienteProveedorPorFiltro/<?php echo $idProveedorFiltro ?>" name="formFiltros">
 
+        <div class="panel panel-primary" style=" padding: 1px ; ">
+        
+            <div class="panel-body" style=" padding: 1px ; ">
+                <table class="table compact table-striped" style="font-size:small; text-align: left; ">
+                    <tr>
+                            <td>Fecha desde</td>
+                            <td>    
+                                <input style="height:25px; width: 150px;" required type="date" name="fecha_desde" id="fecha_desde" value="<?php echo $fechaFiltroDesde ?>">
+                            </td>
+                                <td>Fecha hasta</td>
+                            <td>
+                                <input style="height:25px; width: 150px;" required type="date" name="fecha_hasta"  id="fecha_hasta" value="<?php echo $fechaFiltroHasta ?>">
+                            </td>
+                    </tr>
+                     <tr>
+                         <td colspan="4" style="text-align: center; ">    
+
+                                    <input type="submit" class="btn btn-info" value="Filtrar">
+                         </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        
+        </form>
         <div class="panel panel-primary">
         
         <div class="panel-heading" id="cabeceraPanel"> Cuenta corriente <?php echo $nombreProveedor ?>
@@ -246,14 +300,14 @@
                             ?>    
                             <TD style="background-color: #F1ABAB;"> <?php echo $debe ?></TD>
                             <TD style="background-color: #B7E4B7;"> <?php echo $haber ?></TD>
-                            <TD> <?php echo $saldo ?></TD>
+                            <TD> <?php echo $lineas['saldo_parcial'] ?></TD>
                             
                 <?php           
                     endforeach; 
                 }
                 ?>
                     
-                <input type="hidden" name="idSaldo" id="idSaldo" value=<?php echo $saldo ?>>
+                <input type="hidden" name="idSaldo" id="idSaldo" value=<?php echo $saldoTotal ?>>
                 <input type="hidden" name="empresaEvaluada" id="empresaEvaluada" value="<?php echo $nombreProveedor ?>">
                    
                         
@@ -267,4 +321,5 @@
 
 
 </body>
+
 </html>

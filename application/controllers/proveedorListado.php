@@ -37,6 +37,7 @@ class proveedorListado extends CI_Controller{
     $this->grocery_crud->set_relation('id_tipo_iva','tipo_iva','descripcion');
     
     $this->grocery_crud->add_action('CC', base_url().'/assets/img/cuentaCorriente.png', '','ui-icon-image',array($this,'link_hacia_cuenta_corriente'));
+    $this->grocery_crud->add_action('CC Rango', base_url().'/assets/img/cuentaCorriente.png', '','ui-icon-image',array($this,'link_hacia_cuenta_corriente_rango'));
     
     $this->grocery_crud->unset_add();
     $this->grocery_crud->unset_edit();
@@ -54,6 +55,12 @@ class proveedorListado extends CI_Controller{
   {
         //return site_url('planificacion/planificacionReparto/'.$row->id);
         return "javascript:window.open('" . base_url('/index.php/cuentaCorrienteProveedor/getCuentaCorriente'). '/' .$row->id. "')";
+  }
+  
+  function link_hacia_cuenta_corriente_rango($primary_key , $row)
+  {
+        //return site_url('planificacion/planificacionReparto/'.$row->id);
+        return "javascript:window.open('" . base_url('/index.php/cuentaCorrienteProveedor/getCuentaCorrienteProveedorPorFiltro'). '/' .$row->id. "')";
   }
 
 }
