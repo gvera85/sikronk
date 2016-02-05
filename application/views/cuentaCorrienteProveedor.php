@@ -3,26 +3,6 @@
         $this->load->view('header');
     ?>
 <head>
-    
-    <style>
-        .top-buffer { 
-                margin-top:20px; 
-        }
-        
-        .panel-heading .accordion-toggle:after {
-            /* symbol for "opening" panels */
-            font-family: 'Glyphicons Halflings';  /* essential for enabling glyphicon */
-            content: "\e114";    /* adjust as needed, taken from bootstrap.css */
-            float: right;        /* adjust as needed */
-            color: white;         /* adjust as needed */
-        }
-        .panel-heading .accordion-toggle.collapsed:after {
-            /* symbol for "collapsed" panels */
-            content: "\e080";    /* adjust as needed, taken from bootstrap.css */
-        }
-        
-    </style>
-    
     <title>sikronk - Cuenta corriente del cliente</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     
@@ -60,6 +40,12 @@
     
     
     <script type="text/javascript" charset="utf-8">
+        
+        function convertDate(inputFormat) {
+            function pad(s) { return (s < 10) ? '0' + s : s; }
+            var d = new Date(inputFormat);
+            return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/');
+          }
     
             $(document).ready(function() {
                 
@@ -77,30 +63,33 @@
                                             'pageLength',
                                              {
                                                     extend: 'print',
-                                                    title: 'Cuenta corriente del proveedor ' + $("#empresaEvaluada").val(),
+                                                    title: 'Cuenta corriente del proveedor ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
+                                                    message: 'Fecha filtrada - Desde '+$("#fecha_desde_hidden").val()+ ', hasta '+ $("#fecha_hasta_hidden").val(),
                                                     exportOptions: {
                                                         columns: ':visible'
                                                     }
                                              },
                                              {
                                                     extend: 'excel',
-                                                    title: 'Cuenta corriente del proveedor ' + $("#empresaEvaluada").val(),
+                                                    title: 'Cuenta corriente del proveedor ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
+                                                    message: 'Fecha filtrada - Desde '+$("#fecha_desde_hidden").val()+ ', hasta '+ $("#fecha_hasta_hidden").val(),
                                                     exportOptions: {
                                                         columns: ':visible'
                                                     }
                                              },
                                              {
                                                     extend: 'copy',
-                                                    title: 'Cuenta corriente del proveedor ' + $("#empresaEvaluada").val(),
+                                                    title: 'Cuenta corriente del proveedor ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
                                                     exportOptions: {
                                                         columns: ':visible'
                                                     }
                                              },
                                              {
                                                 extend: 'pdfHtml5',
-                                                title: 'Cuenta corriente del proveedor ' + $("#empresaEvaluada").val(),
+                                                title: 'Cuenta corriente del proveedor ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
                                                 orientation: 'landscape',
                                                 pageSize: 'A4',
+                                                message: 'Fecha filtrada - Desde '+$("#fecha_desde_hidden").val()+ ', hasta '+ $("#fecha_hasta_hidden").val(),
                                                 exportOptions: {
                                                         columns: ':visible'
                                                     }
@@ -139,7 +128,7 @@
                         
                      
                 
-                    $("#cabeceraPanel").html($("#cabeceraPanel").html()+' - Saldo: <span class="' +classSaldo+ '" style="font-size:15px;" id="tipoMovimiento">$ '+saldo+'</span>' ); 
+                    $("#cabeceraPanel").html($("#cabeceraPanel").html()+' - Saldo actual: <span class="' +classSaldo+ '" style="font-size:15px;" id="tipoMovimiento">$ '+saldo+'</span>' ); 
             } );
             
             
@@ -199,12 +188,9 @@
             }             
         ?>    
         
-        <form id="formFiltros" method="post" action="<?php echo base_url() ?>/index.php/cuentaCorrienteProveedor/getCuentaCorrienteProveedorPorFiltro/<?php echo $idProveedorFiltro ?>" name="formFiltros">
+        <form id="formFiltros" method="post" action="<?php echo base_url() ?>index.php/cuentaCorrienteProveedor/getCuentaCorrienteProveedorPorFiltro/<?php echo $idProveedorFiltro ?>" name="formFiltros">
 
-        <div class="panel panel-primary" style=" padding: 1px ; ">
-        
-            <div class="panel-body" style=" padding: 1px ; ">
-                <table class="table compact table-striped" style="font-size:small; text-align: left; ">
+                <table class="table compact" style="font-size:small; text-align: left; ">
                     <tr>
                             <td>Fecha desde</td>
                             <td>    
@@ -218,12 +204,10 @@
                      <tr>
                          <td colspan="4" style="text-align: center; ">    
 
-                                    <input type="submit" class="btn btn-info" value="Filtrar">
+                                    <input type="submit" class="btn btn-success" value="Filtrar">
                          </td>
                     </tr>
                 </table>
-            </div>
-        </div>
         
         </form>
         <div class="panel panel-primary">
@@ -309,6 +293,8 @@
                     
                 <input type="hidden" name="idSaldo" id="idSaldo" value=<?php echo $saldoTotal ?>>
                 <input type="hidden" name="empresaEvaluada" id="empresaEvaluada" value="<?php echo $nombreProveedor ?>">
+                <input type="hidden" name="fecha_desde_hidden" id="fecha_desde_hidden" value="<?php echo date_format(date_create($fechaFiltroDesde), 'd/m/Y') ?>">
+                <input type="hidden" name="fecha_hasta_hidden" id="fecha_hasta_hidden" value="<?php echo date_format(date_create($fechaFiltroHasta), 'd/m/Y') ?>">
                    
                         
                 </tbody>    
