@@ -7,7 +7,9 @@ class cuentaCorrienteProveedor extends CI_Controller{
     parent::__construct();
     
     $this->load->database();
-    $this->load->helper('url');    
+    $this->load->helper('url');   
+    
+    $this->load->model('facturas_proveedor_m');
     
    
   }
@@ -32,61 +34,10 @@ class cuentaCorrienteProveedor extends CI_Controller{
       
   } 
   
-  function getCuentaCorrientePorRango($idProveedor, $fechaDesde, $fechaHasta){
-      
-    $this->load->model('facturas_proveedor_m');
-    
-    $vectorLineasCC = $this->facturas_proveedor_m->getLineasCCP($idProveedor);    
-    $arrayCC= array();
-    $contador = 0;
-    $saldoInicio = "";
-    $saldoFinal = "";
-    $saldo = 0;
-    
-    
-    foreach( $vectorLineasCC as $lineasCC ) :  
-        
-        if ($lineasCC['fecha_cc'] > $fechaDesde && $saldoInicio == "")
-            $saldoInicio = $saldo;
-        
-        if ($lineasCC['fecha_cc'] > $fechaDesde && $saldoInicio == "")
-            $saldoFinal = $saldo;
-        
-        if ($saldoInicio != "" && $saldoFinal == "")
-        {
-            $arrayCC[$contador]= $lineasCC;
-            $contador++;
-        }
-        
-        $saldo = $saldo + ($lineasCC['haber'] - $lineasCC['debe']);
-        
-    endforeach;
-    
-    $proveedor = $this->facturas_proveedor_m->getProveedorXId($idProveedor);    
-    
-    $data['facturasProveedor'] = $arrayCC;
-    $data['proveedor'] = $proveedor;
-      
-    $this->load->view('cuentaCorrienteProveedor',$data); 
-    
-    /*
-     * $arrayCC[$contador]['tipo'] = $lineasCC['tipo'];
-        $arrayCC[$contador]['fecha_estimada_llegada'] = $lineasCC['fecha_estimada_llegada'];
-        $arrayCC[$contador]['stamp'] = $lineasCC['stamp'];
-        $arrayCC[$contador]['id_viaje'] = $lineasCC['id_viaje'];
-        $arrayCC[$contador]['id_proveedor'] = $lineasCC['id_proveedor'];
-        $arrayCC[$contador]['numero_de_viaje'] = $lineasCC['numero_de_viaje'];
-        $arrayCC[$contador]['debe'] = $lineasCC['debe'];
-        $arrayCC[$contador]['haber'] = $lineasCC['haber'];
-     */
-      
-  } 
-  
-  
-  function getCuentaCorrienteProveedorPorFiltro($idProveedor){
-    $this->load->model('facturas_proveedor_m');
-    
+  function getCCProveedorPorFiltro($idProveedor, $paginaHtml){
+    putenv("TZ=America/Argentina/Buenos_Aires");
     $fechaHastaFiltro = date("Y-m-d"); //Por default la fecha hasta es el dia de hoy
+    $fechaEjecucion = date("Y-m-d H:i:s"); //La fecha y hora de ejecuccion del "reporte"
     
     $fechaDesdeFiltro = strtotime ( '-90 day' , strtotime ( $fechaHastaFiltro ) ) ;
     $fechaDesdeFiltro = date ( 'Y-m-d' , $fechaDesdeFiltro );  //Por default la fecha desde es el dia de (hoy - 90 DIAS)
@@ -101,11 +52,37 @@ class cuentaCorrienteProveedor extends CI_Controller{
         $fechaHastaFiltro = $_POST['fecha_hasta'];
     }
     
+    $proveedor = $this->facturas_proveedor_m->getProveedorXId($idProveedor);    
+    
+    $saldoFinal = 0;
+    $arrayCC = $this->getLineasCC($idProveedor, $fechaDesdeFiltro, $fechaHastaFiltro, $saldoFinal);
+    
+    $filtros = array(
+                        "fecha_desde" => $fechaDesdeFiltro,
+                        "fecha_hasta" => $fechaHastaFiltro,
+                        "id_proveedor" =>   $idProveedor,    
+                        "fecha_ejecucion" => $fechaEjecucion    
+                    );
+    
+    $saldoTotal = array(
+                        "saldo_total" => $saldoFinal,                        
+                    );
+    
+    $data['facturasProveedor'] = $arrayCC;
+    $data['proveedor'] = $proveedor;
+    $data['filtros'] = $filtros;
+    $data['saldo'] = $saldoTotal;
+      
+    $this->load->view($paginaHtml,$data); 
+  } 
+  
+  function getLineasCC($idProveedor, $fechaDesdeFiltro, $fechaHastaFiltro, &$saldoFinal)
+  {
     $vectorLineasCC = $this->facturas_proveedor_m->getLineasCCP($idProveedor);    
     $arrayCC= array();
     $contador = 0;
     $saldo = 0;
-    
+
     if (!empty($vectorLineasCC[0]['haber'])) {
         foreach( $vectorLineasCC as $lineasCC ) :  
 
@@ -123,25 +100,13 @@ class cuentaCorrienteProveedor extends CI_Controller{
         endforeach;
     }
     
-    $proveedor = $this->facturas_proveedor_m->getProveedorXId($idProveedor);    
-    
-    $filtros = array(
-                        "fecha_desde" => $fechaDesdeFiltro,
-                        "fecha_hasta" => $fechaHastaFiltro,
-                        "id_proveedor" =>   $idProveedor,    
-                    );
-    
-    $saldoTotal = array(
-                        "saldo_total" => $saldo,                        
-                    );
-    
-    $data['facturasProveedor'] = $arrayCC;
-    $data['proveedor'] = $proveedor;
-    $data['filtros'] = $filtros;
-    $data['saldo'] = $saldoTotal;
+    $saldoFinal = $saldo;
+    return $arrayCC;
       
-    $this->load->view('cuentaCorrienteProveedor',$data); 
-  } 
+  }
+  
+  
+  
 }
   
   

@@ -27,17 +27,17 @@
     <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/datetime-moment.js"></script>  
     
     <!-- start: CSS -->
-	<link id="bootstrap-style" href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap.min.css" rel="stylesheet">
-	<link href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap-responsive.min.css" rel="stylesheet">
-	<link id="base-style" href="<?php echo base_url() ?>assets/plugins/metro/css/style.css" rel="stylesheet">
-	<link id="base-style-responsive" href="<?php echo base_url() ?>assets/plugins/metro/css/style-responsive.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/dataTablesBootstrap.css">
-        
-        <!--<link href="<?php echo base_url() ?>/assets/grocery_crud/themes/datatables/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>-->
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/jquery.dataTables.min.css">
-        
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/responsive.dataTables.min.css">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/buttons.dataTables.min.css">
+    <link id="bootstrap-style" href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link id="base-style" href="<?php echo base_url() ?>assets/plugins/metro/css/style.css" rel="stylesheet">
+    <link id="base-style-responsive" href="<?php echo base_url() ?>assets/plugins/metro/css/style-responsive.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/dataTablesBootstrap.css">
+
+    <!--<link href="<?php echo base_url() ?>/assets/grocery_crud/themes/datatables/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>-->
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/jquery.dataTables.min.css">
+
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/responsive.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/buttons.dataTables.min.css">
     
     <script type="text/javascript" charset="utf-8">
     
@@ -57,30 +57,33 @@
                                             'pageLength',
                                              {
                                                     extend: 'print',
-                                                    title: 'Cuenta corriente del cliente ' + $("#empresaEvaluada").val(),
+                                                    title: 'Cuenta corriente del cliente ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
+                                                    message: 'Fecha de ejecución: '+ $("#fecha_ejecucion_hidden").val() +' - Fecha filtrada: Desde '+$("#fecha_desde_hidden").val()+ ' hasta '+ $("#fecha_hasta_hidden").val(),
                                                     exportOptions: {
                                                         columns: ':visible'
                                                     }
                                              },
                                              {
                                                     extend: 'excel',
-                                                    title: 'Cuenta corriente del cliente ' + $("#empresaEvaluada").val(),
+                                                    title: 'Cuenta corriente del cliente ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
+                                                    message: 'Fecha de ejecución: '+ $("#fecha_ejecucion_hidden").val() +' - Fecha filtrada: Desde '+$("#fecha_desde_hidden").val()+ ' hasta '+ $("#fecha_hasta_hidden").val(),
                                                     exportOptions: {
                                                         columns: ':visible'
                                                     }
                                              },
                                              {
                                                     extend: 'copy',
-                                                    title: 'Cuenta corriente del cliente ' + $("#empresaEvaluada").val(),
+                                                    title: 'Cuenta corriente del cliente ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
                                                     exportOptions: {
                                                         columns: ':visible'
                                                     }
                                              },
                                              {
                                                 extend: 'pdfHtml5',
-                                                title: 'Cuenta corriente del cliente ' + $("#empresaEvaluada").val(),
+                                                title: 'Cuenta corriente del cliente ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
                                                 orientation: 'landscape',
                                                 pageSize: 'A4',
+                                                message: 'Fecha de ejecución: '+ $("#fecha_ejecucion_hidden").val() +' - Fecha filtrada: Desde '+$("#fecha_desde_hidden").val()+ ' hasta '+ $("#fecha_hasta_hidden").val(),
                                                 exportOptions: {
                                                         columns: ':visible'
                                                     }
@@ -113,30 +116,34 @@
                                             'pageLength',
                                              {
                                                     extend: 'print',
-                                                    title: 'Cuenta corriente del cliente (sin precio) ' + $("#empresaEvaluada").val(),
+                                                    title: 'Productos sin valorizar del cliente ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
+                                                    message: 'Fecha de ejecución: '+ $("#fecha_ejecucion_hidden").val(),
                                                     exportOptions: {
                                                         columns: ':visible'
                                                     }
                                              },
                                              {
                                                     extend: 'excel',
-                                                    title: 'Cuenta corriente del cliente (sin precio) ' + $("#empresaEvaluada").val(),
+                                                    title: 'Productos sin valorizar del cliente ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
+                                                    message: 'Fecha de ejecución: '+ $("#fecha_ejecucion_hidden").val(),
                                                     exportOptions: {
                                                         columns: ':visible'
                                                     }
                                              },
                                              {
                                                     extend: 'copy',
-                                                    title: 'Cuenta corriente del cliente (sin precio) ' + $("#empresaEvaluada").val(),
+                                                    title: 'Productos sin valorizar del cliente ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
+                                                    message: 'Fecha de ejecución: '+ $("#fecha_ejecucion_hidden").val(),
                                                     exportOptions: {
                                                         columns: ':visible'
                                                     }
                                              },
                                              {
                                                 extend: 'pdfHtml5',
-                                                title: 'Cuenta corriente del cliente (sin precio) ' + $("#empresaEvaluada").val(),
+                                                title: 'Productos sin valorizar del cliente ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
                                                 orientation: 'landscape',
                                                 pageSize: 'A4',
+                                                message: 'Fecha de ejecución: '+ $("#fecha_ejecucion_hidden").val(),
                                                 exportOptions: {
                                                         columns: ':visible'
                                                     }
@@ -161,9 +168,8 @@
                     else
                         classSaldo = 'label label-danger';
                         
-                     
                 
-                    $("#cabeceraPanel").html($("#cabeceraPanel").html()+' - Saldo: <span class="' +classSaldo+ '" style="font-size:15px;" id="tipoMovimiento">$ '+saldo+'</span>' ); 
+                    $("#cabeceraPanel").html($("#cabeceraPanel").html()+' - Saldo actual: <span class="' +classSaldo+ '" style="font-size:15px;" id="tipoMovimiento">$ '+saldo+'</span>' ); 
             } );
             
             $.fn.dataTable.moment = function ( format, locale ) {
@@ -194,9 +200,16 @@
         endforeach; 
     ?>    
    
-    <div class="container">
+    <div class="container" style="padding: 15px;">
         
         <?php 
+            /*El controlador me envia los datos filtrados en estos vectores*/
+            $fechaFiltroDesde = $filtros['fecha_desde'];
+            $fechaFiltroHasta = $filtros['fecha_hasta'];
+            $idClienteFiltro = $filtros['id_cliente'];
+            $saldoTotal = $saldo['saldo_total'];
+            $fechaEjecucion = $filtros['fecha_ejecucion'];
+        
             if (empty($facturasClientes[0]['id_linea']))
             {
                 $titulo = "Productos sin valorizar - No hay productos sin valorizar";
@@ -210,6 +223,28 @@
         ?>    
         
 
+        <form id="formFiltros" method="post" action="<?php echo base_url() ?>index.php/cuentaCorrienteCliente/getCCClientePorFiltro/<?php echo $idClienteFiltro ?>" name="formFiltros">
+
+                <table class="table compact" style="font-size:small; text-align: left; ">
+                    <tr>
+                            <td>Fecha desde</td>
+                            <td>    
+                                <input style="height:25px; width: 150px;" required type="date" name="fecha_desde" id="fecha_desde" value="<?php echo $fechaFiltroDesde ?>">
+                            </td>
+                                <td>Fecha hasta</td>
+                            <td>
+                                <input style="height:25px; width: 150px;" required type="date" name="fecha_hasta"  id="fecha_hasta" value="<?php echo $fechaFiltroHasta ?>">
+                            </td>
+                    </tr>
+                     <tr>
+                         <td colspan="4" style="text-align: center; ">    
+
+                                    <input type="submit" class="btn btn-success" value="Filtrar">
+                         </td>
+                    </tr>
+                </table>
+        
+        </form>
         <div class="panel panel-primary">
         
         <div class="panel-heading" id="cabeceraPanel"> Cuenta corriente <?php echo $nombreCliente ?>
@@ -307,7 +342,7 @@
                             <TD> <?php echo $lineas['precio_bulto'] ?></TD>
                             <TD style="background-color: #F1ABAB;"> <?php echo $debe  ?></TD>
                             <TD style="background-color: #B7E4B7;"> <?php  echo $haber; ?></TD>
-                            <TD> <?php echo $saldo ?> </TD>
+                            <TD> <?php echo $lineas['saldo_parcial'] ?> </TD>
                     </TR>               
                     
                 <?php           
@@ -315,8 +350,11 @@
                 }
                 ?>
                     
-                <input type="hidden" name="idSaldo" id="idSaldo" value=<?php echo $saldo ?>>
+                <input type="hidden" name="idSaldo" id="idSaldo" value=<?php echo $saldoTotal ?>>
                 <input type="hidden" name="empresaEvaluada" id="empresaEvaluada" value="<?php echo $nombreCliente ?>">
+                <input type="hidden" name="fecha_desde_hidden" id="fecha_desde_hidden" value="<?php echo date_format(date_create($fechaFiltroDesde), 'd/m/Y') ?>">
+                <input type="hidden" name="fecha_hasta_hidden" id="fecha_hasta_hidden" value="<?php echo date_format(date_create($fechaFiltroHasta), 'd/m/Y') ?>">
+                <input type="hidden" name="fecha_ejecucion_hidden" id="fecha_ejecucion_hidden" value="<?php echo date_format(date_create($fechaEjecucion), 'd/m/Y H:i:s') ?>">
                    
                         
                 </tbody>    
@@ -427,13 +465,6 @@
         
   </div>  
    
-    
-  <script type="text/javascript">
-      
-     
-      
-	
-  </script>  
-
+  
 </body>
 </html>

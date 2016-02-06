@@ -54,7 +54,7 @@ class clienteListado extends CI_Controller{
   function link_hacia_cuenta_corriente($primary_key , $row)
   {
         //return site_url('planificacion/planificacionReparto/'.$row->id);
-        return "javascript:window.open('" . base_url('/index.php/cuentaCorrienteCliente/getCuentaCorriente'). '/' .$row->id. "')";
+        return "javascript:window.open('" . base_url('/index.php/cuentaCorrienteCliente/getCCClientePorFiltro'). '/' .$row->id. "')";
   }
 
 }

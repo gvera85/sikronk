@@ -60,7 +60,7 @@ class proveedorListado extends CI_Controller{
   function link_hacia_cuenta_corriente_rango($primary_key , $row)
   {
         //return site_url('planificacion/planificacionReparto/'.$row->id);
-        return "javascript:window.open('" . base_url('/index.php/cuentaCorrienteProveedor/getCuentaCorrienteProveedorPorFiltro'). '/' .$row->id. "')";
+        return "javascript:window.open('" . base_url('/index.php/cuentaCorrienteProveedor/getCCProveedorPorFiltro'). '/' .$row->id. "')";
   }
 
 }

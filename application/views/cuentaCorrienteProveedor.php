@@ -27,17 +27,17 @@
     <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/datetime-moment.js"></script>  
     
     <!-- start: CSS -->
-	<link id="bootstrap-style" href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap.min.css" rel="stylesheet">
-	
-	
-	
-        
-        
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/jquery.dataTables.min.css">
-        
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/responsive.dataTables.min.css">
-        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/buttons.dataTables.min.css">
-    
+    <link id="bootstrap-style" href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link id="base-style" href="<?php echo base_url() ?>assets/plugins/metro/css/style.css" rel="stylesheet">
+    <link id="base-style-responsive" href="<?php echo base_url() ?>assets/plugins/metro/css/style-responsive.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/dataTablesBootstrap.css">
+
+    <!--<link href="<?php echo base_url() ?>/assets/grocery_crud/themes/datatables/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>-->
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/jquery.dataTables.min.css">
+
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/responsive.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/buttons.dataTables.min.css">
     
     <script type="text/javascript" charset="utf-8">
         
@@ -64,7 +64,7 @@
                                              {
                                                     extend: 'print',
                                                     title: 'Cuenta corriente del proveedor ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
-                                                    message: 'Fecha filtrada - Desde '+$("#fecha_desde_hidden").val()+ ', hasta '+ $("#fecha_hasta_hidden").val(),
+                                                    message: 'Fecha de ejecución: '+ $("#fecha_ejecucion_hidden").val() +' - Fecha filtrada: Desde '+$("#fecha_desde_hidden").val()+ ' hasta '+ $("#fecha_hasta_hidden").val(),
                                                     exportOptions: {
                                                         columns: ':visible'
                                                     }
@@ -72,7 +72,7 @@
                                              {
                                                     extend: 'excel',
                                                     title: 'Cuenta corriente del proveedor ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
-                                                    message: 'Fecha filtrada - Desde '+$("#fecha_desde_hidden").val()+ ', hasta '+ $("#fecha_hasta_hidden").val(),
+                                                    message: 'Fecha de ejecución: '+ $("#fecha_ejecucion_hidden").val() +' - Fecha filtrada: Desde '+$("#fecha_desde_hidden").val()+ ' hasta '+ $("#fecha_hasta_hidden").val(),
                                                     exportOptions: {
                                                         columns: ':visible'
                                                     }
@@ -89,7 +89,7 @@
                                                 title: 'Cuenta corriente del proveedor ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
                                                 orientation: 'landscape',
                                                 pageSize: 'A4',
-                                                message: 'Fecha filtrada - Desde '+$("#fecha_desde_hidden").val()+ ', hasta '+ $("#fecha_hasta_hidden").val(),
+                                                message: 'Fecha de ejecución: '+ $("#fecha_ejecucion_hidden").val() +' - Fecha filtrada: Desde '+$("#fecha_desde_hidden").val()+ ' hasta '+ $("#fecha_hasta_hidden").val(),
                                                 exportOptions: {
                                                         columns: ':visible'
                                                     }
@@ -166,7 +166,7 @@
     ?>   
   
     
-    <div class="container">
+    <div class="container" style="padding: 15px;">
         
         <?php 
         
@@ -175,6 +175,7 @@
             $fechaFiltroHasta = $filtros['fecha_hasta'];
             $idProveedorFiltro = $filtros['id_proveedor'];
             $saldoTotal = $saldo['saldo_total'];
+            $fechaEjecucion = $filtros['fecha_ejecucion'];
                     
             if (empty($facturasProveedor[0]['tipo']))
             {
@@ -188,13 +189,13 @@
             }             
         ?>    
         
-        <form id="formFiltros" method="post" action="<?php echo base_url() ?>index.php/cuentaCorrienteProveedor/getCuentaCorrienteProveedorPorFiltro/<?php echo $idProveedorFiltro ?>" name="formFiltros">
+        <form id="formFiltros" method="post" action="<?php echo base_url() ?>index.php/cuentaCorrienteProveedor/getCCProveedorPorFiltro/<?php echo $idProveedorFiltro ?>" name="formFiltros">
 
-                <table class="table compact" style="font-size:small; text-align: left; ">
+                <table class="table compact" cellspacing="0" width="100%" style="font-size:small; text-align: left; ">
                     <tr>
                             <td>Fecha desde</td>
                             <td>    
-                                <input style="height:25px; width: 150px;" required type="date" name="fecha_desde" id="fecha_desde" value="<?php echo $fechaFiltroDesde ?>">
+                                <input style="height:25px; width: 150px; border-color: red;" required type="date" name="fecha_desde" id="fecha_desde" value="<?php echo $fechaFiltroDesde ?>">
                             </td>
                                 <td>Fecha hasta</td>
                             <td>
@@ -218,7 +219,8 @@
         </div>
         <div class="panel-body">
             
-        <table id="example" class="display compact responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
+        <!--<table id="example" class="display compact responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">-->
+        <table id="example" class="display compact responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">            
                 <thead>
                 <TR>
                     <th><b>Tipo</b></th>
@@ -295,7 +297,7 @@
                 <input type="hidden" name="empresaEvaluada" id="empresaEvaluada" value="<?php echo $nombreProveedor ?>">
                 <input type="hidden" name="fecha_desde_hidden" id="fecha_desde_hidden" value="<?php echo date_format(date_create($fechaFiltroDesde), 'd/m/Y') ?>">
                 <input type="hidden" name="fecha_hasta_hidden" id="fecha_hasta_hidden" value="<?php echo date_format(date_create($fechaFiltroHasta), 'd/m/Y') ?>">
-                   
+                <input type="hidden" name="fecha_ejecucion_hidden" id="fecha_ejecucion_hidden" value="<?php echo date_format(date_create($fechaEjecucion), 'd/m/Y H:i:s') ?>">   
                         
                 </tbody>    
             </table>

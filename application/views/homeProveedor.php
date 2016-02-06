@@ -91,7 +91,7 @@
                             
                             <div class="row-fluid">	
 				
-				<a class="quick-button metro red span2" href="<?php echo base_url() ?>index.php/reportes/verCCProveedor">
+				<a class="quick-button metro red span2" href="<?php echo base_url() ?>index.php/cuentaCorrienteProveedor/getCCProveedorPorFiltro/<?php echo $this->session->userdata('empresa') ?>/ccProveedor">
 					<i class="icon-money"></i>$0
                                         <p>Cuenta corriente</p>
 				</a>
