@@ -177,12 +177,12 @@
                                         if ($sinProductos == 0)
                                         {
                                         ?>
-                                            <th rowspan="2" style="vertical-align: middle;">#</th>
-                                            <th>Producto</th>
-                                            <th>Presentación</th>
-                                            <th rowspan="2" style="vertical-align: middle;"># Bultos </th>
-                                            <th rowspan="2" style="vertical-align: middle;"># Pallets </th>
-                                            <th rowspan="2" style="vertical-align: middle;"># Bultos con merma </th>
+                                        <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Número de línea">#</span></th>
+                                            <th><span data-placement="bottom" data-toggle="tooltip" title="Producto que se entregó al cliente">Producto</span></th>
+                                            <th><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Presentación</span></th>
+                                            <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos"># Bultos </span></th>
+                                            <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de pallets"># Pallets </span></th>
+                                            <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos con merma"># Bultos con merma </span></th>
                                             <th colspan="2" rowspan="2" style="vertical-align: middle;"> Valorización </th>
                                     </tr>
                                     <tr class="info">
@@ -230,7 +230,9 @@
                                                     if ($modo == "edicion")
                                                     {
                                                     ?>
-                                                       <input required type="date" style="height:25px;" name="fechaValorizacion[]" max="<?php echo date("Y-m-d");?>" id="fecha_valor_html_<?php echo $cantidadLineasReparto?>" value=<?php echo $reparto['fecha_valorizacion'] ?>> 
+                                                      <span data-placement="bottom" data-toggle="tooltip" title="Ingrese la fecha en la cual se acordó el precio de este producto con el cliente"> 
+                                                      <input required type="date" style="height:25px;" name="fechaValorizacion[]" max="<?php echo date("Y-m-d");?>" id="fecha_valor_html_<?php echo $cantidadLineasReparto?>" value=<?php echo $reparto['fecha_valorizacion'] ?>> 
+                                                      </span>
                                                     <?php
                                                     }
                                                     else
@@ -251,8 +253,15 @@
                                                   {
                                                   ?>
 
-                                                  <TD> <input class="cant_merma" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, precioBulto_<?php echo $cantidadLineasReparto?>.value, this, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMerma[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma'] ?>"> </TD> 
-                                                  <TD>  $ <input class="importe_linea" required style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calcularPrecioLinea(this.value,bultos_<?php echo $cantidadLineasReparto?>.value, cant_merma_<?php echo $cantidadLineasReparto?>.value, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="precioBulto[]" type="text" size="10" value="<?php echo $reparto['precio_caja'] ?>"> </TD>
+                                                  <TD>
+                                                      <span data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos de este producto que tuvieron merma (no aptos para la venta)"> 
+                                                      <input class="cant_merma" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, precioBulto_<?php echo $cantidadLineasReparto?>.value, this, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMerma[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma'] ?>"> </TD> 
+                                                      </span>
+                                                  <TD>
+                                                      <span data-placement="bottom" data-toggle="tooltip" title="Ingrese el precio acordado con el cliente">   
+                                                      $ <input class="importe_linea" required style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calcularPrecioLinea(this.value,bultos_<?php echo $cantidadLineasReparto?>.value, cant_merma_<?php echo $cantidadLineasReparto?>.value, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="precioBulto[]" type="text" size="10" value="<?php echo $reparto['precio_caja'] ?>"> 
+                                                      </span>
+                                                  </TD>
 
                                                   <?php
                                                   }
@@ -295,9 +304,9 @@
                 <?php if ($sinProductos == 0 && $modo == "edicion") 
                       {?>
                 <div class="row-fluid top-buffer text-center" >
-                    <button value="volverAStock" id="btnVolverAConfirmarViaje" class="btn btn-danger">Volver a confirmar viaje</button>
-                    <button id="btnsubmit" value="1" type="submit" class="btn btn-default">Guardar</button>
-                    <button id="btnConfirmarPrecio" value="2" class="btn btn-success">Confirmar precio</button>
+                    <button value="volverAStock" id="btnVolverAConfirmarViaje" class="btn btn-danger" data-placement="left" data-toggle="tooltip" title="El viaje vuelve al estado anterior para poder modificar la cantidades recibidas">Volver a confirmar viaje</button>
+                    <button id="btnsubmit" value="1" type="submit" class="btn btn-default" data-placement="left" data-toggle="tooltip" title="Se guardarán los cambios y luego se podrá seguir modificando valores">Guardar</button>
+                    <button id="btnConfirmarPrecio" value="2" class="btn btn-success" data-placement="rigth" data-toggle="tooltip" title="Si usted confirma los precios ya NO podrá modificarlos">Confirmar precios</button>
                     <input id="botonPresionado" type="hidden" value="botonGuardar" name="botonPresionado">
                 </div>                    
                 <?php }?>

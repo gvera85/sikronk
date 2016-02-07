@@ -16,8 +16,10 @@
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/jquery/validationEngine.jquery.css">
     
+    <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.min.js"></script>
+    <script src="<?php echo base_url() ?>/assets/bootstrap/js/bootstrap.js"></script>
     <script src="<?php echo base_url() ?>assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
-    <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
+    
     <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.numeric.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.validationEngine.min.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.validationEngine-es.js"></script>
@@ -25,10 +27,13 @@
     
     <script src="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/chosen.jquery.js"></script>
     <script src="<?php echo base_url() ?>assets/plugins/chosen_v1.2.0/docsupport/prism.js" type="text/javascript" charset="utf-8"></script>
+    
 
     <script>
         jQuery(document).ready(function(){
                 jQuery(".chosen").data("placeholder","Select Frameworks...").chosen();
+                
+                $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
 
@@ -50,7 +55,7 @@
     }
     else
     {
-        $titulo = "Planificacion de viaje - Reparto de stock a los clientes. Viaje numero ".$lineasViaje[0]['numero_de_viaje']." - ".$lineasViaje[0]['proveedor'];
+        $titulo = "Planificación de viaje - Reparto de productos a los clientes. Viaje numero ".$lineasViaje[0]['numero_de_viaje']." - ".$lineasViaje[0]['proveedor'];
          if ($lineasViaje[0]['id_estado'] != 1 && $lineasViaje[0]['id_estado'] != 2) /* El viaje ya tiene los precios acordados, por eso se ocultan los botones */ {
             $modo = "viajeConRepartoPlanificado";
         }
@@ -62,8 +67,8 @@
     <div class="row-fluid top-buffer text-center" style="padding: 10px;">
             <form id="miform" method="post" name="miform" >
 	        <div class="panel panel-primary panel-responsive">
-                    <div class="panel-heading">
-                        <h3 class="panel-title"><?php echo $titulo  ?> </h3>
+                    <div class="panel-heading" data-placement="bottom" data-toggle="tooltip" title="Mediante esta página usted puede planificar a que clientes desea repartir la mercadería. Recuerde que es solo una planificación, en el siguiente paso (confirmación del viaje) esta planificación puede modificarse">
+                        <h3 class="panel-title" ><?php echo $titulo  ?> </h3>
                     </div>
                     <div class="panel-body">
                         
@@ -77,16 +82,16 @@
                                     if ($sinProductos == 0)
                                     {
                                     ?>
-                                    <th rowspan="2" style="vertical-align: middle;">Acción</th>  
-                                    <th rowspan="2" style="vertical-align: middle;">#</th>
-                                    <th>Producto</th>
-                                    <th rowspan="2" style="vertical-align: middle;">Presentación</th>
-                                    <th rowspan="2" style="vertical-align: middle;"># Bultos</th>
-                                    <th rowspan="2" style="vertical-align: middle;"># Pallets</th>
+                                    <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Acciones disponibles">Acción</span></th>  
+                                    <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Número de línea">#</span></th>
+                                    <th><div data-placement="bottom" data-toggle="tooltip" title="Producto a ser repartido">Producto</div></th>
+                                    <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Presentación</span></th>
+                                    <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos"># Bultos</span></th>
+                                    <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de pallets"># Pallets</span></th>
                                 </tr>
                                 <tr class="active">
 
-                                       <th>Cliente</th>
+                                       <th><span data-placement="bottom" data-toggle="tooltip" title="Cliente al cual se le va realizar una entrega del producto">Cliente</span></th>
                                       
 
 
@@ -102,7 +107,7 @@
                                         if ($modo == "edicion")
                                         {
                                         ?>
-                                            <button id="btnAgregarCliente" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']."_".$lineas['base_pallet']."_".$lineas['altura_pallet']?>" class="btn btn-xs btn-primary">+ Cliente</button>
+                                            <button id="btnAgregarCliente" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']."_".$lineas['base_pallet']."_".$lineas['altura_pallet']?>" class="btn btn-xs btn-primary" data-placement="bottom" data-toggle="tooltip" title="Agregar un cliente al cual entregarle este producto">+ Cliente</button>
                                         <?php
                                         }
                                         ?>
@@ -168,8 +173,8 @@
                 </div>
                 <?php if ($sinProductos == 0 && $modo == "edicion") 
                 {?>
-                    <button id="btnsubmit" value="1" type="submit" class="btn btn-default">Guardar</button>
-                    <button id="btnPlanificacion" value="2" class="btn btn-success">Confirmar planificacion</button>
+                    <button id="btnsubmit" value="1" type="submit" class="btn btn-default" data-placement="left" data-toggle="tooltip" title="Se guardarán los cambios y luego se podrá seguir modificando valores">Guardar</button>
+                    <button id="btnPlanificacion" value="2" class="btn btn-success" data-placement="rigth" data-toggle="tooltip" title="Al confirmar la planificación ya NO se podrá modificar y deberá pasar al siguiente estado '3 - Confirmar viajes'">Confirmar planificacion</button>
                     <input id="botonPresionado" type="hidden" value="botonGuardar" name="botonPresionado">
                 <?php 
                 }?>

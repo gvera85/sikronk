@@ -189,7 +189,7 @@
             }             
         ?>    
         
-        <form id="formFiltros" method="post" action="<?php echo base_url() ?>index.php/cuentaCorrienteProveedor/getCCProveedorPorFiltro/<?php echo $idProveedorFiltro ?>" name="formFiltros">
+        <form id="formFiltros" method="post" action="<?php echo base_url() ?>index.php/cuentaCorrienteProveedor/getCCProveedorPorFiltro/<?php echo $idProveedorFiltro ?>/cuentaCorrienteProveedor" name="formFiltros">
 
                 <table class="table compact" cellspacing="0" width="100%" style="font-size:small; text-align: left; ">
                     <tr>

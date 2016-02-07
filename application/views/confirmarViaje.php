@@ -18,8 +18,10 @@
     
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/css/estilosReparto.css">
     
+    <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.min.js"></script>
+    <script src="<?php echo base_url() ?>/assets/bootstrap/js/bootstrap.js"></script>
+    
     <script src="<?php echo base_url() ?>assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
-    <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
     <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.numeric.js"></script>
     
     <script src="<?php echo base_url() ?>assets/utils/utils.js"></script>
@@ -30,6 +32,8 @@
     <script>
         jQuery(document).ready(function(){
                 jQuery(".chosen").data("placeholder","Select Frameworks...").chosen();
+                
+                $('[data-toggle="tooltip"]').tooltip();
         });
     </script>
 
@@ -78,7 +82,7 @@
             <form id="miform" method="post" name="miform" >
                 
                 <div class="panel panel-primary" width="100%">
-                    <div class="panel-heading">
+                    <div class="panel-heading" data-placement="bottom" data-toggle="tooltip" title="Mediante esta página usted debe confirmar las cantidades recibidas de cada producto y además confirmar como se reparte el stock a cada cliente">
                         <h3 class="panel-title"><?php echo $titulo  ?> </h3>
                     </div>
                         <div class="panel-body">
@@ -93,21 +97,21 @@
                                     if ($sinProductos == 0)
                                     {
                                     ?>
-                                    <th rowspan="2" style="vertical-align: middle;">Acción</th>  
-                                    <th rowspan="2" style="vertical-align: middle;">#</th>
-                                    <th>Producto</th>
-                                    <th style="vertical-align: middle;">Presentación</th>
-                                    <th colspan="2" style="vertical-align: middle; text-align: center"># Bultos</th>
-                                    <th colspan="2" style="vertical-align: middle; text-align: center"># Pallets</th>
+                                    <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Acciones disponibles">Acción</span></th>  
+                                    <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Número de línea">#</span></th>
+                                    <th><span data-placement="bottom" data-toggle="tooltip" title="Producto que se pidió al proveedor">Producto</span></th></th>
+                                    <th style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Presentación</span></th>
+                                    <th colspan="2" style="vertical-align: middle; text-align: center"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos"># Bultos</span></th>
+                                    <th colspan="2" style="vertical-align: middle; text-align: center"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de pallets"># Pallets</span></th>
                                 </tr>
                                  <tr class="active">
 
-                                       <th>Fecha de reparto</th>  
-                                       <th>Cliente</th>
-                                       <th>Estimados</th>
-                                       <th>Real</th>
-                                       <th>Estimados</th>
-                                       <th>Real</th>
+                                     <th><div data-placement="bottom" data-toggle="tooltip" title="Ingresar la fecha en que se entrega el producto al cliente">Fecha de reparto</div></th>  
+                            <th><div data-placement="bottom" data-toggle="tooltip" title="Cliente al cual se le va realizar una entrega del producto">Cliente</div></th>
+                                       <th><div data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos que se pidieron al proveedor">Pedidos</div></th>
+                                       <th><div data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos que se recibieron(puede diferir a la cantidad de bultos que se pidieron)">Arribados</div></th>
+                                       <th><div data-placement="bottom" data-toggle="tooltip" title="Cantidad de pallets que se pidieron al proveedor">Pedidos</div></th>
+                                       <th><div data-placement="bottom" data-toggle="tooltip" title="Cantidad de pallets que se recibieron (puede diferir a la cantidad de pallets que se pidieron)">Arribados</div></th>
                                    </tr>
                             </thead>
                             <tbody>
@@ -120,7 +124,7 @@
                                         if ($modo == "edicion")
                                         {
                                         ?>
-                                            <button id="btnAgregarCliente" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']."_".$lineas['base_pallet']."_".$lineas['altura_pallet']."_".$cantidad?>" class="btn btn-xs btn-primary">+ Cliente</button>
+                                            <button id="btnAgregarCliente" value="<?php echo $lineas['id_producto']."_".$lineas['id_vl']."_".$lineas['base_pallet']."_".$lineas['altura_pallet']."_".$cantidad?>" class="btn btn-xs btn-primary" data-placement="rigth" data-toggle="tooltip" title="Agregar un cliente al que se quiera repartir este producto">+ Cliente</button>
                                         <?php
                                         }
                                         ?>
@@ -138,7 +142,9 @@
                                     if ($modo == "edicion")
                                     {
                                     ?>    
+                                        <span data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos que se recibieron en el camión">
                                         <input required class="textBoxNumerico" id="cantBultosViaje_<?php echo $cantidad?>" name="cantBultosViaje[]" type="text" size="10" value="<?php echo ($lineas['cant_real_bultos'] == 0 ? $lineas['cantidad_bultos'] : $lineas['cant_real_bultos']) ?>" onChange="calcularCantidadPallets(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantPalletsViaje_<?php echo $cantidad?>');">                                         
+                                        </span>
                                     <?php
                                     }
                                     else
@@ -188,7 +194,7 @@
                                         if ($modo == "edicion")
                                         {
                                         ?>
-                                            <button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button>
+                                            <button id="btnBorrar" class="btn btn-xs btn-danger" data-toggle="tooltip" title="Botón para eliminar a este cliente"> - Cliente</button>
                                         <?php
                                         }
                                         ?>
@@ -198,7 +204,9 @@
                                                 if ($modo == "edicion")
                                                 {
                                                 ?>
-                                                   <input required type="date" style="height:25px;" name="fechaReparto[]" max="<?php echo date("Y-m-d");?>" id="fecha_reparto_html_<?php echo $cantidadClientes?>" value=<?php echo $reparto['fecha_reparto'] ?>> 
+                                                    <span data-placement="bottom" data-toggle="tooltip" title="Ingrese la fecha en la cual entregó este producto al cliente">
+                                                    <input required type="date" style="height:25px;" name="fechaReparto[]" max="<?php echo date("Y-m-d");?>" id="fecha_reparto_html_<?php echo $cantidadClientes?>" value=<?php echo $reparto['fecha_reparto'] ?>> 
+                                                    </span>
                                                 <?php
                                                 }
                                                 else
@@ -239,8 +247,8 @@
                 </div>
                 <?php if ($sinProductos == 0 && $modo == "edicion") 
                       {?>
-                <button id="btnsubmit" value="1" type="submit" class="btn btn-default">Guardar</button>
-                <button id="btnCierreViaje" value="2" class="btn btn-success">Confirmar viaje</button>
+                <button id="btnsubmit" value="1" type="submit" class="btn btn-default" data-placement="left" data-toggle="tooltip" title="Se guardarán los cambios y luego se podrá seguir modificando valores">Guardar</button>
+                <button id="btnCierreViaje" value="2" class="btn btn-success" data-placement="rigth" data-toggle="tooltip" title="Si usted confirma el viaje ya NO podrá modificar las cantidades repartidas">Confirmar viaje</button>
                 <input id="botonPresionado" type="hidden" value="botonGuardar" name="botonPresionado">
                 <?php }?>
             </form>
@@ -311,15 +319,18 @@ $(function() {
               
        var fila = '<tr class="warning">'+
                     '<td></td>'+    
-                    '<td>'+
+                    '<td> <span data-placement="bottom" data-toggle="tooltip" title="Botón para eliminar a este cliente">'+
                           '<button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button>'+
-                    '</td>'+
-                    '<td align="center"><input required type="date" style="height:25px;" name="fechaReparto[]" max="<?php echo date("Y-m-d");?>" id="fecha_reparto_'+nroLineaAgregada+'"> </td>'+
-                    '<td align="center" colspan="1">'
+                    '</span></td>'+
+                    '<td align="center"> ' +
+                    '<span data-placement="bottom" data-toggle="tooltip" title="Ingrese la fecha en la cual entregó este producto al cliente">' +
+                    '<input required type="date" style="height:25px;" name="fechaReparto[]" max="<?php echo date("Y-m-d");?>" id="fecha_reparto_'+nroLineaAgregada+'"> '+
+                    '</span> </td>'+
+                    '<td align="center" colspan="1"> <span data-placement="bottom" data-toggle="tooltip" title="Seleccione el cliente al que quiere entregarle mercadería">'
                           +combo+
-                    '</td>'+
+                    '</span></td>'+
                     '<td colspan="2">'+
-                        '<div>'+
+                        '<div data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos a entregar a este cliente">'+
                         '<input id="cantBultos_'+nroLineaAgregada+'" class="cantidad_bultos_'+idVL+' numerico" type="text" onchange="validarBultos('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\','+basePallet+','+alturaPallet+',this);" style="width:50px; text-align:right" name="bultos[]" >'+
                         '</div>'+
                     '</td>'+
@@ -345,6 +356,8 @@ $(function() {
               for (var selector in config) {
                 $(selector).chosen(config[selector]);
               }
+              
+            $('[data-toggle="tooltip"]').tooltip();              
             
            jQuery(document).ready(function() {
                 jQuery('.numerico').keypress(function(tecla) {
