@@ -231,15 +231,15 @@
               
        var fila = '<tr class="active">'+
             '<td></td>'+        
-            '<td>'+
+            '<td> <span data-placement="bottom" data-toggle="tooltip" title="Botón para eliminar a este cliente">'+
                           '<button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button>'+
-                    '</td>'+
-                    '<td align="left" colspan="2">'
+                    '</span></td>'+
+                    '<td align="center" colspan="2"> <span data-placement="bottom" data-toggle="tooltip" title="Seleccione el cliente al que quiere entregarle mercadería">'
                           +combo+
-                    '</td>'+
+                    '</span></td>'+
                     '<td>'+
-                        '<div>'+ 
-                        '<input id="cantBultos_'+nroLineaAgregada+'" name="bultos[]" type="text"  style="width:50px; text-align:right;" class="cantidad_bultos_'+idVL+' numerico" onchange="validarBultos('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\','+basePallet+','+alturaPallet+',this)";>'+
+                        '<div >'+ 
+                        '<input data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos a entregar a este cliente" id="cantBultos_'+nroLineaAgregada+'" name="bultos[]" type="text"  style="width:50px; text-align:right;" class="cantidad_bultos_'+idVL+' numerico" onchange="validarBultos('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\','+basePallet+','+alturaPallet+',this)";>'+
                         '</div>'+
                     '</td>'+
                     '<td>'+
@@ -263,6 +263,8 @@
               for (var selector in config) {
                 $(selector).chosen(config[selector]);
               }
+              
+              $('[data-toggle="tooltip"]').tooltip();          
         
         //Para que solo se puedan ingresar numeros
         jQuery(document).ready(function() {

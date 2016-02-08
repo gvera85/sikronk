@@ -330,8 +330,8 @@ $(function() {
                           +combo+
                     '</span></td>'+
                     '<td colspan="2">'+
-                        '<div data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos a entregar a este cliente">'+
-                        '<input id="cantBultos_'+nroLineaAgregada+'" class="cantidad_bultos_'+idVL+' numerico" type="text" onchange="validarBultos('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\','+basePallet+','+alturaPallet+',this);" style="width:50px; text-align:right" name="bultos[]" >'+
+                        '<div >'+
+                        '<input data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos a entregar a este cliente" id="cantBultos_'+nroLineaAgregada+'" class="cantidad_bultos_'+idVL+' numerico" type="text" onchange="validarBultos('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\','+basePallet+','+alturaPallet+',this);" style="width:50px; text-align:right" name="bultos[]" >'+
                         '</div>'+
                     '</td>'+
                     '<td colspan="2">'+
