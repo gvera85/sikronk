@@ -228,8 +228,6 @@ class Planificacion extends CI_Controller{
         
         $fechaReparto = $_POST['fechaReparto'];
         
-        
-        
         //saco el numero de elementos
         $longitud = count($producto);
         
@@ -263,6 +261,11 @@ class Planificacion extends CI_Controller{
               //$this->output->set_status_header(500,$result);
             }
             
+            if ($botonPresionado == "botonCierreViaje") /*Si el viaje es confirmado, se hace el descuento de stock*/
+            {
+                $this->load->model('stock_m');
+                $this->stock_m->entregarStockCliente($cliente[$i], $producto[$i], $VL[$i],$bultos[$i],$this->session->userdata('id'));   
+            }
             
         }
         
@@ -312,6 +315,10 @@ class Planificacion extends CI_Controller{
   }
   
   function grabarConfirmacionPrecio(){
+    
+        
+      
+      
     if(isset($_POST['idProducto']) && !empty($_POST['idProducto']))
     {
         $botonPresionado = $_POST['botonPresionado'];
@@ -322,43 +329,55 @@ class Planificacion extends CI_Controller{
         $cantMerma = $_POST['cantMerma'];
         $fechaValorizacion = $_POST['fechaValorizacion'];
         
-        if ($botonPresionado == "btnVolverAConfirmarViaje") 
+        if ($botonPresionado == "botonLlamarSP")   
         {
-            transicionSimple($viaje[0], ESTADO_VIAJE_CONFIRMANDO_STOCK, "viaje");
-            echo "El viaje puede ser confirmado nuevamente";
-        }
-        else
+            $this->load->model('stock_m');
+            $this->stock_m->recibirStockProveedor(1, 3, 1,159,8);        
+
+            echo "SP llamado correctamente";
+        }    
+        else 
         {
-            //saco el numero de elementos
-            $longitud = count($idReparto);
-
-            //Recorro todos los elementos
-            $this->load->model('viaje_m');
-            $this->load->model('caja_distribuidor_m');
-
-            for($i=0; $i<$longitud; $i++)
+            if ($botonPresionado == "btnVolverAConfirmarViaje") 
             {
-                $this->viaje_m->updateReparto($precioBulto[$i], $cantMerma[$i], $idReparto[$i], $fechaValorizacion[$i]);
+                transicionSimple($viaje[0], ESTADO_VIAJE_CONFIRMANDO_STOCK, "viaje");
+                echo "El viaje puede ser confirmado nuevamente";
             }
-
-            if ($botonPresionado == "botonConfirmarPrecio") 
-            {
-                transicionSimple($viaje[0], ESTADO_VIAJE_PRECIO_ACORDADO, "viaje");
-
-                $retorno = $this->caja_distribuidor_m->registrarGanancias($viaje[0]);
-
-                if ($retorno != true)
-                    echo "Error ".$retorno;
-                else
-                    echo "Viaje con el precio acordado correctamente";
-            }   
             else
             {
-                transicionSimple($viaje[0], ESTADO_VIAJE_DETERMINANDO_PRECIO, "viaje");
-                echo "Precios guardados";
+                //saco el numero de elementos
+                $longitud = count($idReparto);
+
+                //Recorro todos los elementos
+                $this->load->model('viaje_m');
+                $this->load->model('caja_distribuidor_m');
+
+                for($i=0; $i<$longitud; $i++)
+                {
+                    $this->viaje_m->updateReparto($precioBulto[$i], $cantMerma[$i], $idReparto[$i], $fechaValorizacion[$i]);
+                }
+
+                if ($botonPresionado == "botonConfirmarPrecio") 
+                {
+                    transicionSimple($viaje[0], ESTADO_VIAJE_PRECIO_ACORDADO, "viaje");
+
+                    $retorno = $this->caja_distribuidor_m->registrarGanancias($viaje[0]);
+
+                    if ($retorno != true)
+                        echo "Error ".$retorno;
+                    else
+                        echo "Viaje con el precio acordado correctamente";
+                }   
+                else
+                {
+                    transicionSimple($viaje[0], ESTADO_VIAJE_DETERMINANDO_PRECIO, "viaje");
+                    echo "Precios guardados";
+                }
             }
-        }
+        }    
     }
+    
+    
     
     
   }

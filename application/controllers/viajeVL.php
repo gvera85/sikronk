@@ -169,6 +169,15 @@ class ViajeVL extends CI_Controller{
    $cantidadPallets = $this->vl_m->getCantidadPallets($post_array['id_variable_logistica'], $post_array['cantidad_bultos']);
    
    $post_array['cantidad_pallets'] = $cantidadPallets;
+   
+   $this->load->model('stock_m');
+   $this->stock_m->recibirStockProveedor(
+                            $this->session->userdata('id_viaje'), 
+                            $post_array['id_producto'], 
+                            $post_array['id_variable_logistica'], 
+                            $post_array['cantidad_bultos'], 
+                            $this->session->userdata('id')/*Id del usuario logueado*/
+                        );   
  
    return $post_array;
 }
