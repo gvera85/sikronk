@@ -56,6 +56,25 @@ class Planificacion extends CI_Controller{
     $this->load->view('confirmarViaje',$data);
   }
   
+   function confirmacionStockArribado($idViaje){
+    $this->load->model('viaje_m');
+    $this->load->model('cliente_m');
+
+    $lineasViaje = $this->viaje_m->getLineasViaje($idViaje);
+    //$lineasReparto = $this->viaje_m->getRepartoViaje($idViaje);
+    
+    
+    $clientes = $this->cliente_m->getClientes();
+    
+    $data['lineasViaje'] = $lineasViaje;
+    $data['clientes'] = $clientes;
+    $data['modo'] = "edicion";
+
+    $this->load->view('confirmarStockArribado',$data);
+  }
+  
+  
+  
   function valorizarViaje($idViaje){
     $this->load->model('viaje_m');
     $this->load->model('cliente_m');
@@ -208,6 +227,61 @@ class Planificacion extends CI_Controller{
     }
   }
   
+  
+  function grabarConfirmacionStock(){
+    $upd=""; //variable para debug
+    
+    if(isset($_POST['idViajeViaje']) && !empty($_POST['idViajeViaje']))
+    {
+        $cantPalletsViaje = $_POST['cantPalletsViaje'];
+        $cantBultosViaje = $_POST['cantBultosViaje'];
+        $idProductoViaje = $_POST['idProductoViaje'];
+        $idViajeViaje = $_POST['idViajeViaje'];
+        $IdVLViaje = $_POST['VL'];
+        
+        //start the transaction
+        $this->db->trans_begin();
+        
+        //Recorro todos los elementos        
+        $longitudItemsViaje = count($IdVLViaje);
+        
+        //Recorro todos los elementos
+        for($i=0; $i<$longitudItemsViaje; $i++)
+        {
+            $this->load->model('viaje_m');
+  
+            $this->viaje_m->updateCantidadesViaje($cantBultosViaje[$i], $cantPalletsViaje[$i], $idViajeViaje[$i], $idProductoViaje[$i], $IdVLViaje[$i]);
+            
+            $upd = $upd.$cantBultosViaje[$i]."-".$cantPalletsViaje[$i]."-".$idViajeViaje[$i]."-".$idProductoViaje[$i]."-".$IdVLViaje[$i]."****";
+        }
+        
+    }
+    
+    //make transaction complete
+    $this->db->trans_complete();
+    //check if transaction status TRUE or FALSE
+    if ($this->db->trans_status() === FALSE) {
+        //if something went wrong, rollback everything
+        $this->db->trans_rollback();    
+    } else {
+        //if everything went right, commit the data to the database
+        $this->db->trans_commit();       
+    }
+    
+    $botonPresionado = $_POST['botonPresionado'];
+    
+    if ($botonPresionado == "botonCierreStock") 
+    {
+        transicionSimple($idViajeViaje[0], ESTADO_VIAJE_STOCK_ARRIBADO_Y_CONFIRMADO, "viaje");
+        echo "Stock CONFIRMADO correctamente";
+    }   
+    else
+    {
+        transicionSimple($idViajeViaje[0], ESTADO_VIAJE_REVISANDO_STOCK, "viaje");
+        echo "Stock guardado correctamente ".$upd;
+    }
+  }
+  
   function grabarConfirmacionViaje(){
     $upd=""; //variable para debug
     
@@ -235,11 +309,14 @@ class Planificacion extends CI_Controller{
         $this->db->trans_begin();
         //update user_account table 
         
+        $this->load->model('stock_m'); /*Antes de eliminar el reparto anterior, dejo el stock como estaba antes*/
+        $this->stock_m->anularRepartoDeStock($viaje[0], $this->session->userdata('id'));  
+        
         $this->db->delete('reparto', array('id_viaje' => $viaje[0]));
         
         //Recorro todos los elementos
         for($i=0; $i<$longitud; $i++)
-        {
+        {   
             $f_reparto  = empty($fechaReparto[$i]) ? NULL : $fechaReparto[$i];
             
             $data = array(
@@ -261,11 +338,8 @@ class Planificacion extends CI_Controller{
               //$this->output->set_status_header(500,$result);
             }
             
-            if ($botonPresionado == "botonCierreViaje") /*Si el viaje es confirmado, se hace el descuento de stock*/
-            {
-                $this->load->model('stock_m');
-                $this->stock_m->entregarStockCliente($cliente[$i], $producto[$i], $VL[$i],$bultos[$i],$this->session->userdata('id'));   
-            }
+            
+            $this->stock_m->entregarStockCliente($cliente[$i], $producto[$i], $VL[$i],$bultos[$i],$this->session->userdata('id'));   
             
         }
         
@@ -304,12 +378,12 @@ class Planificacion extends CI_Controller{
     
     if ($botonPresionado == "botonCierreViaje") 
     {
-        transicionSimple($viaje[0], ESTADO_VIAJE_STOCK_CONFIRMADO, "viaje");
+        transicionSimple($viaje[0], ESTADO_VIAJE_REPARTO_FINALIZADO, "viaje");
         echo "Reparto CONFIRMADO correctamente";
     }   
     else
     {
-        transicionSimple($viaje[0], ESTADO_VIAJE_CONFIRMANDO_STOCK, "viaje");
+        transicionSimple($viaje[0], ESTADO_VIAJE_REPARTO_EN_PROCESO, "viaje");
         echo "Reparto guardado correctamente ".$upd;
     }
   }

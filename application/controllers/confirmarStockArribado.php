@@ -1,18 +1,18 @@
 <?php
 
-class Valorizar extends CI_Controller{
+class ConfirmarStockArribado extends CI_Controller{
 
   public function __construct()
   {
     parent::__construct();
-                
+    
     $this->load->library('grocery_CRUD');
     $this->load->database();
     $this->load->helper('url');
 
     $this->grocery_crud->set_language("spanish");
     
-    $this->session->set_userdata('titulo', 'Valorizar carga de viaje');
+    $this->session->set_userdata('titulo', 'Confirmar stock arribado');
              
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');
@@ -20,7 +20,6 @@ class Valorizar extends CI_Controller{
   }
   
   function index(){
-      
     $this->grocery_crud->where('id_distribuidor', $this->session->userdata('empresa'));  
      
     $this->grocery_crud->set_table('viaje');
@@ -35,6 +34,8 @@ class Valorizar extends CI_Controller{
     
     $this->grocery_crud->change_field_type('id_distribuidor','invisible');
     
+    $this->grocery_crud->callback_column('cantidad_productos',array($this,'_callback_cantidad_productos'));
+    
     $this->grocery_crud->display_as('id_proveedor','Proveedor');
     $this->grocery_crud->display_as('numero_de_viaje','# Viaje');
     $this->grocery_crud->set_relation('id_proveedor','proveedor','razon_social');
@@ -48,9 +49,7 @@ class Valorizar extends CI_Controller{
     $this->grocery_crud->display_as('id_chofer','Chofer');
     $this->grocery_crud->set_relation('id_chofer','chofer','{dni} - {nombre} {apellido} - Tel: {telefono}');
         
-    $this->grocery_crud->add_action('Precio', base_url().'/assets/img/iconoDinero.png', '','ui-icon-image',array($this,'link_hacia_valorizacion'));
-    
-    $this->grocery_crud->callback_column('cantidad_productos',array($this,'_callback_cantidad_productos'));
+    $this->grocery_crud->add_action('Confirmar', base_url().'/assets/img/okVerde.png', '','ui-icon-image',array($this,'link_hacia_confirmacion'));
     
     $this->grocery_crud->set_rules('patente_semi','Patente semi','callback_validarPatente');
     $this->grocery_crud->set_rules('patente_camion','Patente del camion','callback_validarPatente');
@@ -62,12 +61,11 @@ class Valorizar extends CI_Controller{
     $this->grocery_crud->callback_before_insert(array($this,'distribuidor_callback'));
     $this->grocery_crud->callback_before_update(array($this,'distribuidor_callback'));
     
-    
     $this->grocery_crud->add_action('Gastos', base_url().'/assets/img/iconoGastosViaje.png', '','ui-icon-image',array($this,'link_hacia_gastos'));
     $this->grocery_crud->add_action('Img', base_url().'/assets/img/iconoImagenes.png', '','ui-icon-image',array($this,'link_hacia_imagenes'));
     
-    $where = "id_estado IN ('".ESTADO_VIAJE_REPARTO_FINALIZADO."','".ESTADO_VIAJE_REPARTO_EN_PROCESO."','".ESTADO_VIAJE_DETERMINANDO_PRECIO."')";
-    
+    $where = "id_estado IN ('".ESTADO_VIAJE_REPARTO_PLANIFICADO."','".ESTADO_VIAJE_PLANIFICANDO_REPARTO."','".ESTADO_VIAJE_CREADO."')";
+
     $this->grocery_crud->where($where);
   
     $this->grocery_crud->unset_add();
@@ -82,17 +80,10 @@ class Valorizar extends CI_Controller{
     $this->load->view('mostrarABM', $output);
   }
   
-  function link_hacia_valorizacion($primary_key , $row)
+  function link_hacia_confirmacion($primary_key , $row)
   {
-      
-      return "javascript:window.open('" . base_url('/index.php/planificacion/valorizarViaje') . '/' . $row->id . "')";
-      //      return site_url('planificacion/valorizarViaje/'.$row->id);
-  }
-  
-  function link_hacia_gastos($primary_key , $row)
-  {
-        //return site_url('viajeVL/popUp/'.$row->id.'/'.$row->id_proveedor.'/'.$row->numero_de_viaje);
-        return "javascript:window.open('" . base_url('/index.php/viajeGastos/popUp'). '/' .$row->id.'/'.$row->id_proveedor.'/'.$row->numero_de_viaje. "')";
+      return "javascript:window.open('" . base_url('index.php/planificacion/confirmacionStockArribado') . '/' . $row->id . "')";  
+      //return site_url('planificacion/confirmacionViaje/'.$row->id);
   }
   
   
@@ -102,7 +93,18 @@ class Valorizar extends CI_Controller{
     return $post_array;
    }
    
-   public function _callback_cantidad_productos($value, $row)
+  function link_hacia_gastos($primary_key , $row)
+  {
+        //return site_url('viajeVL/popUp/'.$row->id.'/'.$row->id_proveedor.'/'.$row->numero_de_viaje);
+        return "javascript:window.open('" . base_url('/index.php/viajeGastos/popUp'). '/' .$row->id.'/'.$row->id_proveedor.'/'.$row->numero_de_viaje. "')";
+  }
+  
+  function link_hacia_imagenes($primary_key , $row)
+  {
+        return "javascript:window.open('" . base_url('/index.php/imagenes/viaje'). '/' .$row->id. "')";
+  }
+  
+  public function _callback_cantidad_productos($value, $row)
     {
 
         $this->load->model('viaje_m');
@@ -112,10 +114,4 @@ class Valorizar extends CI_Controller{
 
         return $cantProductos;
     }
-    
-  function link_hacia_imagenes($primary_key , $row)
-  {
-        return "javascript:window.open('" . base_url('/index.php/imagenes/viaje'). '/' .$row->id. "')";
-  }
-   
 }
