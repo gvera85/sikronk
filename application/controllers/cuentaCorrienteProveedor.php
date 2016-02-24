@@ -36,6 +36,7 @@ class cuentaCorrienteProveedor extends CI_Controller{
   
   function getCCProveedorPorFiltro($idProveedor, $paginaHtml){
     putenv("TZ=America/Argentina/Buenos_Aires");
+    ini_set('date.timezone', 'America/Argentina/Buenos_Aires'); 
     $fechaHastaFiltro = date("Y-m-d"); //Por default la fecha hasta es el dia de hoy
     $fechaEjecucion = date("Y-m-d H:i:s"); //La fecha y hora de ejecuccion del "reporte"
     
