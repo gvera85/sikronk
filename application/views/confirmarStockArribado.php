@@ -217,26 +217,20 @@ $(function() {
           if (validacionFormulario()){
          
                 $.post( "<?php echo base_url() ?>index.php/planificacion/grabarConfirmacionStock", formulario)
-                      .done(function(data){
-                
-                        //alert(data);
-                
+                      .done(function(data){                
+                        //alert(data);                
                         $(frm)[0].reset();
                         location.reload();
-
-                        swal("Guardada!", data, "success");
-
+                        swal("Operación exitosa!", data, "success");
                       })
-                      .fail(function(xhr, textStatus, errorThrown) {
-                          
-                            //alert(data);
+                      .fail(function(xhr, textStatus, errorThrown) {                          
+                            //alert(errorThrown);
                             swal("Oops...", errorThrown, "error");
                       });
                   }
             event.preventDefault();
           
-	});
-        
+	});        
 });
 
 function validacionFormulario() 

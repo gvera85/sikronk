@@ -10,9 +10,10 @@ class stock_m extends CI_Model {
          
         if ($this->db->query($sql, array($idCliente, $idProducto, $idVL, $cantidadBultos, $idUsuario)))
         {
-            echo 'listo';
+            return true;
         }else{
             show_error('Error!');
+            return false;
         }
     }
     
@@ -23,9 +24,10 @@ class stock_m extends CI_Model {
          
         if ($this->db->query($sql, array($idViaje, $idProducto, $idVL, $cantidadBultos, $idUsuario)))
         {
-            echo 'listo';
+           return true;
         }else{
             show_error('Error!');
+            return false;
         }
     }
     
@@ -61,9 +63,10 @@ class stock_m extends CI_Model {
          
         if ($this->db->query($sql, array($idViaje, $idUsuario)))
         {
-            echo 'listo';
+            return true;
         }else{
             show_error('Error!');
+            return false;
         }
     }
     

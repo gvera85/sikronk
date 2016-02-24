@@ -255,18 +255,20 @@ class Planificacion extends CI_Controller{
             $upd = $upd.$cantBultosViaje[$i]."-".$cantPalletsViaje[$i]."-".$idViajeViaje[$i]."-".$idProductoViaje[$i]."-".$IdVLViaje[$i]."****";
         }
         
+        //make transaction complete
+        $this->db->trans_complete();
+        //check if transaction status TRUE or FALSE
+        if ($this->db->trans_status() === FALSE) {
+            //if something went wrong, rollback everything
+            $this->db->trans_rollback();    
+        } else {
+            //if everything went right, commit the data to the database
+            $this->db->trans_commit();       
+        }
+        
     }
     
-    //make transaction complete
-    $this->db->trans_complete();
-    //check if transaction status TRUE or FALSE
-    if ($this->db->trans_status() === FALSE) {
-        //if something went wrong, rollback everything
-        $this->db->trans_rollback();    
-    } else {
-        //if everything went right, commit the data to the database
-        $this->db->trans_commit();       
-    }
+    
     
     $botonPresionado = $_POST['botonPresionado'];
     
@@ -278,7 +280,7 @@ class Planificacion extends CI_Controller{
     else
     {
         transicionSimple($idViajeViaje[0], ESTADO_VIAJE_REVISANDO_STOCK, "viaje");
-        echo "Stock guardado correctamente ".$upd;
+        echo "Stock guardado correctamente ";
     }
   }
   
@@ -293,12 +295,6 @@ class Planificacion extends CI_Controller{
         $VL = $_POST['idVL'];
         $bultos = $_POST['bultos'];
         $pallets = $_POST['pallets'];
-        
-        $cantPalletsViaje = $_POST['cantPalletsViaje'];
-        $cantBultosViaje = $_POST['cantBultosViaje'];
-        $idProductoViaje = $_POST['idProductoViaje'];
-        $idViajeViaje = $_POST['idViajeViaje'];
-        $IdVLViaje = $_POST['VL'];
         
         $fechaReparto = $_POST['fechaReparto'];
         
@@ -343,10 +339,10 @@ class Planificacion extends CI_Controller{
             
         }
         
-        $longitudItemsViaje = count($IdVLViaje);
+        //$longitudItemsViaje = count($IdVLViaje);
         
         //Recorro todos los elementos
-        for($i=0; $i<$longitudItemsViaje; $i++)
+        /*for($i=0; $i<$longitudItemsViaje; $i++)
         {
             $this->load->model('viaje_m');
   
@@ -354,7 +350,7 @@ class Planificacion extends CI_Controller{
             
             $upd = $upd.$cantBultosViaje[$i]."-".$cantPalletsViaje[$i]."-".$idViajeViaje[$i]."-".$idProductoViaje[$i]."-".$IdVLViaje[$i]."****";
         }
-        
+        */
     }
     else
     {
@@ -384,7 +380,7 @@ class Planificacion extends CI_Controller{
     else
     {
         transicionSimple($viaje[0], ESTADO_VIAJE_REPARTO_EN_PROCESO, "viaje");
-        echo "Reparto guardado correctamente ".$upd;
+        echo "Reparto guardado correctamente ";
     }
   }
   

@@ -42,19 +42,8 @@
                 margin-top:20px; 
         }
         
-    </style>
+    </style> 
     
-    <script type="text/javascript">
-    $(document).ready(function(){
-    for (i = 0; i < 10; i++) { 
-           campoBultos = "#cantBultosViaje_" + i; 
-           campoPallets = "#cantPalletsViaje_" + i;
-
-           $(campoBultos).numeric();
-           $(campoPallets).numeric();
-        }
-    });
-    </script>
 
 </head>
 </head>
@@ -101,17 +90,15 @@
                                     <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Número de línea">#</span></th>
                                     <th><span data-placement="bottom" data-toggle="tooltip" title="Producto que se pidió al proveedor">Producto</span></th></th>
                                     <th style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Presentación</span></th>
-                                    <th colspan="2" style="vertical-align: middle; text-align: center"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos"># Bultos</span></th>
-                                    <th colspan="2" style="vertical-align: middle; text-align: center"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de pallets"># Pallets</span></th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos"># Bultos</span></th>
+                                    <th rowspan="2" style="vertical-align: middle; text-align: center"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de pallets"># Pallets</span></th>
                                 </tr>
                                  <tr class="active">
 
                                      <th><div data-placement="bottom" data-toggle="tooltip" title="Ingresar la fecha en que se entrega el producto al cliente">Fecha de reparto</div></th>  
                             <th><div data-placement="bottom" data-toggle="tooltip" title="Cliente al cual se le va realizar una entrega del producto">Cliente</div></th>
-                                       <th><div data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos que se pidieron al proveedor">Pedidos</div></th>
-                                       <th><div data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos que se recibieron(puede diferir a la cantidad de bultos que se pidieron)">Arribados</div></th>
-                                       <th><div data-placement="bottom" data-toggle="tooltip" title="Cantidad de pallets que se pidieron al proveedor">Pedidos</div></th>
-                                       <th><div data-placement="bottom" data-toggle="tooltip" title="Cantidad de pallets que se recibieron (puede diferir a la cantidad de pallets que se pidieron)">Arribados</div></th>
+                                       
+                                       
                                    </tr>
                             </thead>
                             <tbody>
@@ -133,43 +120,19 @@
                                 <td id="linea_<?php echo $cantidad?>"><B><?php echo $cantidad?></B></td>
                                 <td id="producto" align="left"><?php echo $lineas['producto'] ?></td>
                                 <TD align="left"> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
-                                <TD> <?php echo $lineas['cantidad_bultos'] ?> </TD> 
-                                <TD >   
+                                <TD > 
                                     <?php 
-                                    
                                     $cantBultos = $lineas['cant_real_bultos'] == 0 ? $lineas['cantidad_bultos'] : $lineas['cant_real_bultos'];
                                     $bultosRestantes = $cantBultos-$lineas['cant_repartida'];
-                                    if ($modo == "edicion")
-                                    {
-                                    ?>    
-                                        <span data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos que se recibieron en el camión">
-                                        <input required class="textBoxNumerico" id="cantBultosViaje_<?php echo $cantidad?>" name="cantBultosViaje[]" type="text" size="10" value="<?php echo ($lineas['cant_real_bultos'] == 0 ? $lineas['cantidad_bultos'] : $lineas['cant_real_bultos']) ?>" onChange="calcularCantidadPallets(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantPalletsViaje_<?php echo $cantidad?>');">                                         
-                                        </span>
-                                    <?php
-                                    }
-                                    else
-                                    {
-                                         echo ($lineas['cant_real_bultos'] == 0 ? $lineas['cantidad_bultos'] : $lineas['cant_real_bultos']) ;
-                                    }                                     
-                                    ?>
-                                    <span id="tdBultos_<?php echo $lineas['id_vl'] ?>"> <?php echo "(".$bultosRestantes." restantes)" ?> </span>
-                                </TD> 
-                                <TD> <?php echo $lineas['cantidad_pallets'] ?> </TD> 
-                                <TD>  
                                     
-                                    <?php 
-                                    if ($modo == "edicion")
-                                    {
-                                    ?>    
-                                      <input required class="textBoxNumerico" id="cantPalletsViaje_<?php echo $cantidad?>" name="cantPalletsViaje[]" type="text" size="10" value="<?php echo ($lineas['cant_real_pallets'] == 0 ? $lineas['cantidad_pallets'] : $lineas['cant_real_pallets']) ?>" onChange="calcularCantidadBultos(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantBultosViaje_<?php echo $cantidad?>');" > 
-                                    <?php
-                                    }
-                                    else
-                                    {
-                                        echo ($lineas['cant_real_pallets'] == 0 ? $lineas['cantidad_pallets'] : $lineas['cant_real_pallets']) ;
-                                    }
-                                    ?>
-                                </TD>
+                                    echo $cantBultos ?> 
+                                    <span id="tdBultos_<?php echo $lineas['id_vl'] ?>"> <?php echo "(".$bultosRestantes." restantes)" ?> </span>
+                                    
+                                    <input type="hidden" id="cantBultosViaje_<?php echo $cantidad ?>" value="<?php echo $cantBultos ?>">
+                                </TD> 
+                                 
+                                <TD> <?php echo $lineas['cantidad_pallets'] ?> </TD> 
+                               
                                 <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
                                 <input type="hidden" id="VL" name="VL[]" value="<?php echo $lineas['id_vl'] ?>">
                                 
@@ -205,7 +168,7 @@
                                                 {
                                                 ?>
                                                     <span data-placement="bottom" data-toggle="tooltip" title="Ingrese la fecha en la cual entregó este producto al cliente">
-                                                    <input required type="date" style="height:25px;" name="fechaReparto[]" max="<?php echo date("Y-m-d");?>" id="fecha_reparto_html_<?php echo $cantidadClientes?>" value=<?php echo $reparto['fecha_reparto'] ?>> 
+                                                    <input type="date" style="height:25px;" name="fechaReparto[]" max="<?php echo date("Y-m-d");?>" id="fecha_reparto_html_<?php echo $cantidadClientes?>" value=<?php echo $reparto['fecha_reparto'] ?>> 
                                                     </span>
                                                 <?php
                                                 }
@@ -222,8 +185,8 @@
                                     
                                     </td>
                                     <td style="vertical-align: middle; text-align: center"> <?php echo $reparto['razon_social'] ?> </td>
-                                    <TD colspan=2 style="vertical-align: middle; text-align: center"> <?php echo $reparto['cantidad_bultos'] ?></TD>
-                                    <TD colspan=2 style="vertical-align: middle; text-align: center"> <?php echo $reparto['cantidad_pallets'] ?></TD>
+                                    <TD style="vertical-align: middle; text-align: center"> <?php echo $reparto['cantidad_bultos'] ?></TD>
+                                    <TD style="vertical-align: middle; text-align: center"> <?php echo $reparto['cantidad_pallets'] ?></TD>
                                     <input type="hidden" id="idProducto" name="idProducto[]" value=<?php echo $reparto['id_producto'] ?>>
                                     <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
                                     <input type="hidden" id="idCliente" name="comboClientes[]" value="<?php echo $reparto['id_cliente'] ?>">
@@ -329,12 +292,12 @@ $(function() {
                     '<td align="center" colspan="1"> <span data-placement="bottom" data-toggle="tooltip" title="Seleccione el cliente al que quiere entregarle mercadería">'
                           +combo+
                     '</span></td>'+
-                    '<td colspan="2">'+
+                    '<td align="center">'+
                         '<div >'+
                         '<input data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos a entregar a este cliente" id="cantBultos_'+nroLineaAgregada+'" class="cantidad_bultos_'+idVL+' numerico" type="text" onchange="validarBultos('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\','+basePallet+','+alturaPallet+',this);" style="width:50px; text-align:right" name="bultos[]" >'+
                         '</div>'+
                     '</td>'+
-                    '<td colspan="2">'+
+                    '<td align="center">'+
                         '<div>'+
                         '<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text" class="numerico" onchange="calcularCantidadBultos2('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\',this.value, '+basePallet+','+ alturaPallet+',cantBultos_'+nroLineaAgregada+');" style="width:50px; text-align:right;">'+
                         '</div>'+
@@ -450,9 +413,13 @@ function validacionFormulario()
     bultos = "#cantBultos_" + i; 
     pallets = "#cantPallets_" + i; 
     
+    botonPresionado = "#botonPresionado";
+    
+    
+    
     if(document.getElementById(fechaid) !== null) /*La linea completa fue eliminada por el usuario*/
     {
-        if ($(fecha).val() == null || $(fecha).val().length == 0)
+        if ($(fecha).val() == null || $(fecha).val().length == 0 )
         {
             mensaje = 'La fecha de reparto agregada no puede ser vacia';
 
@@ -499,7 +466,7 @@ function validacionFormulario()
     
     if(document.getElementById(fechaid) !== null) /*La linea completa fue eliminada por el usuario*/
     {
-        if ($(fecha).val() == null || $(fecha).val().length == 0)
+        if ($(fecha).val() == null || $(fecha).val().length == 0 && $(botonPresionado).val()=="botonCierreViaje")
         {
             mensaje = 'La fecha de reparto no puede ser vacia';
 
