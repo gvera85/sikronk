@@ -214,7 +214,8 @@ class facturas_clientes_m extends CI_Model {
 					join producto e on b.id_producto = e.id
 					join variable_logistica f on b.id_variable_logistica = f.id	
                     where b.id_cliente = ?
-                    and b.precio_caja is null";
+                    and b.precio_caja is null
+                    and b.fecha_reparto is not null";
             
             $query = $this->db->query($sql, array($idCliente));
                    

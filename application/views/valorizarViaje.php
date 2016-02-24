@@ -86,6 +86,11 @@
     $gastosDelProveedor = "";
     $gastosDelDistribuidor = "";
     
+    if ($idCliente[0] != "")
+        $FlagUnSoloCliente = 1;
+    else
+        $FlagUnSoloCliente = 0;
+    
     if (!empty($lineasGastos[0]['id']))
     {
         foreach( $lineasGastos as $gastos ) : 
@@ -255,7 +260,7 @@
 
                                                   <TD>
                                                       <span data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos de este producto que tuvieron merma (no aptos para la venta)"> 
-                                                      <input class="cant_merma" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, precioBulto_<?php echo $cantidadLineasReparto?>.value, this, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMerma[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma'] ?>"> </TD> 
+                                                      <input class="cant_merma" required style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, precioBulto_<?php echo $cantidadLineasReparto?>.value, this, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMerma[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma'] ?>"> </TD> 
                                                       </span>
                                                   <TD>
                                                       <span data-placement="bottom" data-toggle="tooltip" title="Ingrese el precio acordado con el cliente">   
@@ -304,9 +309,13 @@
                 <?php if ($sinProductos == 0 && $modo == "edicion") 
                       {?>
                 <div class="row-fluid top-buffer text-center" >
-                    <button value="volverAStock" id="btnVolverAConfirmarViaje" class="btn btn-danger" data-placement="left" data-toggle="tooltip" title="El viaje vuelve al estado anterior para poder modificar la cantidades recibidas">Volver a confirmar viaje</button>
+                    <?php if ($FlagUnSoloCliente == 0) {?>
+                        <button value="volverAStock" id="btnVolverAConfirmarViaje" class="btn btn-danger" data-placement="left" data-toggle="tooltip" title="El viaje vuelve al estado anterior para poder modificar la cantidades recibidas">Volver a confirmar viaje</button>
+                    <?php }?>
                     <button id="btnsubmit" value="1" type="submit" class="btn btn-default" data-placement="left" data-toggle="tooltip" title="Se guardarán los cambios y luego se podrá seguir modificando valores">Guardar</button>
-                    <button id="btnConfirmarPrecio" value="2" class="btn btn-success" data-placement="rigth" data-toggle="tooltip" title="Si usted confirma los precios ya NO podrá modificarlos">Confirmar precios</button>
+                    <?php if ($FlagUnSoloCliente == 0) {?>
+                        <button id="btnConfirmarPrecio" value="2" class="btn btn-success" data-placement="rigth" data-toggle="tooltip" title="Si usted confirma los precios ya NO podrá modificarlos">Confirmar precios</button>
+                    <?php }?>
                     <input id="botonPresionado" type="hidden" value="botonGuardar" name="botonPresionado">
                 </div>                    
                 <?php }?>

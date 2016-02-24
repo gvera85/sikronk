@@ -1,6 +1,7 @@
 <html lang="es">
     <?php 
         $this->load->view('header');
+        ini_set('date.timezone', 'America/Argentina/Buenos_Aires'); 
     ?>
 <head>
     <title>Cuenta corriente del cliente</title>
