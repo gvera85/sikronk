@@ -109,6 +109,7 @@ class Planificacion extends CI_Controller{
     $data['lineasReparto'] = $lineasReparto;
     $data['lineasGastos'] = $lineasGastos;
     $data['modo'] = "vista";
+    $data['idCliente'] = null;
    
     $this->load->view('valorizarViaje',$data);
   }

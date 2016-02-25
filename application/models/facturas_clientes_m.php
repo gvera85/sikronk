@@ -92,7 +92,7 @@ class facturas_clientes_m extends CI_Model {
     public function getLineasCCC($idCliente)
     {
          if($idCliente != FALSE) {
-          $sql = "select 'Entrega' tipo, b.id id_linea, a.fecha_estimada_llegada fecha, b.fecha_valorizacion, b.fecha_reparto,
+          $sql = "select 'Entrega' tipo, b.id id_linea, a.fecha_estimada_llegada , b.fecha_valorizacion, b.fecha_reparto fecha,
                   c.razon_social proveedor,  
                             a.id id_viaje, a.numero_de_viaje, b.id id_reparto, b.id_cliente, d.razon_social cliente,
                             b.id_producto, e.descripcion producto, b.id_variable_logistica, f.peso
@@ -151,7 +151,7 @@ class facturas_clientes_m extends CI_Model {
     public function getLineasIndependientesCCC($idCliente)
     {
          if($idCliente != FALSE) {
-          $sql = "select 'Entrega' tipo, b.id id_linea, a.fecha_estimada_llegada fecha, b.fecha_valorizacion, b.fecha_reparto,
+          $sql = "select 'Entrega' tipo, b.id id_linea, a.fecha_estimada_llegada, b.fecha_valorizacion, b.fecha_reparto fecha,
                   c.razon_social proveedor,  
                             a.id id_viaje, a.numero_de_viaje, b.id id_reparto, b.id_cliente, d.razon_social cliente,
                             b.id_producto, e.descripcion producto, b.id_variable_logistica, f.peso
