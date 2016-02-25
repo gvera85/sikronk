@@ -12,7 +12,7 @@ class ConfirmarViaje extends CI_Controller{
 
     $this->grocery_crud->set_language("spanish");
     
-    $this->session->set_userdata('titulo', 'Confirmar arribo de viajes');
+    $this->session->set_userdata('titulo', 'Repartir stock a los clientes');
              
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');
@@ -64,7 +64,7 @@ class ConfirmarViaje extends CI_Controller{
     $this->grocery_crud->add_action('Gastos', base_url().'/assets/img/iconoGastosViaje.png', '','ui-icon-image',array($this,'link_hacia_gastos'));
     $this->grocery_crud->add_action('Img', base_url().'/assets/img/iconoImagenes.png', '','ui-icon-image',array($this,'link_hacia_imagenes'));
     
-    $where = "id_estado IN ('".ESTADO_VIAJE_STOCK_ARRIBADO_Y_CONFIRMADO."')";
+    $where = "id_estado IN ('".ESTADO_VIAJE_STOCK_ARRIBADO_Y_CONFIRMADO."','".ESTADO_VIAJE_REPARTO_EN_PROCESO."')";
 
     $this->grocery_crud->where($where);
   

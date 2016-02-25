@@ -342,18 +342,7 @@ class Planificacion extends CI_Controller{
             
         }
         
-        //$longitudItemsViaje = count($IdVLViaje);
-        
-        //Recorro todos los elementos
-        /*for($i=0; $i<$longitudItemsViaje; $i++)
-        {
-            $this->load->model('viaje_m');
-  
-            $this->viaje_m->updateCantidadesViaje($cantBultosViaje[$i], $cantPalletsViaje[$i], $idViajeViaje[$i], $idProductoViaje[$i], $IdVLViaje[$i]);
-            
-            $upd = $upd.$cantBultosViaje[$i]."-".$cantPalletsViaje[$i]."-".$idViajeViaje[$i]."-".$idProductoViaje[$i]."-".$IdVLViaje[$i]."****";
-        }
-        */
+        $this->stock_m->actualizarCantidadReparto($viaje[0]);          
     }
     else
     {
