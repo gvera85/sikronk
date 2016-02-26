@@ -1,7 +1,10 @@
 <!DOCTYPE html>
 
 <html>
-<?php $this->load->view('headerProveedor') ?>
+<?php 
+      $this->load->view('headerProveedor');      
+?>
+        
 <head>
 	<meta charset="utf-8" />
 <?php 

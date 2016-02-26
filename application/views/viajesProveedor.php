@@ -1,6 +1,7 @@
 <html lang="es">
 <?php 
         $this->load->view('headerProveedor');
+        ini_set('date.timezone', 'America/Argentina/Buenos_Aires'); 
 ?>					
 <a href="<?php echo "javascript:window.open('".base_url('/index.php/viaje/viajeProveedor/1/9')."');"?>" style="font-size:small;" class="btn btn-small btn-success"><?php echo "+ Link hacia creación de viajes" ?></a>
 <div style="padding: 10px;"></div>

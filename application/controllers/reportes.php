@@ -98,9 +98,15 @@ class reportes extends CI_Controller {
         
         public function mercaderiaSinRepartir()
 	{   
-            $this->session->set_userdata('ruta', "Mercaderia sin recibir");                
+            $this->load->model('stock_m');
             
-            $this->load->view('mercaderiaSinRepartir.php');
+            $this->session->set_userdata('ruta', "Mercaderia sin recibir");                            
+            
+            $lineasSinRepartir = $this->stock_m->getProductosSinRepartir($this->session->userdata('empresa'));
+            
+            $data['lineasSinRepartir'] = $lineasSinRepartir;
+            
+            $this->load->view('mercaderiaSinRepartir.php',$data);
 	}
         
         public function pagosPendientesDeRecibir()

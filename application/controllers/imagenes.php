@@ -71,6 +71,8 @@ class imagenes extends CI_Controller {
                 
                 $viaje = $this->viaje_m->getViajeXId($idViaje);
                 
+                ini_set('date.timezone', 'America/Argentina/Buenos_Aires'); 
+                
                 $this->session->set_userdata('titulo', "Imagenes del viaje ".$viaje[0]["numero_de_viaje"]." - ".date_format(date_create($viaje[0]["fecha_estimada_salida"]), 'd/m/Y')); 
                 
                 $image_crud->set_language('spanish');

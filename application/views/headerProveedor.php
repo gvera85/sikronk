@@ -26,6 +26,8 @@
         
         <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/responsive.dataTables.min.css">
         
+        <?php ini_set('date.timezone', 'America/Argentina/Buenos_Aires'); ?>  
+        
          <!--
             <link href="https://cdn.datatables.net/1.10.10/css/jquery.dataTables.min.css" rel="stylesheet" type="text/css"/>
             <link href="https://cdn.datatables.net/responsive/2.0.0/css/responsive.dataTables.min.css" rel="stylesheet" type="text/css"/>

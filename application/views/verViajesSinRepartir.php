@@ -167,7 +167,7 @@
                             <tr>
                                 <td><?php echo $lineas['id_viaje'] ?></td>
                                 <td><?php echo $lineas['numero_de_viaje'] ?></td>
-                                <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_estimada_salida']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_estimada_salida']), 'd/m/Y'); ?></td>                                                                                                
+                                <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_estimada_llegada']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_estimada_salida']), 'd/m/Y'); ?></td>                                                                                                
                                 <td><?php echo $lineas['proveedor'] ?></td>
                                 <td><?php echo $lineas['producto'] ?></td>
                                 <td><?php echo $lineas['marca'] ?></td>

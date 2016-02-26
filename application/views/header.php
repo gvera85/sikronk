@@ -90,3 +90,5 @@
     </div><!-- /.navbar-collapse -->
   </div><!-- /.container-fluid -->
 </nav>
+    
+    <?php ini_set('date.timezone', 'America/Argentina/Buenos_Aires'); ?>  

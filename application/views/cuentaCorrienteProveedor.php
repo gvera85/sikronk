@@ -237,10 +237,6 @@
                 
                 <tbody>
                 <?php 
-                
-                    $saldo = 0;
-                    
-                
                     if ($sinProductos == 1)
                     {
 
@@ -248,8 +244,6 @@
                             
                         $debe = $lineas['debe'];
                         $haber = $lineas['haber'];
-
-                        $saldo = $saldo +  $haber - $debe;     
                         
                         if ($lineas['tipo'] == 'Pago') {
                             $classTipo = 'label label-success';
