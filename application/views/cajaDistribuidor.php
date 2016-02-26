@@ -273,15 +273,6 @@
         
   </div>  
    
-    
-  <script type="text/javascript">     
-      
-	// For demo to fit into DataTables site builder...
-	$('#example')
-		.removeClass( 'display' )
-		.addClass('table table-hover table-bordered table-compact');        
-      
-  </script>  
-
+  
 </body>
 </html>
