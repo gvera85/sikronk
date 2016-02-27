@@ -272,6 +272,27 @@ class reporte_ventas_m extends CI_Model {
         return false;
     }
     
+    public function getEntregasPendientes($idProveedor)
+    {
+        $sql = "select * 
+                from vw_productos_del_viaje
+                where id_proveedor = ?
+                and id_estado = 1";
+            
+        $query = $this->db->query($sql, $idProveedor);
+
+        $viajes = $query->result_array();
+
+        if( is_array($viajes) && count($viajes) > 0 ) {
+          return $viajes;
+        }
+
+        return false;
+    }
+    
+    
+    
+    
     
     
     

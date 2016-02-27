@@ -234,7 +234,7 @@
             '<td> <span data-placement="bottom" data-toggle="tooltip" title="Botón para eliminar a este cliente">'+
                           '<button id="btnBorrar" class="btn btn-xs btn-danger"> - Cliente</button>'+
                     '</span></td>'+
-                    '<td align="center" colspan="2"> <span data-placement="bottom" data-toggle="tooltip" title="Seleccione el cliente al que quiere entregarle mercadería">'
+                    '<td align="center" colspan="2"> <span data-placement="top" data-toggle="tooltip" title="Seleccione el cliente al que quiere entregarle mercadería">'
                           +combo+
                     '</span></td>'+
                     '<td>'+

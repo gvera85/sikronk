@@ -108,9 +108,10 @@ class stock_m extends CI_Model {
     public function getViajeProductoSinRepartir($idProducto, $idVL )
     {    
         $sql = "select * 
-                from vw_productos_sin_repartir
+                from vw_productos_del_viaje
                 where id_producto = ?
-                and id_variable_logistica = ?";
+                and id_vl = ?
+                and cant_repartida_bultos < cant_real_bultos";
 
           $query = $this->db->query($sql, array($idProducto, $idVL));
 
@@ -127,8 +128,9 @@ class stock_m extends CI_Model {
     public function getProductosSinRepartir($idProveedor)
     {    
         $sql = "select * 
-                from vw_productos_sin_repartir
-                where id_proveedor = ?";
+                from vw_productos_del_viaje
+                where id_proveedor = ?
+                and cant_repartida_bultos < cant_real_bultos";
 
           $query = $this->db->query($sql, array($idProveedor));
 

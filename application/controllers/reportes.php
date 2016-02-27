@@ -111,7 +111,7 @@ class reportes extends CI_Controller {
         
         public function pagosPendientesDeRecibir()
 	{   
-            $this->session->set_userdata('ruta', "Resumen > Pagos pendientes de recibir");                
+            $this->session->set_userdata('ruta', "Resumen > Pagos pendientes de recibir");     
             
             $this->load->view('pagosPendientesDeRecibir.php');
 	}
@@ -139,9 +139,15 @@ class reportes extends CI_Controller {
         
         public function entregasPendientes()
 	{   
-            $this->session->set_userdata('ruta', "Resumen > Entregas pendientes");                
+            $this->session->set_userdata('ruta', "Resumen > Entregas pendientes");  
             
-            $this->load->view('entregasPendientes.php');
+            $this->load->model('reporte_ventas_m');  
+            
+            $viajes = $this->reporte_ventas_m->getEntregasPendientes($this->session->userdata('empresa'));
+            
+            $data['viajesPendientesDeRecibir'] = $viajes;
+            
+            $this->load->view('entregasPendientes.php', $data);
 	}
         
         public function viajesMensuales($mes, $anio)

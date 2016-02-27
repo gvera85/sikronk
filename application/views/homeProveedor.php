@@ -93,7 +93,7 @@
 				
 				<a class="quick-button metro red span2" href="<?php echo base_url() ?>index.php/cuentaCorrienteProveedor/getCCProveedorPorFiltro/<?php echo $this->session->userdata('empresa') ?>/ccProveedor">
 					<i class="icon-money"></i>$0
-                                        <p>Cuenta corriente</p>
+                                        <p href="#" title="Detalle de todas las deudas e ingresos con el distribuidor" style="font-size:small;"  data-rel="tooltip">Cuenta corriente</p>
 				</a>
 				
 				<a class="quick-button metro green span2" href="<?php echo base_url() ?>index.php/reportes/verProductos">
@@ -103,7 +103,8 @@
 				
 				<a class="quick-button metro black span2" href="<?php echo base_url() ?>index.php/reportes/entregasPendientes">
 					<i class="icon-calendar"></i>
-					<p>Entregas pendientes</p>
+					<p href="#" title="Son los productos que todavía no arribaron al distribuidor (están en viaje)" style="font-size:small;"  data-rel="tooltip">Entregas pendientes</p>
+                                        
 				</a>
 				
 				<div class="clearfix"></div>

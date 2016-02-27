@@ -116,8 +116,8 @@ class ViajeVL extends CI_Controller{
     $crud->set_theme('datatables');
     
     $crud->set_table('productos_viaje');
-    $crud->edit_fields('id_producto', 'id_variable_logistica', 'cantidad_bultos', 'cantidad_pallets');
-    $crud->add_fields('id_producto', 'id_variable_logistica','cantidad_bultos', 'cantidad_pallets');
+    $crud->edit_fields('id_producto', 'id_variable_logistica', 'cantidad_bultos');
+    $crud->add_fields('id_producto', 'id_variable_logistica','cantidad_bultos');
     
     //$crud->set_theme('datatables');
    
@@ -127,6 +127,7 @@ class ViajeVL extends CI_Controller{
     
     $crud->fields('id_viaje','id_producto', 'id_variable_logistica','cantidad_bultos', 'cantidad_pallets');
     $crud->change_field_type('id_viaje','invisible');
+    $crud->change_field_type('cantidad_pallets','invisible');
     
     $crud->callback_before_insert(array($this,'viaje_callback'));
     $crud->callback_before_update(array($this,'viaje_callback'));

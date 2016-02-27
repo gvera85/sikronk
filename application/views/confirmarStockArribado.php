@@ -177,7 +177,7 @@
                 <?php if ($sinProductos == 0 && $modo == "edicion") 
                       {?>
                 <button id="btnsubmit" value="1" type="submit" class="btn btn-default" data-placement="left" data-toggle="tooltip" title="Se guardarán los cambios y luego se podrá seguir modificando valores">Guardar</button>
-                <button id="botonCierreStock" value="2" class="btn btn-success" data-placement="rigth" data-toggle="tooltip" title="Si usted confirma el viaje ya NO podrá modificar las cantidades repartidas">Confirmar stock</button>
+                <button id="botonCierreStock" value="2" class="btn btn-success" data-placement="rigth" data-toggle="tooltip" title="Si usted confirma el stock ya NO podrá modificar las cantidades arribadas">Confirmar stock</button>
                 <input id="botonPresionado" type="hidden" value="botonGuardar" name="botonPresionado">
                 <?php }?>
             </form>
