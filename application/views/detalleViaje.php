@@ -10,7 +10,7 @@
                 $idViaje = $resumen['id'];
                 $nroViaje = $resumen['numero_de_viaje'];
                 $fechaSalida = date_format(date_create($resumen['fecha_estimada_salida']), 'd/m/Y');
-                $valorMercaderia = $resumen['valor_mercaderia'];
+                $valorMercaderia = $resumen['valor_mercaderia_proveedor'];
                 $valorGastosProveedor = $resumen['valor_gastos_proveedor'];
                 $valorGastosDistribuidor = $resumen['valor_gastos_distribuidor'];
                 $valorAPagarAlProveedor = $valorMercaderia - $valorGastosProveedor;
@@ -108,7 +108,7 @@
                 {
                     foreach( $lineasReparto as $lineas ) : 
                         $cantBultosAPagar = ($lineas['cantidad_bultos'] - $lineas['cant_bultos_merma']);
-                        $totalAPagar = $cantBultosAPagar * $lineas['precio_caja'];
+                        $totalAPagar = $cantBultosAPagar * $lineas['precio_sugerido_caja'];
 
                         ?> 
 
@@ -117,7 +117,7 @@
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_reparto']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_reparto']), 'd/m/Y'); ?></td>
                             <td><?php echo $lineas['descripcion_producto'] ?></td>
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'd/m/Y'); ?></td>
-                            <td><?php echo $lineas['precio_caja'] ?></td>
+                            <td><?php echo $lineas['precio_sugerido_caja'] ?></td>
                             <td><?php echo $lineas['cantidad_bultos'] ?></td>
                             <td><?php echo $lineas['cant_bultos_merma'] ?></td>
                             <td><?php echo $totalAPagar ?></td>

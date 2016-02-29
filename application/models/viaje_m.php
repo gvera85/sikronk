@@ -44,7 +44,8 @@ class viaje_m extends CI_Model {
                     c.descripcion vl, c.peso, c.base_pallet, c.altura_pallet, c.codigo_vl,
                     getCantBultosPlanificados(d.id, b.id, c.id) cant_bultos_plani,
                     getCantBultosRepartidos(d.id, b.id, c.id) cant_repartida,
-                    d.id_estado
+                    d.id_estado,
+                    a.precio_sugerido_bulto
                     from productos_viaje a
                     join producto b on a.id_producto = b.id
                     join variable_logistica c on a.id_variable_logistica = c.id
@@ -126,7 +127,8 @@ class viaje_m extends CI_Model {
                             id_motivo_merma,
                             fecha_valorizacion, 
                             c.descripcion descripcion_producto,
-                            getCantBultosRepartidos(a.id_viaje, a.id_producto, a.id_variable_logistica) cant_repartida
+                            getCantBultosRepartidos(a.id_viaje, a.id_producto, a.id_variable_logistica) cant_repartida,
+                            a.precio_sugerido_caja
                     from reparto a
                     join cliente b on a.id_cliente = b.id
                     join producto c on a.id_producto = c.id
@@ -278,11 +280,12 @@ class viaje_m extends CI_Model {
 
     }
     
-    public function updateReparto($precioCaja, $cantMerma, $idReparto, $fechaValorizacion)
+    public function updateReparto($precioParaElProveedor, $precioCaja, $cantMerma, $idReparto, $fechaValorizacion)
     {    
         $this->load->helper('date');
         
         $data = array(
+                'precio_sugerido_caja'  => $precioParaElProveedor,
                 'precio_caja' => $precioCaja,
                 'cant_bultos_merma' => $cantMerma,
                 'fecha_valorizacion' => $fechaValorizacion

@@ -387,12 +387,13 @@ class Planificacion extends CI_Controller{
         $idReparto = $_POST['idReparto'];
         $viaje = $_POST['idViaje'];
         $precioBulto = $_POST['precioBulto'];
+        $precioParaElProveedor = $_POST['precioParaElProveedor'];
         $cantMerma = $_POST['cantMerma'];
         $fechaValorizacion = $_POST['fechaValorizacion'];
         
         if ($botonPresionado == "btnVolverAConfirmarViaje") 
         {
-            transicionSimple($viaje[0], ESTADO_VIAJE_CONFIRMANDO_STOCK, "viaje");
+            transicionSimple($viaje[0], ESTADO_VIAJE_REPARTO_EN_PROCESO, "viaje");
             echo "El viaje puede ser confirmado nuevamente";
         }
         else
@@ -406,7 +407,7 @@ class Planificacion extends CI_Controller{
 
             for($i=0; $i<$longitud; $i++)
             {
-                $this->viaje_m->updateReparto($precioBulto[$i], $cantMerma[$i], $idReparto[$i], $fechaValorizacion[$i]);
+                $this->viaje_m->updateReparto($precioParaElProveedor[$i], $precioBulto[$i], $cantMerma[$i], $idReparto[$i], $fechaValorizacion[$i]);
             }
 
             if ($botonPresionado == "botonConfirmarPrecio") 

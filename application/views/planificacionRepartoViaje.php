@@ -86,6 +86,7 @@
                                     <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Número de línea">#</span></th>
                                     <th><div data-placement="bottom" data-toggle="tooltip" title="Producto a ser repartido">Producto</div></th>
                                     <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Presentación</span></th>
+                                    <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Precio sugerido por el proveedor">Precio sugerido</span></th>
                                     <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos"># Bultos</span></th>
                                     <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de pallets"># Pallets</span></th>
                                 </tr>
@@ -115,6 +116,7 @@
                                     <td id="linea_<?php echo $cantidad?>" ><?php echo $cantidad?></td>
                                     <td id="producto"><?php echo $lineas['producto'] ?></td>
                                     <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
+                                    <TD> <?php echo "$". $lineas['precio_sugerido_bulto'] ?></TD>
                                     <TD > <?php echo $lineas['cantidad_bultos'] ?> <span id="tdBultos_<?php echo $lineas['id_vl'] ?>">(<?php echo $lineas['cantidad_bultos']-$lineas['cant_bultos_plani'] ?> restantes)</span> </TD>
                                     
                                     
@@ -237,6 +239,8 @@
                     '<td align="center" colspan="2"> <span data-placement="top" data-toggle="tooltip" title="Seleccione el cliente al que quiere entregarle mercadería">'
                           +combo+
                     '</span></td>'+
+                    '<td>'+
+                    '</td>'+
                     '<td>'+
                         '<div >'+ 
                         '<input data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos a entregar a este cliente" id="cantBultos_'+nroLineaAgregada+'" name="bultos[]" type="text"  style="width:50px; text-align:right;" class="cantidad_bultos_'+idVL+' numerico" onchange="validarBultos('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\','+basePallet+','+alturaPallet+',this)";>'+

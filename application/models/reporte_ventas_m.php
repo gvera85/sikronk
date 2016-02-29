@@ -138,7 +138,7 @@ class reporte_ventas_m extends CI_Model {
                     count(distinct a.id) cant_viajes,   
                     IFNULL(sum(cantidad_bultos),0) total_bultos	,
                     IFNULL(sum(cantidad_pallets),0) total_pallets,
-                    IFNULL(sum((precio_caja * cantidad_bultos)),0) total_facturado	
+                    IFNULL(sum((precio_sugerido_caja * cantidad_bultos)),0) total_facturado	
                     from viaje a
                     join reparto c on c.id_viaje = a.id
                     join producto d on c.id_producto = d.id 
@@ -171,7 +171,7 @@ class reporte_ventas_m extends CI_Model {
     {
          if($idProveedor != FALSE) {
             $sql = "select IFNULL(sum(cantidad_bultos),0) total_bultos, IFNULL(sum(cantidad_pallets),0) total_pallets, 
-                    IFNULL(sum((precio_caja * cantidad_bultos)),0) total_facturado
+                    IFNULL(sum((precio_sugerido_caja * cantidad_bultos)),0) total_facturado
                     from reparto a
                     join viaje b on a.id_viaje = b.id
                     where b.id_proveedor = ?
@@ -212,7 +212,7 @@ class reporte_ventas_m extends CI_Model {
                     a.id_estado id_estado,
                     b.razon_social transportista,
                     c.descripcion estado,
-                    getMontoViaje(a.id) - getMontoGastosProveedor(a.id) montoViaje
+                    getMontoViajeProveedor(a.id) - getMontoGastosProveedor(a.id) montoViaje
                     from viaje a
                     left join transportista b on a.id_empresa_transportista = b.id
                     join estado c on a.id_estado = c.id
@@ -235,6 +235,7 @@ class reporte_ventas_m extends CI_Model {
     {
         $sql = "select a.id, a.numero_de_viaje, a.fecha_estimada_salida,
                 getMontoViaje(a.id) valor_mercaderia, 
+                getMontoViajeProveedor(a.id) valor_mercaderia_proveedor, 
                 getMontoGastosProveedor(a.id) valor_gastos_proveedor,
                 getMontoGastosDistribuidor(a.id) valor_gastos_distribuidor
                 from viaje a 

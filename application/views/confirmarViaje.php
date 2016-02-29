@@ -90,6 +90,7 @@
                                     <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Número de línea">#</span></th>
                                     <th><span data-placement="bottom" data-toggle="tooltip" title="Producto que se pidió al proveedor">Producto</span></th></th>
                                     <th style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Presentación</span></th>
+                                                                        <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Precio sugerido por el proveedor">Precio sugerido</span></th>
                                     <th rowspan="2" style="vertical-align: middle; text-align: center"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos"># Bultos</span></th>
                                     <th rowspan="2" style="vertical-align: middle; text-align: center"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de pallets"># Pallets</span></th>
                                 </tr>
@@ -120,6 +121,7 @@
                                 <td id="linea_<?php echo $cantidad?>"><B><?php echo $cantidad?></B></td>
                                 <td id="producto" align="left"><?php echo $lineas['producto'] ?></td>
                                 <TD align="left"> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
+                                <TD> <?php echo "$". $lineas['precio_sugerido_bulto'] ?></TD>
                                 <TD > 
                                     <?php 
                                     $cantBultos = $lineas['cant_real_bultos'] == 0 ? $lineas['cantidad_bultos'] : $lineas['cant_real_bultos'];
@@ -185,6 +187,7 @@
                                     
                                     </td>
                                     <td style="vertical-align: middle; text-align: center"> <?php echo $reparto['razon_social'] ?> </td>
+                                    <td> </td>
                                     <TD style="vertical-align: middle; text-align: center"> <?php echo $reparto['cantidad_bultos'] ?></TD>
                                     <TD style="vertical-align: middle; text-align: center"> <?php echo $reparto['cantidad_pallets'] ?></TD>
                                     <input type="hidden" id="idProducto" name="idProducto[]" value=<?php echo $reparto['id_producto'] ?>>
@@ -292,6 +295,8 @@ $(function() {
                     '<td align="center" colspan="1"> <span data-placement="bottom" data-toggle="tooltip" title="Seleccione el cliente al que quiere entregarle mercadería">'
                           +combo+
                     '</span></td>'+
+                    '<td>'+
+                    '</td>'+
                     '<td align="center">'+
                         '<div >'+
                         '<input data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos a entregar a este cliente" id="cantBultos_'+nroLineaAgregada+'" class="cantidad_bultos_'+idVL+' numerico" type="text" onchange="validarBultos('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\','+basePallet+','+alturaPallet+',this);" style="width:50px; text-align:right" name="bultos[]" >'+
@@ -369,6 +374,13 @@ $(function() {
    $(document).on("click","#btnCierreViaje",function( event ) {  
       
         $('input#botonPresionado').val("botonCierreViaje").css('border','3px solid blue');
+        
+        //event.preventDefault();
+   });
+   
+   $(document).on("click","#btnsubmit",function( event ) {  
+      
+        $('input#botonPresionado').val("botonGuardar");
         
         //event.preventDefault();
    });

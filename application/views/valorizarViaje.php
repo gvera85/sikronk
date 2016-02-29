@@ -77,9 +77,10 @@
             $nroViaje = $resumen['numero_de_viaje'];
             $fechaSalida = date_format(date_create($resumen['fecha_estimada_salida']), 'd/m/Y');
             $valorMercaderia = $resumen['valor_mercaderia'];
+            $valorMercaderiaProveedor = $resumen['valor_mercaderia_proveedor'];
             $valorGastosProveedor = $resumen['valor_gastos_proveedor'];
             $valorGastosDistribuidor = $resumen['valor_gastos_distribuidor'];
-            $valorAPagarAlProveedor = $valorMercaderia - $valorGastosProveedor;
+            $valorAPagarAlProveedor = $valorMercaderiaProveedor - $valorGastosProveedor;
         endforeach; 
     }      
     
@@ -134,9 +135,15 @@
                     <div class="panel-body">
                         <table class="table compact table-striped" style="font-size:small; text-align: left">
                             <tr>
-                                    <td>Valor total de la mercadería</td>
+                                    <td>Valor total de la mercadería cobrada a los clientes</td>
                                     <td>    
-                                            <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-success" style="font-size:small;" title="Ver detalle en la tabla situada en la parte inferior de la pantalla">$<?php echo $valorMercaderia ?></button>
+                                            <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-success" style="font-size:small;" title="Valor total de la mercadería facturada a los clientes">$<?php echo $valorMercaderia ?></button>
+                                    </td>
+                            </tr>
+                            <tr>
+                                    <td>Valor total de la mercadería adeudada al proveedor</td>
+                                    <td>    
+                                            <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-danger" style="font-size:small;" title="Valor total de la mercadería informada al proveedor">$<?php echo $valorMercaderiaProveedor ?></button>
                                     </td>
                             </tr>
                             <tr>
@@ -154,7 +161,7 @@
                             <tr>
                                     <td><b><i>Valor total a abonar al proveedor</i></b></td>
                                     <td>
-                                        <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-success" style="font-size:small;" title="Es el valor total de la mercadería, restandole los gastos a cargo del proveedor">$<?php echo $valorAPagarAlProveedor ?></button>
+                                        <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-danger" style="font-size:small;" title="Es el valor total de la mercadería, restandole los gastos a cargo del proveedor">$<?php echo $valorAPagarAlProveedor ?></button>
                                     </td>
                             </tr>
                         </table>
@@ -188,7 +195,7 @@
                                             <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos"># Bultos </span></th>
                                             <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de pallets"># Pallets </span></th>
                                             <th rowspan="2" style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos con merma"># Bultos con merma </span></th>
-                                            <th colspan="2" rowspan="2" style="vertical-align: middle;"> Valorización </th>
+                                            <th colspan="3" rowspan="2" style="vertical-align: middle;"> Valorización </th>
                                     </tr>
                                     <tr class="info">
                                         
@@ -201,16 +208,25 @@
                                 <tbody>
                                 <?php 
                                  $cantidadLineasReparto = 0;
-                                 foreach( $lineasViaje as $lineas ) : ?>    
-                                    <?php $cantidad++; ?>
+                                 foreach( $lineasViaje as $lineas ) : 
+                                    
+                                    
+                                    if ($lineas['precio_sugerido_bulto'] != 0)
+                                        $toolTipPrecioSugerido = "Precio sugerido por el proveedor: ".$lineas['precio_sugerido_bulto']." por bulto";
+                                    else
+                                        $toolTipPrecioSugerido = "El proveedor no sugirió un precio para este producto";
+                                        
+                                 
+                                    $cantidad++; ?>
                                         <tr class="danger">
                                             <td id="linea_<?php echo $cantidad?>" ><b><?php echo $cantidad?></b></td>
                                             <td id="producto"><?php echo $lineas['producto'] ?></td>
                                             <TD> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
-                                            <TD> <?php echo $lineas['cant_real_bultos'] ?> </TD> 
+                                            <TD> <span data-placement="bottom" data-toggle="tooltip" title="<?php echo $toolTipPrecioSugerido ?>"><?php echo $lineas['cant_real_bultos'] ?></span> </TD> 
                                             <TD> <?php echo $lineas['cant_real_pallets'] ?> </TD> 
                                             <TD> 0 </TD> 
-                                            <TD> <b>Precio x bulto [$]</b> </TD> 
+                                            <TD> <b>Precio proveedor [$]</b> </TD> 
+                                            <TD> <b>Precio cliente [$]</b> </TD> 
                                             <TD> <b>Precio total [$] </b> </TD> 
                                             <input type="hidden" id="Viaje" name="Viaje" value="<?php echo $lineas['id_viaje'] ?>">
                                             <input type="hidden" id="VL" name="VL" value="<?php echo $lineas['id_vl'] ?>">
@@ -220,12 +236,15 @@
                                             <input type="hidden" id="idViajeViaje" name="idViajeViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
                                         </tr>
 
-                                        <?php 
+                                        <?php                                         
                                         if (is_array($lineasReparto))
                                         {
                                             foreach( $lineasReparto as $reparto ) : 
                                             if ($reparto['id_producto'] == $lineas['id_producto'] && $reparto['id_variable_logistica'] == $lineas['id_vl'])
                                             {
+                                            
+                                                $precioSugerido = $reparto['precio_sugerido_caja'] == 0 ? $lineas['precio_sugerido_bulto'] : $reparto['precio_sugerido_caja'];    
+                                            
                                             ?>  
                                                 <tr class="warning">
                                                   <?php $cantidadLineasReparto++; ?>
@@ -260,8 +279,14 @@
 
                                                   <TD>
                                                       <span data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos de este producto que tuvieron merma (no aptos para la venta)"> 
-                                                      <input class="cant_merma" required style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, precioBulto_<?php echo $cantidadLineasReparto?>.value, this, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMerma[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma'] ?>"> </TD> 
+                                                      <input class="cant_merma" required style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, precioBulto_<?php echo $cantidadLineasReparto?>.value, this, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMerma[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma'] ?>"> 
                                                       </span>
+                                                  </TD> 
+                                                  <TD>
+                                                      <span data-placement="bottom" data-toggle="tooltip" title="Ingrese el precio que se mostrará al proveedor">   
+                                                      $ <input class="importe_sugerido" required style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioSugerido_<?php echo $cantidadLineasReparto?>" name="precioParaElProveedor[]" type="text" size="10" value="<?php echo $precioSugerido ?>"> 
+                                                      </span>
+                                                  </TD>  
                                                   <TD>
                                                       <span data-placement="bottom" data-toggle="tooltip" title="Ingrese el precio acordado con el cliente">   
                                                       $ <input class="importe_linea" required style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calcularPrecioLinea(this.value,bultos_<?php echo $cantidadLineasReparto?>.value, cant_merma_<?php echo $cantidadLineasReparto?>.value, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="precioBulto[]" type="text" size="10" value="<?php echo $reparto['precio_caja'] ?>"> 
@@ -275,7 +300,8 @@
                                                   ?>
 
                                                   <TD> <?php echo $reparto['cant_bultos_merma'] ?> </TD> 
-                                                  <TD>  <?php echo $reparto['precio_caja'] ?> </TD>
+                                                  <TD> <?php echo $reparto['precio_sugerido_caja'] ?> </TD> 
+                                                  <TD> <?php echo $reparto['precio_caja'] ?> </TD>
 
                                                   <?php
                                                   }
