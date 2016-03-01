@@ -21,16 +21,18 @@ class tipo_debito_credito extends CI_Controller{
   
   function index(){
     $this->grocery_crud->set_table('tipo_debito_credito');
-    $this->grocery_crud->edit_fields('activo','descripcion','es_debito');
-    $this->grocery_crud->add_fields('activo','descripcion','es_debito');
+    $this->grocery_crud->edit_fields('activo','descripcion','id_tipo');
+    $this->grocery_crud->add_fields('activo','descripcion','id_tipo');
     
     $this->grocery_crud->set_theme('datatables');
     
-    $this->grocery_crud->required_fields('activo','descripcion','es_debito');
-    $this->grocery_crud->columns('activo','descripcion','es_debito');
+    $this->grocery_crud->required_fields('activo','descripcion','id_tipo');
+    $this->grocery_crud->columns('activo','descripcion','id_tipo');
     
-    $this->grocery_crud->change_field_type('es_debito', 'true_false');
     $this->grocery_crud->change_field_type('activo', 'true_false');
+    
+    $this->grocery_crud->display_as('id_tipo','Tipo');        
+    $this->grocery_crud->set_relation('id_tipo','tipo_mov','descripcion');
     
     $output = $this->grocery_crud->render();
     $this->debito_credito_output($output);
