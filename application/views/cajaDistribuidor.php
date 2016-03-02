@@ -232,9 +232,12 @@
                         $debe = $lineas['debe'];
                         $haber = $lineas['haber'];
                         $saldoParcial = $lineas['saldo_parcial'];
+
+                        $linkHaciaDetalles = "#";    
                         
                         if ($lineas['tipo'] == 'Ingreso') {
                             $classTipo = 'label label-success';
+                            $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verPagoCliente').'/'.$lineas['id']."'". ')';
                         } else if ($lineas['tipo'] == 'Egreso'){
                             $classTipo = "label label-danger";
                         } else if ($lineas['tipo'] == 'Gasto'){
@@ -246,7 +249,11 @@
                         }
                     ?>
                     <TR>
-                            <TD> <span class="<?php echo $classTipo ?>" id="tipoMovimiento"> <?php echo $lineas['tipo'] ?></span></TD>
+                            <TD> 
+                                <a href=<?php echo $linkHaciaDetalles;?> >
+                                <span class="<?php echo $classTipo ?>" id="tipoMovimiento"> <?php echo $lineas['tipo'] ?></span>
+                                </a>
+                            </TD>
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_pago']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_pago']), 'd/m/Y'); ?></td>
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['stamp']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['stamp']), 'd/m/Y'); ?></td>
                             <TD> <?php echo $lineas['razon_social'] ?></TD>
