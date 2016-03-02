@@ -54,6 +54,7 @@ class Viaje extends CI_Controller{
         
     $this->grocery_crud->add_action('Prod', base_url().'/assets/img/iconoProducto.png', '','ui-icon-image',array($this,'link_hacia_productos'));
     $this->grocery_crud->add_action('Img', base_url().'/assets/img/iconoImagenes.png', '','ui-icon-image',array($this,'link_hacia_imagenes'));
+    $this->grocery_crud->add_action('D', base_url().'/assets/img/iconoDetalle.png', '','ui-icon-image',array($this,'link_hacia_detalle'));
     
     $this->grocery_crud->set_rules('patente_semi','Patente semi','callback_validarPatente');
     $this->grocery_crud->set_rules('patente_camion','Patente del camion','callback_validarPatente');
@@ -100,6 +101,30 @@ class Viaje extends CI_Controller{
   function link_hacia_imagenes($primary_key , $row)
   {
         return "javascript:window.open('" . base_url('/index.php/imagenes/viaje'). '/' .$row->id. "')";
+  }
+  
+  function link_hacia_detalle($primary_key , $row)
+  {
+        if ($row->id_estado != ESTADO_VIAJE_CREADO && 
+            $row->id_estado != ESTADO_VIAJE_PLANIFICANDO_REPARTO && 
+            $row->id_estado != ESTADO_VIAJE_REPARTO_PLANIFICADO && 
+            $row->id_estado != ESTADO_VIAJE_REVISANDO_STOCK &&
+            $row->id_estado != ESTADO_VIAJE_STOCK_ARRIBADO_Y_CONFIRMADO
+           )
+        {
+            return "javascript:window.open('" . base_url('/index.php/planificacion/verViaje'). '/' .$row->id. "')";
+        }
+        else 
+        {
+            return "javascript:alert('No se puede ver el detalle del viaje en este estado')";
+        }
+       
+        
+       /* define('ESTADO_VIAJE_CREADO','1');
+define('ESTADO_VIAJE_PLANIFICANDO_REPARTO','2');
+define('ESTADO_VIAJE_REPARTO_PLANIFICADO','3');
+define('ESTADO_VIAJE_REVISANDO_STOCK','11');*/
+        
   }
   
     
