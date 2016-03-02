@@ -50,12 +50,12 @@ class caja_distribuidor_m extends CI_Model {
                     union
                         SELECT 'Ajuste' Tipo, fecha, stamp, '-' razon_social,
                         observaciones descripcion,
-                          CASE tipo 
-                            WHEN 0 THEN importe  
+                          CASE id_tipo 
+                            WHEN 1 THEN importe  
                                 ELSE 0 
                           END debe,
-                         CASE tipo 
-                            WHEN 1 THEN importe    
+                         CASE id_tipo 
+                            WHEN 2 THEN importe    
                                 ELSE 0 
                           END haber,  
                         id
