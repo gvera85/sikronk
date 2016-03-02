@@ -7,10 +7,10 @@ class notaDeCreditoDebito extends CI_Controller{
     parent::__construct();
                 
     $this->load->library('grocery_CRUD');
+    $this->load->library('ajax_grocery_CRUD');
+    
     $this->load->database();
     $this->load->helper('url');
-
-    $this->grocery_crud->set_language("spanish");
     
     $this->session->set_userdata('titulo', 'Nota de crédito/débito');
              
@@ -20,22 +20,30 @@ class notaDeCreditoDebito extends CI_Controller{
   }
   
   function index(){
-    $this->grocery_crud->set_table('nota_credito_debito');
-    $this->grocery_crud->edit_fields('tipo','importe', 'fecha','observaciones');
-    $this->grocery_crud->add_fields('tipo','importe', 'fecha','observaciones');
+    $crud = new ajax_grocery_CRUD();  
+    $crud->set_language("spanish");      
+      
+    $crud->set_table('nota_credito_debito');
+    $crud->edit_fields('id_tipo', 'id_tipo_credito_debito','importe', 'fecha','observaciones');
+    $crud->add_fields('id_tipo', 'id_tipo_credito_debito','importe', 'fecha','observaciones');
     
-    $this->grocery_crud->set_theme('datatables');
+    $crud->set_theme('datatables');
    
-    $this->grocery_crud->set_subject('Nota de crédito/débito');
-    $this->grocery_crud->required_fields('tipo','importe', 'fecha');
-    $this->grocery_crud->columns('fecha', 'tipo','importe','observaciones');
+    $crud->set_subject('Nota de crédito/débito');
+    $crud->required_fields('id_tipo', 'id_tipo_credito_debito','importe', 'fecha');
+    $crud->columns('fecha', 'id_tipo', 'id_tipo_credito_debito','importe','observaciones');
     
-   
-    $this->grocery_crud->field_type('tipo','dropdown', array('0' => 'Débito', '1' => 'Crédito'));
+    $crud->display_as('id_tipo','Tipo');        
+    $crud->set_relation('id_tipo','tipo_mov','descripcion');
     
-    //$this->grocery_crud->callback_column('credito',array($this,'_callback_tipo_nota'));
+    $crud->display_as('id_tipo_credito_debito','Concepto');        
+    $crud->set_relation('id_tipo_credito_debito','tipo_debito_credito','descripcion');
     
-    $output = $this->grocery_crud->render();
+    $crud->set_relation_dependency('id_tipo_credito_debito','id_tipo','id_tipo');
+    
+    //$crud->callback_column('credito',array($this,'_callback_tipo_nota'));
+    
+    $output = $crud->render();
     $this->notaCredito($output);
   }
   
