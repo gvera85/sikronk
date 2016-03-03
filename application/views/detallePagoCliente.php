@@ -24,6 +24,24 @@
        
        $('[data-toggle="popover"]').popover(); 
        $('[data-toggle="tooltip"]').tooltip();
+       
+       $(document).on("click","#btnInfoCheque",function( event ) {  
+           
+            var miBoton = $(this).attr('value');     
+            
+            $.ajax({                        
+                        url:"<?php echo base_url() ?>index.php/detallesEntidades/verDetalleCheque/"+miBoton
+                  })
+                      .done(function(data) {
+                        $("#contenidoModal").html(data);
+                        console.log( "Sample of data:", data.slice( 0, 100 ) );
+                      })
+                      .fail(function(data) {
+                        alert( "error" );
+                        console.log( "Sample of data:", data.slice( 0, 100 ) );
+                      });
+        
+       });
         
         
     });
@@ -60,6 +78,8 @@
             $nroFactura = $cabecera['id'];
             $monto = $cabecera['monto'];
             $fechaPago = date_format(date_create($cabecera['fecha_pago']), 'd/m/Y');
+            $observaciones = $cabecera['observaciones'];
+            $cliente = $cabecera['razon_social'];
         endforeach; 
     }      
               
@@ -76,15 +96,21 @@
                     <div class="panel-body">
                         <table class="table compact table-striped" style="font-size:small; text-align: left">
                             <tr>
+                                    <td>Cliente</td>
+                                    <td>    
+                                            <?php echo $cliente ?>
+                                    </td>
+                            </tr>
+                            <tr>
                                     <td>Número de factura</td>
                                     <td>    
-                                            <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-danger" style="font-size:small;" title="Numero interno que el sistema asignó a este pago"><?php echo $nroFactura ?></button>
+                                            <span data-toggle="tooltip" data-placement="bottom" title="Numero interno que el sistema asignó a este pago"><?php echo $nroFactura ?></span>
                                     </td>
                             </tr>
                             <tr>
                                     <td>Fecha de pago</td>
                                     <td>    
-                                            <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-success" style="font-size:small;" title="Fecha en que se realizó el pago"><?php echo $fechaPago ?></button>
+                                            <span data-toggle="tooltip" data-placement="bottom" title="Fecha en que se realizó el pago"><?php echo $fechaPago ?></span>
                                     </td>
                             </tr>
                             <tr>
@@ -93,10 +119,16 @@
                                             <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-success" style="font-size:small;" title="Monto total del pago">$<?php echo $monto ?></button>
                                     </td>
                             </tr>
+                            <tr>
+                                    <td>Observaciones</td>
+                                    <td>    
+                                            <?php echo $observaciones ?>
+                                    </td>
+                            </tr>
                             <tr>                                
                                 <TD colspan="2" style="text-align: center;"> 
                                     <a href=javascript:window.open('<?php echo base_url('/index.php/imagenes/pagoCliente').'/'.$nroFactura.'/'.$monto ?>')>                                     
-                                        <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-info" style="font-size:small;" title="Imagenes relacionadas a este pago (subidas por el usuario)">Ver imagenes</button>
+                                        <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-info" style="font-size:small;" title="Imágenes relacionadas a este pago (subidas por el usuario)">Ver imágenes</button>
                                     </a> 
                                 </TD>
                             </tr>
@@ -114,7 +146,7 @@
                 </div>
                 <div id="collapse2" class="panel-collapse collapse in">
                     <div class="panel-body">
-                        <table id="tblprod" class="table compact table-striped table-hover table-condensed table-responsive">
+                        <table id="tblDetalle" class="table compact table-striped table-hover table-condensed table-responsive">
                             <thead>
                                 <tr class="info">                                      
                                         <th><span data-placement="top" data-toggle="tooltip" title="Importe abonado">Importe</span></th>
@@ -126,7 +158,18 @@
                              foreach( $lineasPago as $lineas ) : ?>
                                     <tr>
                                         <td id="producto">$<?php echo $lineas['importe'] ?></td>
-                                        <td id="producto"><?php echo $lineas['modo_pago'] ?></td>
+                                        <td id="producto">
+                                        <?php if ($lineas['id_modo_pago'] == 2) 
+                                        {?>    
+                                            <button type="button" value="<?php echo $lineas['id'] ?>" class="btn btn-xs btn-info" style="font-size:small;" id="btnInfoCheque" data-toggle="modal" data-target="#myModal"><?php echo $lineas['modo_pago'] ?></button>
+                                        <?php                                         
+                                        }
+                                        else
+                                        {                                        
+                                           echo $lineas['modo_pago'];
+                                        }?>                                                
+                                        </td>
+                                        
                                     </tr>
                               <?php endforeach; ?>
                             </tbody>
@@ -137,6 +180,29 @@
                 
         
 </div>
+    
+ <!-- Modal (solo visible al hacer clic en el modo de pago en cheques -->
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Datos del cheque</h4>
+          </div>
+          <div class="modal-body">
+              <div id="contenidoModal">
+                  
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+
+      </div>
+    </div>  
     
 </body>
 </html>

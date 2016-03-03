@@ -49,7 +49,7 @@ class ConfirmarViaje extends CI_Controller{
     $this->grocery_crud->display_as('id_chofer','Chofer');
     $this->grocery_crud->set_relation('id_chofer','chofer','{dni} - {nombre} {apellido} - Tel: {telefono}');
         
-    $this->grocery_crud->add_action('Confirmar', base_url().'/assets/img/okVerde.png', '','ui-icon-image',array($this,'link_hacia_confirmacion'));
+    $this->grocery_crud->add_action('Reparto', base_url().'/assets/img/vl.png', '','ui-icon-image',array($this,'link_hacia_confirmacion'));
     
     $this->grocery_crud->set_rules('patente_semi','Patente semi','callback_validarPatente');
     $this->grocery_crud->set_rules('patente_camion','Patente del camion','callback_validarPatente');

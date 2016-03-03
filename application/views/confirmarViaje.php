@@ -57,7 +57,7 @@
     }
     else
     {
-        $titulo = "Confirmación de viaje - Viaje número ".$lineasViaje[0]['numero_de_viaje']." - ".$lineasViaje[0]['proveedor'];
+        $titulo = "Reparto del viaje - Viaje número ".$lineasViaje[0]['numero_de_viaje']." - ".$lineasViaje[0]['proveedor'];
         
         if ($lineasViaje[0]['id_estado'] != 12 && $lineasViaje[0]['id_estado'] != 4) /* El viaje ya tiene los precios acordados, por eso se ocultan los botones */ {
             $modo = "viajeCerrado";
