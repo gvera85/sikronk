@@ -45,6 +45,7 @@ class pagoProveedor extends CI_Controller{
     $crud->order_by('fecha_pago','desc');
     
     $crud->add_action('Items', base_url().'/assets/img/iconoGanancia.png', '','ui-icon-image',array($this,'link_hacia_lineas'));
+    $crud->add_action('Img', base_url().'/assets/img/iconoImagenes.png', '','ui-icon-image',array($this,'link_hacia_imagenes'));
     
     $output = $crud->render();
     $this->pago_output($output);
@@ -60,5 +61,13 @@ class pagoProveedor extends CI_Controller{
       return "javascript:window.open('" . base_url('/index.php/pagoProveedoresLineas/popUp'). '/' . $row->id_proveedor . '/' . $row->id . "')"; 
       //return site_url('planificacion/confirmacionViaje/'.$row->id);
   }
+  
+  function link_hacia_imagenes($primary_key , $row)
+  {
+      return "javascript:window.open('" . base_url('/index.php/imagenes/pagoProveedor'). '/' . $row->id . '/' . $row->monto . "')"; 
+      //return site_url('planificacion/confirmacionViaje/'.$row->id);
+  }
+  
+  
  
 }

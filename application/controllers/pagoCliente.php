@@ -52,6 +52,7 @@ class pagoCliente extends CI_Controller{
     
     $crud->add_action('Items', base_url().'/assets/img/iconoGanancia.png', '','ui-icon-image',array($this,'link_hacia_lineas'));
     $crud->add_action('Asignar', base_url().'/assets/img/iconoFactura.png', '','ui-icon-image',array($this,'link_hacia_factura'));
+    $crud->add_action('Img', base_url().'/assets/img/iconoImagenes.png', '','ui-icon-image',array($this,'link_hacia_imagenes'));
     
     $output = $crud->render();
     $this->pago_output($output);
@@ -71,6 +72,12 @@ class pagoCliente extends CI_Controller{
   function link_hacia_lineas($primary_key , $row)
   {
       return "javascript:window.open('" . base_url('/index.php/pagoClienteLineas/popUp'). '/' . $row->id_cliente . '/' . $row->id . "')"; 
+      //return site_url('planificacion/confirmacionViaje/'.$row->id);
+  }
+  
+  function link_hacia_imagenes($primary_key , $row)
+  {
+      return "javascript:window.open('" . base_url('/index.php/imagenes/pagoCliente'). '/' . $row->id . '/' . $row->monto . "')"; 
       //return site_url('planificacion/confirmacionViaje/'.$row->id);
   }
   

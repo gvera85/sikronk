@@ -283,31 +283,29 @@
 
                         foreach( $facturasClientes as $lineas ) : 
                        
-                        $haber =  $lineas['haber'];
+                            $haber =  $lineas['haber'];
 
-                        $cantidad = $lineas['cantidad_bultos'];
-                        $cantidadConMerma = $lineas['cant_bultos_merma'];
-                        $cantidadAPagar = $cantidad - $cantidadConMerma;
+                            $cantidad = $lineas['cantidad_bultos'];
+                            $cantidadConMerma = $lineas['cant_bultos_merma'];
+                            $cantidadAPagar = $cantidad - $cantidadConMerma;
 
-                        $debe =  $cantidadAPagar * $lineas['precio_bulto'];    
-                        
-                        if ($haber < $debe && $lineas['tipo'] == 'Entrega')
-                            $linkPagos = 1;
-                        else
-                            $linkPagos = 0;
-                        
-                        $linkHaciaDetalles = "#";    
+                            $debe =  $cantidadAPagar * $lineas['precio_bulto'];    
 
-                        $saldo = $saldo + $haber - $debe;     
+                            if ($haber < $debe && $lineas['tipo'] == 'Entrega')
+                                $linkPagos = 1;
+                            else
+                                $linkPagos = 0;
 
-                        if ($lineas['tipo'] == 'Pago') {
-                            $classTipo = 'label label-success';
-                            $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verPagoCliente').'/'.$lineas['id_linea']."'". ')';
-                        } else{
-                            $classTipo = "label label-danger";
-                        }
-                        
-                    
+                            $linkHaciaDetalles = "#";    
+
+                            $saldo = $saldo + $haber - $debe;     
+
+                            if ($lineas['tipo'] == 'Pago') {
+                                $classTipo = 'label label-success';
+                                $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verPagoCliente').'/'.$lineas['id_linea']."'". ')';
+                            } else{
+                                $classTipo = "label label-danger";
+                            }
                     
                     ?>
                     <TR>
