@@ -143,7 +143,28 @@ class detallesEntidades extends CI_Controller{
     
   }
   
-  
+  function verDetalleSaldoCaja(){
+    $this->load->model('caja_distribuidor_m');
+
+    $detalleSaldo = $this->caja_distribuidor_m->getSaldoPorTipoDePago();
+    
+    $respuestaHTML = "<table id='tablaSaldoCaja' class='table compact table-striped table-hover table-condensed table-responsive'>
+                      <tbody>";
+    
+    $body = "";
+    
+    foreach( $detalleSaldo as $detalle ) : 
+            $body = $body."<tr>
+                    <td> ".$detalle['modo_pago']."</td>
+                    <td> ".$detalle['importe']."</td>
+                    </tr>";
+    endforeach; 
+    
+    $respuestaHTML = $respuestaHTML . $body . "</tbody> </table>";
+    
+    echo $respuestaHTML;
+    
+  }
 }
 
 

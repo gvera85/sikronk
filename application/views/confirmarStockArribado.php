@@ -68,7 +68,7 @@
     }
     else
     {
-        $titulo = "Confirmación de viaje - Viaje número ".$lineasViaje[0]['numero_de_viaje']." - ".$lineasViaje[0]['proveedor'];
+        $titulo = "Confirmación de viaje - Viaje número ".$lineasViaje[0]['numero_de_viaje']." - Remito ".$lineasViaje[0]['numero_de_remito']." - ".$lineasViaje[0]['proveedor'];
         
         if ($lineasViaje[0]['id_estado'] != 11 && $lineasViaje[0]['id_estado'] != 3 && $lineasViaje[0]['id_estado'] != 2) /* El viaje ya tiene el stock confirmado. Debo eliminar los botones*/ {
             $modo = "viajeCerrado";

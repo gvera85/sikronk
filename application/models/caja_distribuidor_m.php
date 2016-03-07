@@ -46,7 +46,7 @@ class caja_distribuidor_m extends CI_Model {
                         from viaje_ganancia a
                         join viaje b on a.id_viaje = b.id
                         join proveedor c on b.id_proveedor = c.id
-                        where b.id_distribuidor = ?
+                        where b.id_distribuidor = ? and 1=2 
                     union
                         SELECT 'Ajuste' Tipo, fecha, stamp, '-' razon_social,
                         observaciones descripcion,
@@ -140,6 +140,26 @@ class caja_distribuidor_m extends CI_Model {
         endforeach; 
         
         return true;
+    }
+    
+    public function getSaldoPorTipoDePago()
+    {   
+            $sql = "select b.descripcion modo_pago, c.id,c.descripcion estado, sum(a.importe) importe
+                    from pagos_clientes_lineas a
+                    join modo_pago b on a.id_modo_pago = b.id
+                    left join estado c on a.id_estado = c.id
+                    where a.id_estado = 8 or a.id_estado is null
+                    group by b.descripcion, c.id, c.descripcion";
+            
+            $query = $this->db->query($sql);
+                   
+            $ganancias = $query->result_array();
+
+            if( is_array($ganancias) && count($ganancias) > 0 ) {
+              return $ganancias;
+            }
+            
+            return false;
     }
    
 

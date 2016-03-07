@@ -394,7 +394,7 @@ class Planificacion extends CI_Controller{
         if ($botonPresionado == "btnVolverAConfirmarViaje") 
         {
             transicionSimple($viaje[0], ESTADO_VIAJE_REPARTO_EN_PROCESO, "viaje");
-            echo "El viaje puede ser confirmado nuevamente";
+            echo "El reparto puede modificarse nuevamente";
         }
         else
         {

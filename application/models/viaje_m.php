@@ -45,7 +45,8 @@ class viaje_m extends CI_Model {
                     getCantBultosPlanificados(d.id, b.id, c.id) cant_bultos_plani,
                     getCantBultosRepartidos(d.id, b.id, c.id) cant_repartida,
                     d.id_estado,
-                    a.precio_sugerido_bulto
+                    a.precio_sugerido_bulto,
+                    d.numero_de_remito
                     from productos_viaje a
                     join producto b on a.id_producto = b.id
                     join variable_logistica c on a.id_variable_logistica = c.id
@@ -280,9 +281,24 @@ class viaje_m extends CI_Model {
 
     }
     
+    public function transformarVacioEnNULL(&$valor)
+    {
+        if( empty( $valor ) ) {
+            $valor = null;
+            return true;
+        } else {
+            return true;
+        }
+    }
+    
     public function updateReparto($precioParaElProveedor, $precioCaja, $cantMerma, $idReparto, $fechaValorizacion)
     {    
         $this->load->helper('date');
+        
+        $this->transformarVacioEnNULL($precioParaElProveedor);
+        $this->transformarVacioEnNULL($precioCaja);        
+        $this->transformarVacioEnNULL($cantMerma);
+        $this->transformarVacioEnNULL($fechaValorizacion);
         
         $data = array(
                 'precio_sugerido_caja'  => $precioParaElProveedor,

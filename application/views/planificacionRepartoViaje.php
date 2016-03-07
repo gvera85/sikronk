@@ -55,7 +55,7 @@
     }
     else
     {
-        $titulo = "Planificación de viaje - Reparto de productos a los clientes. Viaje numero ".$lineasViaje[0]['numero_de_viaje']." - ".$lineasViaje[0]['proveedor'];
+        $titulo = "Planificación de viaje - Viaje numero ".$lineasViaje[0]['numero_de_viaje']." - Remito ".$lineasViaje[0]['numero_de_remito']." - ".$lineasViaje[0]['proveedor'];
          if ($lineasViaje[0]['id_estado'] != 1 && $lineasViaje[0]['id_estado'] != 2) /* El viaje ya tiene los precios acordados, por eso se ocultan los botones */ {
             $modo = "viajeConRepartoPlanificado";
         }

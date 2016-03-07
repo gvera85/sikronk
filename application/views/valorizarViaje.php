@@ -115,7 +115,7 @@
     }
     else
     {
-        $titulo = "Viaje número ".$lineasViaje[0]['numero_de_viaje']." - ".$lineasViaje[0]['proveedor'];
+        $titulo = "Viaje número ".$lineasViaje[0]['numero_de_viaje']." - Remito ".$lineasViaje[0]['numero_de_remito']." - ".$lineasViaje[0]['proveedor'];
         
         if ($lineasViaje[0]['id_estado'] == 7) /* El viaje ya tiene los precios acordados, por eso se ocultan los botones */ {
             $modo = "viajeConPrecioCerrado";
@@ -255,7 +255,7 @@
                                                     {
                                                     ?>
                                                       <span data-placement="bottom" data-toggle="tooltip" title="Ingrese la fecha en la cual se acordó el precio de este producto con el cliente"> 
-                                                      <input required type="date" style="height:25px;" name="fechaValorizacion[]" max="<?php echo date("Y-m-d");?>" id="fecha_valor_html_<?php echo $cantidadLineasReparto?>" value=<?php echo $reparto['fecha_valorizacion'] ?>> 
+                                                      <input type="date" style="height:25px;" name="fechaValorizacion[]" max="<?php echo date("Y-m-d");?>" id="fecha_valor_html_<?php echo $cantidadLineasReparto?>" value=<?php echo $reparto['fecha_valorizacion'] ?>> 
                                                       </span>
                                                     <?php
                                                     }
@@ -279,17 +279,17 @@
 
                                                   <TD>
                                                       <span data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos de este producto que tuvieron merma (no aptos para la venta)"> 
-                                                      <input class="cant_merma" required style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, precioBulto_<?php echo $cantidadLineasReparto?>.value, this, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMerma[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma'] ?>"> 
+                                                      <input class="cant_merma" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, precioBulto_<?php echo $cantidadLineasReparto?>.value, this, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMerma[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma'] ?>"> 
                                                       </span>
                                                   </TD> 
                                                   <TD>
                                                       <span data-placement="bottom" data-toggle="tooltip" title="Ingrese el precio que se mostrará al proveedor">   
-                                                      $ <input class="importe_sugerido" required style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioSugerido_<?php echo $cantidadLineasReparto?>" name="precioParaElProveedor[]" type="text" size="10" value="<?php echo $precioSugerido ?>"> 
+                                                      $ <input class="importe_sugerido" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioSugerido_<?php echo $cantidadLineasReparto?>" name="precioParaElProveedor[]" type="text" size="10" value="<?php echo $precioSugerido ?>"> 
                                                       </span>
                                                   </TD>  
                                                   <TD>
                                                       <span data-placement="bottom" data-toggle="tooltip" title="Ingrese el precio acordado con el cliente">   
-                                                      $ <input class="importe_linea" required style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calcularPrecioLinea(this.value,bultos_<?php echo $cantidadLineasReparto?>.value, cant_merma_<?php echo $cantidadLineasReparto?>.value, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="precioBulto[]" type="text" size="10" value="<?php echo $reparto['precio_caja'] ?>"> 
+                                                      $ <input class="importe_linea" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calcularPrecioLinea(this.value,bultos_<?php echo $cantidadLineasReparto?>.value, cant_merma_<?php echo $cantidadLineasReparto?>.value, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="precioBulto[]" type="text" size="10" value="<?php echo $reparto['precio_caja'] ?>"> 
                                                       </span>
                                                   </TD>
 
@@ -356,63 +356,66 @@ var hayError = 0;
 function validacionFormulario() {
     
   cantidadItems = $("#cantidadItems").val();   
-    
-  for (i = 1; i <= cantidadItems; i++) { 
-    campoBultos = "#bultos_" + i; 
-    campoMerma = "#cant_merma_" + i; 
-    fecha = "#fecha_valor_html_" + i; 
-    precioBulto = "#precioBulto_" + i; 
-    
-    nombreCampoMerma = "cant_merma_" + i; 
+  
+  botonPresionado = "#botonPresionado";
+  
+  if ($(botonPresionado).val() == "botonConfirmarPrecio")
+  { 
+        for (i = 1; i <= cantidadItems; i++) { 
+          campoBultos = "#bultos_" + i; 
+          campoMerma = "#cant_merma_" + i; 
+          fecha = "#fecha_valor_html_" + i; 
+          precioBulto = "#precioBulto_" + i; 
 
-    //alert($(campoBultos).val() + ' '+ $(campoMerma).val());
-    
-    esValido = validarCantidadMerma($(campoBultos).val(), $(campoMerma).val() ) 
-    
-    if (esValido)
-    {
-        limpiarInputConError(nombreCampoMerma);
-        
-    }
-    else
-    {
-        
-        marcarInputConError(nombreCampoMerma);
-        return false;  
-    }
-    
-    /*Validar que las fechas sean todas distintas de vacio*/
-    if ($(fecha).val() == null || $(fecha).val().length == 0)
-    {
-        mensaje = 'La fecha de valorizacion no puede ser vacia';
+          nombreCampoMerma = "cant_merma_" + i; 
 
-        swal("Atención...", mensaje, "error");
+          //alert($(campoBultos).val() + ' '+ $(campoMerma).val());
 
-        marcarInputConError(fecha);
-        return false;
-    }
-    else
-    {
-        limpiarInputConError(fecha);  
-    }
-    
-    /*Validar que los campos bultos sean > 0 y vacios*/
-    if ($(precioBulto).val() == null || $(precioBulto).val().length == 0 || $(precioBulto).val() <= 0)
-    {
-        mensaje = 'El precio debe ser mayor a 0 (cero)';
+          esValido = validarCantidadMerma($(campoBultos).val(), $(campoMerma).val() ) 
 
-        swal("Atención...", mensaje, "error");
+          if (esValido)
+          {
+              limpiarInputConError(nombreCampoMerma);
 
-        marcarInputConError(precioBulto);
-        return false;
+          }
+          else
+          {
+
+              marcarInputConError(nombreCampoMerma);
+              return false;  
+          }
+
+          /*Validar que las fechas sean todas distintas de vacio*/
+          if ($(fecha).val() == null || $(fecha).val().length == 0)
+          {
+              mensaje = 'La fecha de valorizacion no puede ser vacia';
+
+              swal("Atención...", mensaje, "error");
+
+              marcarInputConError(fecha);
+              return false;
+          }
+          else
+          {
+              limpiarInputConError(fecha);  
+          }
+
+          /*Validar que los campos bultos sean > 0 y vacios*/
+          if ($(precioBulto).val() == null || $(precioBulto).val().length == 0 || $(precioBulto).val() <= 0)
+          {
+              mensaje = 'El precio debe ser mayor a 0 (cero)';
+
+              swal("Atención...", mensaje, "error");
+
+              marcarInputConError(precioBulto);
+              return false;
+          }
+          else
+          {
+              limpiarInputConError(precioBulto);  
+          }
+        }
     }
-    else
-    {
-        limpiarInputConError(precioBulto);  
-    }
-    
-    
-  }      
   
   return true;
 }
@@ -485,12 +488,15 @@ $(function() {
     var count = 1;
 
     $(document).on("click","#btnConfirmarPrecio",function( event ) {  
-        $('input#botonPresionado').val("botonConfirmarPrecio").css('border','3px solid blue');
-        
+        $('input#botonPresionado').val("botonConfirmarPrecio").css('border','3px solid blue');        
+    });
+    
+    $(document).on("click","#btnsubmit",function( event ) {  
+        $('input#botonPresionado').val("botonGuardar").css('border','3px solid blue');        
     });
     
     $(document).on("click","#btnVolverAConfirmarViaje",function( event ) {  
-        var answer = confirm("¿Está seguro de que quiere volver a confirmar el stock del viaje?. Luego de aceptar se cerrará esta ventana y podrá ir al punto '3 - Confirmar viajes'")
+        var answer = confirm("¿Está seguro de que quiere volver a confirmar el reparto del viaje?. Luego de aceptar se cerrará esta ventana y podrá ir al punto '4 - Reparto a clientes'")
         if (answer)
         {
             $('input#botonPresionado').val("btnVolverAConfirmarViaje").css('border','3px solid blue');

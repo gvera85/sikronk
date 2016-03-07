@@ -25,6 +25,7 @@
     
     <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/moment.min.js"></script>  
     <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/datetime-moment.js"></script>  
+    <script src="<?php echo base_url() ?>/assets/bootstrap/js/bootstrap.js"></script>
     
     <!-- start: CSS -->
     <link id="bootstrap-style" href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap.min.css" rel="stylesheet">
@@ -116,11 +117,28 @@
                     saldo = $("#idSaldo").val();
                     
                     if (saldo >= 0)
-                        classSaldo = 'label label-success';
+                        classSaldo = 'btn btn-xs btn-success';
                     else
-                        classSaldo = 'label label-danger';
-                
-                    $("#cabeceraPanel").html($("#cabeceraPanel").html()+' - Saldo actual: <span class="' +classSaldo+ '" style="font-size:15px;" id="tipoMovimiento">$ '+saldo+'</span>' ); 
+                        classSaldo = 'btn btn-xs btn-danger';
+                    
+                    $("#cabeceraPanel").html($("#cabeceraPanel").html()+' - Saldo actual: <button type="button" class="' +classSaldo+ '" style="font-size:15px;" id="btnInfoSaldo" data-toggle="modal" data-target="#myModal">$ '+saldo+'</button>' ); 
+                    
+                    
+                    $(document).on("click","#btnInfoSaldo",function( event ) {  
+
+                        $.ajax({                        
+                                    url:"<?php echo base_url() ?>index.php/detallesEntidades/verDetalleSaldoCaja"
+                              })
+                                  .done(function(data) {
+                                    $("#contenidoModal").html(data);
+                                    console.log( "Sample of data:", data.slice( 0, 9999 ) );
+                                  })
+                                  .fail(function(data) {
+                                    alert( "error" );
+                                    console.log( "Sample of data:", data.slice( 0, 100 ) );
+                                  });
+
+                   });
                     
             } );
             
@@ -277,19 +295,34 @@
             </table>
              </div>
         </div>     
-        
-        
-        
-            
-            
-            
-
-        
-        
     </div>
     
     
       
   
 </body>
+
+<!-- Modal (solo visible al hacer clic en el modo de pago en cheques -->
+    <div class="modal fade" id="myModal" role="dialog">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Saldo agrupado por tipos de pago</h4>
+          </div>
+          <div class="modal-body">
+              <div id="contenidoModal">
+                  
+              </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+
+      </div>
+    </div>  
+
 </html>
