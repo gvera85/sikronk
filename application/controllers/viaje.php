@@ -25,14 +25,14 @@ class Viaje extends CI_Controller{
     $this->grocery_crud->where('id_distribuidor', $this->session->userdata('empresa'));  
      
     $this->grocery_crud->set_table('viaje');
-    $this->grocery_crud->edit_fields('id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_chofer','id_empresa_transportista');
-    $this->grocery_crud->add_fields('id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_chofer','id_empresa_transportista');
+    $this->grocery_crud->edit_fields('id_proveedor','numero_de_remito','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_chofer','id_empresa_transportista', 'observaciones');
+    $this->grocery_crud->add_fields('id_proveedor','numero_de_remito','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_chofer','id_empresa_transportista',  'observaciones');
     
     $this->grocery_crud->set_theme('datatables');
    
     $this->grocery_crud->set_subject('Viaje');
     $this->grocery_crud->required_fields('id_proveedor','fecha_estimada_salida','fecha_estimada_llegada');
-    $this->grocery_crud->columns('id','numero_de_viaje','id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_empresa_transportista','id_estado','cantidad_productos');
+    $this->grocery_crud->columns('id','numero_de_viaje','id_proveedor','numero_de_remito','fecha_estimada_llegada','patente_semi','id_empresa_transportista','id_estado','cantidad_productos');
     
     $this->grocery_crud->callback_column('cantidad_productos',array($this,'_callback_cantidad_productos'));
     
@@ -40,6 +40,8 @@ class Viaje extends CI_Controller{
     
     $this->grocery_crud->display_as('id_proveedor','Proveedor');
     $this->grocery_crud->set_relation('id_proveedor','proveedor','razon_social');
+    
+    $this->grocery_crud->display_as('numero_de_remito','Remito');
     
     $this->grocery_crud->display_as('id_empresa_transportista','Transportista');
     $this->grocery_crud->set_relation('id_empresa_transportista','transportista','razon_social');
@@ -58,8 +60,9 @@ class Viaje extends CI_Controller{
     
     $this->grocery_crud->set_rules('patente_semi','Patente semi','callback_validarPatente');
     $this->grocery_crud->set_rules('patente_camion','Patente del camion','callback_validarPatente');
+    $this->grocery_crud->set_rules('numero_de_remito','Remito','callback_validarRemito');
     
-    $this->grocery_crud->fields('id_distribuidor','id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_chofer','id_empresa_transportista','numero_de_viaje');
+    $this->grocery_crud->fields('id_distribuidor','id_proveedor', 'numero_de_remito' , 'fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_chofer','id_empresa_transportista','numero_de_viaje',  'observaciones');
     
     $this->grocery_crud->change_field_type('id_distribuidor','invisible');
     $this->grocery_crud->change_field_type('numero_de_viaje','invisible');
@@ -144,6 +147,24 @@ define('ESTADO_VIAJE_REVISANDO_STOCK','11');*/
        return TRUE; 
     }
   }
+  
+  public function validarRemito($remitoIngresado) 
+  {
+    if ($remitoIngresado)
+    {
+        if (preg_match('/^[0-9]{12}$/', $remitoIngresado))
+        {
+          return TRUE;
+        } else {
+           $this->form_validation->set_message('validarRemito', $remitoIngresado.' no es un remito valido. Se debe ingresar un número de 12 dígitos');  
+          return FALSE;
+        } 
+    }  else {
+       return TRUE; 
+    }
+  }
+  
+  
   
   function viajeProveedor($idDistribuidor, $idProveedor){
     $this->grocery_crud->where('id_distribuidor', $idDistribuidor);  
