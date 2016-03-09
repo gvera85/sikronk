@@ -144,12 +144,10 @@ class caja_distribuidor_m extends CI_Model {
     
     public function getSaldoPorTipoDePago()
     {   
-            $sql = "select b.descripcion modo_pago, c.id,c.descripcion estado, sum(a.importe) importe
-                    from pagos_clientes_lineas a
-                    join modo_pago b on a.id_modo_pago = b.id
-                    left join estado c on a.id_estado = c.id
-                    where a.id_estado = 8 or a.id_estado is null
-                    group by b.descripcion, c.id, c.descripcion";
+            $sql = "select sum(haber)-sum(debe) importe, id_modo_pago, modo_pago 
+                    from vw_cc_distribuidor_detalle
+                    group by  id_modo_pago, modo_pago
+                    order by importe desc";
             
             $query = $this->db->query($sql);
                    

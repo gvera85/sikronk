@@ -24,17 +24,20 @@ class notaDeCreditoDebito extends CI_Controller{
     $crud->set_language("spanish");      
       
     $crud->set_table('nota_credito_debito');
-    $crud->edit_fields('id_tipo', 'id_tipo_credito_debito','importe', 'fecha','observaciones');
-    $crud->add_fields('id_tipo', 'id_tipo_credito_debito','importe', 'fecha','observaciones');
+    $crud->edit_fields('id_tipo', 'id_tipo_credito_debito', 'id_modo_pago','importe', 'fecha','observaciones');
+    $crud->add_fields('id_tipo', 'id_tipo_credito_debito','id_modo_pago', 'importe', 'fecha','observaciones');
     
     $crud->set_theme('datatables');
    
     $crud->set_subject('Nota de crédito/débito');
-    $crud->required_fields('id_tipo', 'id_tipo_credito_debito','importe', 'fecha');
-    $crud->columns('fecha', 'id_tipo', 'id_tipo_credito_debito','importe','observaciones');
+    $crud->required_fields('id_tipo', 'id_tipo_credito_debito','id_modo_pago', 'importe', 'fecha');
+    $crud->columns('fecha', 'id_tipo', 'id_tipo_credito_debito','id_modo_pago','importe','observaciones');
     
     $crud->display_as('id_tipo','Tipo');        
     $crud->set_relation('id_tipo','tipo_mov','descripcion');
+    
+    $crud->display_as('id_modo_pago','Modo de pago');        
+    $crud->set_relation('id_modo_pago','modo_pago','descripcion', array('visto_por_clientes' => 1));
     
     $crud->display_as('id_tipo_credito_debito','Concepto');        
     $crud->set_relation('id_tipo_credito_debito','tipo_debito_credito','descripcion');

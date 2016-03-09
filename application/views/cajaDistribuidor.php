@@ -12,8 +12,10 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     
+    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css">
     <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/dataTables/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/dataTables/jquery.dataTables.min.js"></script> 
+    <script src="<?php echo base_url() ?>/assets/bootstrap/js/bootstrap.js"></script>
     
     <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/dataTables.buttons.min.js"></script>  
     <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/buttons.flash.min.js"></script>  
@@ -25,10 +27,10 @@
     
     <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/moment.min.js"></script>  
     <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/datetime-moment.js"></script>  
-    <script src="<?php echo base_url() ?>/assets/bootstrap/js/bootstrap.js"></script>
+    
     
     <!-- start: CSS -->
-    <link id="bootstrap-style" href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap.min.css" rel="stylesheet">
+    
     <link href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap-responsive.min.css" rel="stylesheet">
     <link id="base-style" href="<?php echo base_url() ?>assets/plugins/metro/css/style.css" rel="stylesheet">
     <link id="base-style-responsive" href="<?php echo base_url() ?>assets/plugins/metro/css/style-responsive.css" rel="stylesheet">
@@ -131,11 +133,11 @@
                               })
                                   .done(function(data) {
                                     $("#contenidoModal").html(data);
-                                    console.log( "Sample of data:", data.slice( 0, 9999 ) );
+                                    //console.log( "Sample of data:", data.slice( 0, 9999 ) );
                                   })
                                   .fail(function(data) {
                                     alert( "error" );
-                                    console.log( "Sample of data:", data.slice( 0, 100 ) );
+                                    //console.log( "Sample of data:", data.slice( 0, 100 ) );
                                   });
 
                    });
@@ -258,6 +260,7 @@
                             $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verPagoCliente').'/'.$lineas['id']."'". ')';
                         } else if ($lineas['tipo'] == 'Egreso'){
                             $classTipo = "label label-danger";
+                            $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verPagoProveedor').'/'.$lineas['id']."'". ')';
                         } else if ($lineas['tipo'] == 'Gasto'){
                             $classTipo = "label label-default";                            
                         } else if ($lineas['tipo'] == 'Ganancia'){
@@ -297,12 +300,7 @@
         </div>     
     </div>
     
-    
-      
-  
-</body>
-
-<!-- Modal (solo visible al hacer clic en el modo de pago en cheques -->
+    <!-- Modal (solo visible al hacer clic en el modo de pago en cheques -->
     <div class="modal fade" id="myModal" role="dialog">
       <div class="modal-dialog">
 
@@ -324,5 +322,10 @@
 
       </div>
     </div>  
+      
+  
+</body>
 
+    
+      
 </html>

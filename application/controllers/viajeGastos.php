@@ -68,7 +68,7 @@ class viajeGastos extends CI_Controller{
     $crud->set_relation('id_proveedor_de_servicios','proveedor_de_servicios','{razon_social}');
     
     $crud->display_as('id_modo_pago','Tipo de pago');
-    $crud->set_relation('id_modo_pago','modo_pago','{descripcion}');
+    $crud->set_relation('id_modo_pago','modo_pago','{descripcion}', array('visto_por_clientes' => 1));
     
     $crud->change_field_type('a_cargo_del_proveedor', 'true_false');
     

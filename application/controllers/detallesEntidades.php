@@ -148,17 +148,34 @@ class detallesEntidades extends CI_Controller{
 
     $detalleSaldo = $this->caja_distribuidor_m->getSaldoPorTipoDePago();
     
+    if (empty($detalleSaldo[0]['importe']))
+    {
+        $respuestaHTML = "Sin datos";
+        echo $respuestaHTML;
+        return true;
+    }
+    
     $respuestaHTML = "<table id='tablaSaldoCaja' class='table compact table-striped table-hover table-condensed table-responsive'>
                       <tbody>";
     
     $body = "";
+    $importeTotal = 0;
     
     foreach( $detalleSaldo as $detalle ) : 
             $body = $body."<tr>
                     <td> ".$detalle['modo_pago']."</td>
                     <td> ".$detalle['importe']."</td>
                     </tr>";
+    
+            $importeTotal = $importeTotal + $detalle['importe'];
     endforeach; 
+    
+    $body = $body."<tfooter>
+                   <tr class='info'> 
+                    <td> Total</td>
+                    <td> ".$importeTotal."</td>
+                  </tr>
+                  </tfooter>";
     
     $respuestaHTML = $respuestaHTML . $body . "</tbody> </table>";
     
