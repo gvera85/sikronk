@@ -66,7 +66,8 @@ class ConfirmarStockArribado extends CI_Controller{
     $this->grocery_crud->add_action('Gastos', base_url().'/assets/img/iconoGastosViaje.png', '','ui-icon-image',array($this,'link_hacia_gastos'));
     $this->grocery_crud->add_action('Img', base_url().'/assets/img/iconoImagenes.png', '','ui-icon-image',array($this,'link_hacia_imagenes'));
     
-    $where = "id_estado IN ('".ESTADO_VIAJE_REPARTO_PLANIFICADO."')";
+    $where = "id_estado IN ('".ESTADO_VIAJE_REPARTO_PLANIFICADO."','".ESTADO_VIAJE_REVISANDO_STOCK."')";
+    
 
     $this->grocery_crud->where($where);
   

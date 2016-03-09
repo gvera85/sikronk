@@ -9,6 +9,7 @@
             foreach( $resumenViaje as $resumen ) : 
                 $idViaje = $resumen['id'];
                 $nroViaje = $resumen['numero_de_viaje'];
+                $nroRemito = $resumen['numero_de_remito'];
                 $fechaSalida = date_format(date_create($resumen['fecha_estimada_salida']), 'd/m/Y');
                 $valorMercaderia = $resumen['valor_mercaderia_proveedor'];
                 $valorGastosProveedor = $resumen['valor_gastos_proveedor'];
@@ -39,7 +40,7 @@
     
     <div class="box span12">
         <div class="box-header">
-                <h2><i class="halflings-icon plus"></i><span class="break"></span><?php echo "Viaje número ".$nroViaje." - Fecha: ".$fechaSalida ?> </h2>
+                <h2><i class="halflings-icon plus"></i><span class="break"></span><?php echo "Viaje número ".$nroViaje." - Remito ".$nroRemito." - Fecha: ".$fechaSalida ?> </h2>
                 <div class="box-icon">
                         <a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
                 </div>

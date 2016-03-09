@@ -212,7 +212,8 @@ class reporte_ventas_m extends CI_Model {
                     a.id_estado id_estado,
                     b.razon_social transportista,
                     c.descripcion estado,
-                    getMontoViajeProveedor(a.id) - getMontoGastosProveedor(a.id) montoViaje
+                    getMontoViajeProveedor(a.id) - getMontoGastosProveedor(a.id) montoViaje,
+                    a.numero_de_remito
                     from viaje a
                     left join transportista b on a.id_empresa_transportista = b.id
                     join estado c on a.id_estado = c.id
@@ -234,6 +235,7 @@ class reporte_ventas_m extends CI_Model {
     public function getResumenViaje($idViaje)
     {
         $sql = "select a.id, a.numero_de_viaje, a.fecha_estimada_salida,
+                a.numero_de_remito,
                 getMontoViaje(a.id) valor_mercaderia, 
                 getMontoViajeProveedor(a.id) valor_mercaderia_proveedor, 
                 getMontoGastosProveedor(a.id) valor_gastos_proveedor,

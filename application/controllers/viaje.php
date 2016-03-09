@@ -174,14 +174,14 @@ define('ESTADO_VIAJE_REVISANDO_STOCK','11');*/
     $this->session->set_userdata('id_distribuidor', $idDistribuidor); 
      
     $this->grocery_crud->set_table('viaje');
-    $this->grocery_crud->edit_fields('fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_chofer','id_empresa_transportista');
-    $this->grocery_crud->add_fields('fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_chofer','id_empresa_transportista');
+    $this->grocery_crud->edit_fields('numero_de_remito','fecha_estimada_llegada','patente_semi','patente_camion','id_chofer','id_empresa_transportista');
+    $this->grocery_crud->add_fields('numero_de_remito','fecha_estimada_llegada','patente_semi','patente_camion','id_chofer','id_empresa_transportista');
     
     $this->grocery_crud->set_theme('datatables');
    
     $this->grocery_crud->set_subject('Viaje');
     $this->grocery_crud->required_fields('fecha_estimada_salida','fecha_estimada_llegada');
-    $this->grocery_crud->columns('id','numero_de_viaje','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_empresa_transportista','id_estado','cantidad_productos');
+    $this->grocery_crud->columns('id','numero_de_viaje','numero_de_remito','fecha_estimada_llegada','patente_semi','id_empresa_transportista','id_estado','cantidad_productos');
     
     $this->grocery_crud->callback_column('cantidad_productos',array($this,'_callback_cantidad_productos'));
      
@@ -202,7 +202,7 @@ define('ESTADO_VIAJE_REVISANDO_STOCK','11');*/
     $this->grocery_crud->set_rules('patente_semi','Patente semi','callback_validarPatente');
     $this->grocery_crud->set_rules('patente_camion','Patente del camion','callback_validarPatente');
     
-    $this->grocery_crud->fields('id_distribuidor','id_proveedor','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_chofer','id_empresa_transportista','numero_de_viaje');
+    $this->grocery_crud->fields('id_distribuidor','id_proveedor','numero_de_remito','fecha_estimada_salida','fecha_estimada_llegada','patente_semi','patente_camion','id_chofer','id_empresa_transportista','numero_de_viaje');
     
     $this->grocery_crud->change_field_type('id_distribuidor','invisible');
     $this->grocery_crud->change_field_type('numero_de_viaje','invisible');

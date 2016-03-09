@@ -128,16 +128,19 @@ class caja_distribuidor_m extends CI_Model {
         if ($valorViaje == false)
             return $false;
         
-        foreach( $ganancias as $i_ganancias ) :
-                
-                $valorGanancia = $valorViaje * $i_ganancias['porcentaje_ganancia_auto'] / 100;
-                
-                $retorno = $this->insertGananciaViaje( $id_viaje, $i_ganancias['id'], $i_ganancias['porcentaje_ganancia_auto'], $valorGanancia, 'Auto');
-                
-                if ($retorno != true)
-                    return $retorno;
-               
-        endforeach; 
+        if (!empty($ganancias[0]['id']))
+        {
+            foreach( $ganancias as $i_ganancias ) :
+
+                    $valorGanancia = $valorViaje * $i_ganancias['porcentaje_ganancia_auto'] / 100;
+
+                    $retorno = $this->insertGananciaViaje( $id_viaje, $i_ganancias['id'], $i_ganancias['porcentaje_ganancia_auto'], $valorGanancia, 'Auto');
+
+                    if ($retorno != true)
+                        return $retorno;
+
+            endforeach; 
+        }
         
         return true;
     }

@@ -270,7 +270,9 @@ class viaje_m extends CI_Model {
     {    
         $data = array(
                 'cant_real_bultos' => $cantBultos,
-                'cant_real_pallets' => $cantPallets
+                'cant_real_pallets' => $cantPallets,
+                'cant_repartida_bultos' => 0,
+                'cant_repartida_pallets' => 0
              );
 
         $this->db->where('id_viaje', $idViaje);

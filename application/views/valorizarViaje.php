@@ -164,6 +164,13 @@
                                         <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-danger" style="font-size:small;" title="Es el valor total de la mercadería, restandole los gastos a cargo del proveedor">$<?php echo $valorAPagarAlProveedor ?></button>
                                     </td>
                             </tr>
+                            <tr>                                
+                                <TD colspan="2" style="text-align: center;"> 
+                                    <a href=javascript:window.open('<?php echo base_url('/index.php/imagenes/viaje').'/'.$idViaje?>')>                                     
+                                        <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-info" style="font-size:small;" title="Imágenes relacionadas a este viaje (subidas por el usuario)">Ver imágenes</button>
+                                    </a> 
+                                </TD>
+                            </tr>
                         </table>
                     </div>
                 </div>
