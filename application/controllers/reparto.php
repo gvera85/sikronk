@@ -32,6 +32,8 @@ class Reparto extends CI_Controller{
     $this->grocery_crud->required_fields('id_proveedor');
     $this->grocery_crud->columns('id', 'numero_de_viaje','id_proveedor','numero_de_remito','fecha_estimada_llegada','patente_semi','patente_camion','id_empresa_transportista','id_estado','cantidad_productos');
     
+    $this->grocery_crud->callback_column('cantidad_productos',array($this,'_callback_cantidad_productos'));
+    
     $this->grocery_crud->change_field_type('id_distribuidor','invisible');
     
     $this->grocery_crud->display_as('numero_de_remito','Remito');
@@ -90,4 +92,14 @@ class Reparto extends CI_Controller{
 
     return $post_array;
    }
+   
+    public function _callback_cantidad_productos($value, $row)
+    { 
+        $this->load->model('viaje_m');
+
+        $cantProductos = $this->viaje_m->getCantidadProductos($row->id);
+    
+        
+        return $cantProductos;
+    }
 }

@@ -307,9 +307,6 @@ class Planificacion extends CI_Controller{
         //saco el numero de elementos
         $longitud = count($producto);
         
-        //start the transaction
-        $this->db->trans_begin();
-        //update user_account table 
         
         $this->load->model('stock_m'); /*Antes de eliminar el reparto anterior, dejo el stock como estaba antes*/
         $this->stock_m->anularRepartoDeStock($viaje[0], $this->session->userdata('id'));  
@@ -340,8 +337,8 @@ class Planificacion extends CI_Controller{
               //$this->output->set_status_header(500,$result);
             }
             
-            
-            $this->stock_m->entregarStockCliente($cliente[$i], $producto[$i], $VL[$i],$bultos[$i],$this->session->userdata('id'));   
+            chrome_log("CONTROLLER entregarStockCliente C[".$cliente[$i]."],P[". $producto[$i]."],V[".$VL[$i]."],BUL[".$bultos[$i]."],U[".$this->session->userdata('id')."]","log");
+            $this->stock_m->entregarStockCliente($cliente[$i], $producto[$i], $VL[$i],$bultos[$i],$this->session->userdata('id'));               
             
         }
         
@@ -352,17 +349,6 @@ class Planificacion extends CI_Controller{
       $viaje = $_POST['idViaje'];  
       $this->db->delete('reparto', array('id_viaje' => $viaje[0]));
       echo "Borrado";
-    }
-    
-    //make transaction complete
-    $this->db->trans_complete();
-    //check if transaction status TRUE or FALSE
-    if ($this->db->trans_status() === FALSE) {
-        //if something went wrong, rollback everything
-        $this->db->trans_rollback();    
-    } else {
-        //if everything went right, commit the data to the database
-        $this->db->trans_commit();       
     }
     
     $botonPresionado = $_POST['botonPresionado'];

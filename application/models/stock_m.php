@@ -7,7 +7,9 @@ class stock_m extends CI_Model {
     {
         
         $sql = "CALL entregar_stock_cliente(?,?,?,?,?)";
-         
+                
+        chrome_log("MODEL entregarStockCliente C[".$idCliente."],P[". $idProducto."],V[".$idVL."],BUL[".$cantidadBultos."],U[".$idUsuario."]","log");                
+                
         if ($this->db->query($sql, array($idCliente, $idProducto, $idVL, $cantidadBultos, $idUsuario)))
         {
             return true;

@@ -398,8 +398,8 @@ $(function() {
                         $(frm)[0].reset();
                         location.reload();
 
-                        swal("Guardada!", data, "success");
-                        //alert(data);
+                        //swal("Guardada!", data, "success");
+                        alert(data);
 
                       })
                       .fail(function(xhr, textStatus, errorThrown) {
