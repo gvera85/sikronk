@@ -150,6 +150,7 @@
                                             ?>
                                         </td>
                                         <td colspan=2 align="rigth"><?php echo $reparto['razon_social'] ?></td>
+                                        <TD> </TD>
                                         <TD> <?php echo $reparto['cant_bultos'] ?></TD>
                                         <TD> <?php echo $reparto['cant_pallets'] ?></TD>
 
@@ -312,14 +313,16 @@
         if (validacionFormulario()){
 	  $.post( "<?php echo base_url() ?>index.php/planificacion/grabarReparto", formulario)
 		        .done(function(data){
-		          swal("Guardada!", data, "success");
+		          //swal("Guardada!", data, "success");
+                          alert(data);
 			  $(frm)[0].reset();
                           location.reload();
 			})
 			.fail(function(xhr, textStatus, errorThrown) {
                 
                         
-                        swal("Oops...", errorThrown, "error");
+                        //swal("Oops...", errorThrown, "error");
+                        alert(errorThrown);
 			});
 	  }
 	  event.preventDefault();

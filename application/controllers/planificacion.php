@@ -136,6 +136,8 @@ class Planificacion extends CI_Controller{
   }
   
   function grabarReparto(){
+    $this->load->model('stock_m');  
+      
     if(isset($_POST['idProducto']) && !empty($_POST['idProducto']))
     {
         $producto = $_POST['idProducto'];
@@ -150,7 +152,9 @@ class Planificacion extends CI_Controller{
         
         //start the transaction
         $this->db->trans_begin();
-        //update user_account table      
+        //update user_account table     
+        
+        $this->stock_m->anularRepartoDeStock($viaje[0], $this->session->userdata('id'));  
        
         $this->db->delete('planificacion_reparto', array('id_viaje' => $viaje[0]));
         $this->db->delete('reparto', array('id_viaje' => $viaje[0]));
@@ -196,14 +200,18 @@ class Planificacion extends CI_Controller{
               $this->db->trans_rollback(); 
               return false;
             }
+            
+            chrome_log("grabarReparto - CONTROLLER entregarStockCliente C[".$cliente[$i]."],P[". $producto[$i]."],V[".$VL[$i]."],BUL[".$bultos[$i]."],U[".$this->session->userdata('id')."]","log");
+            $this->stock_m->entregarStockCliente($cliente[$i], $producto[$i], $VL[$i],$bultos[$i],$this->session->userdata('id'));               
+            
         }
         
     }
     else
     {
       $viaje = $_POST['idViaje'];  
+      $this->stock_m->anularRepartoDeStock($viaje[0], $this->session->userdata('id'));  
       $this->db->delete('planificacion_reparto', array('id_viaje' => $viaje[0]));
-      
       $this->db->delete('reparto', array('id_viaje' => $viaje[0]));
     }
     
@@ -259,6 +267,20 @@ class Planificacion extends CI_Controller{
             $this->viaje_m->updateCantidadesViaje($cantBultosViaje[$i], $cantPalletsViaje[$i], $idViajeViaje[$i], $idProductoViaje[$i], $IdVLViaje[$i]);
             
             $upd = $upd.$cantBultosViaje[$i]."-".$cantPalletsViaje[$i]."-".$idViajeViaje[$i]."-".$idProductoViaje[$i]."-".$IdVLViaje[$i]."****";
+            
+            $botonPresionado = $_POST['botonPresionado'];
+            
+            if ($botonPresionado == "botonCierreStock") 
+            {
+                $this->load->model('stock_m');
+                $this->stock_m->recibirStockProveedor(
+                                         $idViajeViaje[$i], 
+                                         $idProductoViaje[$i], 
+                                         $IdVLViaje[$i], 
+                                         $cantBultosViaje[$i], 
+                                         $this->session->userdata('id')/*Id del usuario logueado*/
+                                     );
+            }
         }
         
         //make transaction complete

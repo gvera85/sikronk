@@ -26,6 +26,7 @@
     
     <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/moment.min.js"></script>  
     <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/datetime-moment.js"></script>  
+    <script src="<?php echo base_url() ?>/assets/bootstrap/js/bootstrap.js"></script>
     
     <!-- start: CSS -->
     <link id="bootstrap-style" href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap.min.css" rel="stylesheet">
@@ -43,6 +44,8 @@
     <script type="text/javascript" charset="utf-8">
     
             $(document).ready(function() {
+                
+                    $('[data-toggle="tooltip"]').tooltip();
                 
                     $.fn.dataTable.moment( 'DD/MM/YYYY' );
                      
@@ -184,7 +187,11 @@
                                     }
                                 else
                                     {
-                                        echo $lineas['stock_en_bultos'];
+                                ?>
+                                <span data-placement="rigth" data-toggle="tooltip" title="Un valor negativo implica que está planificada una entrega pero todavía no llegó el stock"> 
+                                    <?php echo $lineas['stock_en_bultos']; ?>
+                                </span>
+                               <?php
                                     }
                                 ?>    
                             </TD>
