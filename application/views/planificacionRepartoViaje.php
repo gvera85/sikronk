@@ -313,16 +313,16 @@
         if (validacionFormulario()){
 	  $.post( "<?php echo base_url() ?>index.php/planificacion/grabarReparto", formulario)
 		        .done(function(data){
-		          //swal("Guardada!", data, "success");
-                          alert(data);
+		          swal("Guardada!", data, "success");
+                          //alert(data);
 			  $(frm)[0].reset();
                           location.reload();
 			})
 			.fail(function(xhr, textStatus, errorThrown) {
                 
                         
-                        //swal("Oops...", errorThrown, "error");
-                        alert(errorThrown);
+                        swal("Oops...", errorThrown, "error");
+                        //alert(errorThrown);
 			});
 	  }
 	  event.preventDefault();

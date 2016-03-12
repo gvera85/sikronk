@@ -67,8 +67,10 @@ class pagoProveedoresLineas extends CI_Controller{
     $crud->display_as('id_modo_pago','Tipo de pago');
     $crud->set_relation('id_modo_pago','modo_pago','{descripcion}');
     
+    $crud->set_primary_key('id','cheques_en_cartera');
+    
     $crud->display_as('id_cheque_cliente','Cheque');
-    $crud->set_relation('id_cheque_cliente','cheques_en_cartera','Importe: ${importe} - Nro cheque:{numero_de_cheque}',array('id_modo_pago' => 2, 'id_estado' => 8));
+    $crud->set_relation('id_cheque_cliente','cheques_en_cartera','${importe} - Nro:{numero_de_cheque} - Banco:{razon_social} - Fec:{fecha_de_acreditacion}',array('id_modo_pago' => 2, 'id_estado' => 8), 'fecha_de_acreditacion ASC');
     
     $crud->display_as('id_sucursal_bancaria','Sucursal bancaria');
     $crud->set_relation('id_sucursal_bancaria','sucursales_bancarias','{numero_sucursal}-{direccion}');

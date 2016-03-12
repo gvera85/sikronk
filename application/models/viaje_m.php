@@ -284,8 +284,8 @@ class viaje_m extends CI_Model {
     }
     
     public function transformarVacioEnNULL(&$valor)
-    {
-        if( empty( $valor ) ) {
+    {       
+        if( $valor == "" ) {
             $valor = null;
             return true;
         } else {
@@ -297,10 +297,20 @@ class viaje_m extends CI_Model {
     {    
         $this->load->helper('date');
         
+        /*chrome_log("*****Tipo PrecioCaja[".gettype($precioCaja)."] valor:".$precioCaja,"log");
+        chrome_log("*****Tipo precioParaElProveedor[".gettype($precioParaElProveedor)."] valor:".$precioParaElProveedor,"log");
+        chrome_log("*****Tipo cantMerma[".gettype($cantMerma)."] valor:".$cantMerma,"log");
+        chrome_log("*****Tipo fechaValorizacion[".gettype($fechaValorizacion)."] valor:".$fechaValorizacion,"log");       */
+        
         $this->transformarVacioEnNULL($precioParaElProveedor);
-        $this->transformarVacioEnNULL($precioCaja);        
+        $this->transformarVacioEnNULL($precioCaja);   
         $this->transformarVacioEnNULL($cantMerma);
         $this->transformarVacioEnNULL($fechaValorizacion);
+        
+        /*chrome_log("*****TT PrecioCaja[".gettype($precioCaja)."] valor:".$precioCaja,"log");
+        chrome_log("*****TT precioParaElProveedor[".gettype($precioParaElProveedor)."] valor:".$precioParaElProveedor,"log");
+        chrome_log("*****TT cantMerma[".gettype($cantMerma)."] valor:".$cantMerma,"log");
+        chrome_log("*****TT fechaValorizacion[".gettype($fechaValorizacion)."] valor:".$fechaValorizacion,"log");       */
         
         $data = array(
                 'precio_sugerido_caja'  => $precioParaElProveedor,
