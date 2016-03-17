@@ -21,16 +21,18 @@ class gastos extends CI_Controller{
   
   function index(){
     $this->grocery_crud->set_table('gastos_de_un_viaje');
-    $this->grocery_crud->edit_fields('descripcion');
-    $this->grocery_crud->add_fields('descripcion');
+    $this->grocery_crud->edit_fields('activo','descripcion');
+    $this->grocery_crud->add_fields('activo','descripcion');
     
     $this->grocery_crud->set_theme('datatables');
    
     $this->grocery_crud->set_subject('Gastos de un viaje');
     $this->grocery_crud->required_fields('descripcion');
     
-    $this->grocery_crud->columns('id','descripcion');
-    $this->grocery_crud->fields('descripcion');
+    $this->grocery_crud->columns('id','activo','descripcion');
+    $this->grocery_crud->fields('id','activo','descripcion');
+    
+    $this->grocery_crud->change_field_type('activo', 'true_false');
     
     $output = $this->grocery_crud->render();
     $this->gastos_output($output);

@@ -23,9 +23,9 @@ class producto extends CI_Controller{
   
   function index(){
     $this->grocery_crud->set_table('producto');
-    $this->grocery_crud->edit_fields('descripcion','marca','origen','calidad','id_proveedor','foto');
-    $this->grocery_crud->add_fields('descripcion','marca','origen','calidad','id_proveedor','foto');
-    $this->grocery_crud->fields('descripcion','marca','origen','calidad','id_proveedor','foto','id_usuario');
+    $this->grocery_crud->edit_fields('activo','descripcion','marca','origen','calidad','id_proveedor','foto');
+    $this->grocery_crud->add_fields('activo','descripcion','marca','origen','calidad','id_proveedor','foto');
+    $this->grocery_crud->fields('activo','descripcion','marca','origen','calidad','id_proveedor','foto','id_usuario');
     
     $this->grocery_crud->change_field_type('id_usuario','invisible');
     
@@ -34,8 +34,8 @@ class producto extends CI_Controller{
     $this->grocery_crud->set_theme('datatables');
    
     $this->grocery_crud->set_subject('Producto');
-    $this->grocery_crud->required_fields('descripcion','id_proveedor');
-    $this->grocery_crud->columns('descripcion','marca','origen','calidad','id_proveedor','foto');
+    $this->grocery_crud->required_fields('activo','descripcion','id_proveedor');
+    $this->grocery_crud->columns('activo','descripcion','marca','origen','calidad','id_proveedor','foto');
     
     $this->grocery_crud->set_field_upload('foto','assets/uploads/productos');
     
@@ -46,6 +46,8 @@ class producto extends CI_Controller{
     $this->grocery_crud->add_action('VL', base_url().'/assets/img/vl.png', '','ui-icon-image',array($this,'link_hacia_vl'));
     
     $this->grocery_crud->callback_before_insert(array($this,'producto_callback'));
+    
+    $this->grocery_crud->change_field_type('activo', 'true_false');
     
     $output = $this->grocery_crud->render();
     

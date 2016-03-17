@@ -21,14 +21,16 @@ class tipoEstado extends CI_Controller{
   
   function index(){
     $this->grocery_crud->set_table('tipo_estado');
-    $this->grocery_crud->edit_fields('nombre_tabla');
-    $this->grocery_crud->add_fields('nombre_tabla');
+    $this->grocery_crud->edit_fields('activo','nombre_tabla');
+    $this->grocery_crud->add_fields('activo','nombre_tabla');
     
     $this->grocery_crud->set_theme('datatables');
    
     $this->grocery_crud->set_subject('Estado');
-    $this->grocery_crud->required_fields('nombre_tabla');
-    $this->grocery_crud->columns('nombre_tabla');
+    $this->grocery_crud->required_fields('activo','nombre_tabla');
+    $this->grocery_crud->columns('activo','nombre_tabla');
+    
+    $this->grocery_crud->change_field_type('activo', 'true_false');
     
     $output = $this->grocery_crud->render();
     $this->estado_output($output);

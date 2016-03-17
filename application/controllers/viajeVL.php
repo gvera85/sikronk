@@ -57,15 +57,17 @@ class ViajeVL extends CI_Controller{
     //$crud->display_as('id_viaje','Viaje - Proveedor');
     
     $crud->display_as('id_producto','Producto');
-    $crud->set_relation('id_producto','producto','{descripcion} - {marca} - {calidad}',array('id_proveedor' => $id_proveedor));
+    $crud->set_relation('id_producto','producto','{descripcion} - {marca} - {calidad}',array('id_proveedor' => $id_proveedor, 'activo' => 1)); 
     
     
     $crud->display_as('precio_sugerido_bulto','Precio sugerido del bulto ($)');
     
+    $crud->set_primary_key('id','vw_variable_logistica');
+    
     $crud->display_as('id_variable_logistica','Presentación');
-    $crud->set_relation('id_variable_logistica','variable_logistica','{codigo_vl}-{descripcion}-{peso}[KG]-Pallet:{base_pallet}x{altura_pallet}');
+    $crud->set_relation('id_variable_logistica','vw_variable_logistica','{codigo_vl}-{descripcion}-{peso}[KG]-Pallet:{base_pallet}x{altura_pallet}');
    
-    $crud->set_relation_dependency('id_variable_logistica','id_producto','id_producto');
+    $crud->set_relation_dependency('id_variable_logistica','id_producto','id_producto', 'activa in (1)');
    
     $crud->callback_before_delete(array($this,'cek_before_delete'));
     $crud->set_lang_string('delete_error_message', 'No se pudo eliminar el viaje debido a que posee planificaciones o repartos activos.');

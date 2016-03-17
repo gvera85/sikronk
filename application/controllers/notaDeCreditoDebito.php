@@ -37,10 +37,10 @@ class notaDeCreditoDebito extends CI_Controller{
     $crud->set_relation('id_tipo','tipo_mov','descripcion');
     
     $crud->display_as('id_modo_pago','Modo de pago');        
-    $crud->set_relation('id_modo_pago','modo_pago','descripcion', array('visto_por_clientes' => 1));
+    $crud->set_relation('id_modo_pago','modo_pago','descripcion', array('visto_por_clientes' => 1, 'activo' => 1));
     
     $crud->display_as('id_tipo_credito_debito','Concepto');        
-    $crud->set_relation('id_tipo_credito_debito','tipo_debito_credito','descripcion');
+    $crud->set_relation('id_tipo_credito_debito','tipo_debito_credito','descripcion',array('activo' => 1));
     
     $crud->set_relation_dependency('id_tipo_credito_debito','id_tipo','id_tipo');
     

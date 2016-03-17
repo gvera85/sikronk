@@ -21,19 +21,21 @@ class Sucursal_bancaria extends CI_Controller{
   
   function index(){
     $this->grocery_crud->set_table('sucursales_bancarias');
-    $this->grocery_crud->edit_fields('id_entidad_bancaria', 'numero_sucursal', 'direccion');
-    $this->grocery_crud->add_fields('id_entidad_bancaria', 'numero_sucursal', 'direccion');
+    $this->grocery_crud->edit_fields('activo','id_entidad_bancaria', 'numero_sucursal', 'direccion');
+    $this->grocery_crud->add_fields('activo','id_entidad_bancaria', 'numero_sucursal', 'direccion');
     
     $this->grocery_crud->set_theme('datatables');
    
     $this->grocery_crud->set_subject('Sucursales bancarias');
-    $this->grocery_crud->required_fields('id_entidad_bancaria','numero_sucursal');
+    $this->grocery_crud->required_fields('activo','id_entidad_bancaria','numero_sucursal');
     
-    $this->grocery_crud->columns('id_entidad_bancaria', 'numero_sucursal', 'direccion');
-    $this->grocery_crud->fields('id_entidad_bancaria', 'numero_sucursal', 'direccion');
+    $this->grocery_crud->columns('activo','id_entidad_bancaria', 'numero_sucursal', 'direccion');
+    $this->grocery_crud->fields('activo','id_entidad_bancaria', 'numero_sucursal', 'direccion');
     
     $this->grocery_crud->display_as('id_entidad_bancaria','Banco');        
     $this->grocery_crud->set_relation('id_entidad_bancaria','entidad_bancaria','razon_social');
+    
+    $this->grocery_crud->change_field_type('activo', 'true_false');
     
     $output = $this->grocery_crud->render();
     $this->sucursal_output($output);

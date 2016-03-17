@@ -21,16 +21,18 @@ class Banco extends CI_Controller{
   
   function index(){
     $this->grocery_crud->set_table('entidad_bancaria');
-    $this->grocery_crud->edit_fields('razon_social', 'cuit', 'direccion');
-    $this->grocery_crud->add_fields('razon_social', 'cuit', 'direccion');
+    $this->grocery_crud->edit_fields('activo','razon_social', 'cuit', 'direccion');
+    $this->grocery_crud->add_fields('activo','razon_social', 'cuit', 'direccion');
     
     $this->grocery_crud->set_theme('datatables');
    
     $this->grocery_crud->set_subject('Entidades bancarias');
     $this->grocery_crud->required_fields('razon_social');
     
-    $this->grocery_crud->columns('razon_social', 'cuit', 'direccion');
-    $this->grocery_crud->fields('razon_social', 'cuit', 'direccion');
+    $this->grocery_crud->change_field_type('activo', 'true_false');
+    
+    $this->grocery_crud->columns('activo','razon_social', 'cuit', 'direccion');
+    $this->grocery_crud->fields('activo','razon_social', 'cuit', 'direccion');
     
     $output = $this->grocery_crud->render();
     $this->banco_output($output);

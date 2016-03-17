@@ -21,14 +21,16 @@ class chofer extends CI_Controller{
   
   function index(){
     $this->grocery_crud->set_table('chofer');
-    $this->grocery_crud->edit_fields('nombre','apellido','dni','telefono');
-    $this->grocery_crud->add_fields('nombre','apellido','dni','telefono');
+    $this->grocery_crud->edit_fields('activo','nombre','apellido','dni','telefono');
+    $this->grocery_crud->add_fields('activo','nombre','apellido','dni','telefono');
     
     $this->grocery_crud->set_theme('datatables');
    
     $this->grocery_crud->set_subject('Chofer');
-    $this->grocery_crud->required_fields('nombre','apellido','dni','telefono');
-    $this->grocery_crud->columns('nombre','apellido','dni','telefono');
+    $this->grocery_crud->required_fields('activo','nombre','apellido','dni','telefono');
+    $this->grocery_crud->columns('activo','nombre','apellido','dni','telefono');
+    
+    $this->grocery_crud->change_field_type('activo', 'true_false');
        
     $output = $this->grocery_crud->render();
     $this->usuario_output($output);

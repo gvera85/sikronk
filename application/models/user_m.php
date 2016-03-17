@@ -25,6 +25,7 @@ class user_m extends CI_Model {
         
         $this->db->from('usuario');
         $this->db->where('mail',$email );
+        $this->db->where('activo',1 );
         //$this->db->where( 'password', sha1($password) );
         
         $login = $this->db->get()->result();

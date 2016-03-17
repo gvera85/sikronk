@@ -80,7 +80,7 @@ class vl extends CI_Controller{
     $this->grocery_crud->fields('id_producto','id_tipo_envase','descripcion','peso','base_pallet','altura_pallet','activa','codigo_vl');
     
     $this->grocery_crud->display_as('id_tipo_envase','Tipo de envase');
-    $this->grocery_crud->set_relation('id_tipo_envase','tipo_envase','descripcion');
+    $this->grocery_crud->set_relation('id_tipo_envase','tipo_envase','descripcion', array('activo' => 1));
     
     $this->grocery_crud->change_field_type('id_producto','invisible');
     $this->grocery_crud->change_field_type('codigo_vl','invisible');

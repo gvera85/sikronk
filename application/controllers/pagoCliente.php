@@ -46,7 +46,7 @@ class pagoCliente extends CI_Controller{
     
     $crud->display_as('id','Nro Factura');
   
-    $crud->set_relation('id_cliente','cliente','razon_social');
+    $crud->set_relation('id_cliente','cliente','razon_social', array('activo' => 1));
         
     $crud->order_by('fecha_pago','desc');
     

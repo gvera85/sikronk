@@ -21,16 +21,18 @@ class Motivo_merma extends CI_Controller{
   
   function index(){
     $this->grocery_crud->set_table('motivos_merma');
-    $this->grocery_crud->edit_fields('descripcion');
-    $this->grocery_crud->add_fields('descripcion');
+    $this->grocery_crud->edit_fields('activo', 'descripcion');
+    $this->grocery_crud->add_fields('activo','descripcion');
     
     $this->grocery_crud->set_theme('datatables');
    
     $this->grocery_crud->set_subject('Motivos de merma');
-    $this->grocery_crud->required_fields('descripcion');
+    $this->grocery_crud->required_fields('activo','descripcion');
     
-    $this->grocery_crud->columns('id','descripcion');
-    $this->grocery_crud->fields('descripcion');
+    $this->grocery_crud->columns('id','activo','descripcion');
+    $this->grocery_crud->fields('activo','descripcion');
+    
+    $this->grocery_crud->change_field_type('activo', 'true_false');
     
     $output = $this->grocery_crud->render();
     $this->motivo_merma($output);

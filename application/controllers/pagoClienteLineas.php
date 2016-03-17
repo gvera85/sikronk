@@ -62,18 +62,20 @@ class pagoClienteLineas extends CI_Controller{
     $crud->display_as('fecha_de_acreditacion','Fecha acreditación (para pagos en cheque)');
     
     $crud->display_as('id_entidad_bancaria','Banco (para pagos en cheque)');    
-    $crud->set_relation('id_entidad_bancaria','entidad_bancaria','{razon_social}');
+    $crud->set_relation('id_entidad_bancaria','entidad_bancaria','{razon_social}',array('activo' => 1));
     
     $crud->display_as('id_modo_pago','Tipo de pago');
-    $crud->set_relation('id_modo_pago','modo_pago','{descripcion}',array('visto_por_clientes' => 1));
+    $crud->set_relation('id_modo_pago','modo_pago','{descripcion}',array('visto_por_clientes' => 1, 'activo' => 1));
     
     
     $crud->change_field_type('id_estado','invisible');
     
     $crud->callback_column('estado',array($this,'_callback_estado'));
     
-    $crud->display_as('id_sucursal_bancaria','Sucursal bancaria');
-    $crud->set_relation('id_sucursal_bancaria','sucursales_bancarias','{numero_sucursal}-{direccion}');
+    $crud->set_primary_key('id','vw_sucursales_bancarias');
+    
+    $crud->display_as('id_sucursal_bancaria','Sucursal bancaria', array('activo' => 1));
+    $crud->set_relation('id_sucursal_bancaria','vw_sucursales_bancarias','{numero_sucursal}-{direccion}');
     
     //$crud->callback_column('id_viaje',array($this,'item_description_callback'));
     

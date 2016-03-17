@@ -4,7 +4,7 @@ class cliente_m extends CI_Model {
 
     public function getClientes()
     {
-        $sql = "select * from cliente where 1 = ?";
+        $sql = "select * from cliente where activo = 1";
             
         $query = $this->db->query($sql, 1);
 

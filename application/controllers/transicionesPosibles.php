@@ -43,7 +43,7 @@ class transicionesPosibles extends CI_Controller{
     $crud->set_relation('id_estado_futuro','estado','descripcion');
     
     $crud->display_as('id_tipo_estado','Tabla');
-    $crud->set_relation('id_tipo_estado','tipo_estado','nombre_tabla');
+    $crud->set_relation('id_tipo_estado','tipo_estado','nombre_tabla', array('activo' => 1));
     
     $crud->set_relation_dependency('id_estado_actual','id_tipo_estado','id_tipo_estado');
     $crud->set_relation_dependency('id_estado_futuro','id_tipo_estado','id_tipo_estado');

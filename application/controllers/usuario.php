@@ -21,14 +21,14 @@ class usuario extends CI_Controller{
   
   function index(){
     $this->grocery_crud->set_table('usuario');
-    $this->grocery_crud->edit_fields('nombre','apellido','mail','foto','password','id_tipo_empresa');
-    $this->grocery_crud->add_fields('nombre','apellido','mail','foto','password','id_tipo_empresa');
+    $this->grocery_crud->edit_fields('activo','nombre','apellido','mail','foto','password','id_tipo_empresa');
+    $this->grocery_crud->add_fields('activo','nombre','apellido','mail','foto','password','id_tipo_empresa');
     
     $this->grocery_crud->set_theme('datatables');
    
     $this->grocery_crud->set_subject('Usuario');
-    $this->grocery_crud->required_fields('nombre','apellido','mail','password','id_tipo_empresa');
-    $this->grocery_crud->columns('nombre','apellido','mail','foto','id_tipo_empresa');
+    $this->grocery_crud->required_fields('activo','nombre','apellido','mail','password','id_tipo_empresa');
+    $this->grocery_crud->columns('activo','nombre','apellido','mail','foto','id_tipo_empresa');
     
     $this->grocery_crud->set_field_upload('foto','assets/uploads/files');
     
@@ -44,6 +44,8 @@ class usuario extends CI_Controller{
     $this->grocery_crud->add_action('Perfiles', base_url().'/assets/img/perfilmini.png', '','ui-icon-image',array($this,'link_hacia_perfiles'));
     
     $this->grocery_crud->set_rules('mail','mail','callback_validarMail');
+    
+    $this->grocery_crud->change_field_type('activo', 'true_false');
     
     $output = $this->grocery_crud->render();
     $this->usuario_output($output);

@@ -40,7 +40,7 @@ class pagoProveedor extends CI_Controller{
     $crud->display_as('id_proveedor','Proveedor');
     $crud->display_as('id','Nro de factura');
        
-    $crud->set_relation('id_proveedor','proveedor','razon_social');
+    $crud->set_relation('id_proveedor','proveedor','razon_social', array('activo' => 1));
     
     $crud->order_by('fecha_pago','desc');
     
