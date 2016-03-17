@@ -171,6 +171,14 @@
                                     </a> 
                                 </TD>
                             </tr>
+                            <tr>                                
+                                <TD colspan="2" style="text-align: center;"> 
+                                    <a href=javascript:window.open('<?php echo base_url('/index.php/generarPDFConf')?>')>                                     
+                                    
+                                        <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-info" style="font-size:small;" title="Generar un comprobante en formato PDF">Comprobante PDF</button>
+                                    </a> 
+                                </TD>
+                            </tr>
                         </table>
                     </div>
                 </div>

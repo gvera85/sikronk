@@ -5,12 +5,12 @@ class generarPDFConf extends CI_Controller {
     public function index()
     {
         // Se carga el modelo alumno
-        $this->load->model('reporte_ventas_m');
+        $this->load->model('caja_distribuidor_m');
         // Se carga la libreria fpdf
         $this->load->library('pdf');
  
         // Se obtienen los alumnos de la base de datos
-        $alumnos = $this->reporte_ventas_m->getViajesProveedor2();
+        $alumnos = $this->caja_distribuidor_m->getLineasCaja(1);
  
         // Creacion del PDF
  
@@ -48,18 +48,21 @@ class generarPDFConf extends CI_Controller {
         $this->pdf->Cell(25,7,'GRADO','TB',0,'L','1');
         $this->pdf->Cell(25,7,'GRUPO','TBR',0,'C','1');
         $this->pdf->Ln(7);
+        
+        
+        
         // La variable $x se utiliza para mostrar un número consecutivo
         $x = 1;
         foreach ($alumnos as $alumno) {
             // se imprime el numero actual y despues se incrementa el valor de $x en uno
             $this->pdf->Cell(15,5,$x++,'BL',0,'C',0);
             // Se imprimen los datos de cada alumno
-            $this->pdf->Cell(25,5,$alumno->id,'B',0,'L',0);
-            $this->pdf->Cell(25,5,$alumno->id,'B',0,'L',0);
-            $this->pdf->Cell(25,5,$alumno->numero_de_viaje,'B',0,'L',0);
-            $this->pdf->Cell(40,5,$alumno->numero_de_viaje,'B',0,'C',0);
-            $this->pdf->Cell(25,5,$alumno->fecha_estimada_salida,'B',0,'L',0);
-            $this->pdf->Cell(25,5,$alumno->id,'BR',0,'C',0);
+            $this->pdf->Cell(25,5,$alumno['tipo'],'B',0,'L',0);
+            $this->pdf->Cell(25,5,$alumno['fecha_pago'],'B',0,'L',0);
+            $this->pdf->Cell(25,5,$alumno['razon_social'],'B',0,'L',0);
+            $this->pdf->Cell(40,5,$alumno['descripcion'],'B',0,'C',0);
+            $this->pdf->Cell(25,5,$alumno['debe'],'B',0,'L',0);
+            $this->pdf->Cell(25,5,$alumno['haber'],'BR',0,'C',0);
             //Se agrega un salto de linea
             $this->pdf->Ln(5);
         }
