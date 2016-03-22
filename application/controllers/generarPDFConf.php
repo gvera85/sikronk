@@ -1,4 +1,7 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php 
+require "vendor/autoload.php";
+ini_set('date.timezone', 'America/Argentina/Buenos_Aires');
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  
 class generarPDFConf extends CI_Controller {
  
@@ -160,11 +163,84 @@ class generarPDFConf extends CI_Controller {
     
     }
     
-    public function dopdf($idViaje){       
+    function doPDF($path='',$content='',$body=false,$style='',$mode=false,$paper_1='P',$paper_2='A4')
+    {    
+        
+        $content = $_POST['id_html'];
+        
+        $content = "<table border='1'> <tr> <td> GONZA </td> </tr> </table>";
+        
+        if( $body!=true and $body!=false ) $body=false;
+        if( $mode!=true and $mode!=false ) $mode=false;
+        
+        chrome_log("content: [".$content."],style[". $style."]","log");
+
+        if( $body == true )
+        {
+            $content='
+            <!doctype html>
+            <html>
+            <head>
+                <link rel="stylesheet" href="'.$style.'" type="text/css" />
+            </head>
+            <body>'
+                .$content.
+            '</body>
+            </html>';
+        }
+
+        if( $content!='' )
+        {
+            ob_start();
+
+            echo '<page>'.$content.'</page>';
+
+            //Añadimos la extensión del archivo. Si está vacío el nombre lo creamos
+            $path!='' ? $path .='.pdf' : $path = $this->crearNombre(10);  
+
+            $content = ob_get_clean(); 
+            //require_once('html2pdf/html2pdf.class.php'); 
+
+            //Orientación / formato del pdf y el idioma.
+            $pdf = new HTML2PDF($paper_1,$paper_2,'es'/*, array(10, 10, 10, 10) /*márgenes*/); //los márgenes también pueden definirse en <page> ver documentación
+
+            $pdf->WriteHTML($content);
+
+            if($mode==false)
+            {
+                //El pdf es creado "al vuelo", el nombre del archivo aparecerá predeterminado cuando le demos a guardar
+                $pdf->Output($path); // mostrar
+                //$pdf->Output('ejemplo.pdf', 'D');  //forzar descarga 
+            }
+            else
+            {
+                $pdf->Output($path, 'F'); //guardar archivo ( ¡ojo! si ya existe lo sobreescribe )
+                header('Location: '.$path); // abrir
+            }
+
+        }
+
+    }
+
+    function crearNombre($length)
+    {
+        if( ! isset($length) or ! is_numeric($length) ) $length=6;
+
+        $str  = "0123456789abcdefghijklmnopqrstuvwxyz";
+        $path = '';
+
+        for($i=1 ; $i<$length ; $i++)
+          $path .= $str{rand(0,strlen($str)-1)};
+
+        return $path.'_'.date("d-m-Y_H-i-s").'.pdf';    
+    }
+    
+    public function dopdf2($idViaje){       
 
             $this->output->enable_profiler(false);
             $this->load->library('parser');
-            require_once(APPPATH.'third_party/html2pdf-4.5.1/html2pdf.class.php');
+            //require_once(APPPATH.'third_party/html2pdf-4.5.1/html2pdf.class.php');
+            ini_set('date.timezone', 'America/Argentina/Buenos_Aires');
 
             // set vars
             $tpl_path = 'path/to/view_tpl.php';
@@ -188,7 +264,7 @@ class generarPDFConf extends CI_Controller {
             // GENERATE PDF AND SAVE FILE (OR OUTPUT)
             //
 
-            $content = $this->CI->parser->parse($tpl_path, $tpl_data, TRUE);
+            $content = $this->parser->parse($tpl_path, $tpl_data, TRUE);
             $html2pdf = new HTML2PDF('P','A4','fr', true, 'UTF-8',  array(7, 7, 10, 10));
             $html2pdf->pdf->SetAuthor($tpl_data['site_title']);
             $html2pdf->pdf->SetTitle($tpl_data['site_title']);

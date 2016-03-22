@@ -1,0 +1,6 @@
+{
+   "name": "verasoft/sikronk",
+   "require": {
+       "spipu/html2pdf": "4.5.1"
+   }
+}
