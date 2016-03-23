@@ -115,11 +115,11 @@ if ( isset($_POST['PDF_7']) )
 <table>
   <tr>
     <td>Mostrar PDF sin CSS</td>
-    <td><input name="PDF_1" type="submit" value="CREAR" /></td>
+    <td><a href="<?php echo base_url() ?>index.php/generarPDFConf/doPDF"  >CREAR B</a></td>
   </tr>
   <tr>
     <td>Mostrar PDF con CSS</td>
-    <td><input name="PDF_2" type="submit" value="CREAR" /></td>
+    <td><a href="<?php echo base_url() ?>index.php/generarPDFConf/vistaPrevia"  >Vista previa</a></td>
   </tr>
   <tr>
     <td>Mostrar PDF con CSS sin definir el nombre</td>

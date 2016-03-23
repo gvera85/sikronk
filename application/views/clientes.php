@@ -1,10 +1,5 @@
 <html lang="es">
-    <?php 
-        $this->load->view('header');
-      
-      
-   
-    ?>
+  
 <head>
     <title>sikronk - Lista de clientes</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -16,45 +11,40 @@
     <meta name="viewport" content="width=device-width">
     
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css">
+    
+    
+    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/dataTables/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/dataTables/jquery.dataTables.min.js"></script> 
+    
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/dataTables.buttons.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/buttons.flash.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/jszip.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/pdfmake.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/vfs_fonts.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/buttons.html5.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/buttons.print.min.js"></script>  
+    
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/moment.min.js"></script>  
+    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/datetime-moment.js"></script>  
+    
+    <!-- start: CSS -->
+    
+        <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/buttons.dataTables.min.css">
+
+    
+
+    <link href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link id="base-style" href="<?php echo base_url() ?>assets/plugins/metro/css/style.css" rel="stylesheet">
+    <link id="base-style-responsive" href="<?php echo base_url() ?>assets/plugins/metro/css/style-responsive.css" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/dataTablesBootstrap.css">
 
-    <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
-    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/plugins/jquery/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>/assets/bootstrap/js/dataTablesBootstrap.js"></script>
-    <script type="text/javascript" charset="utf-8">
-            const COLUMNA_VALOR_TOTAL_LINEA = 7;
-            const COLUMNA_MONTO_PAGADO = 8;
-            const COLUMNA_SALDO = 9;
-            const COLUMNA_ID_REPARTO = 10;
-            const COLUMNA_MONTO_PAGADO_ESTA_FACTURA = 11;
-            const COLUMNA_ID_PRODUCTO = 12;
-            const COLUMNA_ID_VL = 13;
-        
-            $(document).ready(function() {
-                    
-                    
-                
-                    var t = $('#example').DataTable( {                                                                              ,
-                                        "order": [[ 1, 'asc' ]],
-                                        "language": {
-                                                        "url": "<?php echo base_url() ?>/assets/bootstrap/json/SpanishDataTable.json"
-                                                    }
+    <!--<link href="<?php echo base_url() ?>/assets/grocery_crud/themes/datatables/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>-->
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/jquery.dataTables.min.css">
 
-                                    } );
-
-
-
-                                    t.on( 'order.dt search.dt', function () {
-                                        t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
-                                            cell.innerHTML = i+1;
-                                        } );
-                                    } ).draw();
-
-                                     
-            } );
-                    
-    </script>
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/responsive.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/buttons.dataTables.min.css">
     
+   
 </head>
 <body>        
    
@@ -67,25 +57,19 @@
         
       
             
-        <table id="example" class="display" cellspacing="0" width="100%">
+            <table id="example" style="padding: 50px; width: 100%;" border="1" cellspacing="0" width="100%">
                 <thead>
-                <TR>
-                    <th>#</th>
-                    
-                    <th><b>Proveedor</b></th>                    
-                    
-                  
-                </TR>
+                    <TR style="padding: 50px; width: 100%;">
+                        <th>#</th>
+                        <th><b>Proveedor</b></th>  
+                    </TR>
                 </thead>
-                 <tbody>
+                <tbody>
                 <?php 
                     foreach( $clientes as $lineas ) : ?>
-                    <TR>
-                      
+                    <TR style="padding: 50px; width: 100%;">
                         <TD> <?php echo $lineas['id'] ?></TD>
-                        <TD> <?php echo $lineas['razon_social'] ?></TD>                       
-                       
-                     
+                        <TD> <?php echo $lineas['razon_social'] ?></TD>   
                     </TR>            
                     
                 <?php           
@@ -97,12 +81,5 @@
         </div>     
           
   </div>
-  <script type="text/javascript">
-	// For demo to fit into DataTables site builder...
-	$('#example')
-		.removeClass( 'display' )
-		.addClass('table table-striped table-bordered');
-  </script>  
-
 </body>
 </html>

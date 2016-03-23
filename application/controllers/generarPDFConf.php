@@ -165,8 +165,12 @@ class generarPDFConf extends CI_Controller {
     
     function doPDF($path='',$content='',$body=false,$style='',$mode=false,$paper_1='P',$paper_2='A4')
     {    
+      
+        $this->load->model('cliente_m');
         
-        $content = $_POST['id_html'];
+        $clientes = $this->cliente_m->getClientes();    
+    
+        $data['clientes'] = $clientes;
         
         $content = "<table border='1'> <tr> <td> GONZA </td> </tr> </table>";
         
@@ -174,25 +178,14 @@ class generarPDFConf extends CI_Controller {
         if( $mode!=true and $mode!=false ) $mode=false;
         
         chrome_log("content: [".$content."],style[". $style."]","log");
-
-        if( $body == true )
-        {
-            $content='
-            <!doctype html>
-            <html>
-            <head>
-                <link rel="stylesheet" href="'.$style.'" type="text/css" />
-            </head>
-            <body>'
-                .$content.
-            '</body>
-            </html>';
-        }
+        
 
         if( $content!='' )
         {
-            ob_start();
-
+            ob_start();            
+            
+            $content = $this->load->view('clientes',$data, true);
+            
             echo '<page>'.$content.'</page>';
 
             //Añadimos la extensión del archivo. Si está vacío el nombre lo creamos
@@ -204,6 +197,10 @@ class generarPDFConf extends CI_Controller {
             //Orientación / formato del pdf y el idioma.
             $pdf = new HTML2PDF($paper_1,$paper_2,'es'/*, array(10, 10, 10, 10) /*márgenes*/); //los márgenes también pueden definirse en <page> ver documentación
 
+            
+            
+            //$content = ob_get_clean(); 
+            
             $pdf->WriteHTML($content);
 
             if($mode==false)
@@ -233,6 +230,21 @@ class generarPDFConf extends CI_Controller {
           $path .= $str{rand(0,strlen($str)-1)};
 
         return $path.'_'.date("d-m-Y_H-i-s").'.pdf';    
+    }
+    
+    function vistaPrevia()
+    {    
+      
+        $this->load->model('cliente_m');
+        
+        $clientes = $this->cliente_m->getClientes();    
+            
+        $data['clientes'] = $clientes;
+
+        $content = $this->load->view('clientes',$data, true);
+
+        echo $content;
+
     }
     
     public function dopdf2($idViaje){       
