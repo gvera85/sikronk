@@ -163,7 +163,35 @@ class generarPDFConf extends CI_Controller {
     
     }
     
-    function doPDF($path='',$content='',$body=false,$style='',$mode=false,$paper_1='P',$paper_2='A4')
+    function mostrarViajePDF($idViaje)
+    {          
+        $this->load->model('viaje_m');
+        $this->load->model('cliente_m');
+        $this->load->model('reporte_ventas_m');
+
+        $lineasViaje = $this->viaje_m->getLineasViaje($idViaje);
+        $lineasReparto = $this->viaje_m->getRepartoConfirmado($idViaje, null);
+        $clientes = $this->cliente_m->getClientes();
+        $resumenViaje = $this->reporte_ventas_m->getResumenViaje($idViaje);
+        $lineasGastos = $this->reporte_ventas_m->getGastos($idViaje);
+
+        $data['resumenViaje'] = $resumenViaje;    
+        $data['lineasViaje'] = $lineasViaje;
+        $data['clientes'] = $clientes;
+        $data['lineasReparto'] = $lineasReparto;
+        $data['lineasGastos'] = $lineasGastos;
+        $data['modo'] = "vista";
+        $data['idCliente'] = null;
+
+        $htmlComprobante = $this->load->view('pdf/comprobanteViaje',$data, true);
+        
+        //$this->load->view('pdf/comprobanteViaje',$data);
+        
+        $this->doPDF(null, null, null, null, null, 'P', 'A4', $htmlComprobante);
+    }
+    
+    
+    function doPDF($path='',$content='',$body=false,$style='',$mode=false,$paper_1='P',$paper_2='A4', $htmlComprobante)
     {    
       
         $this->load->model('cliente_m');
@@ -185,6 +213,8 @@ class generarPDFConf extends CI_Controller {
             ob_start();            
             
             $content = $this->load->view('clientes',$data, true);
+            
+            $content = $htmlComprobante;
             
             echo '<page>'.$content.'</page>';
 
