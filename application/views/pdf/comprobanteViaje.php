@@ -75,6 +75,7 @@
             $tipoIva = $cabecera['tipo_iva'];
             $provincia = $cabecera['provincia'];
             $localidad = $cabecera['localidad'];
+            $remito = $cabecera['numero_de_remito'];
         endforeach; 
     }  
     
