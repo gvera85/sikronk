@@ -159,7 +159,6 @@ class viaje_m extends CI_Model {
           $sql = "select    a.id,
                             a.stamp,
                             id_viaje,
-                            id_cliente,
                             fecha_reparto,
                             nro_remito,
                             cantidad_bultos,
@@ -167,20 +166,7 @@ class viaje_m extends CI_Model {
                             a.id_producto,
                             a.id_variable_logistica,
                             precio_caja,
-                            porcentaje_ganancia,
-                            b.id id_cliente,
-                            b.stamp,
-                            razon_social,
-                            cuit,
-                            direccion_comercial,
-                            direccion_descarga,
-                            localidad,
-                            mercado,
-                            id_tipo_iva,
-                            id_provincia,
-                            codigo_postal,
-                            telefono1,
-                            telefono2,
+                            porcentaje_ganancia,                            
                             cant_bultos_merma,
                             id_motivo_merma,
                             fecha_valorizacion, 
@@ -190,7 +176,6 @@ class viaje_m extends CI_Model {
                             d.codigo_vl, d.peso, d.base_pallet, d.altura_pallet,
                             d.id_tipo_envase, e.descripcion descripcion_envase
                     from reparto a
-                    join cliente b on a.id_cliente = b.id
                     join producto c on a.id_producto = c.id
                     join variable_logistica d on a.id_variable_logistica = d.id
                     join tipo_envase e on d.id_tipo_envase = e.id
@@ -577,6 +562,30 @@ class viaje_m extends CI_Model {
           return FALSE;
         }   
        
+    }
+    
+    public function getCabeceraViajePDF($idViaje)
+    {
+        $sql = "select a.id, a.numero_de_viaje, a.fecha_estimada_salida,
+                a.numero_de_remito,
+                b.*,
+                c.descripcion tipo_iva,
+                d.descripcion provincia
+                from viaje a 
+                join proveedor b on a.id_proveedor = b.id
+                left join tipo_iva c on b.id_tipo_iva = c.id
+                left join provincia d on b.id_provincia = d.id
+                where a.id = ?";
+            
+        $query = $this->db->query($sql, $idViaje);
+
+        $viaje = $query->result_array();
+
+        if( is_array($viaje) && count($viaje) > 0 ) {
+          return $viaje;
+        }
+
+        return false;
     }
     
 

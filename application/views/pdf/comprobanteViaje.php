@@ -25,7 +25,21 @@
     
 
   
-      
+    <style>
+        /* cellpadding */
+        th, td { padding: 5px; }
+
+        /* cellspacing */
+        table { border-collapse: separate; border-spacing: 5px; } /* cellspacing="5" */
+        table { border-collapse: collapse; border-spacing: 0; }   /* cellspacing="0" */
+
+        /* valign */
+        th, td { vertical-align: top; }
+
+        /* align (center) */
+        table { margin: 0 auto; }
+    
+    </style>
     
     
     
@@ -34,27 +48,38 @@
 <body>
     
 <?php
+    $fechaImpresion = date("d/m/Y H:i:s"); //La fecha y hora de ejecuccion del "reporte"
+
+
     if (!empty($resumenViaje[0]['id']))
     {
         foreach( $resumenViaje as $resumen ) : 
             $idViaje = $resumen['id'];
             $nroViaje = $resumen['numero_de_viaje'];
             $fechaSalida = date_format(date_create($resumen['fecha_estimada_salida']), 'd/m/Y');
+            $fechaLlegada = date_format(date_create($resumen['fecha_estimada_llegada']), 'd/m/Y');
             $valorMercaderia = $resumen['valor_mercaderia'];
             $valorMercaderiaProveedor = $resumen['valor_mercaderia_proveedor'];
             $valorGastosProveedor = $resumen['valor_gastos_proveedor'];
             $valorGastosDistribuidor = $resumen['valor_gastos_distribuidor'];
             $valorAPagarAlProveedor = $valorMercaderiaProveedor - $valorGastosProveedor;
         endforeach; 
-    }      
+    }   
+    
+    if (!empty($cabeceraProveedor[0]['id']))
+    {
+        foreach( $cabeceraProveedor as $cabecera ) : 
+            $razonSocial = $cabecera['razon_social'];
+            $direccionComercial = $cabecera['direccion_comercial'];
+            $cuit = $cabecera['cuit'];
+            $tipoIva = $cabecera['tipo_iva'];
+            $provincia = $cabecera['provincia'];
+            $localidad = $cabecera['localidad'];
+        endforeach; 
+    }  
     
     $gastosDelProveedor = "";
     $gastosDelDistribuidor = "";
-    
-    if ($idCliente[0] != "")
-        $FlagUnSoloCliente = 1;
-    else
-        $FlagUnSoloCliente = 0;
     
     if (!empty($lineasGastos[0]['id']))
     {
@@ -85,8 +110,63 @@
             $modo = "viajeConPrecioCerrado";
         }
     }             
-?>          
+?>        
+    
+    
+<table  border=0 cellspacing=0 cellpadding=2 bordercolor="#666633" >
+    <tr>
+            <td>Fecha impresion</td>
+            <td>    
+                    <?php echo $fechaImpresion ?>
+            </td>
+    </tr>
+    <tr>
+            <td>Fecha arribo viaje</td>
+            <td>    
+                    <?php echo $fechaLlegada ?>
+            </td>
+    </tr>
+    <tr>
+            <td>Proveedor</td>
+            <td>    
+                    <?php echo $razonSocial ?>
+            </td>
+    </tr>
+    <tr>
+            <td>Dirección</td>
+            <td>
+                <?php echo $direccionComercial ?>
+            </td>
+    </tr>
+    <tr>
+            <td>Localidad</td>
+            <td>
+                <?php echo $localidad ?>
+            </td>
+    </tr>
+     <tr>
+            <td>Provincia</td>
+            <td>
+                <?php echo $provincia ?>
+            </td>
+    </tr>
+    <tr>
+            <td>CUIT</td>
+            <td>
+                <?php echo $cuit ?>
+            </td>
+    </tr>  
+     <tr>
+            <td>Tipo IVA</td>
+            <td>
+                <?php echo $tipoIva ?>
+            </td>
+    </tr>  
 
+
+</table> 
+    
+<div style="padding:10px;"></div>
 
 <table  border=1 cellspacing=0 cellpadding=2 bordercolor="#666633" >
     <tr>
@@ -121,21 +201,7 @@
     
 
 
-    <style>
-        /* cellpadding */
-        th, td { padding: 5px; }
-
-        /* cellspacing */
-        table { border-collapse: separate; border-spacing: 5px; } /* cellspacing="5" */
-        table { border-collapse: collapse; border-spacing: 0; }   /* cellspacing="0" */
-
-        /* valign */
-        th, td { vertical-align: top; }
-
-        /* align (center) */
-        table { margin: 0 auto; }
     
-    </style>
 
     <table  border=1  cellpadding="10" bordercolor="#666633" >
     <tr>           
@@ -154,6 +220,11 @@
     
     
     <?php
+        $totalPeso = 0;    
+        $totalBultos = 0;
+        $totalPallets = 0;
+        $totalMerma = 0;
+        $totalMonto = 0;
         foreach( $lineasReparto as $reparto ) : 
        
 
@@ -166,6 +237,7 @@
                 <?php  
 
                     echo date_format(date_create($reparto['fecha_valorizacion']), 'd/m/Y');
+                    
                
                 ?>
               </td> 
@@ -181,16 +253,36 @@
 
              
 
-              <?php $precioTotalLinea = $reparto['precio_sugerido_caja'] * ( $reparto['cantidad_bultos'] - $reparto['cant_bultos_merma']); ?>
+              <?php 
+                    $precioTotalLinea = $reparto['precio_sugerido_caja'] * ( $reparto['cantidad_bultos'] - $reparto['cant_bultos_merma']); 
+              
+                    $totalPeso = $totalPeso +  $reparto['peso'];
+                    $totalBultos = $totalBultos +  $reparto['cantidad_bultos'];
+                    $totalPallets = $totalPallets +  $reparto['cantidad_pallets'];
+                    $totalMerma = $totalMerma +  $reparto['cant_bultos_merma'];
+                    $totalMonto = $totalMonto +  $precioTotalLinea;
+              ?>
               
               <TD>   <?php echo $precioTotalLinea?></TD>
              
 
             </tr>
         <?php
-        
         endforeach;
-         ?>
+        ?>
+            
+        <tfoot>
+        <tr style="font-weight: bold; ">
+            <td colspan="3">Total</td>
+                <td><?php echo $totalPeso ?> KG</td>
+                <td>-</td>
+                <td><?php echo $totalBultos ?></td>
+                <td><?php echo $totalPallets ?></td>
+                <td><?php echo $totalMerma ?></td>
+                <td>-</td>
+                <td>$<?php echo $totalMonto ?></td>            
+        </tr>
+        </tfoot>
    
     
     

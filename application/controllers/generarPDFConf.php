@@ -173,21 +173,22 @@ class generarPDFConf extends CI_Controller {
         $lineasReparto = $this->viaje_m->getRepartoConfirmadoParaPDF($idViaje, null);
         $clientes = $this->cliente_m->getClientes();
         $resumenViaje = $this->reporte_ventas_m->getResumenViaje($idViaje);
-        $lineasGastos = $this->reporte_ventas_m->getGastos($idViaje);
+        $lineasGastos = $this->reporte_ventas_m->getGastos($idViaje);    
+        $cabeceraProveedor = $this->viaje_m->getCabeceraViajePDF($idViaje);
+        
 
         $data['resumenViaje'] = $resumenViaje;    
         $data['lineasViaje'] = $lineasViaje;
-        $data['clientes'] = $clientes;
         $data['lineasReparto'] = $lineasReparto;
         $data['lineasGastos'] = $lineasGastos;
-        $data['modo'] = "vista";
-        $data['idCliente'] = null;
+        $data['cabeceraProveedor'] = $cabeceraProveedor;
+        
 
         $htmlComprobante = $this->load->view('pdf/comprobanteViaje',$data, true);
         
-        //$this->load->view('pdf/comprobanteViaje',$data);
+        $this->load->view('pdf/comprobanteViaje',$data);
         
-        $this->doPDF(null, null, null, null, null, 'P', 'A4', $htmlComprobante);
+        //$this->doPDF(null, null, null, null, null, 'P', 'A4', $htmlComprobante);
     }
     
     

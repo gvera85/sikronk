@@ -234,7 +234,7 @@ class reporte_ventas_m extends CI_Model {
     
     public function getResumenViaje($idViaje)
     {
-        $sql = "select a.id, a.numero_de_viaje, a.fecha_estimada_salida,
+        $sql = "select a.id, a.numero_de_viaje, a.fecha_estimada_salida, a.fecha_estimada_llegada, 
                 a.numero_de_remito,
                 getMontoViaje(a.id) valor_mercaderia, 
                 getMontoViajeProveedor(a.id) valor_mercaderia_proveedor, 
