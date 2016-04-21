@@ -90,13 +90,7 @@
 
 <table  border=1 cellspacing=0 cellpadding=2 bordercolor="#666633" >
     <tr>
-            <td>Valor total de la mercadería cobrada a los clientes</td>
-            <td>    
-                    $<?php echo $valorMercaderia ?>
-            </td>
-    </tr>
-    <tr>
-            <td>Valor total de la mercadería adeudada al proveedor</td>
+            <td>Valor total de la mercadería</td>
             <td>    
                     $<?php echo $valorMercaderiaProveedor ?>
             </td>
@@ -123,17 +117,37 @@
 
 </table>          
 
+    <div style="padding:10px;"></div>
+    
 
 
-    <table  border=1 cellspacing=0 cellpadding=2 bordercolor="#666633" >
+    <style>
+        /* cellpadding */
+        th, td { padding: 5px; }
+
+        /* cellspacing */
+        table { border-collapse: separate; border-spacing: 5px; } /* cellspacing="5" */
+        table { border-collapse: collapse; border-spacing: 0; }   /* cellspacing="0" */
+
+        /* valign */
+        th, td { vertical-align: top; }
+
+        /* align (center) */
+        table { margin: 0 auto; }
+    
+    </style>
+
+    <table  border=1  cellpadding="10" bordercolor="#666633" >
     <tr>           
                                      
         <th>Fecha valorización</th>
         <th><span data-placement="bottom" data-toggle="tooltip" title="Producto que se entregó al cliente">Producto</span></th>
-        <th><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Presentación</span></th>
+        <th><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Envase</span></th>
+        <th><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Peso bulto</span></th>
+        <th><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Palletizado</span></th>
         <th  style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos"># Bultos </span></th>
         <th style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de pallets"># Pallets </span></th>
-        <th style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos con merma"># Bultos con merma </span></th>
+        <th style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos con merma"># Merma </span></th>
         <th style="vertical-align: middle;"> $ bulto </th>
         <th style="vertical-align: middle;"> $ total </th>
     </tr>
@@ -156,13 +170,11 @@
                 ?>
               </td> 
               <td align="rigth"> <?php echo $reparto['descripcion_producto'] ?> </td>
-              <td align="rigth"> <?php echo $reparto['descripcion_producto']."VL" ?> </td>
+              <td align="rigth"> <?php echo $reparto['descripcion_envase'] ?> </td>
+              <td align="rigth"> <?php echo $reparto['peso']." KG" ?> </td>
+              <td align="rigth"> <?php echo $reparto['base_pallet']." x ".$reparto['altura_pallet'] ?> </td>
               <TD> <?php echo $reparto['cantidad_bultos'] ?> </TD> 
-
               <TD> <?php echo $reparto['cantidad_pallets'] ?></TD> 
-
-              
-
               <TD> <?php echo $reparto['cant_bultos_merma'] ?> </TD> 
               <TD> <?php echo $reparto['precio_sugerido_caja'] ?> </TD> 
            

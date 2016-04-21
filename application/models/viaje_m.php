@@ -107,8 +107,8 @@ class viaje_m extends CI_Model {
                             nro_remito,
                             cantidad_bultos,
                             cantidad_pallets,
-                            id_producto,
-                            id_variable_logistica,
+                            a.id_producto,
+                            a.id_variable_logistica,
                             precio_caja,
                             porcentaje_ganancia,
                             b.id id_cliente,
@@ -136,6 +136,67 @@ class viaje_m extends CI_Model {
                     where id_viaje= ? 
                     and a.id_cliente = ifnull(?,a.id_cliente)
                     order by a.fecha_reparto";
+            
+            $query = $this->db->query($sql, array($idViaje, $idCliente));
+                   
+            $lineasReparto = $query->result_array();
+
+            if( is_array($lineasReparto) && count($lineasReparto) > 0 ) {
+              return $lineasReparto;
+            }
+            
+            return false;
+        }
+        else {
+          return FALSE;
+        }   
+       
+    }
+    
+    public function getRepartoConfirmadoParaPDF($idViaje, $idCliente)
+    {
+         if($idViaje != FALSE) {
+          $sql = "select    a.id,
+                            a.stamp,
+                            id_viaje,
+                            id_cliente,
+                            fecha_reparto,
+                            nro_remito,
+                            cantidad_bultos,
+                            cantidad_pallets,
+                            a.id_producto,
+                            a.id_variable_logistica,
+                            precio_caja,
+                            porcentaje_ganancia,
+                            b.id id_cliente,
+                            b.stamp,
+                            razon_social,
+                            cuit,
+                            direccion_comercial,
+                            direccion_descarga,
+                            localidad,
+                            mercado,
+                            id_tipo_iva,
+                            id_provincia,
+                            codigo_postal,
+                            telefono1,
+                            telefono2,
+                            cant_bultos_merma,
+                            id_motivo_merma,
+                            fecha_valorizacion, 
+                            c.descripcion descripcion_producto,
+                            getCantBultosRepartidos(a.id_viaje, a.id_producto, a.id_variable_logistica) cant_repartida,
+                            a.precio_sugerido_caja,
+                            d.codigo_vl, d.peso, d.base_pallet, d.altura_pallet,
+                            d.id_tipo_envase, e.descripcion descripcion_envase
+                    from reparto a
+                    join cliente b on a.id_cliente = b.id
+                    join producto c on a.id_producto = c.id
+                    join variable_logistica d on a.id_variable_logistica = d.id
+                    join tipo_envase e on d.id_tipo_envase = e.id
+                    where id_viaje= ? 
+                    and a.id_cliente = ifnull(?,a.id_cliente)
+                    order by a.fecha_valorizacion, a.fecha_reparto";
             
             $query = $this->db->query($sql, array($idViaje, $idCliente));
                    

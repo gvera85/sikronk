@@ -78,6 +78,8 @@ class cierreViajes extends CI_Controller{
     $this->grocery_crud->unset_edit();
     $this->grocery_crud->unset_delete();
     
+    $this->grocery_crud->order_by('id', 'desc'); 
+    
     $output = $this->grocery_crud->render();
     $this->viaje_output($output);
   }

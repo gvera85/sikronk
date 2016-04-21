@@ -170,7 +170,7 @@ class generarPDFConf extends CI_Controller {
         $this->load->model('reporte_ventas_m');
 
         $lineasViaje = $this->viaje_m->getLineasViaje($idViaje);
-        $lineasReparto = $this->viaje_m->getRepartoConfirmado($idViaje, null);
+        $lineasReparto = $this->viaje_m->getRepartoConfirmadoParaPDF($idViaje, null);
         $clientes = $this->cliente_m->getClientes();
         $resumenViaje = $this->reporte_ventas_m->getResumenViaje($idViaje);
         $lineasGastos = $this->reporte_ventas_m->getGastos($idViaje);
