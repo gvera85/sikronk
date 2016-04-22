@@ -186,9 +186,9 @@ class generarPDFConf extends CI_Controller {
 
         $htmlComprobante = $this->load->view('pdf/comprobanteViaje',$data, true);
         
-        $this->load->view('pdf/comprobanteViaje',$data);
+        //$this->load->view('pdf/comprobanteViaje',$data);
         
-        //$this->doPDF(null, null, null, null, null, 'P', 'A4', $htmlComprobante);
+        $this->doPDF(null, null, null, null, null, 'P', 'A4', $htmlComprobante);
     }
     
     

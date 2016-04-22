@@ -27,17 +27,47 @@
   
     <style>
         /* cellpadding */
-        th, td { padding: 5px; }
-
-        /* cellspacing */
-        table { border-collapse: separate; border-spacing: 5px; } /* cellspacing="5" */
-        table { border-collapse: collapse; border-spacing: 0; }   /* cellspacing="0" */
+        th, td { padding: 2px; }
 
         /* valign */
         th, td { vertical-align: top; }
 
         /* align (center) */
-        table { margin: 0 auto; }
+        
+        
+            #contenedor {
+            }
+            
+            .arribaDerecha{
+                float: right;
+            }
+            
+            .tituloProveedor{
+                font-weight: bold;
+            }
+            
+            #cabecera {
+            }
+            #menu {
+              float: left;
+              width: 15%;
+            }
+            #contenido {
+              float: left;
+              width: 85%;
+            }
+            #contenido #principal {
+              float: left;
+              width: 80%;
+            }
+            #contenido #secundario {
+              float: left;
+              width: 20%;
+            }
+
+            #pie {
+              clear: both;
+            }            
     
     </style>
     
@@ -49,7 +79,6 @@
     
 <?php
     $fechaImpresion = date("d/m/Y H:i:s"); //La fecha y hora de ejecuccion del "reporte"
-
 
     if (!empty($resumenViaje[0]['id']))
     {
@@ -69,6 +98,8 @@
     if (!empty($cabeceraProveedor[0]['id']))
     {
         foreach( $cabeceraProveedor as $cabecera ) : 
+            $idViaje = $cabecera['id'];
+            $nroViaje = $cabecera['numero_de_viaje'];
             $razonSocial = $cabecera['razon_social'];
             $direccionComercial = $cabecera['direccion_comercial'];
             $cuit = $cabecera['cuit'];
@@ -76,6 +107,9 @@
             $provincia = $cabecera['provincia'];
             $localidad = $cabecera['localidad'];
             $remito = $cabecera['numero_de_remito'];
+            $distribuidor = $cabecera['nombre_distribuidor'];
+            $cuitDistribuidor = $cabecera['cuit_distribuidor'];
+                    
         endforeach; 
     }  
     
@@ -113,184 +147,209 @@
     }             
 ?>        
     
-    
-<table  border=0 cellspacing=0 cellpadding=2 bordercolor="#666633" >
-    <tr>
-            <td>Fecha impresion</td>
-            <td>    
-                    <?php echo $fechaImpresion ?>
-            </td>
-    </tr>
-    <tr>
-            <td>Fecha arribo viaje</td>
-            <td>    
-                    <?php echo $fechaLlegada ?>
-            </td>
-    </tr>
-    <tr>
-            <td>Proveedor</td>
-            <td>    
-                    <?php echo $razonSocial ?>
-            </td>
-    </tr>
-    <tr>
-            <td>Dirección</td>
-            <td>
-                <?php echo $direccionComercial ?>
-            </td>
-    </tr>
-    <tr>
-            <td>Localidad</td>
-            <td>
-                <?php echo $localidad ?>
-            </td>
-    </tr>
-     <tr>
-            <td>Provincia</td>
-            <td>
-                <?php echo $provincia ?>
-            </td>
-    </tr>
-    <tr>
-            <td>CUIT</td>
-            <td>
-                <?php echo $cuit ?>
-            </td>
-    </tr>  
-     <tr>
-            <td>Tipo IVA</td>
-            <td>
-                <?php echo $tipoIva ?>
-            </td>
-    </tr>  
-
-
-</table> 
-    
-<div style="padding:10px;"></div>
-
-<table  border=1 cellspacing=0 cellpadding=2 bordercolor="#666633" >
-    <tr>
-            <td>Valor total de la mercadería</td>
-            <td>    
-                    $<?php echo $valorMercaderiaProveedor ?>
-            </td>
-    </tr>
-    <tr>
-            <td>Valor total de los gastos a cargo del proveedor</td>
-            <td>
-                $<?php echo $valorGastosProveedor ?>
-            </td>
-    </tr>
-    <tr>
-            <td>Valor total de los gastos a cargo del distribuidor</td>
-            <td>
-                $<?php echo $valorGastosDistribuidor ?>
-            </td>
-    </tr>
-    <tr>
-            <td><b><i>Valor total a abonar al proveedor</i></b></td>
-            <td>
-                $<?php echo $valorAPagarAlProveedor ?>
-            </td>
-    </tr>
-
-
-</table>          
-
+<div style="padding:10px;">
+     
+    <div class="arribaDerecha">
+        <b><?php echo $distribuidor." - CUIT:".$cuitDistribuidor ?></b>
+    </div>    
     <div style="padding:10px;"></div>
     
 
-
-    
-
-    <table  border=1  cellpadding="10" bordercolor="#666633" >
-    <tr>           
-                                     
-        <th>Fecha valorización</th>
-        <th><span data-placement="bottom" data-toggle="tooltip" title="Producto que se entregó al cliente">Producto</span></th>
-        <th><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Envase</span></th>
-        <th><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Peso bulto</span></th>
-        <th><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Palletizado</span></th>
-        <th  style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos"># Bultos </span></th>
-        <th style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de pallets"># Pallets </span></th>
-        <th style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos con merma"># Merma </span></th>
-        <th style="vertical-align: middle;"> $ bulto </th>
-        <th style="vertical-align: middle;"> $ total </th>
-    </tr>
-    
-    
-    <?php
-        $totalPeso = 0;    
-        $totalBultos = 0;
-        $totalPallets = 0;
-        $totalMerma = 0;
-        $totalMonto = 0;
-        foreach( $lineasReparto as $reparto ) : 
-       
-
-            $precioSugerido = $reparto['precio_sugerido_caja'] == 0 ? $lineas['precio_sugerido_bulto'] : $reparto['precio_sugerido_caja'];    
-
-        ?>  
-            <tr class="warning">             
-             
-              <td> 
-                <?php  
-
-                    echo date_format(date_create($reparto['fecha_valorizacion']), 'd/m/Y');
-                    
-               
-                ?>
-              </td> 
-              <td align="rigth"> <?php echo $reparto['descripcion_producto'] ?> </td>
-              <td align="rigth"> <?php echo $reparto['descripcion_envase'] ?> </td>
-              <td align="rigth"> <?php echo $reparto['peso']." KG" ?> </td>
-              <td align="rigth"> <?php echo $reparto['base_pallet']." x ".$reparto['altura_pallet'] ?> </td>
-              <TD> <?php echo $reparto['cantidad_bultos'] ?> </TD> 
-              <TD> <?php echo $reparto['cantidad_pallets'] ?></TD> 
-              <TD> <?php echo $reparto['cant_bultos_merma'] ?> </TD> 
-              <TD> <?php echo $reparto['precio_sugerido_caja'] ?> </TD> 
-           
-
-             
-
-              <?php 
-                    $precioTotalLinea = $reparto['precio_sugerido_caja'] * ( $reparto['cantidad_bultos'] - $reparto['cant_bultos_merma']); 
-              
-                    $totalPeso = $totalPeso +  $reparto['peso'];
-                    $totalBultos = $totalBultos +  $reparto['cantidad_bultos'];
-                    $totalPallets = $totalPallets +  $reparto['cantidad_pallets'];
-                    $totalMerma = $totalMerma +  $reparto['cant_bultos_merma'];
-                    $totalMonto = $totalMonto +  $precioTotalLinea;
-              ?>
-              
-              <TD>   <?php echo $precioTotalLinea?></TD>
-             
-
-            </tr>
-        <?php
-        endforeach;
-        ?>
+    <div>  
+        <table  border=0 cellspacing=0 cellpadding=2 bordercolor="#666633" >
             
-        <tfoot>
-        <tr style="font-weight: bold; ">
-            <td colspan="3">Total</td>
-                <td><?php echo $totalPeso ?> KG</td>
-                <td>-</td>
-                <td><?php echo $totalBultos ?></td>
-                <td><?php echo $totalPallets ?></td>
-                <td><?php echo $totalMerma ?></td>
-                <td>-</td>
-                <td>$<?php echo $totalMonto ?></td>            
-        </tr>
-        </tfoot>
+            <tr>
+                    <td class="tituloProveedor">Proveedor</td>
+                    <td>    
+                            <?php echo $razonSocial ?>
+                    </td>
+                    <td class="tituloProveedor">Provincia</td>
+                    <td>
+                        <?php echo $provincia ?>
+                    </td>
+            </tr>
+            <tr>
+                    <td class="tituloProveedor">Localidad</td>
+                    <td>
+                        <?php echo $localidad ?>
+                    </td>
+                    <td class="tituloProveedor">Dirección</td>
+                    <td>
+                        <?php echo $direccionComercial ?>
+                    </td>
+            </tr>
+            <tr>
+                    <td class="tituloProveedor">CUIT</td>
+                    <td>
+                        <?php echo $cuit ?>
+                    </td>
+                     <td class="tituloProveedor">Tipo IVA</td>
+                    <td>
+                        <?php echo $tipoIva ?>
+                    </td>
+            </tr>
+            
+        </table> 
+    </div>    
+
+    <div style="padding:10px;"></div>
+    
    
+        <table  border=1 cellspacing=0 cellpadding=2 bordercolor="#666633" >
+            <tr>
+                    <td class="tituloProveedor">Id de viaje</td>
+                    <td>
+                        <?php echo $idViaje ?>
+                    </td>
+                    <td class="tituloProveedor">Numero de viaje</td>
+                    <td>
+                        <?php echo $nroViaje ?>
+                    </td>
+                    
+            </tr>           
+            <tr>
+                    <td class="tituloProveedor">Remito</td>
+                    <td>
+                        <?php echo $remito ?>
+                    </td>                   
+                    <td class="tituloProveedor">Fecha arribo viaje</td>
+                    <td>    
+                            <?php echo $fechaLlegada ?>
+                    </td>                    
+            </tr> 
+        </table> 
     
     
+    <div style="padding:10px;"></div>
+
+    
+    <table border=1 cellspacing=0 cellpadding=2 bordercolor="#666633" >
+        <tr>
+                <td>Valor total de la mercadería</td>
+                <td>    
+                        $<?php echo $valorMercaderiaProveedor ?>
+                </td>
+        </tr>
+        <tr>
+                <td>Valor total de los gastos a cargo del proveedor</td>
+                <td>
+                    $<?php echo $valorGastosProveedor ?>
+                </td>
+        </tr>
+        <tr>
+                <td>Valor total de los gastos a cargo del distribuidor</td>
+                <td>
+                    $<?php echo $valorGastosDistribuidor ?>
+                </td>
+        </tr>
+        <tr>
+                <td><b><i>Valor total a abonar al proveedor</i></b></td>
+                <td>
+                    $<?php echo $valorAPagarAlProveedor ?>
+                </td>
+        </tr>
 
 
-</table>
+    </table>          
+    
+
+    <div style="padding:10px;"></div>
+
+    
+        <table border=1 cellspacing=0 cellpadding=2 bordercolor="#000000">
+        <tr>           
+
+            <th>Fecha valorización</th>
+            <th><span data-placement="bottom" data-toggle="tooltip" title="Producto que se entregó al cliente">Producto</span></th>
+            <th><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Envase</span></th>
+            <th><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Peso bulto</span></th>
+            <th><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Palletizado</span></th>
+            <th  style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos"># Bultos </span></th>
+            <th style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de pallets"># Pallets </span></th>
+            <th style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos con merma"># Merma </span></th>
+            <th style="vertical-align: middle;"> $ bulto </th>
+            <th style="vertical-align: middle;"> $ total </th>
+        </tr>
 
 
+        <?php
+            $totalPeso = 0;    
+            $totalBultos = 0;
+            $totalPallets = 0;
+            $totalMerma = 0;
+            $totalMonto = 0;
+            foreach( $lineasReparto as $reparto ) : 
+
+
+                $precioSugerido = $reparto['precio_sugerido_caja'] == 0 ? $lineas['precio_sugerido_bulto'] : $reparto['precio_sugerido_caja'];    
+
+            ?>  
+                <tr class="warning">             
+
+                  <td> 
+                    <?php  
+
+                        echo date_format(date_create($reparto['fecha_valorizacion']), 'd/m/Y');
+
+
+                    ?>
+                  </td> 
+                  <td align="rigth"> <?php echo $reparto['descripcion_producto'] ?> </td>
+                  <td align="rigth"> <?php echo $reparto['descripcion_envase'] ?> </td>
+                  <td align="rigth"> <?php echo $reparto['peso']." KG" ?> </td>
+                  <td align="rigth"> <?php echo $reparto['base_pallet']." x ".$reparto['altura_pallet'] ?> </td>
+                  <TD> <?php echo $reparto['cantidad_bultos'] ?> </TD> 
+                  <TD> <?php echo $reparto['cantidad_pallets'] ?></TD> 
+                  <TD> <?php echo $reparto['cant_bultos_merma'] ?> </TD> 
+                  <TD> <?php echo $reparto['precio_sugerido_caja'] ?> </TD> 
+
+
+
+
+                  <?php 
+                        $precioTotalLinea = $reparto['precio_sugerido_caja'] * ( $reparto['cantidad_bultos'] - $reparto['cant_bultos_merma']); 
+
+                        $totalPeso = $totalPeso +  $reparto['peso'];
+                        $totalBultos = $totalBultos +  $reparto['cantidad_bultos'];
+                        $totalPallets = $totalPallets +  $reparto['cantidad_pallets'];
+                        $totalMerma = $totalMerma +  $reparto['cant_bultos_merma'];
+                        $totalMonto = $totalMonto +  $precioTotalLinea;
+                  ?>
+
+                  <TD>   <?php echo $precioTotalLinea?></TD>
+
+
+                </tr>
+            <?php
+            endforeach;
+            ?>
+
+            <tfoot>
+            <tr style="font-weight: bold; ">
+                <td colspan="3">Total</td>
+                    <td><?php echo $totalPeso ?> KG</td>
+                    <td>-</td>
+                    <td><?php echo $totalBultos ?></td>
+                    <td><?php echo $totalPallets ?></td>
+                    <td><?php echo $totalMerma ?></td>
+                    <td>-</td>
+                    <td>$<?php echo $totalMonto ?></td>            
+            </tr>
+            </tfoot>
+
+
+
+
+
+    </table>
+    
+    <div class="arribaDerecha">
+        <b><?php echo "Fecha de impresión ".$fechaImpresion ?></b>
+    </div>        
+
+</div>        
+
+
+    
 </body>
 </html>
