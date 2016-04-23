@@ -88,6 +88,8 @@ class cuentaCorrienteProveedor extends CI_Controller{
         foreach( $vectorLineasCC as $lineasCC ) :  
 
             $saldo = $saldo + ($lineasCC['haber'] - $lineasCC['debe']);
+        
+            $saldo = round($saldo, 2);
 
             //if ($lineasCC['fecha_cc'] >= $fechaDesde && $lineasCC['fecha_cc'] <= $fechaHasta)    
             if ($lineasCC['fecha_estimada_llegada'] >= $fechaDesdeFiltro && $lineasCC['fecha_estimada_llegada'] <= $fechaHastaFiltro)    
