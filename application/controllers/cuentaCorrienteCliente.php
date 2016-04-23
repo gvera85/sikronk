@@ -105,6 +105,8 @@ class cuentaCorrienteCliente extends CI_Controller{
         foreach( $vectorLineasCC as $lineasCC ) :  
 
             $saldo = $saldo + ($lineasCC['haber'] - $lineasCC['debe']);
+        
+            $saldo = round($saldo, 2);
 
             //if ($lineasCC['fecha_cc'] >= $fechaDesde && $lineasCC['fecha_cc'] <= $fechaHasta)    
             if ($lineasCC['fecha_valorizacion'] >= $fechaDesdeFiltro && $lineasCC['fecha_valorizacion'] <= $fechaHastaFiltro)    
