@@ -67,7 +67,17 @@
 
             #pie {
               clear: both;
-            }            
+            }   
+            
+            .filaCabeceraCeleste{
+                background-color: #0092ef;
+                color: white;
+            }
+            
+            .claseDistribuidor{
+                background-color: red;
+                color: white;
+            }
     
     </style>
     
@@ -149,7 +159,7 @@
     
 <div style="padding:10px;">
      
-    <div class="arribaDerecha">
+    <div class="claseDistribuidor">
         <b><?php echo $distribuidor." - CUIT:".$cuitDistribuidor ?></b>
     </div>    
     <div style="padding:10px;"></div>
@@ -158,7 +168,7 @@
     <div>  
         <table  border=0 cellspacing=0 cellpadding=2 bordercolor="#666633" >
             
-            <tr>
+            <tr >
                     <td class="tituloProveedor">Proveedor</td>
                     <td>    
                             <?php echo $razonSocial ?>
@@ -196,7 +206,7 @@
     
    
         <table  border=1 cellspacing=0 cellpadding=2 bordercolor="#666633" >
-            <tr>
+            <tr >
                     <td class="tituloProveedor">Id de viaje</td>
                     <td>
                         <?php echo $idViaje ?>
@@ -257,18 +267,18 @@
 
     
         <table border=1 cellspacing=0 cellpadding=2 bordercolor="#000000">
-        <tr>           
+        <tr class="filaCabeceraCeleste">           
 
-            <th>Fecha valorización</th>
-            <th><span data-placement="bottom" data-toggle="tooltip" title="Producto que se entregó al cliente">Producto</span></th>
-            <th><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Envase</span></th>
-            <th><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Peso bulto</span></th>
-            <th><span data-placement="bottom" data-toggle="tooltip" title="Forma en que viene el producto, peso y tamaño del pallet">Palletizado</span></th>
-            <th  style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos"># Bultos </span></th>
-            <th style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de pallets"># Pallets </span></th>
-            <th style="vertical-align: middle;"><span data-placement="bottom" data-toggle="tooltip" title="Cantidad de bultos con merma"># Merma </span></th>
-            <th style="vertical-align: middle;"> $ bulto </th>
-            <th style="vertical-align: middle;"> $ total </th>
+            <th>Fecha</th>
+            <th>Producto</th>
+            <th>Envase</th>
+            <th>Peso bulto</th>
+            <th>Pallet</th>
+            <th># Bultos </th>
+            <th># Pallets </th>
+            <th># Merma </th>
+            <th> $ bulto </th>
+            <th> $ total </th>
         </tr>
 
 

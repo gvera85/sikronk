@@ -5,7 +5,7 @@ if ( ! defined('BASEPATH')) exit('No direct script access allowed');
  
 class generarPDFConf extends CI_Controller {
  
-    public function resumen($p_idViaje)
+    public function pdf2($p_idViaje)
     {
         ini_set('date.timezone', 'America/Argentina/Buenos_Aires');
         // Se carga el modelo alumno
@@ -142,28 +142,7 @@ class generarPDFConf extends CI_Controller {
     }
     
     
-    
-    public function generarPDF($p_idViaje)
-    {       
-        $content = "
-                    <page>
-                        <h1>Exemple d'utilisation</h1>
-                        <br>
-                        Ceci est un <b>exemple d'utilisation</b>
-                        de <a href='http://html2pdf.fr/'>HTML2PDF</a>.<br>
-                    </page>";
-
-        /*require_once(base_url().'third_party/html2pdf-4.5.1/html2pdf.class.php');*/
-        
-        require_once APPPATH."/third_party/html2pdf-4.5.1/html2pdf.class.php";
-        
-        $html2pdf = new HTML2PDF('P','A4','fr');
-        $html2pdf->WriteHTML($content);
-        $html2pdf->Output('exemple.pdf');
-    
-    }
-    
-    function mostrarViajePDF($idViaje)
+    function comprobanteViaje($idViaje, $modo)
     {          
         $this->load->model('viaje_m');
         $this->load->model('cliente_m');
@@ -186,41 +165,26 @@ class generarPDFConf extends CI_Controller {
 
         $htmlComprobante = $this->load->view('pdf/comprobanteViaje',$data, true);
         
-        //$this->load->view('pdf/comprobanteViaje',$data);
+        if ($modo == 0)
+            $this->load->view('pdf/comprobanteViaje',$data);
         
-        $this->doPDF(null, null, null, null, null, 'P', 'A4', $htmlComprobante);
+        if ($modo == 1)        
+            $this->crearPDF('comprobanteViaje', 'P', 'A4', $htmlComprobante);
     }
     
     
-    function doPDF($path='',$content='',$body=false,$style='',$mode=false,$paper_1='P',$paper_2='A4', $htmlComprobante)
+    function crearPDF($path='',$paper_1='P',$paper_2='A4', $htmlComprobante)
     {    
-      
-        $this->load->model('cliente_m');
-        
-        $clientes = $this->cliente_m->getClientes();    
-    
-        $data['clientes'] = $clientes;
-        
-        $content = "<table border='1'> <tr> <td> GONZA </td> </tr> </table>";
-        
-        if( $body!=true and $body!=false ) $body=false;
-        if( $mode!=true and $mode!=false ) $mode=false;
-        
-        chrome_log("content: [".$content."],style[". $style."]","log");
-        
-
-        if( $content!='' )
+        if( $htmlComprobante!='' )
         {
             ob_start();            
-            
-            $content = $this->load->view('clientes',$data, true);
             
             $content = $htmlComprobante;
             
             echo '<page>'.$content.'</page>';
 
             //Añadimos la extensión del archivo. Si está vacío el nombre lo creamos
-            $path!='' ? $path .='.pdf' : $path = $this->crearNombre(10);  
+            $path!='' ? $path = $path.'_'.date("d-m-Y_H-i-s"). '.pdf' : $path = $this->crearNombrePDF(10);  
 
             $content = ob_get_clean(); 
             //require_once('html2pdf/html2pdf.class.php'); 
@@ -228,29 +192,20 @@ class generarPDFConf extends CI_Controller {
             //Orientación / formato del pdf y el idioma.
             $pdf = new HTML2PDF($paper_1,$paper_2,'es'/*, array(10, 10, 10, 10) /*márgenes*/); //los márgenes también pueden definirse en <page> ver documentación
 
-            
-            
             //$content = ob_get_clean(); 
             
             $pdf->WriteHTML($content);
-
-            if($mode==false)
-            {
-                //El pdf es creado "al vuelo", el nombre del archivo aparecerá predeterminado cuando le demos a guardar
-                $pdf->Output($path); // mostrar
-                //$pdf->Output('ejemplo.pdf', 'D');  //forzar descarga 
-            }
-            else
-            {
-                $pdf->Output($path, 'F'); //guardar archivo ( ¡ojo! si ya existe lo sobreescribe )
-                header('Location: '.$path); // abrir
-            }
+           
+            //El pdf es creado "al vuelo", el nombre del archivo aparecerá predeterminado cuando le demos a guardar
+            $pdf->Output($path); // mostrar
+            //$pdf->Output('ejemplo.pdf', 'D');  //forzar descarga 
+           
 
         }
 
     }
 
-    function crearNombre($length)
+    function crearNombrePDF($length)
     {
         if( ! isset($length) or ! is_numeric($length) ) $length=6;
 
@@ -262,64 +217,4 @@ class generarPDFConf extends CI_Controller {
 
         return $path.'_'.date("d-m-Y_H-i-s").'.pdf';    
     }
-    
-    function vistaPrevia()
-    {    
-      
-        $this->load->model('cliente_m');
-        
-        $clientes = $this->cliente_m->getClientes();    
-            
-        $data['clientes'] = $clientes;
-
-        $content = $this->load->view('clientes',$data, true);
-
-        echo $content;
-
-    }
-    
-    public function dopdf2($idViaje){       
-
-            $this->output->enable_profiler(false);
-            $this->load->library('parser');
-            //require_once(APPPATH.'third_party/html2pdf-4.5.1/html2pdf.class.php');
-            ini_set('date.timezone', 'America/Argentina/Buenos_Aires');
-
-            // set vars
-            $tpl_path = 'path/to/view_tpl.php';
-            $thefullpath = '/path/to/file_pdf.pdf';
-            $preview = false;
-            $previewpath = '/path/to/preview_pdf.pdf';
-
-
-            // PDFs datas
-            $datas = array(
-              'first_name' => "Gonzalo",
-              'last_name'  => "Vera",
-              'site_title' => config_item('site_title'),
-            );
-
-            // Encode datas to utf8
-            $tpl_data = array_map('utf8_encode',$datas);
-
-
-            // 
-            // GENERATE PDF AND SAVE FILE (OR OUTPUT)
-            //
-
-            $content = $this->parser->parse($tpl_path, $tpl_data, TRUE);
-            $html2pdf = new HTML2PDF('P','A4','fr', true, 'UTF-8',  array(7, 7, 10, 10));
-            $html2pdf->pdf->SetAuthor($tpl_data['site_title']);
-            $html2pdf->pdf->SetTitle($tpl_data['site_title']);
-            $html2pdf->pdf->SetSubject($tpl_data['site_title']);
-            $html2pdf->pdf->SetKeywords($tpl_data['site_title']);
-            $html2pdf->pdf->SetProtection(array('print'), '');//allow only view/print
-            $html2pdf->WriteHTML($content);
-            if (!$preview) //save
-              $html2pdf->Output($thefullpath, 'F');
-            else { //save and load
-              $html2pdf->Output($previewpath, 'D');
-            }
-
-        }
 }

@@ -173,9 +173,9 @@
                             </tr>
                             <tr>                                
                                 <TD colspan="2" style="text-align: center;"> 
-                                    <a href=javascript:window.open('<?php echo base_url('/index.php/generarPDFConf/mostrarViajePDF').'/'.$idViaje?>')>                                  
+                                    <a href=javascript:window.open('<?php echo base_url('/index.php/generarPDFConf/comprobanteViaje').'/'.$idViaje.'/1'?>')>                                  
                                     
-                                        <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-info" style="font-size:small;" title="Generar un comprobante en formato PDF">Comprobante PDF</button>
+                                        <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-danger" style="font-size:small;" title="Generar un comprobante en formato PDF">Comprobante PDF</button>
                                     </a> 
                                 </TD>
                             </tr>
