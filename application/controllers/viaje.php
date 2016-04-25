@@ -36,6 +36,8 @@ class Viaje extends CI_Controller{
     
     $this->grocery_crud->callback_column('cantidad_productos',array($this,'_callback_cantidad_productos'));
     
+    //$this->grocery_crud->callback_column('fecha_estimada_llegada',array($this,'_callback_ordenamiento_fecha'));
+    
     $this->grocery_crud->change_field_type('id_distribuidor','invisible');
     
     $this->grocery_crud->display_as('id_proveedor','Proveedor');
@@ -281,5 +283,10 @@ define('ESTADO_VIAJE_REVISANDO_STOCK','11');*/
 
         return true;
    }
+   
+   public function _callback_ordenamiento_fecha($value, $row) {
+        $date = explode("-",$value);
+        return $date[2]."/".$date[1]."/".$date[0];
+    }
    
 }

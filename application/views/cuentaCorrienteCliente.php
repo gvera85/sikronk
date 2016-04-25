@@ -317,7 +317,23 @@
                             </TD>
                             <td><?php echo date_format(date_create($lineas['fecha']), 'd/m/Y'); ?></td>
                             
-                            <td><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'd/m/Y'); ?></td>
+                            <td>
+                                <?php 
+                                
+                                $f_valorizacion  = empty($lineas['fecha_valorizacion']) ? NULL : $lineas['fecha_valorizacion'];
+                                                
+                                if (! is_null($f_valorizacion))
+                                {
+                                    $f_valorizacion = date_format(date_create($f_valorizacion), 'd/m/Y');
+                                }
+                                else
+                                {
+                                    $f_valorizacion = "Sin fecha";
+                                }
+                                
+                                echo $f_valorizacion;
+                                ?>
+                            </td>
                             <TD> <?php echo $lineas['producto'] ?></TD>
                             <TD> <?php echo $lineas['peso'] ?></TD>
                             <!--<TD> <?php //echo $cantidad ?></TD>-->

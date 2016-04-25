@@ -84,14 +84,18 @@ class reportes extends CI_Controller {
             
             $this->load->model('viaje_m');
             $this->load->model('reporte_ventas_m');
+            $this->load->model('usuario_m');
     
             $resumenViaje = $this->reporte_ventas_m->getResumenViaje($idViaje);
             $lineasReparto = $this->viaje_m->getRepartoConfirmado($idViaje, null);
             $lineasGastos = $this->reporte_ventas_m->getGastos($idViaje);
+            $permisos["precio"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 1);            
+            $permisos["detalleReparto"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 2);            
             
             $data['lineasReparto'] = $lineasReparto;
             $data['resumenViaje'] = $resumenViaje;
             $data['lineasGastos'] = $lineasGastos;
+            $data['permisos'] = $permisos;
                        
             $this->load->view('detalleViaje.php', $data);
 	}

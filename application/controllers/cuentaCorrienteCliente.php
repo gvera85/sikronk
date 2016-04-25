@@ -109,7 +109,7 @@ class cuentaCorrienteCliente extends CI_Controller{
             $saldo = round($saldo, 2);
 
             //if ($lineasCC['fecha_cc'] >= $fechaDesde && $lineasCC['fecha_cc'] <= $fechaHasta)    
-            if ($lineasCC['fecha_valorizacion'] >= $fechaDesdeFiltro && $lineasCC['fecha_valorizacion'] <= $fechaHastaFiltro)    
+            if (($lineasCC['fecha_valorizacion'] >= $fechaDesdeFiltro && $lineasCC['fecha_valorizacion'] <= $fechaHastaFiltro) || is_null($lineasCC['fecha_valorizacion']))    
             {
                 $arrayCC[$contador]= $lineasCC; //Copio el array que viene desde la BD            
 

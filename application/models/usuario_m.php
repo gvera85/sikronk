@@ -233,6 +233,30 @@ class usuario_m extends CI_Model {
         }   
     }
     
+    public function tieneEstePermiso($idPerfil, $idPermiso){
+        
+        if($idPerfil != FALSE) {
+            $sql = "select 1 existe from permisos_proveedor where id_perfil_proveedor = ? and id_permiso = ?";
+            
+            $query = $this->db->query($sql, array($idPerfil, $idPermiso));
+            
+            $resultado = $query->result_array();
+              
+            if (empty($resultado[0]["existe"])) {
+                return FALSE;
+            }else{
+                return TRUE;
+            }
+              
+            
+        }else {
+          return FALSE;
+        }    
+        
+        
+    }
+    
+    
     public function getMenuCliente($idPerfil, $idMenuPadre)
     {
          if ($idMenuPadre != "is null")

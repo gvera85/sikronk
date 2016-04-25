@@ -33,51 +33,24 @@
         th, td { vertical-align: top; }
 
         /* align (center) */
-        
-        
-            #contenedor {
-            }
             
-            .arribaDerecha{
-                float: right;
-            }
-            
-            .tituloProveedor{
-                font-weight: bold;
-            }
-            
-            #cabecera {
-            }
-            #menu {
-              float: left;
-              width: 15%;
-            }
-            #contenido {
-              float: left;
-              width: 85%;
-            }
-            #contenido #principal {
-              float: left;
-              width: 80%;
-            }
-            #contenido #secundario {
-              float: left;
-              width: 20%;
-            }
+        .arribaDerecha{
+            float: right;
+        }
 
-            #pie {
-              clear: both;
-            }   
-            
-            .filaCabeceraCeleste{
-                background-color: #0092ef;
-                color: white;
-            }
-            
-            .claseDistribuidor{
-                background-color: red;
-                color: white;
-            }
+        .tituloProveedor{
+            font-weight: bold;
+        }
+
+        .filaCabeceraCeleste{
+            background-color: #0092ef;
+            color: white;
+        }
+
+        .claseDistribuidor{
+            background-color: red;
+            color: white;
+        }
     
     </style>
     

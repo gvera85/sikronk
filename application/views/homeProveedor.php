@@ -52,7 +52,7 @@
 					<div class="number"><?php echo $total_bultos ?><i class="icon-arrow-up"></i></div>
 					<div class="title">bultos último año</div>
 					<div class="footer">
-						<a href="<?php echo base_url() ?>index.php/reportes/ventasMensualesProveedor"> ver reporte ampliado</a>
+						<a href="<?php echo base_url() ?>index.php/reportes/ventasMensualesProveedor"> ver reporte ampliado <?php echo $this->session->userdata('idLineaPerfil') ?></a>
 					</div>
 				</div>
 				<div class="span4 statbox blue noMargin" onTablet="span6" onDesktop="span4">

@@ -96,10 +96,23 @@
                         <th>Fecha reparto</th>
                         <th>Producto</th>
                         <th>Fecha precio</th>
-                        <th>Precio bulto[$]</th>
+                        
+                        <?php if ($permisos['precio']) 
+                                {
+                                    echo '<th>Precio bulto[$]</th>';
+                                }
+                        ?>
+                        
                         <th>Cant. bultos</th>
                         <th>Cant. merma</th>                                                        
-                        <th>Precio total[$]</th>
+                        
+                        <?php if ($permisos['precio']) 
+                                {
+                                    echo '<th>Precio total[$]</th>';
+                                }
+                        ?>
+                        
+                        
                 </tr>
         </thead>
         <tbody>
@@ -118,10 +131,22 @@
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_reparto']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_reparto']), 'd/m/Y'); ?></td>
                             <td><?php echo $lineas['descripcion_producto'] ?></td>
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'd/m/Y'); ?></td>
-                            <td><?php echo $lineas['precio_sugerido_caja'] ?></td>
+                            
+                            <?php if ($permisos['precio']) 
+                                {
+                                    echo '<td>'. $lineas['precio_sugerido_caja'] .'</td>';
+                                }
+                            ?>
+                            
+                            
                             <td><?php echo $lineas['cantidad_bultos'] ?></td>
                             <td><?php echo $lineas['cant_bultos_merma'] ?></td>
-                            <td><?php echo $totalAPagar ?></td>
+                            
+                            <?php if ($permisos['precio']) 
+                                {
+                                    echo '<td>'. $totalAPagar .'</td>';
+                                }
+                            ?>
 
                         </tr>
 

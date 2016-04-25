@@ -236,3 +236,33 @@ function fnGetSelected( oTableLocal )
 	}
 	return aReturn;
 }
+
+$.fn.dataTableExt.aTypes.unshift(
+function ( sData ) {
+var reg=new RegExp("(0[0-9]|[12][0-9]|3[01])/(0[0-9]|1[012])/(00|19|20|21)[0-9]{2}","g");
+if (sData.match(reg))
+{ return 'uk_date';
+} else { }
+return null;
+}
+);
+$.fn.dataTableExt.oSort['uk_date-asc']  = function(a,b) {
+    var ukDatea = a.split('/');
+    var ukDateb = b.split('/');
+     
+    var x = parseInt(ukDatea[2] + ukDatea[1] + ukDatea[0]);
+    var y = parseInt(ukDateb[2] + ukDateb[1] + ukDateb[0]);
+     
+    return ((x < y) ? -1 : ((x > y) ?  1 : 0));
+};
+
+
+$.fn.dataTableExt.oSort['uk_date-desc'] = function(a,b) {
+    var ukDatea = a.split('/');
+    var ukDateb = b.split('/');
+     
+    var x = parseInt(ukDatea[2] + ukDatea[1] + ukDatea[0]);
+    var y = parseInt(ukDateb[2] + ukDateb[1] + ukDateb[0]);
+     
+    return ((x < y) ? 1 : ((x > y) ?  -1 : 0));
+};

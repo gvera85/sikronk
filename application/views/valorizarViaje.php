@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/plugins/chosen_v1.2.0/chosen.css">
     <link rel="stylesheet" href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css">
     
-
+    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/bootstrap/css/font-awesome/4.6.1/css/font-awesome.min.css">    
     <script src="<?php echo base_url() ?>/assets/js/vendor/modernizr-2.6.2-respond-1.1.0.min.js"></script>
     <script src="<?php echo base_url() ?>/assets/plugins/jquery/jquery.min.js"></script>
     <script src="<?php echo base_url() ?>/assets/utils/utils.js"></script>
@@ -167,18 +167,25 @@
                             <tr>                                
                                 <TD colspan="2" style="text-align: center;"> 
                                     <a href=javascript:window.open('<?php echo base_url('/index.php/imagenes/viaje').'/'.$idViaje?>')>                                     
-                                        <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-info" style="font-size:small;" title="Imágenes relacionadas a este viaje (subidas por el usuario)">Ver imágenes</button>
+                                        <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-info" style="font-size:small;" title="Imágenes relacionadas a este viaje (subidas por el usuario)">
+                                           <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Ver imágenes
+                                        </button>
                                     </a> 
                                 </TD>
                             </tr>
+                            <?php if ($modo == "viajeConPrecioCerrado") {?>
                             <tr>                                
                                 <TD colspan="2" style="text-align: center;"> 
                                     <a href=javascript:window.open('<?php echo base_url('/index.php/generarPDFConf/comprobanteViaje').'/'.$idViaje.'/1'?>')>                                  
                                     
-                                        <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-danger" style="font-size:small;" title="Generar un comprobante en formato PDF">Comprobante PDF</button>
+                                        <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-danger" style="font-size:small;" title="Generar un comprobante en formato PDF">
+                                            <span class="fa fa-file-pdf-o" aria-hidden="true"></span> Comprobante PDF
+                                        </button>
+                                        
                                     </a> 
                                 </TD>
                             </tr>
+                            <?}?>
                         </table>
                     </div>
                 </div>
