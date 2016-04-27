@@ -19,7 +19,9 @@
         }
         
         $gastosDelProveedor = "";
-        $gastosDelDistribuidor = "";
+        $gastosDelDistribuidor = 
+                
+        $permisoPrecio = 0;        
         
         if (!empty($lineasGastos[0]['id']))
         {
@@ -82,6 +84,9 @@
                 </table>
         </div>	
     </div><!--/span-->
+    <?php if ($permisos['detalleReparto']) 
+    {        
+    ?>
     <div class="box-header">
                 <h2><i class="halflings-icon plus"></i><span class="break"></span>Detalle</h2>
                 <div class="box-icon">
@@ -96,20 +101,14 @@
                         <th>Fecha reparto</th>
                         <th>Producto</th>
                         <th>Fecha precio</th>
-                        
-                        <?php if ($permisos['precio']) 
-                                {
-                                    echo '<th>Precio bulto[$]</th>';
-                                }
-                        ?>
-                        
                         <th>Cant. bultos</th>
                         <th>Cant. merma</th>                                                        
-                        
                         <?php if ($permisos['precio']) 
-                                {
-                                    echo '<th>Precio total[$]</th>';
-                                }
+                        {
+                            echo '<th>Precio bulto[$]</th>';
+                            echo '<th>Precio total[$]</th>';
+                            $permisoPrecio = 1;
+                        }
                         ?>
                         
                         
@@ -131,19 +130,12 @@
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_reparto']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_reparto']), 'd/m/Y'); ?></td>
                             <td><?php echo $lineas['descripcion_producto'] ?></td>
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'd/m/Y'); ?></td>
-                            
-                            <?php if ($permisos['precio']) 
-                                {
-                                    echo '<td>'. $lineas['precio_sugerido_caja'] .'</td>';
-                                }
-                            ?>
-                            
-                            
                             <td><?php echo $lineas['cantidad_bultos'] ?></td>
                             <td><?php echo $lineas['cant_bultos_merma'] ?></td>
                             
                             <?php if ($permisos['precio']) 
                                 {
+                                    echo '<td>'. $lineas['precio_sugerido_caja'] .'</td>';
                                     echo '<td>'. $totalAPagar .'</td>';
                                 }
                             ?>
@@ -155,8 +147,12 @@
                 }
             ?>  
         </tbody>
-    </table>    
-    </div>	
+    </table>   
+            <
+    <input type="hidden" name="permisoPrecio" id="permisoPrecio" value="<?php echo $permisoPrecio ?>">
+    </div>
+    <?php 
+    } ?>
 
                            
     
@@ -221,15 +217,28 @@ $(document).ready(function() {
                 
             } );
             
+            var cotaInferior = 4;
+            var cotaSuperior = 7;
+            
+            permisoPrecio =  $("#permisoPrecio").val(); 
+            
+            if (permisoPrecio == 0)
+            {
+                cotaInferior = 4;
+                cotaSuperior = 5;
+            }
+            
             /*Recorro las filas buscando los agrupamientos por PLU*/ 
             $('tbody').find('.group').each(function (i, v) {
                 var rowCount = $(this).nextUntil('.group').length;
                 var subTotalInfo = "";
-                for (var a = 4; a <= 7; a++) {
+                
+                
+                for (var a = cotaInferior; a <= cotaSuperior; a++) {
                     
-                    if (a == 5 || a == 6) /*Cantidad de bultos y cantidad con merma NO son decimales*/
+                    if (a == 4 || a == 5) /*Cantidad de bultos y cantidad con merma NO son decimales*/
                         subTotalInfo += "<td class='groupTD'>" + subTotal[i][a] + " / " + grandTotal[a] + "</td>";
-                    else
+                    if (a == 6 || a == 7) 
                         subTotalInfo += "<td class='groupTD'>" + subTotal[i][a].toFixed(2) + " / " + grandTotal[a].toFixed(2) + "</td>";
                 }
                 $(this).append(subTotalInfo);
