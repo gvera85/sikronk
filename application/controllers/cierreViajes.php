@@ -32,7 +32,7 @@ class cierreViajes extends CI_Controller{
    
     $this->grocery_crud->set_subject('Viaje');
     $this->grocery_crud->required_fields('id_proveedor');
-    $this->grocery_crud->columns('id','numero_de_viaje','id_proveedor','fecha_estimada_salida','patente_semi','id_empresa_transportista','id_estado','cantidad_productos', 'monto_gastos', 'monto_ganancias');
+    $this->grocery_crud->columns('id','numero_de_viaje','id_proveedor','numero_de_remito','fecha_estimada_llegada','patente_semi','id_empresa_transportista','id_estado','cantidad_productos');
     
     $this->grocery_crud->callback_column('cantidad_productos',array($this,'_callback_cantidad_productos'));
     $this->grocery_crud->callback_column('monto_gastos',array($this,'_callback_monto_gastos'));
