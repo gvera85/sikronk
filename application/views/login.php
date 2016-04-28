@@ -1,6 +1,6 @@
 <?php include 'header.php' ?>
-
-  <div class="container">
+    
+<div class="container">            
 
         <h2 class="form-signin-heading">Bienvenido</h2>
 

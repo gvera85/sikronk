@@ -5,22 +5,22 @@
     <div class="row">
       <div class="span5 offset3 well"> <!--span4 offset4-->
 
-        <legend>Bienvenido <?php echo $this->session->userdata('nombre'); ?></legend>
+        
+        <h2 class="form-signin-heading">Bienvenido <?php echo $this->session->userdata('nombre'); ?></h2>
         
         <?php echo form_open('login/asignarPerfilSeleccionado') ?> <!--Controlador login, funcion asignarPerfil -->
                 
-            <div class="alert alert-error">
-            Seleccione un perfil para ingresar al sistema
-            </div>
-        
-            <select name='selectPerfil' class='chosen-select span5' data-placeholder='Seleccionar perfil' >
-                
-            <?php foreach( $perfiles as $perfil ) : ?>
+            <label for="sel1" style="margin-bottom: 20px; margin-top: 15px;">Seleccione un perfil para ingresar al sistema</label>
+            <select style="margin-bottom: 10px;" name='selectPerfil' class="form-control">
+              <?php foreach( $perfiles as $perfil ) : ?>
                 <option value=<?php echo $perfil['id_linea']."-".$perfil['id_perfil']."-".$perfil['id_empresa']."-".$perfil['empresa'] ?>><?php echo $perfil['perfil'] ?> - <?php echo $perfil['empresa'] ?></option>
-            <?php endforeach; ?>
-            </select>				
-        <BR> 
-            <button type="submit" name="submit" class="btn btn-info btn-block">Ingresar</button>
+                <?php endforeach; ?>
+            </select>    
+                
+            
+            
+            
+            <button type="submit" name="submit" class="btn btn-lg btn-primary btn-block">Ingresar</button>
         
        
         
