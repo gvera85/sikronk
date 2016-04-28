@@ -15,15 +15,23 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/dataTablesBootstrap.css">
-
-    <script src="<?php echo base_url() ?>assets/plugins/jquery/jquery.min.js"></script>
-    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/plugins/jquery/jquery.dataTables.min.js"></script>
-    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>/assets/bootstrap/js/dataTablesBootstrap.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/dataTables/jquery-1.11.3.min.js"></script>
+    <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/dataTables/jquery.dataTables.min.js"></script> 
     
     <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/moment.min.js"></script>  
     <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/datetime-moment.js"></script>  
+    
+    <!-- start: CSS -->
+    <link id="bootstrap-style" href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap.min.css" rel="stylesheet">
+    <link href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap-responsive.min.css" rel="stylesheet">
+    <link id="base-style" href="<?php echo base_url() ?>assets/plugins/metro/css/style.css" rel="stylesheet">
+    <link id="base-style-responsive" href="<?php echo base_url() ?>assets/plugins/metro/css/style-responsive.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/dataTablesBootstrap.css">
+
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/jquery.dataTables.min.css">
+
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/responsive.dataTables.min.css">
+    <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/buttons.dataTables.min.css"> 
     
     <script type="text/javascript" charset="utf-8">
             const COLUMNA_VALOR_TOTAL_LINEA = 8;
@@ -82,11 +90,11 @@
                                         
                                             if ($(this).hasClass('active'))
                                             {                                                
-                                                $("#montoRestante").html(montoPagadoConEstaFactura + montoRestante);
+                                                $("#montoRestante").html( Math.round((montoPagadoConEstaFactura + montoRestante) * 100) / 100 );
                                                 
-                                                $(this).find("td").eq(COLUMNA_MONTO_PAGADO).html(montoPagado-montoPagadoConEstaFactura); // Actualizo el valor pagado
+                                                $(this).find("td").eq(COLUMNA_MONTO_PAGADO).html( Math.round(( montoPagado-montoPagadoConEstaFactura) * 100) / 100); // Actualizo el valor pagado
                                                 
-                                                $(this).find("td").eq(COLUMNA_SALDO).html(saldo+montoPagadoConEstaFactura); // Actualizo el saldo
+                                                $(this).find("td").eq(COLUMNA_SALDO).html(Math.round(( saldo+montoPagadoConEstaFactura) * 100) / 100); // Actualizo el saldo
                                                 
                                                 $(this).find("td").eq(COLUMNA_MONTO_PAGADO_ESTA_FACTURA).html(0); // Actualizo el monto pagado con esta factura
                                                 
@@ -107,6 +115,10 @@
 
                                                     montoPagadoEnTotal = montoPagado+valorADescontar;
                                                     saldo = valorTotalLinea - montoPagadoEnTotal;
+                                                    
+                                                    
+                                                    montoPagadoEnTotal = Math.round(montoPagadoEnTotal * 100) / 100;
+                                                    saldo = Math.round(saldo * 100) / 100;
 
                                                     $(this).find("td").eq(COLUMNA_MONTO_PAGADO).html(montoPagadoEnTotal); //Actualizo el monto pagado                                       
                                                     $(this).find("td").eq(COLUMNA_SALDO).html(saldo); //Actualizo el saldo
@@ -121,7 +133,7 @@
                                                     
                                                     //montoPagado = Number(aData[COLUMNA_MONTO_PAGADO_ESTA_FACTURA] ); //$(this).find("td").eq(11).html();        
 
-                                                    $("#montoRestante").html(montoRestante-valorADescontar);
+                                                    $("#montoRestante").html(Math.round((montoRestante-valorADescontar) * 100) / 100);
 
                                                     //ACTIVAR el resaltado
                                                     $(this).toggleClass('active', true);
@@ -244,7 +256,7 @@
         endforeach; 
     ?>
     
-    <div class="container">
+    <div class="container" style="padding: 15px;">
         
         <div class="panel panel-primary">
         <div class="panel-heading"><?php echo $nombreCliente?></div>
@@ -287,7 +299,9 @@
         }   
         ?>
         
-        <table id="example" class="table compact table-striped table-bordered" cellspacing="0" width="100%" style="font-size:small;">
+        <table id="example" class="table compact" cellspacing="0" width="100%" style="font-size:small; text-align: left;">
+            
+           
                 <thead>
                 <TR>
                     <th><b>Fecha entrega<b></th> 
@@ -315,6 +329,8 @@
                     foreach( $facturasClientes as $lineas ) : 
                         $saldo = 0;
                         $saldo = $lineas['valor_total'] - $lineas['monto_pagado'];
+                        
+                        $saldo = round($saldo, 2);
 
                         if ($saldo > 0)
                         {
