@@ -38,8 +38,8 @@ $(window).scroll(function() {
 
 $(window).scroll(function() {
     
-  	  //$(window).off("scroll");
-          //window.location= $("#urlSikronk").val();
+  	  $(window).off("scroll");
+          window.location= $("#urlSikronk").val();
 	  
           /*$(".splash").slideUp("800", function() {
                 $("html, body").animate({"scrollTop":"0px"},100);

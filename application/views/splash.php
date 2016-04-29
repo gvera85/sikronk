@@ -28,7 +28,7 @@
 	</div>
 	<div class="wrapper">
 	
-            <input type="hidden" name="urlSikronk" id="urlSikronk" value="<?php echo base_url() ?>/index.php/login">
+            <input type="hidden" name="urlSikronk" id="urlSikronk" value="<?php echo base_url() ?>index.php/login">
             
 	</div> <!-- END .wrapper -->
 
