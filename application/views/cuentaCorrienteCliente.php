@@ -418,7 +418,7 @@
                   
                 </TR>
                 </thead>
-                
+                <tbody>
                 <?php 
                 
                     if ($sinProductos == 1)
@@ -434,7 +434,7 @@
 
                 ?>
                 
-                <tbody>
+                
                 
                     <TR>
                             
@@ -456,29 +456,19 @@
                                 
                                 <?php echo $f_reparto; ?>
                             </td>
-                           
                             <TD> <?php echo $lineas['producto'] ?></TD>
                             <TD> <?php echo $lineas['peso'] ?></TD>
                             <TD> <?php echo $cantidad ?></TD>
                             <TD> <?php echo $cantidadConMerma ?> </TD>
                             <TD> <?php echo $cantidadAPagar ?></TD>                         
-                            
-                            <TD> <a href=javascript:window.open('<?php echo base_url('/index.php/planificacion/valorizarViajeCliente').'/'.$lineas['id_viaje'].'/'.$lineas['id_cliente']; ?>')> <span class="label label-danger" id="tipoMovimiento"> ? </span> </a> </TD>
-                            
-                            
-                                  
-                    </TR>               
-                    
-                                  
-                        
-                </tbody>  
-                
+                            <TD> <a href=javascript:window.open('<?php echo base_url('/index.php/planificacion/valorizarViajeCliente').'/'.$lineas['id_viaje'].'/'.$lineas['id_cliente']; ?>')> <span class="label label-danger" id="tipoMovimiento"> ? </span> </a> </TD>                                  
+                    </TR>   
                 <?php 
                 
                     endforeach; 
                     }
                 ?>
-                
+                </tbody>  
             </table>
             
          </div>
