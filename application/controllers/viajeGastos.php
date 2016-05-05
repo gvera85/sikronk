@@ -46,8 +46,8 @@ class viajeGastos extends CI_Controller{
     //$crud->set_theme('datatables');
    
     $crud->set_subject('Gastos del viaje');
-    $crud->required_fields('id_gasto','precio_unitario','cantidad');
-    $crud->columns('id_gasto','id_proveedor_de_servicios' ,'precio_unitario','cantidad','total','a_cargo_del_proveedor','observaciones');
+    $crud->required_fields('id_gasto','precio_unitario','cantidad', 'id_modo_pago');
+    $crud->columns('id_gasto','id_proveedor_de_servicios' ,'precio_unitario','cantidad','id_modo_pago','total','a_cargo_del_proveedor','observaciones');
     
     $crud->callback_column('total',array($this,'_callback_monto_total'));
     
