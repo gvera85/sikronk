@@ -38,13 +38,14 @@ class facturas_proveedor_m extends CI_Model {
                         from pago_proveedor pp
                         where pp.id_proveedor = ?
                     union
-                        select a.id, 'Deuda gasto', b.fecha_estimada_llegada, a.stamp, b.id id_viaje, a.id_proveedor_de_servicios id_proveedor,
+                        select a.id, c.descripcion tipo, b.fecha_estimada_llegada, a.stamp, b.id id_viaje, a.id_proveedor_de_servicios id_proveedor,
                         b.numero_de_viaje,
                         (precio_unitario * cantidad) debe,
                         0 haber,
                         DATE_FORMAT(b.fecha_estimada_llegada,'%Y%m%d') fecha_cc
                         from viaje_gasto a
                         join viaje b on a.id_viaje = b.id
+                        join gastos_de_un_viaje c on a.id_gasto = c.id
                         where a.id_proveedor_de_servicios = ?
                     ORDER BY 2 ASC, 3 ASC";
             

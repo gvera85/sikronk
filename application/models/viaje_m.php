@@ -171,9 +171,10 @@ class viaje_m extends CI_Model {
                             id_motivo_merma,
                             fecha_valorizacion, 
                             c.descripcion descripcion_producto,
+                            c.marca, c.calidad,
                             getCantBultosRepartidos(a.id_viaje, a.id_producto, a.id_variable_logistica) cant_repartida,
                             a.precio_sugerido_caja,
-                            d.codigo_vl, d.peso, d.base_pallet, d.altura_pallet,
+                            d.codigo_vl, d.peso, d.base_pallet, d.altura_pallet, d.descripcion descripcion_vl,
                             d.id_tipo_envase, e.descripcion descripcion_envase
                     from reparto a
                     join producto c on a.id_producto = c.id
@@ -590,7 +591,5 @@ class viaje_m extends CI_Model {
 
         return false;
     }
-    
-
    
 }

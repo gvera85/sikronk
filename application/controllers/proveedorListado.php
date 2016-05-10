@@ -21,17 +21,20 @@ class proveedorListado extends CI_Controller{
   
   function index(){
     $this->grocery_crud->set_table('proveedor');
-    $this->grocery_crud->edit_fields('razon_social', 'cuit','id_provincia','localidad','direccion_comercial','codigo_postal','direccion_carga','mercado','id_tipo_iva','telefono1','telefono2','mail','imagen_logo');
-    $this->grocery_crud->add_fields('razon_social', 'cuit','id_provincia','localidad','direccion_comercial','codigo_postal','direccion_carga','mercado','id_tipo_iva','telefono1','telefono2','mail','imagen_logo');
+    $this->grocery_crud->edit_fields('razon_social', 'id_tipo_proveedor','cuit','id_provincia','localidad','direccion_comercial','codigo_postal','direccion_carga','mercado','id_tipo_iva','telefono1','telefono2','mail','imagen_logo');
+    $this->grocery_crud->add_fields('razon_social', 'id_tipo_proveedor','cuit','id_provincia','localidad','direccion_comercial','codigo_postal','direccion_carga','mercado','id_tipo_iva','telefono1','telefono2','mail','imagen_logo');
     
     $this->grocery_crud->set_theme('datatables');
    
     $this->grocery_crud->set_subject('Proveedores');
     $this->grocery_crud->required_fields('razon_social');
-    $this->grocery_crud->columns('razon_social', 'cuit','id_provincia','localidad','direccion_comercial','codigo_postal','direccion_carga');
+    $this->grocery_crud->columns('razon_social', 'id_tipo_proveedor','cuit','id_provincia','localidad','direccion_comercial','codigo_postal','direccion_carga');
     
     $this->grocery_crud->display_as('id_provincia','Provincia');        
     $this->grocery_crud->set_relation('id_provincia','provincia','descripcion');
+    
+    $this->grocery_crud->display_as('id_tipo_proveedor','Tipo');        
+    $this->grocery_crud->set_relation('id_tipo_proveedor','tipo_de_proveedor','descripcion');
     
     $this->grocery_crud->display_as('id_tipo_iva','Tipo de IVA');        
     $this->grocery_crud->set_relation('id_tipo_iva','tipo_iva','descripcion');

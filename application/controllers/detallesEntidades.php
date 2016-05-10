@@ -182,6 +182,23 @@ class detallesEntidades extends CI_Controller{
     echo $respuestaHTML;
     
   }
+  
+  function verGastos($idViaje){
+    $this->load->model('viaje_m');
+    $this->load->model('cliente_m');
+    $this->load->model('reporte_ventas_m');
+    
+    $resumenViaje = $this->reporte_ventas_m->getResumenViaje($idViaje);
+    $lineasGastos = $this->reporte_ventas_m->getGastos($idViaje);
+    $lineasViaje = $this->viaje_m->getLineasViaje($idViaje);
+    
+    $data['resumenViaje'] = $resumenViaje;    
+    $data['lineasViaje'] = $lineasViaje;
+    $data['lineasGastos'] = $lineasGastos;
+    $data['modo'] = "vista";
+   
+    $this->load->view('detalleGastosDeUnViaje',$data);
+  }
 }
 
 

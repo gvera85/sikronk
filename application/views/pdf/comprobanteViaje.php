@@ -51,6 +51,7 @@
             background-color: red;
             color: white;
         }
+        
     
     </style>
     
@@ -218,13 +219,7 @@
                 <td>
                     $<?php echo $valorGastosProveedor ?>
                 </td>
-        </tr>
-        <tr>
-                <td>Valor total de los gastos a cargo del distribuidor</td>
-                <td>
-                    $<?php echo $valorGastosDistribuidor ?>
-                </td>
-        </tr>
+        </tr>        
         <tr>
                 <td><b><i>Valor total a abonar al proveedor</i></b></td>
                 <td>
@@ -238,17 +233,16 @@
 
     <div style="padding:10px;"></div>
 
-    
-        <table border=1 cellspacing=0 cellpadding=2 bordercolor="#000000">
+         <nobreak>   
+        <table border=1 cellspacing=0 cellpadding=2 bordercolor="#000000" >
         <tr class="filaCabeceraCeleste">           
 
-            <th>Fecha</th>
             <th>Producto</th>
             <th>Envase</th>
-            <th>Peso bulto</th>
-            <th>Pallet</th>
+            <th>Peso bul</th>
+            <th>Marca</th>
+            <th>Desc</th>
             <th># Bultos </th>
-            <th># Pallets </th>
             <th># Merma </th>
             <th> $ bulto </th>
             <th> $ total </th>
@@ -268,21 +262,12 @@
 
             ?>  
                 <tr class="warning">             
-
-                  <td> 
-                    <?php  
-
-                        echo date_format(date_create($reparto['fecha_valorizacion']), 'd/m/Y');
-
-
-                    ?>
-                  </td> 
                   <td align="rigth"> <?php echo $reparto['descripcion_producto'] ?> </td>
                   <td align="rigth"> <?php echo $reparto['descripcion_envase'] ?> </td>
-                  <td align="rigth"> <?php echo $reparto['peso']." KG" ?> </td>
-                  <td align="rigth"> <?php echo $reparto['base_pallet']." x ".$reparto['altura_pallet'] ?> </td>
+                  <td align="rigth"> <?php echo $reparto['peso'] ?> </td>
+                  <td align="rigth"> <?php echo $reparto['marca'] ?> </td>
+                  <td align="rigth"> <?php echo $reparto['descripcion_vl'] ?> </td>
                   <TD> <?php echo $reparto['cantidad_bultos'] ?> </TD> 
-                  <TD> <?php echo $reparto['cantidad_pallets'] ?></TD> 
                   <TD> <?php echo $reparto['cant_bultos_merma'] ?> </TD> 
                   <TD> <?php echo $reparto['precio_sugerido_caja'] ?> </TD> 
 
@@ -309,11 +294,11 @@
 
             <tfoot>
             <tr style="font-weight: bold; ">
-                <td colspan="3">Total</td>
-                    <td><?php echo $totalPeso ?> KG</td>
+                <td colspan="2">Total</td>
+                    <td><?php echo $totalPeso ?></td>
+                    <td>-</td>                    
                     <td>-</td>
                     <td><?php echo $totalBultos ?></td>
-                    <td><?php echo $totalPallets ?></td>
                     <td><?php echo $totalMerma ?></td>
                     <td>-</td>
                     <td>$<?php echo $totalMonto ?></td>            
@@ -325,6 +310,7 @@
 
 
     </table>
+    </nobreak>
     
     <div class="arribaDerecha">
         <b><?php echo "Fecha de impresión ".$fechaImpresion ?></b>

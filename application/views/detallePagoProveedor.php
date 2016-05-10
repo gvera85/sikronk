@@ -155,23 +155,26 @@
                             </thead>
                             <tbody>
                             <?php 
-                             foreach( $lineasPago as $lineas ) : ?>
-                                    <tr>
-                                        <td id="producto">$<?php echo $lineas['importe'] ?></td>
-                                        <td id="producto">
-                                        <?php if ($lineas['id_modo_pago'] == 2  || $lineas['id_modo_pago'] == 3) 
-                                        {?>    
-                                            <button type="button" value="<?php echo $lineas['id'] ?>" class="btn btn-xs btn-info" style="font-size:small;" id="btnInfoCheque" data-toggle="modal" data-target="#myModal"><?php echo $lineas['modo_pago'] ?></button>
-                                        <?php                                         
-                                        }
-                                        else
-                                        {                                        
-                                           echo $lineas['modo_pago'];
-                                        }?>                                                
-                                        </td>
-                                        
-                                    </tr>
-                              <?php endforeach; ?>
+                            if (!empty($lineasPago[0]['id']))
+                            {
+                                foreach( $lineasPago as $lineas ) : ?>
+                                       <tr>
+                                           <td id="producto">$<?php echo $lineas['importe'] ?></td>
+                                           <td id="producto">
+                                           <?php if ($lineas['id_modo_pago'] == 2  || $lineas['id_modo_pago'] == 3) 
+                                           {?>    
+                                               <button type="button" value="<?php echo $lineas['id'] ?>" class="btn btn-xs btn-info" style="font-size:small;" id="btnInfoCheque" data-toggle="modal" data-target="#myModal"><?php echo $lineas['modo_pago'] ?></button>
+                                           <?php                                         
+                                           }
+                                           else
+                                           {                                        
+                                              echo $lineas['modo_pago'];
+                                           }?>                                                
+                                           </td>
+
+                                       </tr>
+                                 <?php endforeach; 
+                            }?>
                             </tbody>
                         </table>
                     </div>    

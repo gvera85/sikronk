@@ -214,7 +214,7 @@
         </form>
         <div class="panel panel-primary">
         
-        <div class="panel-heading" id="cabeceraPanel"> Cuenta corriente <?php echo $nombreProveedor ?>
+        <div class="panel-heading" id="cabeceraPanel">Cuenta corriente <?php echo $nombreProveedor ?>
         
         
         </div>
@@ -255,8 +255,9 @@
                             } else if ($lineas['tipo'] == 'Gasto'){
                                 $classTipo = "label label-default";
                             }
-                            else if ($lineas['tipo'] == 'Deuda gasto'){
+                            else {
                                 $classTipo = "label label-danger";
+                                $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verGastos').'/'.$lineas['id_viaje']."'". ')';
                             }
                         
                     ?>
