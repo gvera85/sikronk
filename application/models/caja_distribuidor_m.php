@@ -31,23 +31,7 @@ class caja_distribuidor_m extends CI_Model {
                         from pago_proveedor a
                         join proveedor b on a.id_proveedor = b.id
                         left join modo_pago c on a.id_modo_pago = c.id
-                        and 1=1
-                    union
-                        select 'Gasto' Tipo, b.fecha_estimada_salida fecha_pago, a.stamp,
-                        c.razon_social, d.descripcion Modo,  
-                         precio_unitario * cantidad debe, 0 haber, a.id
-                        from viaje_gasto a
-                        join viaje b on a.id_viaje = b.id
-                        join proveedor_de_servicios c on a.id_proveedor_de_servicios = c.id
-                        left join modo_pago d on a.id_modo_pago = a.id
-                    union
-                        select 'Ganancia' Tipo, b.fecha_estimada_salida fecha_pago, a.stamp,
-                        c.razon_social, '-' Modo,  
-                         0 debe, importe haber, a.id
-                        from viaje_ganancia a
-                        join viaje b on a.id_viaje = b.id
-                        join proveedor c on b.id_proveedor = c.id
-                        where b.id_distribuidor = ? and 1=2 
+                        and 1=1                   
                     union
                         SELECT 'Ajuste' Tipo, fecha, stamp, '-' razon_social,
                         observaciones descripcion,

@@ -257,11 +257,9 @@ class reporte_ventas_m extends CI_Model {
     public function getGastos($idViaje)
     {
         $sql = "select a.id, a.precio_unitario, a.cantidad, 
-                a.a_cargo_del_proveedor, b.descripcion gasto, 
-                a.id_modo_pago, c.descripcion modo_pago
+                a.a_cargo_del_proveedor, b.descripcion gasto
                 from viaje_gasto a
                 join gastos_de_un_viaje b on a.id_gasto = b.id
-                left join modo_pago c on a.id_modo_pago = c.id
                 where id_viaje = ?";
             
         $query = $this->db->query($sql, $idViaje);

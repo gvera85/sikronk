@@ -188,7 +188,7 @@ $(document).ready(function() {
                 if ( last !== group ) {
                     groupID++;
                     $(rows).eq( i ).before(
-                        '<tr class="group" style="background-color: #3A3A3A; font-weight: 600; color: white;" ><td colspan="3" class="groupTitle">'+group+' </td></tr>'
+                        '<tr class="group" role="row" style="background-color: #3A3A3A; font-weight: 500; color: white;" ><td colspan="3" class="groupTitle">'+group+' </td></tr>'
                     );
  
                     last = group;
@@ -232,14 +232,20 @@ $(document).ready(function() {
             $('tbody').find('.group').each(function (i, v) {
                 var rowCount = $(this).nextUntil('.group').length;
                 var subTotalInfo = "";
+                var precioBultoPromedio = 0;
                 
                 
                 for (var a = cotaInferior; a <= cotaSuperior; a++) {
                     
                     if (a == 4 || a == 5) /*Cantidad de bultos y cantidad con merma NO son decimales*/
                         subTotalInfo += "<td class='groupTD'>" + subTotal[i][a] + " / " + grandTotal[a] + "</td>";
-                    if (a == 6 || a == 7) 
-                        subTotalInfo += "<td class='groupTD'>" + subTotal[i][a].toFixed(2) + " / " + grandTotal[a].toFixed(2) + "</td>";
+                    if (a == 6) 
+                    {
+                        precioBultoPromedio = subTotal[i][a].toFixed(2)/rowCount;
+                        subTotalInfo += "<td class='groupTD'>" + precioBultoPromedio.toFixed(2) + " prom </td>";         
+                    }
+                    if (a == 7) 
+                        subTotalInfo += "<td class='groupTD'>" + subTotal[i][a].toFixed(2) + " / " + grandTotal[a].toFixed(2) + "</td>";                
                 }
                 $(this).append(subTotalInfo);
             });

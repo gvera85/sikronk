@@ -46,8 +46,8 @@ class viajeGastos extends CI_Controller{
     //$crud->set_theme('datatables');
    
     $crud->set_subject('Gastos del viaje');
-    $crud->required_fields('id_gasto','precio_unitario','cantidad', 'id_modo_pago');
-    $crud->columns('id_gasto','id_proveedor_de_servicios' ,'precio_unitario','cantidad','id_modo_pago','total','a_cargo_del_proveedor','observaciones');
+    $crud->required_fields('id_gasto','precio_unitario','cantidad');
+    $crud->columns('id_gasto','id_proveedor_de_servicios' ,'precio_unitario','cantidad','total','a_cargo_del_proveedor','observaciones');
     
     $crud->callback_column('total',array($this,'_callback_monto_total'));
     
@@ -55,7 +55,7 @@ class viajeGastos extends CI_Controller{
     $crud->display_as('precio_unitario','Precio unitario [$]');
     $crud->display_as('id_proveedor_de_servicios','Prov. de servicios');
     
-    $crud->fields('id_viaje','id_gasto','id_proveedor_de_servicios','precio_unitario','cantidad','a_cargo_del_proveedor','id_modo_pago','observaciones');
+    $crud->fields('id_viaje','id_gasto','id_proveedor_de_servicios','precio_unitario','cantidad','a_cargo_del_proveedor','observaciones');
     
     $crud->change_field_type('id_viaje','invisible');
     $crud->change_field_type('a_cargo_del_proveedor', 'true_false');
@@ -65,10 +65,7 @@ class viajeGastos extends CI_Controller{
   
     $crud->display_as('id_gasto','Gasto');
     $crud->set_relation('id_gasto', 'gastos_de_un_viaje', '{descripcion}', array('activo' => 1));
-    $crud->set_relation('id_proveedor_de_servicios','proveedor_de_servicios','{razon_social}', array('activo' => 1));
-    
-    $crud->display_as('id_modo_pago','Tipo de pago');
-    $crud->set_relation('id_modo_pago','modo_pago','{descripcion}', array('visto_por_clientes' => 1, 'activo' => 1));
+    $crud->set_relation('id_proveedor_de_servicios','proveedor','{razon_social}', array('activo' => 1, 'id_tipo_proveedor' => 2));
     
     $crud->change_field_type('a_cargo_del_proveedor', 'true_false');
     

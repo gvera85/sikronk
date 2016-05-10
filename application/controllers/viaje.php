@@ -41,7 +41,7 @@ class Viaje extends CI_Controller{
     $this->grocery_crud->change_field_type('id_distribuidor','invisible');
     
     $this->grocery_crud->display_as('id_proveedor','Proveedor');
-    $this->grocery_crud->set_relation('id_proveedor','proveedor','razon_social', array('activo' => 1));
+    $this->grocery_crud->set_relation('id_proveedor','proveedor','razon_social', array('activo' => 1, 'id_tipo_proveedor' => 1));
     
     $this->grocery_crud->display_as('numero_de_remito','Remito');
     

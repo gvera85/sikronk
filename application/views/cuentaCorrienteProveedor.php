@@ -255,6 +255,9 @@
                             } else if ($lineas['tipo'] == 'Gasto'){
                                 $classTipo = "label label-default";
                             }
+                            else if ($lineas['tipo'] == 'Deuda gasto'){
+                                $classTipo = "label label-danger";
+                            }
                         
                     ?>
                     <TR>
