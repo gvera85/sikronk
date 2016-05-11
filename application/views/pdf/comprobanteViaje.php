@@ -258,7 +258,9 @@
             foreach( $lineasReparto as $reparto ) : 
 
 
-                $precioSugerido = $reparto['precio_sugerido_caja'] == 0 ? $lineas['precio_sugerido_bulto'] : $reparto['precio_sugerido_caja'];    
+                //$precioSugerido = $reparto['precio_sugerido_caja'] == 0 ? $lineas['precio_sugerido_bulto'] : $reparto['precio_sugerido_caja'];    
+                $precioPromedioBulto = $reparto['total_al_proveedor'] / ($reparto['total_bultos'] - $reparto['total_merma']);
+                $precioPromedioBulto = round ($precioPromedioBulto, 2);
 
             ?>  
                 <tr class="warning">             
@@ -267,20 +269,19 @@
                   <td align="rigth"> <?php echo $reparto['peso'] ?> </td>
                   <td align="rigth"> <?php echo $reparto['marca'] ?> </td>
                   <td align="rigth"> <?php echo $reparto['descripcion_vl'] ?> </td>
-                  <TD> <?php echo $reparto['cantidad_bultos'] ?> </TD> 
-                  <TD> <?php echo $reparto['cant_bultos_merma'] ?> </TD> 
-                  <TD> <?php echo $reparto['precio_sugerido_caja'] ?> </TD> 
+                  <TD> <?php echo $reparto['total_bultos'] ?> </TD> 
+                  <TD> <?php echo $reparto['total_merma'] ?> </TD> 
+                  <TD> <?php echo $precioPromedioBulto ?> </TD> 
 
 
 
 
                   <?php 
-                        $precioTotalLinea = $reparto['precio_sugerido_caja'] * ( $reparto['cantidad_bultos'] - $reparto['cant_bultos_merma']); 
+                        $precioTotalLinea = $reparto['total_al_proveedor'];//$reparto['precio_sugerido_caja'] * ( $reparto['cantidad_bultos'] - $reparto['cant_bultos_merma']); 
 
                         $totalPeso = $totalPeso +  $reparto['peso'];
-                        $totalBultos = $totalBultos +  $reparto['cantidad_bultos'];
-                        $totalPallets = $totalPallets +  $reparto['cantidad_pallets'];
-                        $totalMerma = $totalMerma +  $reparto['cant_bultos_merma'];
+                        $totalBultos = $totalBultos +  $reparto['total_bultos'];
+                        $totalMerma = $totalMerma +  $reparto['total_merma'];
                         $totalMonto = $totalMonto +  $precioTotalLinea;
                   ?>
 

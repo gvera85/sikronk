@@ -200,6 +200,52 @@ class viaje_m extends CI_Model {
        
     }
     
+    public function getRepartoConfirmadoParaPDFSuma($idViaje, $idCliente)
+    {
+         if($idViaje != FALSE) {
+          $sql = "select    
+                            sum((cantidad_bultos - cant_bultos_merma)*precio_caja) total_al_cliente,
+        sum((cantidad_bultos - cant_bultos_merma)*precio_sugerido_caja) total_al_proveedor,
+							sum(cantidad_bultos) total_bultos,
+							sum(cant_bultos_merma) total_merma,       
+							a.id_producto,
+                            a.id_variable_logistica,
+                            c.descripcion descripcion_producto,
+                            c.marca, c.calidad,
+                            d.codigo_vl, d.peso, d.descripcion descripcion_vl,
+                            d.id_tipo_envase, e.descripcion descripcion_envase
+                    from reparto a
+                    join producto c on a.id_producto = c.id
+                    join variable_logistica d on a.id_variable_logistica = d.id
+                    join tipo_envase e on d.id_tipo_envase = e.id
+                    where id_viaje= ?                     
+group by a.id_producto,
+                            a.id_variable_logistica,
+                            c.descripcion,
+                            c.marca, c.calidad,
+                            d.codigo_vl, d.peso, d.descripcion,
+                            d.id_tipo_envase, e.descripcion
+";
+            
+            $query = $this->db->query($sql, array($idViaje, $idCliente));
+                   
+            $lineasReparto = $query->result_array();
+
+            if( is_array($lineasReparto) && count($lineasReparto) > 0 ) {
+              return $lineasReparto;
+            }
+            
+            return false;
+        }
+        else {
+          return FALSE;
+        }   
+       
+    }
+    
+    
+    
+    
     public function getEstadoActual($idEntidad)
     {    
           if($idEntidad != FALSE) {

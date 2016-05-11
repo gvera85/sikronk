@@ -149,8 +149,8 @@ class generarPDFConf extends CI_Controller {
         $this->load->model('reporte_ventas_m');
 
         $lineasViaje = $this->viaje_m->getLineasViaje($idViaje);
-        $lineasReparto = $this->viaje_m->getRepartoConfirmadoParaPDF($idViaje, null);
-        $clientes = $this->cliente_m->getClientes();
+        $lineasReparto = $this->viaje_m->getRepartoConfirmadoParaPDFSuma($idViaje, null);
+
         $resumenViaje = $this->reporte_ventas_m->getResumenViaje($idViaje);
         $lineasGastos = $this->reporte_ventas_m->getGastos($idViaje);    
         $cabeceraProveedor = $this->viaje_m->getCabeceraViajePDF($idViaje);
@@ -190,7 +190,7 @@ class generarPDFConf extends CI_Controller {
             //require_once('html2pdf/html2pdf.class.php'); 
 
             //Orientación / formato del pdf y el idioma.
-            $pdf = new HTML2PDF($paper_1,$paper_2,'es', array(10, 10, 10, 10) /*márgenes*/); //los márgenes también pueden definirse en <page> ver documentación
+            $pdf = new HTML2PDF($paper_1,$paper_2,'es'/*, array(10, 10, 10, 10)*/ /*márgenes*/); //los márgenes también pueden definirse en <page> ver documentación
 
             //$content = ob_get_clean(); 
             
