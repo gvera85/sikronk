@@ -191,6 +191,7 @@
                             <thead>
                                 <tr class="info">                                      
                                         <th><span data-placement="top" data-toggle="tooltip" title="Proveedor que brinda el servicio">Proveedor del servicio</span></th>
+                                        <th><span data-placement="top" data-toggle="tooltip" title="Proveedor que brinda el servicio">Gasto</span></th>
                                         <th><span data-placement="top" data-toggle="tooltip" title="Precio por unidad de trabajo">Precio unitario</span></th>                                            
                                         <th><span data-placement="top" data-toggle="tooltip" title="Cantidad">Cantidad</span></th>                                            
                                         <th><span data-placement="top" data-toggle="tooltip" title="Precio total">Precio total</span></th>                                            
@@ -212,6 +213,7 @@
                                     ?>
                                        <tr>
                                            <td><?php echo $gastos['proveedor_del_servicio'] ?></td>
+                                           <td><?php echo $gastos['gasto'] ?></td>
                                            <td>$<?php echo $gastos['precio_unitario'] ?></td>
                                            <td><?php echo $gastos['cantidad'] ?></td>
                                            <td>$<?php echo $gastos['precio_unitario'] * $gastos['cantidad'] ?></td>

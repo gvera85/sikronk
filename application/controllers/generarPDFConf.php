@@ -190,7 +190,7 @@ class generarPDFConf extends CI_Controller {
             //require_once('html2pdf/html2pdf.class.php'); 
 
             //Orientación / formato del pdf y el idioma.
-            $pdf = new HTML2PDF($paper_1,$paper_2,'es'/*, array(10, 10, 10, 10) /*márgenes*/); //los márgenes también pueden definirse en <page> ver documentación
+            $pdf = new HTML2PDF($paper_1,$paper_2,'es', array(10, 10, 10, 10) /*márgenes*/); //los márgenes también pueden definirse en <page> ver documentación
 
             //$content = ob_get_clean(); 
             
