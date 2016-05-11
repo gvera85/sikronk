@@ -86,8 +86,20 @@ class pagoCliente extends CI_Controller{
        $this->load->model('facturas_clientes_m');
 
        $montoImputado = $this->facturas_clientes_m->getMontoFacturado($row->id);
+       
+       if ($montoImputado[0]['montoImputado'] >= $row->monto)
+       {           
+           return $montoImputado[0]['montoImputado']; 
+       }
+       else 
+       {
+           //Muestro el numero en rojo si el pago todavía no fue imputado en su totalidad
+           return '<span class="bad-wait" style="color:#CD0A0A;"><i class="fa fa-exclamation-triangle"></i> ' . $montoImputado[0]['montoImputado'] . '</span>';
+       }
 
-       return $montoImputado[0]['montoImputado']; 
+       
+       
+       //return $montoImputado[0]['montoImputado']; 
     }
  
 }

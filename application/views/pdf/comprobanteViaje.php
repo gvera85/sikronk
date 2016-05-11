@@ -46,6 +46,11 @@
             background-color: #0092ef;
             color: white;
         }
+        
+        .filaCabeceraRoja{
+            background-color: #ec4844;
+            color: white;
+        }
 
         .claseDistribuidor{
             background-color: red;
@@ -97,19 +102,15 @@
         endforeach; 
     }  
     
-    $gastosDelProveedor = "";
-    $gastosDelDistribuidor = "";
+    $existenGastosDelProveedor = 0;
     
     if (!empty($lineasGastos[0]['id']))
     {
         foreach( $lineasGastos as $gastos ) : 
-            $valorGasto = $gastos['precio_unitario']*$gastos['cantidad'];
 
-            if ($gastos['a_cargo_del_proveedor']==1){
-                $gastosDelProveedor = $gastosDelProveedor." ".$gastos['gasto'].": $".$valorGasto;
-            }
-            else {
-                $gastosDelDistribuidor = $gastosDelDistribuidor." ".$gastos['gasto'].": $".$valorGasto;
+            if ($gastos['a_cargo_del_proveedor'] == 1){
+                $existenGastosDelProveedor = 1;
+                break;//No recorro mas el cursor si al menos hay un gasto a cargodel proveedor
             }
 
         endforeach; 
@@ -118,17 +119,9 @@
     $sinProductos = 0;
     if (empty($lineasViaje[0]['numero_de_viaje']))
     {
-        $titulo = "Viaje sin productos asociados. Para asignar productos al viaje debe ir a la pagina de creacion de viajes";
+        $titulo = "Viaje sin productos asociados";
         $sinProductos = 1;
     }
-    else
-    {
-        $titulo = "Viaje número ".$lineasViaje[0]['numero_de_viaje']." - Remito ".$lineasViaje[0]['numero_de_remito']." - ".$lineasViaje[0]['proveedor'];
-        
-        if ($lineasViaje[0]['id_estado'] == 7) /* El viaje ya tiene los precios acordados, por eso se ocultan los botones */ {
-            $modo = "viajeConPrecioCerrado";
-        }
-    }             
 ?>        
     
 <div style="padding:10px;">
@@ -231,9 +224,8 @@
     </table>          
     
 
-    <div style="padding:10px;"></div>
+    <div style="padding:10px;">Detalle de mercadería</div>
 
-         <nobreak>   
         <table border=1 cellspacing=0 cellpadding=2 bordercolor="#000000" >
         <tr class="filaCabeceraCeleste">           
 
@@ -283,6 +275,7 @@
                         $totalBultos = $totalBultos +  $reparto['total_bultos'];
                         $totalMerma = $totalMerma +  $reparto['total_merma'];
                         $totalMonto = $totalMonto +  $precioTotalLinea;
+                        $totalMonto = $totalMonto;
                   ?>
 
                   <TD>   <?php echo $precioTotalLinea?></TD>
@@ -302,17 +295,55 @@
                     <td><?php echo $totalBultos ?></td>
                     <td><?php echo $totalMerma ?></td>
                     <td>-</td>
-                    <td>$<?php echo $totalMonto ?></td>            
+                    <td>$<?php echo round($totalMonto) ?></td>            
             </tr>
             </tfoot>
-
-
-
-
-
     </table>
-    </nobreak>
     
+    
+    <?php
+    if ($existenGastosDelProveedor)
+    {
+    ?>
+        <div style="padding:10px;">Detalle de gastos</div>
+
+        <table border=1 cellspacing=0 cellpadding=2 bordercolor="#000000" >
+            <thead>
+                <tr class="filaCabeceraRoja">
+                        <th>Proveedor</th>
+                        <th>Gasto</th>
+                        <th>Precio unitario</th>                                            
+                        <th>Cantidad</th>                                            
+                        <th>Precio total</th>                                                                
+                        <th>Observaciones</th>                                            
+                </tr>
+            </thead>
+            <tbody>
+            <?php
+            if (!empty($lineasGastos[0]['id']))
+            {
+                foreach( $lineasGastos as $gastos ) :  
+
+                    if ($gastos['a_cargo_del_proveedor'] == 1)
+                    {    
+                    ?>
+                       <tr>
+                           <td><?php echo $gastos['proveedor_del_servicio'] ?></td>
+                           <td><?php echo $gastos['gasto'] ?></td>
+                           <td>$<?php echo $gastos['precio_unitario'] ?></td>
+                           <td><?php echo $gastos['cantidad'] ?></td>
+                           <td>$<?php echo $gastos['precio_unitario'] * $gastos['cantidad'] ?></td>                       
+                           <td><?php echo $gastos['observaciones'] ?></td>
+                       </tr>
+            <?php 
+                    }
+                endforeach; 
+            }?>
+            </tbody>
+        </table>
+    <?php
+    }//Fin if ($existenGastosDelProveedor)
+    ?>
     <div class="arribaDerecha">
         <b><?php echo "Fecha de impresión ".$fechaImpresion ?></b>
     </div>        
