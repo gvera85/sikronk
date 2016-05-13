@@ -71,6 +71,44 @@ class viaje_m extends CI_Model {
        
     }
     
+    public function getLineasViajeCliente($idViaje, $idCliente)
+    {
+         if($idViaje != FALSE) {
+          $sql = "select a.id id_linea, d.id id_viaje,  b.id id_producto,  b.descripcion producto, 
+                    a.cantidad_bultos, a.cantidad_pallets,
+                    a.cant_real_bultos, a.cant_real_pallets,
+                    d.numero_de_viaje, e.razon_social proveedor, c.id id_vl,e.id id_proveedor,
+                    c.descripcion vl, c.peso, c.base_pallet, c.altura_pallet, c.codigo_vl,
+                    getCantBultosPlanificados(d.id, b.id, c.id) cant_bultos_plani,
+                    getCantBultosRepartidos(d.id, b.id, c.id) cant_repartida,
+                    d.id_estado,
+                    a.precio_sugerido_bulto,
+                    d.numero_de_remito
+                    from productos_viaje a
+                    join producto b on a.id_producto = b.id
+                    join variable_logistica c on a.id_variable_logistica = c.id
+                    join viaje d on a.id_viaje = d.id
+                    join proveedor e on d.id_proveedor = e.id					
+                    where a.id_viaje = ?
+                    and (a.id_producto, a.id_variable_logistica) in (select id_producto, id_variable_logistica from reparto where id_viaje = ? and id_cliente = ? and precio_caja is null)  
+                    order by a.id_producto, a.cantidad_bultos ";
+            
+            $query = $this->db->query($sql, array($idViaje, $idViaje, $idCliente));
+                   
+            $lineasViaje = $query->result_array();
+
+            if( is_array($lineasViaje) && count($lineasViaje) > 0 ) {
+              return $lineasViaje;
+            }
+            
+            return false;
+        }
+        else {
+          return FALSE;
+        }   
+       
+    }
+    
     public function getRepartoViaje($idViaje)
     {
          if($idViaje != FALSE) {
