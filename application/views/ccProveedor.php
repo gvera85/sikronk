@@ -67,7 +67,7 @@
                 
         
         <div class="box-header" >
-            <h2><i class="halflings-icon plus"></i><span class="break"></span><span id="cabeceraPanel">Cuenta corriente <?php echo $nombreProveedor ?></span></h2>
+            <h2><i class="halflings-icon plus"></i><span class="break"></span><span id="cabeceraPanel"></span></h2>
                 <div class="box-icon">
                         <a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
                 </div>
@@ -81,7 +81,7 @@
                     <th><b>Tipo</b></th>
                     <th><b>Fecha</b></th>
                     <th><b>Stamp</b></th>
-                    <th><b>Nro Viaje</b></th>                    
+                    <th><b>#Viaje</b></th>                    
                     <th><b>Debe</b></th>                    
                     <th><b>Haber</b></th>                    
                     <th><b>Saldo parcial</b></th>   
@@ -195,7 +195,7 @@
                     else
                         classSaldo = 'label label-danger';
                 
-                    $("#cabeceraPanel").html($("#cabeceraPanel").html()+' - Saldo actual: <span class="' +classSaldo+ '" style="font-size:15px;" id="tipoMovimiento">$ '+saldo+'</span>' ); 
+                    $("#cabeceraPanel").html($("#cabeceraPanel").html()+'Saldo actual: <span class="' +classSaldo+ '" style="font-size:15px;" id="tipoMovimiento">$ '+saldo+'</span>' ); 
             } );
             
             
