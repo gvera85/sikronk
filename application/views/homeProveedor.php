@@ -1,4 +1,4 @@
-<html lang="es">
+<html lang="es">  
 <?php 
         $this->load->view('headerProveedor');
 ?>
@@ -37,33 +37,52 @@
 
                                     endforeach;
 
-                                ?>  
-                            
-				<div class="span4 statbox purple" onTablet="span6" onDesktop="span4">
-					<div class="boxchart"><?php echo $facturado_mensual?></div>
+                                ?>
+    
+                                
+                                
+				<a href="<?php echo base_url() ?>index.php/reportes/ventasMensualesProveedor" class="span4 statbox purple" onTablet="span6" onDesktop="span4">
+                                
+					
+                                        <div class="boxchart"><?php echo $facturado_mensual?></div>
 					<div class="number"><?php echo "$".$total_facturado ?><i class="icon-arrow-up"></i></div>
 					<div class="title">ventas último año</div>
 					<div class="footer">
-						<a href="<?php echo base_url() ?>index.php/reportes/ventasMensualesProveedor"> ver reporte ampliado</a>
+						 ver reporte ampliado
 					</div>	
-				</div>
-				<div class="span4 statbox green" onTablet="span6" onDesktop="span4">
+                                
+				</a>
+                               
+                                 
+    
+                                <a href="<?php echo base_url() ?>index.php/reportes/ventasMensualesProveedor" class="span4 statbox green" onTablet="span6" onDesktop="span4">  
+                               
+				
 					<div class="boxchart"><?php echo $bultos_mensual ?></div>
 					<div class="number"><?php echo $total_bultos ?><i class="icon-arrow-up"></i></div>
 					<div class="title">bultos último año</div>
 					<div class="footer">
-						<a href="<?php echo base_url() ?>index.php/reportes/ventasMensualesProveedor"> ver reporte ampliado <?php echo $this->session->userdata('idLineaPerfil') ?></a>
+						 ver reporte ampliado    
 					</div>
-				</div>
-				<div class="span4 statbox blue noMargin" onTablet="span6" onDesktop="span4">
+				
+                           
+                                </a>    
+                                
+    
+                                
+                                
+				<a href="<?php echo base_url() ?>index.php/reportes/ventasMensualesProveedor" class="span4 statbox blue noMargin" onTablet="span6" onDesktop="span4">
+                            
 					<div class="boxchart"><?php echo $pallets_mensual ?></div>
 					<div class="number"><?php echo $total_pallets ?><i class="icon-arrow-up"></i></div>
 					<div class="title">pallets último año</div>
 					<div class="footer">
-						<a href="<?php echo base_url() ?>index.php/reportes/ventasMensualesProveedor"> ver reporte ampliado</a>
+						 ver reporte ampliado
 					</div>
-				</div>
 				
+                                </a>
+				
+                               
 				
 			</div>
                         

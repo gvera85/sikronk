@@ -10,7 +10,7 @@
                 $idViaje = $resumen['id'];
                 $nroViaje = $resumen['numero_de_viaje'];
                 $nroRemito = $resumen['numero_de_remito'];
-                $fechaSalida = date_format(date_create($resumen['fecha_estimada_salida']), 'd/m/Y');
+                $fechaSalida = date_format(date_create($resumen['fecha_estimada_llegada']), 'd/m/Y');
                 $valorMercaderia = $resumen['valor_mercaderia_proveedor'];
                 $valorGastosProveedor = $resumen['valor_gastos_proveedor'];
                 $valorGastosDistribuidor = $resumen['valor_gastos_distribuidor'];
@@ -42,13 +42,19 @@
     
     <div class="box span12">
         <div class="box-header">
-                <h2><i class="halflings-icon plus"></i><span class="break"></span><?php echo "Viaje número ".$nroViaje." - Remito ".$nroRemito." - Fecha: ".$fechaSalida ?> </h2>
+                <h2><i class="halflings-icon plus"></i><span class="break"></span><?php echo "#Viaje ".$nroViaje." - ".$fechaSalida ?> </h2>
                 <div class="box-icon">
                         <a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
                 </div>
         </div>
         <div class="box-content">
                 <table class="table table-bordered compact table-striped" style="font-size:small;">
+                        <tr>
+                                <td>Remito número</td>
+                                <td>
+                                        <a href="#" title="Numero de remito en el que vino la mercadería" style="font-size:small;"  data-rel="tooltip"><?php echo $nroRemito ?></a>
+                                </td>
+                        </tr>
                         <tr>
                                 <td>Valor total de la mercadería</td>
                                 <td>

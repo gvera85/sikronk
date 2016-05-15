@@ -6,12 +6,12 @@
     <thead>
         <tr>
             <th>Producto</th>
+            <th>Total [$]</th> 
             <th>Marca</th>
             <th>Calidad</th>
             <th>Cant. viajes</th>
             <th>Bultos</th>
-            <th>Pallets</th>
-            <th>Total facturado [$]</th>            
+            <th>Pallets</th>                      
         </tr>
     </thead>
  
@@ -24,13 +24,12 @@
         
                     <tr>
                         <td><?php echo $lineas['descripcion'] ?></td>
+                        <td><?php echo $lineas['total_facturado'] ?></td> 
                         <td><?php echo $lineas['marca'] ?></td>
                         <td><?php echo $lineas['calidad'] ?></td>
                         <td><?php echo $lineas['cant_viajes'] ?></td>
                         <td><?php echo $lineas['total_bultos'] ?></td>
                         <td><?php echo $lineas['total_pallets'] ?></td>
-                        <td><?php echo $lineas['total_facturado'] ?></td>                        
-                        
                     </tr>
         
         <?php
