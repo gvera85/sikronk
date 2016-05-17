@@ -12,7 +12,7 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width">
     
-    <link rel="stylesheet" href="<?php echo base_url() ?>/assets/bootstrap/css/bootstrap.min.css">
+    
     <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/dataTables/jquery-1.11.3.min.js"></script>
     <script type="text/javascript" language="javascript" src="<?php echo base_url() ?>assets/dataTables/jquery.dataTables.min.js"></script> 
     <script src="<?php echo base_url() ?>/assets/bootstrap/js/bootstrap.js"></script>
@@ -30,11 +30,13 @@
     
     
     <!-- start: CSS -->
-    <link id="bootstrap-style" href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap.min.css" rel="stylesheet">
-    <link href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap-responsive.min.css" rel="stylesheet">
-    <link id="base-style" href="<?php echo base_url() ?>assets/plugins/metro/css/style.css" rel="stylesheet">
-    <link id="base-style-responsive" href="<?php echo base_url() ?>assets/plugins/metro/css/style-responsive.css" rel="stylesheet">
+    <!--<link id="bootstrap-style" href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap.min.css" rel="stylesheet">-->
+    <link rel="stylesheet" href="<?php echo base_url() ?>assets/bootstrap/css/bootstrap.min.css">
+    <!--<link href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap-responsive.min.css" rel="stylesheet">-->
+    <!--<link id="base-style" href="<?php echo base_url() ?>assets/plugins/metro/css/style.css" rel="stylesheet">-->
+    <!--<link id="base-style-responsive" href="<?php echo base_url() ?>assets/plugins/metro/css/style-responsive.css" rel="stylesheet">-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/dataTablesBootstrap.css">
+    <link href="../../assets/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet" type="text/css"/>
 
     <!--<link href="<?php echo base_url() ?>/assets/grocery_crud/themes/datatables/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>-->
     <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>assets/dataTables/jquery.dataTables.min.css">
@@ -204,7 +206,7 @@
                     <tr>
                             <td>Fecha desde</td>
                             <td>    
-                                <input style="height:25px; width: 150px; border-color: red;" required type="date" name="fecha_desde" id="fecha_desde" value="<?php echo $fechaFiltroDesde ?>">
+                                <input style="height:25px; width: 150px;" required type="date" name="fecha_desde" id="fecha_desde" value="<?php echo $fechaFiltroDesde ?>">
                             </td>
                                 <td>Fecha hasta</td>
                             <td>
@@ -259,14 +261,14 @@
                             $classTipo = 'label label-success';
                             $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verPagoCliente').'/'.$lineas['id']."'". ')';
                         } else if ($lineas['tipo'] == 'Egreso'){
-                            $classTipo = "label label-danger";
+                            $classTipo = "label label-warning";
                             $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verPagoProveedor').'/'.$lineas['id']."'". ')';
                         } else if ($lineas['tipo'] == 'Gasto'){
                             $classTipo = "label label-default";                            
                         } else if ($lineas['tipo'] == 'Ganancia'){
                             $classTipo = "label label-info";
                         } else if ($lineas['tipo'] == 'Ajuste'){
-                            $classTipo = "label label-warning";    
+                            $classTipo = "label label-info";    
                         }
                     ?>
                     <TR>
