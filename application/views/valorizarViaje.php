@@ -106,11 +106,11 @@
 
         endforeach; 
     }
-
+    $cantidadLineasReparto = 0;
     $sinProductos = 0;
     if (empty($lineasViaje[0]['numero_de_viaje']))
     {
-        $titulo = "Viaje sin productos asociados. Para asignar productos al viaje debe ir a la pagina de creacion de viajes";
+        $titulo = "El cliente ya tiene los precios cargados en este viaje";
         $sinProductos = 1;
     }
     else
@@ -345,7 +345,7 @@
                                             }
                                             endforeach;
                                             } ?>
-                                  <?php endforeach; 
+                                  <?php endforeach;                                   
                                   }?>
                                                 <input type="hidden" id="cantidadItems" name="cantidadItems" value="<?php echo $cantidadLineasReparto ?>">
                                 </tbody>
@@ -456,6 +456,9 @@ function actualizarPrecioTotalViaje() {
        
 
     }
+    
+    if (cantidad == 0)
+        $("#precioTotalViaje").html("<?php echo $titulo ?>");
 }
 
 function calcularPrecioLinea(precio, cantidad,  cantidadConMerma, inputtext){
