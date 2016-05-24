@@ -156,7 +156,7 @@ class facturas_clientes_m extends CI_Model {
                             a.id id_viaje, a.numero_de_viaje, b.id id_reparto, b.id_cliente, d.razon_social cliente,
                             b.id_producto, e.descripcion producto, b.id_variable_logistica, f.peso
                             ,b.cantidad_bultos, b.cant_bultos_merma, b.precio_caja precio_bulto
-                            ,b.cantidad_bultos * b.precio_caja debe
+                            ,(b.cantidad_bultos - b.cant_bultos_merma )* b.precio_caja debe
                             ,0 haber
                     from viaje a
                     join reparto b ON a.id = b.id_viaje
@@ -205,14 +205,14 @@ class facturas_clientes_m extends CI_Model {
 			c.razon_social proveedor,  
                         a.id id_viaje, a.numero_de_viaje, b.id id_reparto, b.id_cliente, 
 			d.razon_social cliente,
-                        b.id_producto, e.descripcion producto, b.id_variable_logistica, f.peso
+                        b.id_producto, e.descripcion producto, e.marca, e.calidad, b.id_variable_logistica, f.peso
                         ,b.cantidad_bultos                         
                     from viaje a
                     join reparto b ON a.id = b.id_viaje
                     join proveedor c on a.id_proveedor = c.id
                     join cliente d on b.id_cliente = d.id
-					join producto e on b.id_producto = e.id
-					join variable_logistica f on b.id_variable_logistica = f.id	
+                    join producto e on b.id_producto = e.id
+                    join variable_logistica f on b.id_variable_logistica = f.id	
                     where b.id_cliente = ?
                     and b.precio_caja is null
                     and b.fecha_reparto is not null";
