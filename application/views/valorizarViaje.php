@@ -133,6 +133,7 @@
                     </div>
                 <div id="collapse1" class="panel-collapse collapse in">    
                     <div class="panel-body">
+                        <div class="table-responsive">        
                         <table class="table compact table-striped" style="font-size:small; text-align: left">
                             <tr>
                                     <td>Valor total de la mercadería cobrada a los clientes</td>
@@ -187,6 +188,7 @@
                             </tr>
                             <?}?>
                         </table>
+                        </div>    
                     </div>
                 </div>
             </div>      
@@ -200,7 +202,9 @@
                         
                     </div>
                     <div id="collapse2" class="panel-collapse collapse in">
+                        
                         <div class="panel-body">
+                            <div class="table-responsive">        
                             <table id="tblprod" class="table compact table-striped table-hover table-condensed table-responsive">
                                 <thead>
                                     <tr class="info">
@@ -350,6 +354,7 @@
                                                 <input type="hidden" id="cantidadItems" name="cantidadItems" value="<?php echo $cantidadLineasReparto ?>">
                                 </tbody>
                             </table>
+                            </div>        
                         </div>    
                     </div>
                 </div>
