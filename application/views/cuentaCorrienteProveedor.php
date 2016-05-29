@@ -167,7 +167,7 @@
     ?>   
   
     
-    <div class="container" style="padding: 15px;">
+    <div class="container" style="padding: 5px;">
         
         <?php 
         
@@ -191,8 +191,8 @@
         ?>    
         
         <form id="formFiltros" method="post" action="<?php echo base_url() ?>index.php/cuentaCorrienteProveedor/getCCProveedorPorFiltro/<?php echo $idProveedorFiltro ?>/cuentaCorrienteProveedor" name="formFiltros">
-
-                <table class="table compact" cellspacing="0" width="100%" style="font-size:small; text-align: left; ">
+            <div class="table-responsive">
+                <table class="table compact" cellspacing="0" style="font-size:small; text-align: left; ">
                     <tr>
                             <td>Fecha desde</td>
                             <td>    
@@ -210,7 +210,7 @@
                          </td>
                     </tr>
                 </table>
-        
+            </div>    
         </form>
         <div class="panel panel-primary">
         
@@ -219,7 +219,7 @@
         
         </div>
         <div class="panel-body">
-            
+        <div class="table-responsive">    
         <!--<table id="example" class="display compact responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">-->
         <table id="example" class="display compact responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">            
                 <thead>
@@ -307,7 +307,8 @@
                         
                 </tbody>    
             </table>
-             </div>
+        </div>
+        </div>
         </div>     
         
   </div>  

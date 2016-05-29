@@ -26,10 +26,11 @@ foreach($css_files as $file): ?>
       <h3 class="panel-title"><?php echo $this->session->userdata('titulo')?></h3>
     </div>
     <div class="panel-body">
-    
+        <div class="table-responsive">
         <div>
                     <?php echo $output; ?>
         </div>
+        </div>    
     </div>
     </div>
 </body>

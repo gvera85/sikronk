@@ -201,7 +201,7 @@
         endforeach; 
     ?>    
    
-    <div class="container" style="padding: 15px;">
+    <div class="container" style="padding: 5px;">
         
         <?php 
             /*El controlador me envia los datos filtrados en estos vectores*/
@@ -225,7 +225,7 @@
         
 
         <form id="formFiltros" method="post" action="<?php echo base_url() ?>index.php/cuentaCorrienteCliente/getCCClientePorFiltro/<?php echo $idClienteFiltro ?>" name="formFiltros">
-
+            <div class="table-responsive">        
                 <table class="table compact" style="font-size:small; text-align: left; ">
                     <tr>
                             <td>Fecha desde</td>
@@ -244,7 +244,7 @@
                          </td>
                     </tr>
                 </table>
-        
+            </div>
         </form>
         <div class="panel panel-primary">
         
@@ -252,8 +252,8 @@
         
         </div>
         <div class="panel-body">
-            
-        <table id="example" class="display compact responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
+        <div class="table-responsive">    
+        <table id="example" class="display compact responsive" cellspacing="0" style="font-size:small; border-color: #000;">
                 <thead>
                 <TR>
                     <th><b>IdLinea</b></th>
@@ -381,7 +381,8 @@
                         
                 </tbody>    
             </table>
-             </div>
+        </div>
+        </div>
         </div>     
         
             <?php 
@@ -402,75 +403,77 @@
             <div class="panel panel-info">
             <div class="panel-heading" id="cabeceraPanel"><?php echo $titulo ?> </div>
             <div class="panel-body">
-            <table id="example2" class="display compact responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
-                <thead>
-                <TR>
-                  
-                    <th><b>Fecha entrega</b></th>                  
-                    <th><b>Producto</b></th>
-                    <th><b>Marca</b></th>
-                    <th><b>Peso</b></th>
-                    <th><b>Cantidad</b></th>
-                    <th><b>Cant. con merma</b></th>
-                    <th><b>Cant. a pagar</b></th>
-                    <th><b>Precio</b></th>
-                   
-                  
-                </TR>
-                </thead>
-                <tbody>
-                <?php 
-                
-                    if ($sinProductos == 1)
-                    {
-                
-                        foreach( $lineasSinValorizar as $lineas ) :                     
-
-
-                        $cantidad = $lineas['cantidad_bultos'];
-                        $cantidadConMerma = 0;
-                        $cantidadAPagar = $cantidad - $cantidadConMerma;    
-
-
-                ?>
-                
-                
-                
+            <div class="table-responsive">
+                <table id="example2" class="display compact responsive" cellspacing="0" style="font-size:small; border-color: #000;">
+                    <thead>
                     <TR>
-                            
-                            <td>
-                                <?php 
-                                                
-                                                $f_reparto  = empty($lineas['fecha']) ? NULL : $lineas['fecha'];
-                                                
-                                                if (! is_null($f_reparto))
-                                                {
-                                                    $f_reparto = date_format(date_create($f_reparto), 'd/m/Y');
-                                                }
-                                                else
-                                                {
-                                                    $f_reparto = "Sin fecha";
-                                                }
-                                                
-                                ?>
-                                
-                                <?php echo $f_reparto; ?>
-                            </td>
-                            <TD> <?php echo $lineas['producto'] ?></TD>
-                            <TD> <?php echo $lineas['marca'] ?></TD>
-                            <TD> <?php echo $lineas['peso'] ?></TD>
-                            <TD> <?php echo $cantidad ?></TD>
-                            <TD> <?php echo $cantidadConMerma ?> </TD>
-                            <TD> <?php echo $cantidadAPagar ?></TD>                         
-                            <TD> <a href=javascript:window.open('<?php echo base_url('/index.php/planificacion/valorizarViajeCliente').'/'.$lineas['id_viaje'].'/'.$lineas['id_cliente']; ?>')> <span class="label label-danger" id="tipoMovimiento"> ? </span> </a> </TD>                                  
-                    </TR>   
-                <?php 
-                
-                    endforeach; 
-                    }
-                ?>
-                </tbody>  
-            </table>
+
+                        <th><b>Fecha entrega</b></th>                  
+                        <th><b>Producto</b></th>
+                        <th><b>Marca</b></th>
+                        <th><b>Peso</b></th>
+                        <th><b>Cantidad</b></th>
+                        <th><b>Cant. con merma</b></th>
+                        <th><b>Cant. a pagar</b></th>
+                        <th><b>Precio</b></th>
+
+
+                    </TR>
+                    </thead>
+                    <tbody>
+                    <?php 
+
+                        if ($sinProductos == 1)
+                        {
+
+                            foreach( $lineasSinValorizar as $lineas ) :                     
+
+
+                            $cantidad = $lineas['cantidad_bultos'];
+                            $cantidadConMerma = 0;
+                            $cantidadAPagar = $cantidad - $cantidadConMerma;    
+
+
+                    ?>
+
+
+
+                        <TR>
+
+                                <td>
+                                    <?php 
+
+                                                    $f_reparto  = empty($lineas['fecha']) ? NULL : $lineas['fecha'];
+
+                                                    if (! is_null($f_reparto))
+                                                    {
+                                                        $f_reparto = date_format(date_create($f_reparto), 'd/m/Y');
+                                                    }
+                                                    else
+                                                    {
+                                                        $f_reparto = "Sin fecha";
+                                                    }
+
+                                    ?>
+
+                                    <?php echo $f_reparto; ?>
+                                </td>
+                                <TD> <?php echo $lineas['producto'] ?></TD>
+                                <TD> <?php echo $lineas['marca'] ?></TD>
+                                <TD> <?php echo $lineas['peso'] ?></TD>
+                                <TD> <?php echo $cantidad ?></TD>
+                                <TD> <?php echo $cantidadConMerma ?> </TD>
+                                <TD> <?php echo $cantidadAPagar ?></TD>                         
+                                <TD> <a href=javascript:window.open('<?php echo base_url('/index.php/planificacion/valorizarViajeCliente').'/'.$lineas['id_viaje'].'/'.$lineas['id_cliente']; ?>')> <span class="label label-danger" id="tipoMovimiento"> ? </span> </a> </TD>                                  
+                        </TR>   
+                    <?php 
+
+                        endforeach; 
+                        }
+                    ?>
+                    </tbody>  
+                </table>
+            </div>    
             
          </div>
         </div>     
