@@ -32,7 +32,7 @@ class cierreViajes extends CI_Controller{
    
     $this->grocery_crud->set_subject('Viaje');
     $this->grocery_crud->required_fields('id_proveedor');
-    $this->grocery_crud->columns('id','numero_de_viaje','id_proveedor','numero_de_remito','fecha_estimada_llegada','patente_semi','id_empresa_transportista','id_estado','cantidad_productos');
+    $this->grocery_crud->columns('id','numero_de_viaje','id_proveedor','numero_de_remito','fecha_estimada_llegada','id_estado','cantidad_productos');
     
     $this->grocery_crud->callback_column('cantidad_productos',array($this,'_callback_cantidad_productos'));
     $this->grocery_crud->callback_column('monto_gastos',array($this,'_callback_monto_gastos'));
@@ -54,6 +54,7 @@ class cierreViajes extends CI_Controller{
     $this->grocery_crud->display_as('id_estado','Estado');
     $this->grocery_crud->set_relation('id_estado','estado','descripcion');
         
+    $this->grocery_crud->add_action('PDF', base_url().'/assets/img/iconoPDF.png', '','ui-icon-image',array($this,'link_hacia_pdf'));
     $this->grocery_crud->add_action('Gastos', base_url().'/assets/img/iconoGastosViaje.png', '','ui-icon-image',array($this,'link_hacia_gastos'));
     //$this->grocery_crud->add_action('Gan.', base_url().'/assets/img/iconoGanancia.png', '','ui-icon-image',array($this,'link_hacia_ganancias'));
     $this->grocery_crud->add_action('D', base_url().'/assets/img/iconoDetalle.png', '','ui-icon-image',array($this,'link_hacia_detalle'));
@@ -71,7 +72,7 @@ class cierreViajes extends CI_Controller{
     $this->grocery_crud->callback_before_update(array($this,'distribuidor_callback'));
     $this->grocery_crud->callback_after_insert(array($this, 'log_cambio_estado'));
     
-    $where = "id_estado IN ('".ESTADO_VIAJE_PRECIO_ACORDADO."','".ESTADO_VIAJE_PRECIO_ACORDADO."')";
+    $where = "id_estado IN ('".ESTADO_VIAJE_PRECIO_ACORDADO."','".ESTADO_VIAJE_PRECIO_ACORDADO_PROVEEDOR."')";
     
     $this->grocery_crud->where($where);
     
@@ -133,24 +134,6 @@ class cierreViajes extends CI_Controller{
         return "javascript:window.open('" . base_url('/index.php/viajeGanancias/popUp'). '/' .$row->id.'/'.$row->id_proveedor.'/'.$row->numero_de_viaje. "')";
   }
   
-  
-  public function validarPatente($patenteIngresada) 
-  {
-    if ($patenteIngresada)
-    {
-        if (preg_match('/^[A-Z]{3}\d{3}$/', $patenteIngresada))
-        {
-          return TRUE;
-        } else {
-           $this->form_validation->set_message('validarPatente', $patenteIngresada.' no es una patente valida. Formato correcto [ZZZ999]');  
-          return FALSE;
-        } 
-    }  else {
-       return TRUE; 
-    }
-  }
-  
-  
    function distribuidor_callback($post_array) {
     $post_array['id_distribuidor'] = $this->session->userdata('empresa');//$this->session->userdata('id_producto');//Fijo el Id de producto recibido por parametro
 
@@ -179,6 +162,11 @@ class cierreViajes extends CI_Controller{
     function link_hacia_imagenes($primary_key , $row)
     {
           return "javascript:window.open('" . base_url('/index.php/imagenes/viaje'). '/' .$row->id. "')";
+    }
+    
+    function link_hacia_PDF($primary_key , $row)
+    {
+          return "javascript:window.open('" . base_url('/index.php/generarPDFConf/comprobanteViaje'). '/' .$row->id. "/1')";
     }
     
     function link_hacia_detalle($primary_key , $row)

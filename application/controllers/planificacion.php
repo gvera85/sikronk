@@ -84,8 +84,11 @@ class Planificacion extends CI_Controller{
     $lineasReparto = $this->viaje_m->getRepartoConfirmado($idViaje, null);
     $clientes = $this->cliente_m->getClientes();
     $resumenViaje = $this->reporte_ventas_m->getResumenViaje($idViaje);
+    $lineasGastos = $this->reporte_ventas_m->getGastos($idViaje);
     
-    $data['resumenViaje'] = $resumenViaje;
+    $data['resumenViaje'] = $resumenViaje;    
+    $data['lineasGastos'] = $lineasGastos;
+    
     $data['lineasViaje'] = $lineasViaje;
     $data['clientes'] = $clientes;
     $data['lineasReparto'] = $lineasReparto;
@@ -399,6 +402,7 @@ class Planificacion extends CI_Controller{
         $cantMerma = $_POST['cantMerma'];
         $cantMermaProv = $_POST['cantMermaProv'];
         $fechaValorizacion = $_POST['fechaValorizacion'];
+        $idEstadoActual = $_POST['estado'];
         
         if ($botonPresionado == "btnVolverAConfirmarViaje") 
         {
@@ -418,6 +422,7 @@ class Planificacion extends CI_Controller{
             {
                 //chrome_log("PrecioBulto[".$precioBulto[$i]."],cantMerma[". $cantMerma[$i]."],fechaValor[".$fechaValorizacion[$i]."],precioProv[".$precioParaElProveedor[$i]."]","log");
                 $this->viaje_m->updateReparto($precioParaElProveedor[$i], $precioBulto[$i], $cantMerma[$i], $cantMermaProv[$i], $idReparto[$i], $fechaValorizacion[$i]);
+                //alert('i: '+i);
             }
 
             if ($botonPresionado == "botonConfirmarPrecio") 
@@ -430,10 +435,18 @@ class Planificacion extends CI_Controller{
                     echo "Error ".$retorno;
                 else
                     echo "Viaje con el precio acordado correctamente";
-            }   
+            }
+            
+            if ($botonPresionado == "botonConfirmarPrecioProveedor") 
+            {   
+                transicionSimple($viaje[0], ESTADO_VIAJE_PRECIO_ACORDADO_PROVEEDOR, "viaje");
+                echo "Precios con el proveedor guardados";
+            }
             else
             {
-                transicionSimple($viaje[0], ESTADO_VIAJE_DETERMINANDO_PRECIO, "viaje");
+                if ($idEstadoActual != ESTADO_VIAJE_PRECIO_ACORDADO_PROVEEDOR)
+                    transicionSimple($viaje[0], ESTADO_VIAJE_DETERMINANDO_PRECIO, "viaje");
+                
                 echo "Precios guardados";
             }
         }

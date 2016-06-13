@@ -66,7 +66,7 @@ class Valorizar extends CI_Controller{
     $this->grocery_crud->add_action('Gastos', base_url().'/assets/img/iconoGastosViaje.png', '','ui-icon-image',array($this,'link_hacia_gastos'));
     $this->grocery_crud->add_action('Img', base_url().'/assets/img/iconoImagenes.png', '','ui-icon-image',array($this,'link_hacia_imagenes'));
     
-    $where = "id_estado IN ('".ESTADO_VIAJE_REPARTO_FINALIZADO."','".ESTADO_VIAJE_REPARTO_EN_PROCESO."','".ESTADO_VIAJE_DETERMINANDO_PRECIO."')";
+    $where = "id_estado IN ('".ESTADO_VIAJE_REPARTO_FINALIZADO."','".ESTADO_VIAJE_PRECIO_ACORDADO_PROVEEDOR."','".ESTADO_VIAJE_REPARTO_EN_PROCESO."','".ESTADO_VIAJE_DETERMINANDO_PRECIO."')";
     
     $this->grocery_crud->where($where);
   

@@ -120,7 +120,7 @@
                                     
                                 <td id="linea_<?php echo $cantidad?>"><B><?php echo $cantidad?></B></td>
                                 <td id="producto" align="left"><?php echo $lineas['producto'] ?></td>
-                                <TD align="left"> <?php echo $lineas['codigo_vl']." - ".$lineas['vl']." - ".$lineas['peso']. "[KG] - Pallet:".$lineas['base_pallet']."x".$lineas['altura_pallet'] ?></TD>
+                                <TD align="left"> <?php echo $lineas['marca']." - ".$lineas['tipo_envase']." - ".$lineas['peso']. "[KG]" ?></TD>
                                 <TD> <?php echo "$". $lineas['precio_sugerido_bulto'] ?></TD>
                                 <TD > 
                                     <?php 

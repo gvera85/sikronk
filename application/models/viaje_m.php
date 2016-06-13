@@ -49,6 +49,7 @@ class viaje_m extends CI_Model {
                     getCantBultosPlanificados(d.id, b.id, c.id) cant_bultos_plani,
                     getCantBultosRepartidos(d.id, b.id, c.id) cant_repartida,
                     d.id_estado,
+                    g.descripcion estado,
                     a.precio_sugerido_bulto,
                     d.numero_de_remito
                     from productos_viaje a
@@ -57,6 +58,7 @@ class viaje_m extends CI_Model {
                     join viaje d on a.id_viaje = d.id
                     join proveedor e on d.id_proveedor = e.id
                     join tipo_envase f on c.id_tipo_envase = f.id
+                    join estado g on g.id = d.id_estado
                     where a.id_viaje = ?
                     order by a.id_producto, a.cantidad_bultos ";
             

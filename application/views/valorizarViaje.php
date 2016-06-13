@@ -110,6 +110,8 @@
     }
     $cantidadLineasReparto = 0;
     $sinProductos = 0;
+    $precioAcordadoConProveedor = false;
+    
     if (empty($lineasViaje[0]['numero_de_viaje']))
     {
         $titulo = "El cliente ya tiene los precios cargados en este viaje";
@@ -119,10 +121,17 @@
     {
         $fechaLlegada = date_format(date_create($resumen['fecha_estimada_llegada']), 'd/m/Y');
         $titulo = "Viaje número ".$lineasViaje[0]['numero_de_viaje']." - Fecha ".$fechaLlegada ." - Remito ".$lineasViaje[0]['numero_de_remito']." - ".$lineasViaje[0]['proveedor'];
+        $estadoDelViaje = $lineasViaje[0]['estado'];
         
         if ($lineasViaje[0]['id_estado'] == 7) /* El viaje ya tiene los precios acordados, por eso se ocultan los botones */ {
             $modo = "viajeConPrecioCerrado";
         }
+        
+        if ($lineasViaje[0]['id_estado'] == 13) /* El viaje ya tiene los precios acordados SOLO CON EL PROVEEDOR */ {
+            $precioAcordadoConProveedor = true;
+        }
+        
+        
     }             
 ?>    
     
@@ -137,6 +146,13 @@
                     <div class="panel-body">
                         <div class="table-responsive">        
                         <table class="table compact table-striped" style="font-size:small; text-align: left">
+                            
+                            <tr>
+                                    <td align="center" colspan="2"> 
+                                    <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-info" style="font-size:small;" title="Estado en que se encuentra el viaje"><?php echo $estadoDelViaje ?></button>
+                                    </td>
+                                    
+                            </tr>
                             <tr>
                                     <td>Valor total de la mercadería cobrada a los clientes</td>
                                     <td>    
@@ -176,7 +192,7 @@
                                     </a> 
                                 </TD>
                             </tr>
-                            <?php if ($modo == "viajeConPrecioCerrado") {?>
+                            <?php if ($modo == "viajeConPrecioCerrado" || $precioAcordadoConProveedor == true) {?>
                             <tr>                                
                                 <TD colspan="2" style="text-align: center;"> 
                                     <a href=javascript:window.open('<?php echo base_url('/index.php/generarPDFConf/comprobanteViaje').'/'.$idViaje.'/1'?>')>                                  
@@ -241,8 +257,7 @@
                                 </thead>
                                 <tbody>
                                 <?php 
-                                 $cantidadLineasReparto = 0;
-                                 $acumuladorPrecioSugerido = 0;
+                                 $cantidadLineasReparto = 0;                                 
                                  foreach( $lineasViaje as $lineas ) : 
                                     
                                     
@@ -277,10 +292,8 @@
                                         {
                                             foreach( $lineasReparto as $reparto ) : 
                                             if ($reparto['id_producto'] == $lineas['id_producto'] && $reparto['id_variable_logistica'] == $lineas['id_vl'])
-                                            {
-                                            
-                                                $precioSugerido = $reparto['precio_sugerido_caja'] == 0 ? $lineas['precio_sugerido_bulto'] : $reparto['precio_sugerido_caja'];    
-                                                $acumuladorPrecioSugerido = $acumuladorPrecioSugerido + $precioSugerido;
+                                            {                                            
+                                                $precioSugerido = $reparto['precio_sugerido_caja'] == 0 ? $lineas['precio_sugerido_bulto'] : $reparto['precio_sugerido_caja'];                                                    
                                             ?>  
                                                 <tr class="warning">
                                                   <?php $cantidadLineasReparto++; ?>
@@ -321,13 +334,13 @@
                                                   
                                                   <TD>
                                                   <span data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos que se le informarán al proveedor"> 
-                                                      <input class="cant_merma" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, precioBulto_<?php echo $cantidadLineasReparto?>.value, this, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMermaProv[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma_prov'] ?>"> 
+                                                      <input <?php if ($precioAcordadoConProveedor) echo "readonly" ?>  class="cant_merma_prov" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_prov_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, precioBulto_<?php echo $cantidadLineasReparto?>.value, this, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMermaProv[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma_prov'] ?>"> 
                                                       </span>
                                                   </TD> 
                                                   
                                                   <TD>
                                                       <span data-placement="bottom" data-toggle="tooltip" title="Ingrese el precio que se mostrará al proveedor">   
-                                                      $ <input class="importe_sugerido_<?php echo $cantidad ?>" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioSugerido_<?php echo $cantidadLineasReparto?>" name="precioParaElProveedor[]" onchange="calcularTotales();" type="text" size="10" value="<?php echo $precioSugerido ?>"> 
+                                                      $ <input <?php if ($precioAcordadoConProveedor) echo "readonly" ?> class="importe_sugerido_<?php echo $cantidad ?>" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioSugerido_<?php echo $cantidadLineasReparto?>" name="precioParaElProveedor[]" onchange="calcularTotales();" type="text" size="10" value="<?php echo $precioSugerido ?>"> 
                                                       </span>
                                                   </TD>  
                                                   <TD>
@@ -371,6 +384,7 @@
                                   }?>
                                                 <input type="hidden" id="cantidadItems" name="cantidadItems" value="<?php echo $cantidadLineasReparto ?>">
                                                 <input type="hidden" id="cantidadProductos" name="cantidadProductos" value="<?php echo $cantidad ?>">
+                                                <input type="hidden" id="estado" name="estado" value="<?php echo $lineasViaje[0]['id_estado'] ?>">
                                 </tbody>
                             </table>
                             </div>        
@@ -382,11 +396,17 @@
                       {?>
                 <div class="row-fluid top-buffer text-center" >
                     <?php if ($FlagUnSoloCliente == 0) {?>
-                        <button value="volverAStock" id="btnVolverAConfirmarViaje" class="btn btn-danger" data-placement="left" data-toggle="tooltip" title="El viaje vuelve al estado anterior para poder modificar la cantidades recibidas">Volver a confirmar viaje</button>
+                        <button value="volverAStock" id="btnVolverAConfirmarViaje" class="btn btn-danger" data-placement="left" data-toggle="tooltip" title="El viaje vuelve al estado anterior para poder modificar la cantidades recibidas">Volver a reparto</button>
                     <?php }?>
                         <button id="btnsubmit" value="1" type="submit" class="btn btn-default" data-placement="left" data-toggle="tooltip" title="Se guardarán los cambios y luego se podrá seguir modificando valores">Guardar</button>
-                    <?php if ($FlagUnSoloCliente == 0) {?>
+                    <?php if ($FlagUnSoloCliente == 0) {
+                        
+                        if ($precioAcordadoConProveedor == false)
+                        {
+                    ?>
                         <button id="btnConfirmarPrecioProveedor" value="3" class="btn btn-warning" data-placement="rigth" data-toggle="tooltip" title="Si usted confirma los precios del proveedor ya NO podrá modificarlos">Cerrar precio proveedor</button>    
+                    <?php
+                        }?>                        
                         <button id="btnConfirmarPrecio" value="2" class="btn btn-success" data-placement="rigth" data-toggle="tooltip" title="Si usted confirma los precios ya NO podrá modificar NADA">Confirmar precios</button>
                     <?php }?>
                         <input id="botonPresionado" type="hidden" value="botonGuardar" name="botonPresionado">
@@ -485,11 +505,10 @@ function validacionFormulario() {
   {
       for (i = 1; i <= cantidadItems; i++) { 
           campoBultos = "#bultos_" + i; 
-          campoMerma = "#cant_merma_" + i; 
-          fecha = "#fecha_valor_html_" + i; 
-          precioBulto = "#precioBulto_" + i; 
+          campoMerma = "#cant_merma_prov_" + i; 
+          precioBulto = "#precioSugerido_" + i; 
 
-          nombreCampoMerma = "cant_merma_" + i; 
+          nombreCampoMerma = "cant_merma_prov_" + i; 
 
           //alert($(campoBultos).val() + ' '+ $(campoMerma).val());
 
@@ -498,29 +517,13 @@ function validacionFormulario() {
           if (esValido)
           {
               limpiarInputConError(nombreCampoMerma);
-
           }
           else
           {
-
               marcarInputConError(nombreCampoMerma);
               return false;  
           }
-
-          /*Validar que las fechas sean todas distintas de vacio*/
-          if ($(fecha).val() == null || $(fecha).val().length == 0)
-          {
-              mensaje = 'La fecha de valorizacion no puede ser vacia';
-
-              swal("Atención...", mensaje, "error");
-
-              marcarInputConError(fecha);
-              return false;
-          }
-          else
-          {
-              limpiarInputConError(fecha);  
-          }
+          
 
           /*Validar que los campos bultos sean > 0 y vacios*/
           if ($(precioBulto).val() == null || $(precioBulto).val().length == 0 || $(precioBulto).val() <= 0)
@@ -612,7 +615,6 @@ function calcularTotales()
         $('.'+clase).each(function(indice, elemento) {
             //console.log('El elemento con el índice '+indice+' contiene '+$(elemento).val());
             
-
             if(parseInt($(elemento).val()) != 0 && $(elemento).val() )
             {
                 cantidadClientes++;
@@ -620,7 +622,11 @@ function calcularTotales()
             }
         });
 
-        precioPromedio = precioTotalCliente/cantidadClientes;
+        if (cantidadClientes != 0)
+            precioPromedio = precioTotalCliente/cantidadClientes;
+        else
+            precioPromedio = 0;
+        
         precioPromedio = Math.round(precioPromedio * 100) / 100;
 
         spanPrecio = "#promCliente_"+i;
@@ -638,7 +644,11 @@ function calcularTotales()
             }
         });
 
-        precioPromedio = precioTotalProveedor/cantidadClientes;
+        if (cantidadClientes != 0)
+            precioPromedio = precioTotalProveedor/cantidadClientes;
+        else
+            precioPromedio = 0;
+        
         precioPromedio = Math.round(precioPromedio * 100) / 100;
 
         spanPrecio = "#promProveedor_"+i;
@@ -699,7 +709,15 @@ $(function() {
     });
     
     $(document).on("click","#btnConfirmarPrecioProveedor",function( event ) {  
-        $('input#botonPresionado').val("botonConfirmarPrecioProveedor").css('border','3px solid blue');        
+        var answer = confirm("¿Está seguro de que quiere confirmar los precios del proveedor?. Luego de aceptar se cerrará esta ventana y ya no podrá modificar los precios del proveedor")
+        if (answer)
+        {
+            $('input#botonPresionado').val("botonConfirmarPrecioProveedor").css('border','3px solid blue');        
+        }
+        else
+            {
+            return false;
+        }
     });
     
     

@@ -126,7 +126,7 @@
                 if (!empty($lineasReparto[0]['razon_social']))
                 {
                     foreach( $lineasReparto as $lineas ) : 
-                        $cantBultosAPagar = ($lineas['cantidad_bultos'] - $lineas['cant_bultos_merma']);
+                        $cantBultosAPagar = ($lineas['cantidad_bultos'] - $lineas['cant_bultos_merma_prov']);
                         $totalAPagar = $cantBultosAPagar * $lineas['precio_sugerido_caja'];
 
                         ?> 
@@ -137,7 +137,7 @@
                             <td><?php echo $lineas['descripcion_producto'] ?></td>
                             <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'd/m/Y'); ?></td>
                             <td><?php echo $lineas['cantidad_bultos'] ?></td>
-                            <td><?php echo $lineas['cant_bultos_merma'] ?></td>
+                            <td><?php echo $lineas['cant_bultos_merma_prov'] ?></td>
                             
                             <?php if ($permisos['precio']) 
                                 {
