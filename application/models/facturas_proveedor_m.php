@@ -22,7 +22,7 @@ class facturas_proveedor_m extends CI_Model {
          if($idProveedor != FALSE) {
             $sql = "    select b.id id_linea, 'Deuda' tipo, a.fecha_estimada_llegada, a.stamp, a.id id_viaje, a.id_proveedor,
                         a.numero_de_viaje,
-                        sum((b.cantidad_bultos - b.cant_bultos_merma) * b.precio_sugerido_caja  ) - (getMontoGastosProveedor(a.id))debe,
+                        sum((b.cantidad_bultos - ifnull(b.cant_bultos_merma_prov,0)) * b.precio_sugerido_caja  ) - (getMontoGastosProveedor(a.id))debe,
                         0 haber,
                         DATE_FORMAT(a.fecha_estimada_llegada,'%Y%m%d') fecha_cc
                         from viaje a
@@ -138,6 +138,43 @@ class facturas_proveedor_m extends CI_Model {
 
         return false;
     }
+    
+    public function getLineasSinValorizar($idProveedor)
+    {
+         if($idProveedor != FALSE) {
+          $sql = "select  a.fecha_estimada_llegada, 
+                a.id id_viaje, a.numero_de_viaje, a.numero_de_remito, b.id_producto, e.descripcion producto, 
+		e.marca, e.calidad, b.id_variable_logistica, f.peso, sum(b.cantidad_bultos) cantidad_bultos,
+                sum(b.cant_bultos_merma_prov) cantidad_bultos_merma
+                    from viaje a
+                    join reparto b ON a.id = b.id_viaje
+                    join proveedor c on a.id_proveedor = c.id
+                    join cliente d on b.id_cliente = d.id
+                    join producto e on b.id_producto = e.id
+                    join variable_logistica f on b.id_variable_logistica = f.id
+                    where a.id_proveedor = ?
+                    and b.precio_sugerido_caja is null
+                    and b.fecha_reparto is not null
+                group by a.fecha_estimada_llegada, 
+                a.id, a.numero_de_viaje, b.id_producto, e.descripcion, 
+		e.marca, e.calidad, b.id_variable_logistica, f.peso";
+            
+            $query = $this->db->query($sql, array($idProveedor));
+                   
+            $lineasFacturas = $query->result_array();
+
+            if( is_array($lineasFacturas) && count($lineasFacturas) > 0 ) {
+              return $lineasFacturas;
+            }
+            
+            return false;
+        }
+        else {
+          return FALSE;
+        }   
+       
+    }
+    
     
     
    

@@ -38,9 +38,13 @@ class viaje_m extends CI_Model {
     {
          if($idViaje != FALSE) {
           $sql = "select a.id id_linea, d.id id_viaje,  b.id id_producto,  b.descripcion producto, 
+                    b.marca, f.descripcion tipo_envase,
                     a.cantidad_bultos, a.cantidad_pallets,
                     a.cant_real_bultos, a.cant_real_pallets,
-                    d.numero_de_viaje, e.razon_social proveedor, c.id id_vl,e.id id_proveedor,
+                    d.numero_de_viaje, 
+                    d.fecha_estimada_llegada,
+                    d.fecha_estimada_salida,
+                    e.razon_social proveedor, c.id id_vl,e.id id_proveedor,
                     c.descripcion vl, c.peso, c.base_pallet, c.altura_pallet, c.codigo_vl,
                     getCantBultosPlanificados(d.id, b.id, c.id) cant_bultos_plani,
                     getCantBultosRepartidos(d.id, b.id, c.id) cant_repartida,
@@ -52,6 +56,7 @@ class viaje_m extends CI_Model {
                     join variable_logistica c on a.id_variable_logistica = c.id
                     join viaje d on a.id_viaje = d.id
                     join proveedor e on d.id_proveedor = e.id
+                    join tipo_envase f on c.id_tipo_envase = f.id
                     where a.id_viaje = ?
                     order by a.id_producto, a.cantidad_bultos ";
             
@@ -167,7 +172,8 @@ class viaje_m extends CI_Model {
                             fecha_valorizacion, 
                             c.descripcion descripcion_producto,
                             getCantBultosRepartidos(a.id_viaje, a.id_producto, a.id_variable_logistica) cant_repartida,
-                            a.precio_sugerido_caja
+                            a.precio_sugerido_caja,
+                            cant_bultos_merma_prov
                     from reparto a
                     join cliente b on a.id_cliente = b.id
                     join producto c on a.id_producto = c.id
@@ -423,7 +429,7 @@ class viaje_m extends CI_Model {
         }
     }
     
-    public function updateReparto($precioParaElProveedor, $precioCaja, $cantMerma, $idReparto, $fechaValorizacion)
+    public function updateReparto($precioParaElProveedor, $precioCaja, $cantMerma, $cantMermaProv, $idReparto, $fechaValorizacion)
     {    
         $this->load->helper('date');
         
@@ -435,6 +441,7 @@ class viaje_m extends CI_Model {
         $this->transformarVacioEnNULL($precioParaElProveedor);
         $this->transformarVacioEnNULL($precioCaja);   
         $this->transformarVacioEnNULL($cantMerma);
+        $this->transformarVacioEnNULL($cantMermaProv);
         $this->transformarVacioEnNULL($fechaValorizacion);
         
         /*chrome_log("*****TT PrecioCaja[".gettype($precioCaja)."] valor:".$precioCaja,"log");
@@ -446,6 +453,7 @@ class viaje_m extends CI_Model {
                 'precio_sugerido_caja'  => $precioParaElProveedor,
                 'precio_caja' => $precioCaja,
                 'cant_bultos_merma' => $cantMerma,
+                'cant_bultos_merma_prov' => $cantMermaProv,            
                 'fecha_valorizacion' => $fechaValorizacion
              );
 

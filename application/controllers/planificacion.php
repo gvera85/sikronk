@@ -397,6 +397,7 @@ class Planificacion extends CI_Controller{
         $precioBulto = $_POST['precioBulto'];
         $precioParaElProveedor = $_POST['precioParaElProveedor'];
         $cantMerma = $_POST['cantMerma'];
+        $cantMermaProv = $_POST['cantMermaProv'];
         $fechaValorizacion = $_POST['fechaValorizacion'];
         
         if ($botonPresionado == "btnVolverAConfirmarViaje") 
@@ -416,7 +417,7 @@ class Planificacion extends CI_Controller{
             for($i=0; $i<$longitud; $i++)
             {
                 //chrome_log("PrecioBulto[".$precioBulto[$i]."],cantMerma[". $cantMerma[$i]."],fechaValor[".$fechaValorizacion[$i]."],precioProv[".$precioParaElProveedor[$i]."]","log");
-                $this->viaje_m->updateReparto($precioParaElProveedor[$i], $precioBulto[$i], $cantMerma[$i], $idReparto[$i], $fechaValorizacion[$i]);
+                $this->viaje_m->updateReparto($precioParaElProveedor[$i], $precioBulto[$i], $cantMerma[$i], $cantMermaProv[$i], $idReparto[$i], $fechaValorizacion[$i]);
             }
 
             if ($botonPresionado == "botonConfirmarPrecio") 

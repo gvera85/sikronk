@@ -30,7 +30,7 @@ class Reparto extends CI_Controller{
    
     $this->grocery_crud->set_subject('Viaje');
     $this->grocery_crud->required_fields('id_proveedor');
-    $this->grocery_crud->columns('id', 'numero_de_viaje','id_proveedor','numero_de_remito','fecha_estimada_llegada','patente_semi','patente_camion','id_empresa_transportista','id_estado','cantidad_productos');
+    $this->grocery_crud->columns('id', 'numero_de_viaje','id_proveedor','numero_de_remito','fecha_estimada_llegada','id_estado','cantidad_productos');
     
     $this->grocery_crud->callback_column('cantidad_productos',array($this,'_callback_cantidad_productos'));
     

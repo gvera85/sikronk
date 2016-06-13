@@ -69,10 +69,13 @@ class cuentaCorrienteProveedor extends CI_Controller{
                         "saldo_total" => $saldoFinal,                        
                     );
     
+    $lineasSinValorizar = $this->facturas_proveedor_m->getLineasSinValorizar($idProveedor);
+    
     $data['facturasProveedor'] = $arrayCC;
     $data['proveedor'] = $proveedor;
     $data['filtros'] = $filtros;
     $data['saldo'] = $saldoTotal;
+    $data['lineasSinValorizar'] = $lineasSinValorizar;
       
     $this->load->view($paginaHtml,$data); 
   } 

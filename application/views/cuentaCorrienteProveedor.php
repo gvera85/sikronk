@@ -4,7 +4,7 @@
         ini_set('date.timezone', 'America/Argentina/Buenos_Aires'); 
     ?>
 <head>
-    <title>sikronk - Cuenta corriente del cliente</title>
+    <title>sikronk - Cuenta corriente del proveedor</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     
     <meta charset="utf-8">
@@ -42,12 +42,6 @@
     
     <script type="text/javascript" charset="utf-8">
         
-        function convertDate(inputFormat) {
-            function pad(s) { return (s < 10) ? '0' + s : s; }
-            var d = new Date(inputFormat);
-            return [pad(d.getDate()), pad(d.getMonth()+1), d.getFullYear()].join('/');
-          }
-    
             $(document).ready(function() {
                 
                     $.fn.dataTable.moment( 'DD/MM/YYYY' );
@@ -117,7 +111,61 @@
 
                                     } );
                 
-                    
+                
+                    var x = $('#example2').DataTable( {   
+                                        dom: 'Bfrtip',
+                                        lengthMenu: [
+                                            [ 10, 25, 50, -1 ],
+                                            [ '10 filas', '25 filas', '50 filas', 'Mostrar todas' ]
+                                        ],
+                                        "displayLength": 10,
+                                        buttons: [
+                                            'pageLength',
+                                             {
+                                                    extend: 'print',
+                                                    title: 'Productos sin valorizar del proveedor ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
+                                                    message: 'Fecha de ejecución: '+ $("#fecha_ejecucion_hidden").val(),
+                                                    exportOptions: {
+                                                        columns: ':visible'
+                                                    }
+                                             },
+                                             {
+                                                    extend: 'excel',
+                                                    title: 'Productos sin valorizar del proveedor ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
+                                                    message: 'Fecha de ejecución: '+ $("#fecha_ejecucion_hidden").val(),
+                                                    exportOptions: {
+                                                        columns: ':visible'
+                                                    }
+                                             },
+                                             {
+                                                    extend: 'copy',
+                                                    title: 'Productos sin valorizar del proveedor ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
+                                                    message: 'Fecha de ejecución: '+ $("#fecha_ejecucion_hidden").val(),
+                                                    exportOptions: {
+                                                        columns: ':visible'
+                                                    }
+                                             },
+                                             {
+                                                extend: 'pdfHtml5',
+                                                title: 'Productos sin valorizar del proveedor ' + $("#empresaEvaluada").val() + ' - Saldo actual: $'+ $("#idSaldo").val(),
+                                                orientation: 'landscape',
+                                                pageSize: 'A4',
+                                                message: 'Fecha de ejecución: '+ $("#fecha_ejecucion_hidden").val(),
+                                                exportOptions: {
+                                                        columns: ':visible'
+                                                    }
+                                            }
+                                             
+                                        ],
+                                        "order": [[0,"desc"]],
+                                        "language": {
+                                                        "url": "<?php echo base_url() ?>/assets/bootstrap/json/SpanishDataTable.json"
+                                                    }
+                                        
+
+                                        
+
+                                    } ); 
                                     
                                     
                     saldo = $("#idSaldo").val();
@@ -309,7 +357,104 @@
             </table>
         </div>
         </div>
-        </div>     
+        </div>   
+        
+        <?php 
+            if (empty($lineasSinValorizar[0]['id_viaje']))
+            {
+                $titulo = "Productos sin valorizar - No hay productos sin valorizar";
+                $sinProductos = 0;
+            }
+            else
+            {
+                $titulo = "Productos sin valorizar";
+                $sinProductos = 1;
+            }             
+            ?>
+          
+  
+            
+            <div class="panel panel-info">
+            <div class="panel-heading" id="cabeceraPanel"><?php echo $titulo ?> </div>
+            <div class="panel-body">
+            <div class="table-responsive">
+                <table id="example2" class="display compact responsive" cellspacing="0" style="font-size:small; border-color: #000;">
+                    <thead>
+                    <TR>
+
+                        <th><b>Fecha llegada</b></th>                  
+                        <th><b>#Viaje</b></th>                  
+                        <th><b>Remito</b></th>                  
+                        <th><b>Producto</b></th>
+                        <th><b>Marca</b></th>
+                        <th><b>Peso</b></th>
+                        <th><b>Cantidad</b></th>
+                        <th><b>#Merma</b></th>
+                        <th><b>Cant. a pagar</b></th>
+                        <th><b>Precio</b></th>
+
+
+                    </TR>
+                    </thead>
+                    <tbody>
+                    <?php 
+
+                        if ($sinProductos == 1)
+                        {
+
+                            foreach( $lineasSinValorizar as $lineas ) :                     
+
+
+                            $cantidad = $lineas['cantidad_bultos'];
+                            $cantidadConMerma = $lineas['cantidad_bultos_merma'];
+                            $cantidadAPagar = $cantidad - $cantidadConMerma;    
+
+
+                    ?>
+
+
+
+                        <TR>
+
+                                <td>
+                                    <?php 
+
+                                                    $f_llegada  = empty($lineas['fecha_estimada_llegada']) ? NULL : $lineas['fecha_estimada_llegada'];
+
+                                                    if (! is_null($f_llegada))
+                                                    {
+                                                        $f_llegada = date_format(date_create($f_llegada), 'd/m/Y');
+                                                    }
+                                                    else
+                                                    {
+                                                        $f_llegada = "Sin fecha";
+                                                    }
+
+                                    ?>
+
+                                    <?php echo $f_llegada; ?>
+                                </td>
+                                <TD> <?php echo $lineas['numero_de_viaje'] ?></TD>
+                                <TD> <?php echo $lineas['numero_de_remito'] ?></TD>
+                                <TD> <?php echo $lineas['producto'] ?></TD>
+                                <TD> <?php echo $lineas['marca'] ?></TD>
+                                <TD> <?php echo $lineas['peso'] ?></TD>
+                                <TD> <?php echo $cantidad ?></TD>
+                                <TD> <?php echo $cantidadConMerma ?> </TD>
+                                <TD> <?php echo $cantidadAPagar ?></TD>                         
+                                <TD> <a href=javascript:window.open('<?php echo base_url('/index.php/planificacion/valorizarViaje').'/'.$lineas['id_viaje']; ?>')> <span class="label label-danger" id="tipoMovimiento"> ? </span> </a> </TD>                                  
+                        </TR>   
+                    <?php 
+
+                        endforeach; 
+                        }
+                    ?>
+                    </tbody>  
+                </table>
+            </div>    
+            
+         </div>
+        </div>    
         
   </div>  
    
