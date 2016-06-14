@@ -75,6 +75,7 @@
                         <h3 class="panel-title"><?php echo $titulo  ?> </h3>
                     </div>
                         <div class="panel-body">
+                            <div class="table-responsive">        
                             <table id="tblprod" class="table compact table-striped table-bordered" style="font-size:small; text-align: left">    
                             <thead>
                                 <tr class="active">
@@ -120,7 +121,7 @@
                                     
                                 <td id="linea_<?php echo $cantidad?>"><B><?php echo $cantidad?></B></td>
                                 <td id="producto" align="left"><?php echo $lineas['producto'] ?></td>
-                                <TD align="left"> <?php echo $lineas['marca']." - ".$lineas['tipo_envase']." - ".$lineas['peso']. "[KG]" ?></TD>
+                                <TD align="left"> <?php echo $lineas['marca']." - ".$lineas['vl']." - ".$lineas['tipo_envase']." - ".$lineas['peso']. "[KG]" ?></TD>
                                 <TD> <?php echo "$". $lineas['precio_sugerido_bulto'] ?></TD>
                                 <TD > 
                                     <?php 
@@ -209,6 +210,7 @@
                             <input type="hidden" id="cantidadLineas" name="cantidadLineas" value="<?php echo $cantidadClientes ?>">
                             </tbody>
                             </table>
+                            </div>    
 			</div>
                 </div>
                 <?php if ($sinProductos == 0 && $modo == "edicion") 
@@ -299,12 +301,12 @@ $(function() {
                     '</td>'+
                     '<td align="center">'+
                         '<div >'+
-                        '<input data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos a entregar a este cliente" id="cantBultos_'+nroLineaAgregada+'" class="cantidad_bultos_'+idVL+' numerico" type="text" onchange="validarBultos('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\','+basePallet+','+alturaPallet+',this);" style="width:50px; text-align:right" name="bultos[]" >'+
+                        '<input type="number" data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos a entregar a este cliente" id="cantBultos_'+nroLineaAgregada+'" class="cantidad_bultos_'+idVL+' numerico" onchange="validarBultos('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\','+basePallet+','+alturaPallet+',this);" style="width:50px; text-align:right" name="bultos[]" >'+
                         '</div>'+
                     '</td>'+
                     '<td align="center">'+
                         '<div>'+
-                        '<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text" class="numerico" onchange="calcularCantidadBultos2('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\',this.value, '+basePallet+','+ alturaPallet+',cantBultos_'+nroLineaAgregada+');" style="width:50px; text-align:right;">'+
+                        '<input type="number" id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" class="numerico" onchange="calcularCantidadBultos2('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\',this.value, '+basePallet+','+ alturaPallet+',cantBultos_'+nroLineaAgregada+');" style="width:50px; text-align:right;">'+
                         '</div>'+
                     '</td>'
                     +hiddenProducto+hiddenViaje+hiddenVL+

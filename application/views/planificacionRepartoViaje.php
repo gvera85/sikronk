@@ -71,7 +71,7 @@
                         <h3 class="panel-title" ><?php echo $titulo  ?> </h3>
                     </div>
                     <div class="panel-body">
-                        
+                        <div class="table-responsive">        
                         <table id="tblprod" class="table compact table-striped" style="font-size:small; text-align: left">    
                             <thead>
                                 <tr class="active">
@@ -115,7 +115,7 @@
                                     </td>
                                     <td id="linea_<?php echo $cantidad?>" ><?php echo $cantidad?></td>
                                     <td id="producto"><?php echo $lineas['producto'] ?></td>
-                                    <TD> <?php echo $lineas['marca']." - ".$lineas['tipo_envase']." - ".$lineas['peso']. "[KG]" ?></TD>
+                                    <TD> <?php echo $lineas['marca']." - ".$lineas['vl']." - ".$lineas['tipo_envase']." - ".$lineas['peso']. "[KG]" ?></TD>
                                     <TD> <?php echo "$". $lineas['precio_sugerido_bulto'] ?></TD>
                                     <TD > <?php echo $lineas['cantidad_bultos'] ?> <span id="tdBultos_<?php echo $lineas['id_vl'] ?>">(<?php echo $lineas['cantidad_bultos']-$lineas['cant_bultos_plani'] ?> restantes)</span> </TD>
                                     
@@ -172,6 +172,7 @@
                                 <input type="hidden" id="cantidadLineas" name="cantidadLineas" value="<?php echo $cantidadClientes ?>">
                             </tbody>
                         </table>
+                        </div>
                     </div>
                 </div>
                 <?php if ($sinProductos == 0 && $modo == "edicion") 
@@ -244,13 +245,13 @@
                     '</td>'+
                     '<td>'+
                         '<div >'+ 
-                        '<input data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos a entregar a este cliente" id="cantBultos_'+nroLineaAgregada+'" name="bultos[]" type="text"  style="width:50px; text-align:right;" class="cantidad_bultos_'+idVL+' numerico" onchange="validarBultos('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\','+basePallet+','+alturaPallet+',this)";>'+
+                        '<input type="number" data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos a entregar a este cliente" id="cantBultos_'+nroLineaAgregada+'" name="bultos[]" style="width:50px; text-align:right;" class="cantidad_bultos_'+idVL+' numerico" onchange="validarBultos('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\','+basePallet+','+alturaPallet+',this)";>'+
                         '</div>'+
                     '</td>'+
                     '<td>'+
                         '<div class="form-group col-lg-12">'+
                         //'<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text"  style="width:50px; text-align:right;"/>'+
-                        '<input id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" type="text" class="numerico" onchange="calcularCantidadBultos2('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\',this.value, '+basePallet+','+ alturaPallet+',cantBultos_'+nroLineaAgregada+');" style="width:50px; text-align:right;">'+
+                        '<input type="number" id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" class="numerico" onchange="calcularCantidadBultos2('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\',this.value, '+basePallet+','+ alturaPallet+',cantBultos_'+nroLineaAgregada+');" style="width:50px; text-align:right;">'+
                         '</div>'+
                     '</td>'
                     +hiddenProducto+hiddenViaje+hiddenVL+

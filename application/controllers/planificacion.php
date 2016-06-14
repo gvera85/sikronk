@@ -124,16 +124,21 @@ class Planificacion extends CI_Controller{
   function valorizarViajeCliente($idViaje, $idCliente){
     $this->load->model('viaje_m');
     $this->load->model('cliente_m');
-
+    $this->load->model('reporte_ventas_m');
+    
     $lineasViaje = $this->viaje_m->getLineasViajeCliente($idViaje, $idCliente);
     $lineasReparto = $this->viaje_m->getRepartoConfirmado($idViaje, $idCliente);
     $clientes = $this->cliente_m->getClientes();
+    $resumenViaje = $this->reporte_ventas_m->getResumenViaje($idViaje);
+    $lineasGastos = $this->reporte_ventas_m->getGastos($idViaje);
     
     $data['lineasViaje'] = $lineasViaje;
     $data['clientes'] = $clientes;
     $data['lineasReparto'] = $lineasReparto;
     $data['modo'] = "edicion";
     $data['idCliente'] = $idCliente;
+    $data['resumenViaje'] = $resumenViaje;    
+    $data['lineasGastos'] = $lineasGastos;
    
     $this->load->view('valorizarViaje',$data);
   }

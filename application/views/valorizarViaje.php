@@ -83,6 +83,7 @@
             $valorGastosProveedor = $resumen['valor_gastos_proveedor'];
             $valorGastosDistribuidor = $resumen['valor_gastos_distribuidor'];
             $valorAPagarAlProveedor = $valorMercaderiaProveedor - $valorGastosProveedor;
+            $estadoDelViaje = $resumen['estado'];
         endforeach; 
     }      
     
@@ -121,7 +122,7 @@
     {
         $fechaLlegada = date_format(date_create($resumen['fecha_estimada_llegada']), 'd/m/Y');
         $titulo = "Viaje número ".$lineasViaje[0]['numero_de_viaje']." - Fecha ".$fechaLlegada ." - Remito ".$lineasViaje[0]['numero_de_remito']." - ".$lineasViaje[0]['proveedor'];
-        $estadoDelViaje = $lineasViaje[0]['estado'];
+        
         
         if ($lineasViaje[0]['id_estado'] == 7) /* El viaje ya tiene los precios acordados, por eso se ocultan los botones */ {
             $modo = "viajeConPrecioCerrado";
@@ -272,7 +273,7 @@
                                         <tr class="danger">
                                             <td id="linea_<?php echo $cantidad?>" ><b><?php echo $cantidad?></b></td>
                                             <td id="producto"><?php echo $lineas['producto'] ?></td>
-                                            <TD> <?php echo $lineas['marca']." - ".$lineas['tipo_envase']." - ".$lineas['peso']. "[KG]" ?></TD>
+                                            <TD> <?php echo $lineas['marca']." - ".$lineas['vl']." - ".$lineas['tipo_envase']." - ".$lineas['peso']. "[KG]" ?></TD>
                                             <TD> <span data-placement="bottom" data-toggle="tooltip" title="<?php echo $toolTipPrecioSugerido ?>"><?php echo $lineas['cant_real_bultos'] ?></span> </TD> 
                                             <TD> <?php echo $lineas['cant_real_pallets'] ?> </TD> 
                                             <TD colspan = "2">  </TD>                                             
@@ -328,24 +329,24 @@
 
                                                   <TD>
                                                       <span data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos que el cliente devuelve por merma (no aptos para la venta)"> 
-                                                      <input class="cant_merma" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, precioBulto_<?php echo $cantidadLineasReparto?>.value, this, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMerma[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma'] ?>"> 
+                                                      <input type="number" pattern="\d*" class="cant_merma" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, precioBulto_<?php echo $cantidadLineasReparto?>.value, this, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMerma[]" size="10" value="<?php echo $reparto['cant_bultos_merma'] ?>"> 
                                                       </span>
                                                   </TD> 
                                                   
                                                   <TD>
                                                   <span data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos que se le informarán al proveedor"> 
-                                                      <input <?php if ($precioAcordadoConProveedor) echo "readonly" ?>  class="cant_merma_prov" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_prov_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, precioBulto_<?php echo $cantidadLineasReparto?>.value, this, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMermaProv[]" type="text" size="10" value="<?php echo $reparto['cant_bultos_merma_prov'] ?>"> 
+                                                      <input type="number" pattern="\d*" <?php if ($precioAcordadoConProveedor) echo "readonly" ?>  class="cant_merma_prov" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="cant_merma_prov_<?php echo $cantidadLineasReparto?>" onChange="validarCantidadMermaLinea(bultos_<?php echo $cantidadLineasReparto?>.value,  this.value, precioBulto_<?php echo $cantidadLineasReparto?>.value, this, 'div#precioTotal_<?php echo $cantidadLineasReparto?>');" name="cantMermaProv[]" size="10" value="<?php echo $reparto['cant_bultos_merma_prov'] ?>"> 
                                                       </span>
                                                   </TD> 
                                                   
                                                   <TD>
                                                       <span data-placement="bottom" data-toggle="tooltip" title="Ingrese el precio que se mostrará al proveedor">   
-                                                      $ <input <?php if ($precioAcordadoConProveedor) echo "readonly" ?> class="importe_sugerido_<?php echo $cantidad ?>" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioSugerido_<?php echo $cantidadLineasReparto?>" name="precioParaElProveedor[]" onchange="calcularTotales();" type="text" size="10" value="<?php echo $precioSugerido ?>"> 
+                                                      $ <input type="number" step="any" inputmode="numeric"  <?php if ($precioAcordadoConProveedor) echo "readonly" ?> class="importe_sugerido_<?php echo $cantidad ?>" style="width:65px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioSugerido_<?php echo $cantidadLineasReparto?>" name="precioParaElProveedor[]" onchange="calcularTotales();" size="10" value="<?php echo $precioSugerido ?>"> 
                                                       </span>
                                                   </TD>  
                                                   <TD>
                                                       <span data-placement="bottom" data-toggle="tooltip" title="Ingrese el precio acordado con el cliente">   
-                                                      $ <input class="importe_linea_<?php echo $cantidad ?>" style="width:50px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calcularPrecioLinea(this.value,bultos_<?php echo $cantidadLineasReparto?>.value, cant_merma_<?php echo $cantidadLineasReparto?>.value, 'div#precioTotal_<?php echo $cantidadLineasReparto?>'); calcularTotales();" name="precioBulto[]" type="text" size="10" value="<?php echo $reparto['precio_caja'] ?>"> 
+                                                      $ <input type="number" step="any" class="importe_linea_<?php echo $cantidad ?>" style="width:65px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calcularPrecioLinea(this.value,bultos_<?php echo $cantidadLineasReparto?>.value, cant_merma_<?php echo $cantidadLineasReparto?>.value, 'div#precioTotal_<?php echo $cantidadLineasReparto?>'); calcularTotales();" name="precioBulto[]" size="10" value="<?php echo $reparto['precio_caja'] ?>"> 
                                                       </span>
                                                   </TD>
 

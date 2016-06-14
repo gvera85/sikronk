@@ -81,7 +81,7 @@ class viaje_m extends CI_Model {
     public function getLineasViajeCliente($idViaje, $idCliente)
     {
          if($idViaje != FALSE) {
-          $sql = "select a.id id_linea, d.id id_viaje,  b.id id_producto,  b.descripcion producto, 
+          $sql = "select a.id id_linea, d.id id_viaje,  b.id id_producto,  b.descripcion producto, b.marca,
                     a.cantidad_bultos, a.cantidad_pallets,
                     a.cant_real_bultos, a.cant_real_pallets,
                     d.numero_de_viaje, e.razon_social proveedor, c.id id_vl,e.id id_proveedor,
@@ -90,12 +90,16 @@ class viaje_m extends CI_Model {
                     getCantBultosRepartidos(d.id, b.id, c.id) cant_repartida,
                     d.id_estado,
                     a.precio_sugerido_bulto,
-                    d.numero_de_remito
+                    d.numero_de_remito,
+                    f.descripcion tipo_envase,
+                    g.descripcion estado
                     from productos_viaje a
                     join producto b on a.id_producto = b.id
                     join variable_logistica c on a.id_variable_logistica = c.id
                     join viaje d on a.id_viaje = d.id
-                    join proveedor e on d.id_proveedor = e.id					
+                    join proveedor e on d.id_proveedor = e.id	
+                    join tipo_envase f on c.id_tipo_envase = f.id
+                    join estado g on g.id = d.id_estado
                     where a.id_viaje = ?
                     and (a.id_producto, a.id_variable_logistica) in (select id_producto, id_variable_logistica from reparto where id_viaje = ? and id_cliente = ? and precio_caja is null)  
                     order by a.id_producto, a.cantidad_bultos ";
@@ -251,9 +255,9 @@ class viaje_m extends CI_Model {
          if($idViaje != FALSE) {
           $sql = "select    
                         sum((cantidad_bultos - ifnull(cant_bultos_merma,0))*precio_caja) total_al_cliente,
-                        sum((cantidad_bultos - ifnull(cant_bultos_merma,0))*precio_sugerido_caja) total_al_proveedor,
+                        sum((cantidad_bultos - ifnull(cant_bultos_merma_prov,0))*precio_sugerido_caja) total_al_proveedor,
                         sum(cantidad_bultos) total_bultos,
-                        sum(cant_bultos_merma) total_merma,       
+                        sum(cant_bultos_merma_prov) total_merma,       
                         a.id_producto,
                         a.id_variable_logistica,
                         c.descripcion descripcion_producto,

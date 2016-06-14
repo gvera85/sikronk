@@ -239,9 +239,12 @@ class reporte_ventas_m extends CI_Model {
                 getMontoViaje(a.id) valor_mercaderia, 
                 getMontoViajeProveedor(a.id) valor_mercaderia_proveedor, 
                 getMontoGastosProveedor(a.id) valor_gastos_proveedor,
-                getMontoGastosDistribuidor(a.id) valor_gastos_distribuidor
+                getMontoGastosDistribuidor(a.id) valor_gastos_distribuidor,
+                a.id_estado,
+                b.descripcion estado
                 from viaje a 
-                where id = ?";
+                join estado b on a.id_estado = b.id
+                where a.id = ?";
             
         $query = $this->db->query($sql, $idViaje);
 

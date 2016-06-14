@@ -86,6 +86,7 @@
                         <h3 class="panel-title"><?php echo $titulo  ?> </h3>
                     </div>
                         <div class="panel-body">
+                            <div class="table-responsive">        
                             <table id="tblprod" class="table compact table-striped table-bordered" style="font-size:small; text-align: left">    
                             <thead>
                                 <tr class="active">
@@ -119,7 +120,7 @@
                                     
                                 <td id="linea_<?php echo $cantidad?>"><B><?php echo $cantidad?></B></td>
                                 <td id="producto" align="left"><?php echo $lineas['producto'] ?></td>
-                                <TD align="left"> <?php echo $lineas['marca']." - ".$lineas['tipo_envase']." - ".$lineas['peso']. "[KG]" ?></TD>
+                                <TD align="left"> <?php echo $lineas['marca']." - ".$lineas['vl']." - ".$lineas['tipo_envase']." - ".$lineas['peso']. "[KG]" ?></TD>
                                 <TD> <?php echo $lineas['cantidad_bultos'] ?> </TD> 
                                 <TD >   
                                     <?php 
@@ -130,7 +131,7 @@
                                     {
                                     ?>    
                                         <span data-placement="bottom" data-toggle="tooltip" title="Ingrese la cantidad de bultos que se recibieron en el camión">
-                                        <input required class="textBoxNumerico" id="cantBultosViaje_<?php echo $cantidad?>" name="cantBultosViaje[]" type="text" size="10" value="<?php echo ($lineas['cant_real_bultos'] == 0 ? $lineas['cantidad_bultos'] : $lineas['cant_real_bultos']) ?>" onChange="calcularCantidadPallets(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantPalletsViaje_<?php echo $cantidad?>');">                                         
+                                        <input type="number" required class="textBoxNumerico" id="cantBultosViaje_<?php echo $cantidad?>" name="cantBultosViaje[]" size="10" value="<?php echo ($lineas['cant_real_bultos'] == 0 ? $lineas['cantidad_bultos'] : $lineas['cant_real_bultos']) ?>" onChange="calcularCantidadPallets(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantPalletsViaje_<?php echo $cantidad?>');">                                         
                                         </span>
                                     <?php
                                     }
@@ -148,7 +149,7 @@
                                     if ($modo == "edicion")
                                     {
                                     ?>    
-                                      <input required class="textBoxNumerico" id="cantPalletsViaje_<?php echo $cantidad?>" name="cantPalletsViaje[]" type="text" size="10" value="<?php echo ($lineas['cant_real_pallets'] == 0 ? $lineas['cantidad_pallets'] : $lineas['cant_real_pallets']) ?>" onChange="calcularCantidadBultos(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantBultosViaje_<?php echo $cantidad?>');" > 
+                                      <input type="number" required class="textBoxNumerico" id="cantPalletsViaje_<?php echo $cantidad?>" name="cantPalletsViaje[]" size="10" value="<?php echo ($lineas['cant_real_pallets'] == 0 ? $lineas['cantidad_pallets'] : $lineas['cant_real_pallets']) ?>" onChange="calcularCantidadBultos(this.value,<?php echo $lineas['base_pallet']?>, <?php echo $lineas['altura_pallet']?>, 'input#cantBultosViaje_<?php echo $cantidad?>');" > 
                                     <?php
                                     }
                                     else
@@ -172,6 +173,7 @@
                             <input type="hidden" id="cantidadLineas" name="cantidadLineas" value="<?php echo $cantidadClientes ?>">
                             </tbody>
                             </table>
+                            </div>
 			</div>
                 </div>
                 <?php if ($sinProductos == 0 && $modo == "edicion") 
