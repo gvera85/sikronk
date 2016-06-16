@@ -295,6 +295,13 @@
                                             if ($reparto['id_producto'] == $lineas['id_producto'] && $reparto['id_variable_logistica'] == $lineas['id_vl'])
                                             {                                            
                                                 $precioSugerido = $reparto['precio_sugerido_caja'] == 0 ? $lineas['precio_sugerido_bulto'] : $reparto['precio_sugerido_caja'];                                                    
+                                                
+                                                if ($lineas['precio_sugerido_bulto'] != 0)
+                                                    $precioQueSugirioElProveedor = "[".$lineas['precio_sugerido_bulto']."]";
+                                                else
+                                                    $precioQueSugirioElProveedor="";
+                                                
+                                                $precioSugerido = $reparto['precio_sugerido_caja'];
                                             ?>  
                                                 <tr class="warning">
                                                   <?php $cantidadLineasReparto++; ?>
@@ -342,6 +349,7 @@
                                                   <TD>
                                                       <span data-placement="bottom" data-toggle="tooltip" title="Ingrese el precio que se mostrará al proveedor">   
                                                       $ <input type="number" step="any" inputmode="numeric"  <?php if ($precioAcordadoConProveedor) echo "readonly" ?> class="importe_sugerido_<?php echo $cantidad ?>" style="width:65px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioSugerido_<?php echo $cantidadLineasReparto?>" name="precioParaElProveedor[]" onchange="calcularTotales();" size="10" value="<?php echo $precioSugerido ?>"> 
+                                                      <?php echo $precioQueSugirioElProveedor ?>
                                                       </span>
                                                   </TD>  
                                                   <TD>
@@ -616,10 +624,10 @@ function calcularTotales()
         $('.'+clase).each(function(indice, elemento) {
             //console.log('El elemento con el índice '+indice+' contiene '+$(elemento).val());
             
-            if(parseInt($(elemento).val()) != 0 && $(elemento).val() )
+            if(parseFloat($(elemento).val()) != 0 && $(elemento).val() )
             {
                 cantidadClientes++;
-                precioTotalCliente += parseInt($(elemento).val());
+                precioTotalCliente += parseFloat($(elemento).val());
             }
         });
 
@@ -638,10 +646,10 @@ function calcularTotales()
         $('.'+claseProveedor).each(function(indice, elemento) {
             //console.log('El elemento con el índice '+indice+' contiene '+$(elemento).val());
             
-            if(parseInt($(elemento).val()) != 0 && $(elemento).val() )
+            if(parseFloat($(elemento).val()) != 0 && $(elemento).val() )
             {
                 cantidadClientes++;
-                precioTotalProveedor += parseInt($(elemento).val());
+                precioTotalProveedor += parseFloat($(elemento).val());
             }
         });
 
@@ -660,9 +668,9 @@ function calcularTotales()
 
         $('.'+clasePrecioTotalCliente).each(function(indice, elemento) {
             //console.log('El elemento con el índice '+indice+' contiene '+$(elemento).val());
-            precioTotal += parseInt($(elemento).html());
+            precioTotal += parseFloat($(elemento).html());
 
-            if(parseInt($(elemento).html()) != 0 && $(elemento).html() )
+            if(parseFloat($(elemento).html()) != 0 && $(elemento).html() )
                 cantidadClientes++;
         });
 
