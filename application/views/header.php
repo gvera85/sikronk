@@ -24,6 +24,14 @@
       
     }
     
+    input:-moz-read-only { /* For Firefox */
+        background-color: #D6D5DA;
+    }
+
+    input:read-only {
+        background-color: #D6D5DA;
+    }
+    
    
   </style>
   <!--<link rel="stylesheet" href="<?php /*echo base_url();*/?>/assets/css/bootstrap-responsive.min.css">-->

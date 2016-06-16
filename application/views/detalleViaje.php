@@ -154,7 +154,7 @@
             ?>  
         </tbody>
     </table>   
-            <
+            
     <input type="hidden" name="permisoPrecio" id="permisoPrecio" value="<?php echo $permisoPrecio ?>">
     </div>
     <?php 

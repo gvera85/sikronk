@@ -75,7 +75,7 @@ class pagoClienteLineas extends CI_Controller{
     $crud->set_primary_key('id','vw_sucursales_bancarias');
     
     $crud->display_as('id_sucursal_bancaria','Sucursal bancaria', array('activo' => 1));
-    $crud->set_relation('id_sucursal_bancaria','vw_sucursales_bancarias','{numero_sucursal}-{direccion}');
+    $crud->set_relation('id_sucursal_bancaria','vw_sucursales_bancarias','{numero_sucursal}-{direccion}', null, 'numero_sucursal ASC');
     
     //$crud->callback_column('id_viaje',array($this,'item_description_callback'));
     
