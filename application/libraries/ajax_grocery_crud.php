@@ -59,14 +59,48 @@ $($targetElement).attr('disabled', true).trigger('liszt:updated');
 $.post('ajax_extension/$target_field/$relation_field_on_source_table/'+encodeURI(selectedValue.replace(/\//g,'$this->slash_replacement')), {}, function(data) {
 var \$el = $($targetElement);
  var newOptions = data;
- \$el.empty(); // remove old options
+ var i = 0;
+ var valor1;
+ var valor2;
+ var valorAComparar1;
+ var valorAComparar2;
+ 
+ var sortedButtons = Object.keys(data).sort( function(keyA, keyB) {
+	
+        valor1 = data[keyA].split('-');
+        valor2 = data[keyB].split('-');
+        
+        valorAComparar1 = valor1[0];
+        valorAComparar2 = valor2[0];
+        
+        if (!isNaN(valor1[0]))/*Si el valor es numerico*/
+        {
+            valorAComparar1 = parseInt(valor1[0]);
+            valorAComparar2 = parseInt(valor2[0]);
+        }
+            
+
+	if (valorAComparar1 > valorAComparar2)
+		return 1;
+	else
+		return -1;
+  	
+});
+
+\$el.empty(); // remove old options
  console.log(\$el);
  console.log('Emptied up the elements');
  \$el.append(\$('<option></option>').attr('value', '').text(''));
- \$.each(newOptions, function(key, value) {
-   \$el.append(\$('<option></option>')
-      .attr('value', key).text(value));
+ 
+ $.each(newOptions, function(key, value) {
+	indice = sortedButtons[i];
+
+	\$el.append($('<option></option>')
+	      .attr('value', indice).text(newOptions[indice]));
+	i++; 
    });
+
+ 
  //\$el.attr('selectedIndex', '-1');
  \$el.chosen().trigger('liszt:updated');
 
