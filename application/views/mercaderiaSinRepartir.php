@@ -5,6 +5,7 @@
 ?>					
 
 <div style="padding: 10px;"></div>
+<div class="row-fluid">	        
             <table id="example" class="display compact responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">            
                 <thead>
                 <TR>
@@ -48,6 +49,7 @@
                 </tbody>    
             </table>	
             <input type="hidden" name="fecha_ejecucion_hidden" id="fecha_ejecucion_hidden" value="<?php echo date_format(date_create($fechaEjecucion), 'd/m/Y H:i:s') ?>">   
+</div>
 <?php 
         $this->load->view('footerProveedor');
 ?>  

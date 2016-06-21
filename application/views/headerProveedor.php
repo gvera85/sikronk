@@ -18,7 +18,7 @@
 	<link id="bootstrap-style" href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap.min.css" rel="stylesheet">
 	<link href="<?php echo base_url() ?>assets/plugins/metro/css/bootstrap-responsive.min.css" rel="stylesheet">
 	<link id="base-style" href="<?php echo base_url() ?>assets/plugins/metro/css/style.css" rel="stylesheet">
-	<link id="base-style-responsive" href="<?php echo base_url() ?>assets/plugins/metro/css/style-responsive.css" rel="stylesheet">
+	<link id="base-style-responsive" href="<?php echo base_url() ?>assets/plugins/metro/css/style-responsive2.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="<?php echo base_url() ?>/assets/bootstrap/css/dataTablesBootstrap.css">
         
         <!--<link href="<?php echo base_url() ?>/assets/grocery_crud/themes/datatables/css/jquery.dataTables.css" rel="stylesheet" type="text/css"/>-->
@@ -142,7 +142,7 @@
 				<li><a href="#"><?php echo $this->session->userdata('ruta') ?></a></li>
 			</ul>
 
-			<div class="row-fluid">
+			
 			
        
 

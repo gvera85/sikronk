@@ -39,7 +39,7 @@
 
                                 ?>
     
-                                
+                        <div class="row-fluid">	        
                                 
 				<a href="<?php echo base_url() ?>index.php/reportes/ventasMensualesProveedor" class="span4 statbox purple" onTablet="span6" onDesktop="span4">
                                 

@@ -30,8 +30,8 @@
                 $sinProductos = 1;
             }             
     ?>    
-        
-        <div class="box span12">
+        <div class="row-fluid">	
+            <div class="box span12">
         <div class="box-header">
                 <h2><i class="halflings-icon plus"></i><span class="break"></span><?php echo "Filtros" ?> </h2>
                 <div class="box-icon">
@@ -63,17 +63,19 @@
                 </form>
         </div>	
         </div><!--/span-->
-    
-                
-        
-        <div class="box-header" >
-            <h2><i class="halflings-icon plus"></i><span class="break"></span><span id="cabeceraPanel"></span></h2>
-                <div class="box-icon">
-                        <a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
-                </div>
         </div>
-        
-        <div class="box-content">
+                
+        <div class="row-fluid">	
+            <div class="box-header" >
+                <h2><i class="halflings-icon plus"></i><span class="break"></span><span id="cabeceraPanel"></span></h2>
+                    <div class="box-icon">
+                            <a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
+                    </div>
+            </div>
+        </div>
+    
+        <div class="row-fluid">	
+            <div class="box-content">
             
             <table id="example" class="display responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">    
                 <thead>
@@ -151,7 +153,7 @@
                 </tbody>    
             </table>
         </div>
-   
+        </div>
 
 <?php 
         $this->load->view('footerProveedor');

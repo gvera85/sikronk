@@ -39,7 +39,7 @@
         }
     ?>  
     
-    
+    <div class="row-fluid">	        
     <div class="box span12">
         <div class="box-header">
                 <h2><i class="halflings-icon plus"></i><span class="break"></span><?php echo "#Viaje ".$nroViaje." - ".$fechaSalida ?> </h2>
@@ -90,73 +90,78 @@
                 </table>
         </div>	
     </div><!--/span-->
+    </div>	        
     <?php if ($permisos['detalleReparto']) 
     {        
     ?>
-    <div class="box-header">
-                <h2><i class="halflings-icon plus"></i><span class="break"></span>Detalle</h2>
-                <div class="box-icon">
-                        <a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
-                </div>
-        </div>
+    
+    <div class="row-fluid">	        
+        <div class="box-header">
+                    <h2><i class="halflings-icon plus"></i><span class="break"></span>Detalle</h2>
+                    <div class="box-icon">
+                            <a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
+                    </div>
+            </div>
+
         <div class="box-content">
-    <table id="example" class="display responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
-        <thead>
-                <tr>                                                        
-                        <th>Cliente</th>
-                        <th>Fecha reparto</th>
-                        <th>Producto</th>
-                        <th>Fecha precio</th>
-                        <th>Cant. bultos</th>
-                        <th>Cant. merma</th>                                                        
-                        <?php if ($permisos['precio']) 
-                        {
-                            echo '<th>Precio bulto[$]</th>';
-                            echo '<th>Precio total[$]</th>';
-                            $permisoPrecio = 1;
-                        }
-                        ?>
-                        
-                        
-                </tr>
-        </thead>
-        <tbody>
-
-             <?php 
-                if (!empty($lineasReparto[0]['razon_social']))
-                {
-                    foreach( $lineasReparto as $lineas ) : 
-                        $cantBultosAPagar = ($lineas['cantidad_bultos'] - $lineas['cant_bultos_merma_prov']);
-                        $totalAPagar = $cantBultosAPagar * $lineas['precio_sugerido_caja'];
-
-                        ?> 
-
-                        <tr>
-                            <td><?php echo $lineas['razon_social'] ?></td>
-                            <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_reparto']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_reparto']), 'd/m/Y'); ?></td>
-                            <td><?php echo $lineas['descripcion_producto'] ?></td>
-                            <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'd/m/Y'); ?></td>
-                            <td><?php echo $lineas['cantidad_bultos'] ?></td>
-                            <td><?php echo $lineas['cant_bultos_merma_prov'] ?></td>
-                            
+        <table id="example" class="display responsive" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
+            <thead>
+                    <tr>                                                        
+                            <th>Cliente</th>
+                            <th>Fecha reparto</th>
+                            <th>Producto</th>
+                            <th>Fecha precio</th>
+                            <th>Cant. bultos</th>
+                            <th>Cant. merma</th>                                                        
                             <?php if ($permisos['precio']) 
-                                {
-                                    echo '<td>'. $lineas['precio_sugerido_caja'] .'</td>';
-                                    echo '<td>'. $totalAPagar .'</td>';
-                                }
+                            {
+                                echo '<th>Precio bulto[$]</th>';
+                                echo '<th>Precio total[$]</th>';
+                                $permisoPrecio = 1;
+                            }
                             ?>
 
-                        </tr>
 
-            <?php
-                    endforeach; 
-                }
-            ?>  
-        </tbody>
-    </table>   
-            
-    <input type="hidden" name="permisoPrecio" id="permisoPrecio" value="<?php echo $permisoPrecio ?>">
-    </div>
+                    </tr>
+            </thead>
+            <tbody>
+
+                 <?php 
+                    if (!empty($lineasReparto[0]['razon_social']))
+                    {
+                        foreach( $lineasReparto as $lineas ) : 
+                            $cantBultosAPagar = ($lineas['cantidad_bultos'] - $lineas['cant_bultos_merma_prov']);
+                            $totalAPagar = $cantBultosAPagar * $lineas['precio_sugerido_caja'];
+
+                            ?> 
+
+                            <tr>
+                                <td><?php echo $lineas['razon_social'] ?></td>
+                                <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_reparto']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_reparto']), 'd/m/Y'); ?></td>
+                                <td><?php echo $lineas['descripcion_producto'] ?></td>
+                                <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'd/m/Y'); ?></td>
+                                <td><?php echo $lineas['cantidad_bultos'] ?></td>
+                                <td><?php echo $lineas['cant_bultos_merma_prov'] ?></td>
+
+                                <?php if ($permisos['precio']) 
+                                    {
+                                        echo '<td>'. $lineas['precio_sugerido_caja'] .'</td>';
+                                        echo '<td>'. $totalAPagar .'</td>';
+                                    }
+                                ?>
+
+                            </tr>
+
+                <?php
+                        endforeach; 
+                    }
+                ?>  
+            </tbody>
+        </table>   
+
+        <input type="hidden" name="permisoPrecio" id="permisoPrecio" value="<?php echo $permisoPrecio ?>">
+        </div>
+    </div>        
     <?php 
     } ?>
 

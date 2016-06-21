@@ -1,15 +1,19 @@
     
 
-                                        <!-- end: Content -->
+            <!-- end: Content -->
+            
+            </div><!--/.fluid-container-->
+			<!-- end: Content -->
             </div><!--/#content.span10-->
             </div><!--/fluid-row-->
-
    
 
     
-
+    <div class="clearfix"></div>
+    
+    
     <footer>
-
+	
             <p>
                     <span style="text-align:left;float:left">&copy; 2015 <a href="#" alt="sikronk">sikronk</a></span>
 
