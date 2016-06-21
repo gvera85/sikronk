@@ -167,6 +167,20 @@ class reportes extends CI_Controller {
             $this->load->view('viajesProveedor.php',$data);
 	}
         
+        public function rankingClientes($tipoConsulta)
+	{   
+            $this->session->set_userdata('ruta', "Ranking de clientes");                
+            
+            $this->load->model('reporte_ventas_m');
+            
+            $lineasRanking = $this->reporte_ventas_m->getRankingClientes($this->session->userdata('empresa'));
+            
+            $data['lineasRanking'] = $lineasRanking;
+            $data['tipoConsulta'] = $tipoConsulta;            
+            
+            $this->load->view('rankingClientes.php',$data);
+	}
+        
         
         
         

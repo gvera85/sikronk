@@ -115,6 +115,7 @@
 						<li><a href="<?php echo base_url() ?>index.php/reportes/homeProveedor"><i class="icon-bar-chart"></i><span class="hidden-tablet"> Resumen</span></a></li>	
 						<li><a href="<?php echo base_url() ?>index.php/reportes/viajesProveedor"><i class="icon-truck"></i><span class="hidden-tablet"> Viajes</span></a></li>
 						<li><a href="<?php echo base_url() ?>index.php/reportes/mercaderiaSinRepartir"><i class="icon-shopping-cart"></i><span class="hidden-tablet"> Mercaderia sin repartir</span></a></li>
+                                                <li><a href="<?php echo base_url() ?>index.php/reportes/rankingClientes/bultos"><i class="icon-sitemap"></i><span class="hidden-tablet"> Ranking clientes</span></a></li>
 						<li><a href="<?php echo base_url() ?>index.php/login/logout_user"><i class="icon-lock"></i><span class="hidden-tablet"> Cerrar sesión</span></a></li>
 					</ul>
 				</div>
