@@ -43,23 +43,23 @@
 <div class="row-fluid">	
     <div class="box blue span12">
             <div class="box-header">
-                    <h2><i class="halflings-icon signal"></i><span class="break"></span>Rankings de clientes</h2>
+                    <h2><i class="halflings-icon signal"></i><span class="break"></span>Rankings de productos</h2>
                     <div class="box-icon">
                             <a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
                     </div>
             </div>
             <div class="box-content">
 
-                    <a href="<?php echo base_url() ?>index.php/reportes/rankingClientes/bultos" class="quick-button span4">
+                    <a href="<?php echo base_url() ?>index.php/reportes/rankingProductos/bultos" class="quick-button span4">
                             <i class="icon-inbox"></i>
                             <p class="<?php echo $claseBultos ?>">Ranking por bultos</p>
 
                     </a>
-                    <a href="<?php echo base_url() ?>index.php/reportes/rankingClientes/promedio" class="quick-button span4">
+                    <a href="<?php echo base_url() ?>index.php/reportes/rankingProductos/promedio" class="quick-button span4">
                             <i class="icon-tasks"></i>
                             <p class="<?php echo $clasePromedio ?>">Ranking por precio promedio</p>							
                     </a>
-                    <a href="<?php echo base_url() ?>index.php/reportes/rankingClientes/monto" class="quick-button span4">
+                    <a href="<?php echo base_url() ?>index.php/reportes/rankingProductos/monto" class="quick-button span4">
                             <i class="icon-money"></i>
                             <p class="<?php echo $claseMonto ?>">Ranking por monto [$]</p>
                     </a>
@@ -77,14 +77,16 @@
         <thead>
             <tr>
                 <th>Puesto</th>
-                <th>Cliente</th>
+                <th>Producto</th>
+                <th>Marca</th>
+                <th>Calidad</th>
                 <th><?php echo $tituloColumna ?></th>
 
             </tr>
         </thead>
         <tfoot>
                 <tr>
-                    <th colspan="2" style="text-align:right">Total:</th>
+                    <th colspan="4" style="text-align:right">Total:</th>
                     <th></th>
                 </tr>
         </tfoot>
@@ -92,13 +94,15 @@
         <tbody>
 
             <?php 
-                if (!empty($lineasRanking[0]['id_cliente']))
+                if (!empty($lineasRanking[0]['id_producto']))
                 {
                     foreach( $lineasRanking as $lineas ) : ?> 
 
                         <tr>
                             <td></td>
-                            <td><?php echo $lineas['cliente'] ?></td>
+                            <td><?php echo $lineas['producto'] ?></td>
+                            <td><?php echo $lineas['marca'] ?></td>
+                            <td><?php echo $lineas['calidad'] ?></td>
                             <td>
                                 <?php 
                                 if ($tipoConsulta == "bultos")
@@ -120,7 +124,8 @@
                                 }       
                                 ?>
 
-                            </td>                                           
+                            </td>         
+                           
                         </tr>
 
             <?php
@@ -142,7 +147,7 @@
 <div class="row-fluid">    
     <div class="box span12">
         <div class="box-header">
-                <h2><i class="halflings-icon list-alt"></i><span class="break"></span>Participación de cada cliente</h2>                
+                <h2><i class="halflings-icon list-alt"></i><span class="break"></span>Participación de cada producto</h2>                
         </div>
         <div class="box-content">
             
@@ -171,7 +176,7 @@ $(document).ready(function() {
         "pagingType": "full_numbers",
         "displayLength": 25,
         "scrollCollapse": false,
-        "order": [[ 2, 'desc' ]],        
+        "order": [[ 4, 'desc' ]],        
         "language": {
                         "url": "<?php echo base_url() ?>/assets/bootstrap/json/SpanishDataTable.json"
                     },
@@ -191,7 +196,7 @@ $(document).ready(function() {
              
             // Total over all pages
             total = api
-                .column( 2 )
+                .column( 4)
                 .data()
                 .reduce( function (a, b) {
                     return intVal(a) + intVal(b);
@@ -206,7 +211,7 @@ $(document).ready(function() {
             total = Math.round(total * 100) / 100;   
                          
             // Update footer
-            $( api.column( 2 ).footer() ).html(
+            $( api.column( 4 ).footer() ).html(
                 total 
             );
     
@@ -230,7 +235,7 @@ $(document).ready(function() {
     table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
         var dato = this.data();
         
-        porcentajeParticipacion = dato[2] * 100 / total;
+        porcentajeParticipacion = dato[4] * 100 / total;
         nombreCliente = dato[1].substring(0,10);
         
         if (porcentajeParticipacion < 4)

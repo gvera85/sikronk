@@ -181,6 +181,20 @@ class reportes extends CI_Controller {
             $this->load->view('rankingClientes.php',$data);
 	}
         
+        public function rankingProductos($tipoConsulta)
+	{   
+            $this->session->set_userdata('ruta', "Ranking de productos");                
+            
+            $this->load->model('reporte_ventas_m');
+            
+            $lineasRanking = $this->reporte_ventas_m->getRankingProductos($this->session->userdata('empresa'));
+            
+            $data['lineasRanking'] = $lineasRanking;
+            $data['tipoConsulta'] = $tipoConsulta;            
+            
+            $this->load->view('rankingProductos.php',$data);
+	}
+        
         
         
         
