@@ -76,6 +76,11 @@ class cuentaCorrienteProveedor extends CI_Controller{
     $data['filtros'] = $filtros;
     $data['saldo'] = $saldoTotal;
     $data['lineasSinValorizar'] = $lineasSinValorizar;
+    
+    $this->load->model('usuario_m');
+    $permisos["rankingClientes"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 3);            
+    $permisos["rankingProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 4);  
+    $data['permisos'] = $permisos;
       
     $this->load->view($paginaHtml,$data); 
   } 

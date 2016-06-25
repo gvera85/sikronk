@@ -673,6 +673,8 @@ function calcularTotales()
             if(parseFloat($(elemento).html()) != 0 && $(elemento).html() )
                 cantidadClientes++;
         });
+        
+        precioTotal = Math.round(precioTotal * 100) / 100;
 
         spanPrecio = "#totalPrecio_"+i;
         $(spanPrecio).html('$'+ precioTotal);

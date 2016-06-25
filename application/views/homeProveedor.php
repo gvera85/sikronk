@@ -95,10 +95,15 @@
                                         <p href="#" title="Detalle de todas las deudas e ingresos con el distribuidor" style="font-size:small;"  data-rel="tooltip">Cuenta corriente</p>
 				</a>
 				
-				<a class="quick-button metro green span2" href="<?php echo base_url() ?>index.php/reportes/rankingProductos/bultos">
-					<i class="icon-barcode"></i>
-					<p>Productos</p>
-				</a>
+                                <?php if ($permisos['rankingProductos']) 
+                                {?>
+                                    <a class="quick-button metro green span2" href="<?php echo base_url() ?>index.php/reportes/rankingProductos/bultos">
+                                    <i class="icon-barcode"></i>
+                                    <p>Productos</p>
+                                    </a>
+                                <?php
+                                }
+                                ?>  				
 				
 				<a class="quick-button metro black span2" href="<?php echo base_url() ?>index.php/reportes/entregasPendientes">
 					<i class="icon-calendar"></i>
