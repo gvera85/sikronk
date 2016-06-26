@@ -81,6 +81,7 @@ class reportes extends CI_Controller {
             $this->load->model('usuario_m');
             $permisos["rankingClientes"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 3);            
             $permisos["rankingProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 4);  
+            $permisos["listaProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 5);  
             $data['permisos'] = $permisos;
             
             $this->load->view('homeProveedor.php',$data);
@@ -170,9 +171,20 @@ class reportes extends CI_Controller {
         
         public function verProductos()
 	{   
-            $this->session->set_userdata('ruta', "Resumen > Productos");                
+            $this->session->set_userdata('ruta', "Resumen > Productos");     
             
-            $this->load->view('verProductos.php');
+            $this->load->model('stock_m');
+            
+            $productos = $this->stock_m->getProductos($this->session->userdata('empresa'));
+            
+            $data['productos'] = $productos;
+            
+            $this->load->model('usuario_m');
+            $permisos["rankingClientes"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 3);            
+            $permisos["rankingProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 4);  
+            $data['permisos'] = $permisos;
+            
+            $this->load->view('verProductos.php', $data);
 	}
         
         public function entregasPendientes()
@@ -228,6 +240,32 @@ class reportes extends CI_Controller {
             $data['permisos'] = $permisos;
             
             $this->load->view('rankingClientes.php',$data);
+	}
+        
+        public function rankingClientesPorProducto($tipoConsulta, $idProveedor, $idProducto)
+	{   
+            $this->session->set_userdata('ruta', "Ranking de clientes por producto");                
+            
+            $this->load->model('reporte_ventas_m');
+            $this->load->model('stock_m');
+            
+            $lineasRanking = $this->reporte_ventas_m->getRankingClientesPorProducto($this->session->userdata('empresa'), $idProducto);
+            
+            $producto = $this->stock_m->getProductoXId($idProducto);
+            
+            $data['lineasRanking'] = $lineasRanking;
+            
+            $data['idProveedor'] = $idProveedor;            
+            $data['idProducto'] = $idProducto;            
+            $data['tipoConsulta'] = $tipoConsulta;            
+            $data['producto'] = $producto;            
+            
+            $this->load->model('usuario_m');
+            $permisos["rankingClientes"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 3);            
+            $permisos["rankingProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 4);  
+            $data['permisos'] = $permisos;
+            
+            $this->load->view('rankingClientesPorProducto.php',$data);
 	}
         
         public function rankingProductos($tipoConsulta)

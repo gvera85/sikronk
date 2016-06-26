@@ -145,5 +145,39 @@ class stock_m extends CI_Model {
           return false;
        
     }
+    
+    public function getProductos($idProveedor)
+    {    
+        $sql = "select * from producto where activo = 1 and id_proveedor = ?";
+
+          $query = $this->db->query($sql, array($idProveedor));
+
+          $lineasProductos = $query->result_array();
+
+          if( is_array($lineasProductos) && count($lineasProductos) > 0 ) {
+            return $lineasProductos;
+          }
+
+          return false;
+       
+    }
+    
+    public function getProductoXId($idProducto)
+    {
+        $sql = "select * from producto where id = ?";
+            
+        $query = $this->db->query($sql, $idProducto);
+
+        $producto = $query->result_array();
+
+        if( is_array($producto) && count($producto) > 0 ) {
+          return $producto;
+        }
+
+        return false;
+    }
+    
+    
+    
    
 }

@@ -361,6 +361,36 @@ class reporte_ventas_m extends CI_Model {
     
     
     
+    public function getRankingClientesPorProducto($idProveedor, $idProducto)
+    {
+         if($idProveedor != FALSE) {
+            $sql = "select b.id_proveedor, c.id id_cliente, c.razon_social AS cliente,
+                        sum(ifnull(a.cantidad_bultos,0) - ifnull(a.cant_bultos_merma_prov,0)) cantidad_bultos,
+                                sum(ifnull(a.cant_bultos_merma_prov,0)) cantidad_bultos_merma,
+                                round(sum((a.cantidad_bultos - ifnull(a.cant_bultos_merma_prov,0)) * ifnull(a.precio_sugerido_caja,0)  ), 2) monto_total                                
+                    from
+                        reparto a
+                        join viaje b ON a.id_viaje = b.id
+                        join cliente c ON a.id_cliente = c.id
+                    where b.id_proveedor = ?    
+                    and b.id_estado in (13,7)
+                    and a.id_producto = ?
+                    group by b.id_proveedor, c.id, c.razon_social";
+            
+            $query = $this->db->query($sql, array($idProveedor, $idProducto));
+                   
+            $lineasRanking = $query->result_array();
+
+            if( is_array($lineasRanking) && count($lineasRanking) > 0 ) {
+              return $lineasRanking;
+            }
+            
+            return false;
+        }
+        else {
+          return FALSE;
+        }  
+    }
     
     
     

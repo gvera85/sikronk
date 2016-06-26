@@ -29,6 +29,25 @@
 @import url("halflings.css");											/* Glyphicons Halflings Font */
 @import url("style-forms.css");											/* Forms */
 
+
+ul.products li {
+    width: 200px;
+    display: inline-block;
+    vertical-align: top;
+    *display: inline;
+    *zoom: 1;
+}
+
+.imagenProducto{
+    width: 150px;
+    height: 150px;
+    border: 1px solid;
+    border-color: #00A300;
+    -webkit-box-shadow: -2px 3px 31px -1px rgba(0,0,0,0.75);
+    -moz-box-shadow: -2px 3px 31px -1px rgba(0,0,0,0.75);
+    box-shadow: -2px 3px 31px -1px rgba(0,0,0,0.75);
+}
+
 /* Main Colors
 =================================================================== */
 
