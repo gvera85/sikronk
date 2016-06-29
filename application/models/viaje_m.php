@@ -158,6 +158,7 @@ class viaje_m extends CI_Model {
                             cantidad_pallets,
                             a.id_producto,
                             a.id_variable_logistica,
+                            d.codigo_vl, d.peso, d.base_pallet, d.altura_pallet, d.descripcion descripcion_vl,                            
                             precio_caja,
                             porcentaje_ganancia,
                             b.id id_cliente,
@@ -179,10 +180,13 @@ class viaje_m extends CI_Model {
                             c.descripcion descripcion_producto,
                             getCantBultosRepartidos(a.id_viaje, a.id_producto, a.id_variable_logistica) cant_repartida,
                             a.precio_sugerido_caja,
-                            cant_bultos_merma_prov
+                            cant_bultos_merma_prov,
+                            d.id_tipo_envase, e.descripcion descripcion_envase
                     from reparto a
                     join cliente b on a.id_cliente = b.id
                     join producto c on a.id_producto = c.id
+                    join variable_logistica d on a.id_variable_logistica = d.id
+                    join tipo_envase e on d.id_tipo_envase = e.id
                     where id_viaje= ? 
                     and a.id_cliente = ifnull(?,a.id_cliente)
                     order by a.fecha_reparto";

@@ -166,7 +166,7 @@
                             <tr>
                                 <td><?php echo $lineas['razon_social'] ?></td>
                                 <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_reparto']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_reparto']), 'd/m/Y'); ?></td>
-                                <td><?php echo $lineas['descripcion_producto'] ?></td>
+                                <td><?php echo $lineas['descripcion_producto'].' - '.$lineas['descripcion_vl'].' - '.$lineas['descripcion_envase'] ?></td>
                                 <td><span style='display: none;'><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'YmdHis'); ?></span><?php echo date_format(date_create($lineas['fecha_valorizacion']), 'd/m/Y'); ?></td>
                                 <td><?php echo $lineas['cantidad_bultos'] ?></td>
                                 <td><?php echo $lineas['cant_bultos_merma_prov'] ?></td>
