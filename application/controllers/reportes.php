@@ -284,7 +284,7 @@ class reportes extends CI_Controller {
             $data['lineasRanking'] = $lineasRanking;
             $data['tipoConsulta'] = $tipoConsulta;            
             
-            $this->load->view('rankingProductos.php',$data);
+            $this->load->view('rankingProductos2.php',$data);
 	}
         
         

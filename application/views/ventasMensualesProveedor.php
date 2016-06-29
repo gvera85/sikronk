@@ -57,6 +57,34 @@
         ?>  
     </tbody>
 </table>	
+
+<div class="row-fluid">
+<div class="box">
+                                    <div class="box-header">
+                                            <h2><i class="halflings-icon list-alt"></i><span class="break"></span>Gráfico de barras</h2>
+                                            <div class="box-icon">
+                                                    
+                                                    <a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
+                                                    
+                                            </div>
+                                    </div>
+                                    <div class="box-content">
+                                             <div id="graficaDeBarras" class="center" style="height:300px;"></div>
+
+                                            <p class="graficaDeBarras center">
+                                                    <input class="btn" type="button" value="With stacking">
+                                                    <input class="btn" type="button" value="Without stacking">
+                                            </p>
+
+                                            <p class="graficaDeBarras center">
+                                                    <input class="btn-primary" type="button" value="Bars">
+                                                    <input class="btn-primary" type="button" value="Lines">
+                                                    <input class="btn-primary" type="button" value="Lines with steps">
+                                            </p>
+                                    </div>
+                            </div>    
+
+</div>    
 <?php 
         $this->load->view('footerProveedor');
 ?>  
@@ -77,9 +105,70 @@ $(document).ready(function() {
                     }
     });
     
+    mes = 0;
+var d1 = [];
+var d2 = [];
+
+table.rows().every( function ( rowIdx, tableLoop, rowLoop ) {
+        var dato = this.data();
+        
+        mes++;
+        ventaTotal = dato[3];
+        bultos = dato[5];
+        
+        
+        d1.push([ mes,  ventaTotal]);
+        d2.push([ mes,  bultos]);
+        
+        
+    } );
+
+if($("#graficaDeBarras").length)
+	{
+		/*
+		for (var i = 0; i <= 12; i += 1)
+                {
+                    d1.push([i, parseInt(Math.random() * 30)]);
+                }*/
+               
+		
+
+		var stack = 0, bars = true, lines = false, steps = false;
+
+		function plotWithOptions() {
+			$.plot($("#graficaDeBarras"), [ d1, d2 ], {
+				series: {
+					stack: stack,
+					lines: { show: lines, fill: true, steps: steps },
+					bars: { show: bars, barWidth: 0.6 },
+				},
+				colors: ["#FA5833", "#2FABE9", "#FABB3D"],
+                                labels: ["January", "February", "March", "April", "May", "June", "July"]
+			});
+		}
+
+		plotWithOptions();
+
+		$(".stackControls input").click(function (e) {
+			e.preventDefault();
+			stack = $(this).val() == "With stacking" ? true : null;
+			plotWithOptions();
+		});
+		$(".graficaDeBarras input").click(function (e) {
+			e.preventDefault();
+			bars = $(this).val().indexOf("Bars") != -1;
+			lines = $(this).val().indexOf("Lines") != -1;
+			steps = $(this).val().indexOf("steps") != -1;
+			plotWithOptions();
+		});
+	}
+
     
     
-} );        
+    
+} );
+
+
 
 </script>        
         

@@ -249,9 +249,9 @@
                                         <th>Clientes</th>
                                         <th>#Cliente</th>
                                         <th>#Proveedor</th>
-                                        <TD> <b>Proveedor [$]</b> </TD> 
-                                        <TD> <b>Cliente [$]</b> </TD> 
-                                        <TD> <b>Total [$] </b> </TD> 
+                                        <TD class="text-nowrap"> <b>Proveedor [$]</b> </TD> 
+                                        <TD class="text-nowrap"> <b>Cliente [$]</b> </TD> 
+                                        <TD class="text-nowrap"> <b>Total [$] </b> </TD> 
                                         
                                         
                                     </tr>
@@ -346,13 +346,13 @@
                                                       </span>
                                                   </TD> 
                                                   
-                                                  <TD>
+                                                  <TD class="text-nowrap">
                                                       <span data-placement="bottom" data-toggle="tooltip" title="Ingrese el precio que se mostrará al proveedor">   
                                                       $ <input type="number" step="any" inputmode="numeric"  <?php if ($precioAcordadoConProveedor) echo "readonly" ?> class="importe_sugerido_<?php echo $cantidad ?>" style="width:65px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioSugerido_<?php echo $cantidadLineasReparto?>" name="precioParaElProveedor[]" onchange="calcularTotales();" size="10" value="<?php echo $precioSugerido ?>"> 
                                                       <?php echo $precioQueSugirioElProveedor ?>
                                                       </span>
                                                   </TD>  
-                                                  <TD>
+                                                  <TD class="text-nowrap">
                                                       <span data-placement="bottom" data-toggle="tooltip" title="Ingrese el precio acordado con el cliente">   
                                                       $ <input type="number" step="any" class="importe_linea_<?php echo $cantidad ?>" style="width:65px; text-align:right" tabindex="<?php echo $cantidadLineasReparto?>" id="precioBulto_<?php echo $cantidadLineasReparto?>" onChange="calcularPrecioLinea(this.value,bultos_<?php echo $cantidadLineasReparto?>.value, cant_merma_<?php echo $cantidadLineasReparto?>.value, 'div#precioTotal_<?php echo $cantidadLineasReparto?>'); calcularTotales();" name="precioBulto[]" size="10" value="<?php echo $reparto['precio_caja'] ?>"> 
                                                       </span>

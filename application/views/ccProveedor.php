@@ -1,10 +1,36 @@
-<html lang="es">
-    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/moment.min.js"></script>  
-    <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/datetime-moment.js"></script>  
-    
-    <?php 
-        $this->load->view('headerProveedor');
-    ?>  
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<?php         
+            ini_set('date.timezone', 'America/Argentina/Buenos_Aires');                     
+            $this->load->view('headerProv');
+        ?>
+        <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/moment.min.js"></script>  
+        <script type="text/javascript" src="<?php echo base_url() ?>assets/dataTables/datetime-moment.js"></script>  
+		
+</head>
+
+<body>
+    <?php         
+                $this->load->view('menuSuperiorProv');
+    ?>
+<div class="container-fluid-full">
+<div class="row-fluid">				
+    <?php         
+        $this->load->view('menuLateral');
+    ?>
+    <!-- start: Content -->
+    <div id="content" class="span10">
+
+
+    <ul class="breadcrumb">
+            <li>
+                    <i class="icon-home"></i>
+                    <a href="<?php echo base_url() ?>index.php/reportes/homeProveedor">Home</a> 
+                    <i class="icon-angle-right"></i>
+            </li>
+            <li><a href="#"><?php echo $this->session->userdata('ruta') ?></a></li>
+    </ul>
     
      <?php 
             foreach( $proveedor as $i_proveedor ) :
@@ -69,7 +95,7 @@
             <div class="box-header" >
                 <h2><i class="halflings-icon plus"></i><span class="break"></span><span id="cabeceraPanel"></span></h2>
                     <div class="box-icon">
-                            <a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
+                        <a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
                     </div>
             </div>
         </div>
@@ -155,9 +181,17 @@
         </div>
         </div>
 
-<?php 
-        $this->load->view('footerProveedor');
-?>  
+</div><!--/.fluid-container-->	
+<!-- end: Content -->
+</div><!--/#content.span10-->
+</div><!--/fluid-row-->
+	
+<?php         
+    $this->load->view('footerProv');
+?>	
+	
+</body>
+</html>    
 
 <script type="text/javascript" charset="utf-8">
         
@@ -224,7 +258,3 @@
                     
     </script>
 
-</body>
-
-</html>    
-    
