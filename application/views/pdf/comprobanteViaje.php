@@ -72,7 +72,7 @@
     if (!empty($resumenViaje[0]['id']))
     {
         foreach( $resumenViaje as $resumen ) : 
-            $idViaje = $resumen['id'];
+            $idViajeResumen = $resumen['id'];
             $nroViaje = $resumen['numero_de_viaje'];
             $fechaSalida = date_format(date_create($resumen['fecha_estimada_salida']), 'd/m/Y');
             $fechaLlegada = date_format(date_create($resumen['fecha_estimada_llegada']), 'd/m/Y');
@@ -176,7 +176,7 @@
             <tr >
                     <td class="tituloProveedor">Id de viaje</td>
                     <td>
-                        <?php echo $idViaje ?>
+                        <?php echo $idViajeResumen ?>
                     </td>
                     <td class="tituloProveedor">Numero de viaje</td>
                     <td>
@@ -223,10 +223,10 @@
 
     </table>          
     
-
+    <BR>
     <div style="padding:10px;">Detalle de mercadería</div>
 
-        <table border=1 cellspacing=0 cellpadding=2 bordercolor="#000000" >
+        <table cellspacing=0 cellpadding=2  >
         <tr class="filaCabeceraCeleste">           
 
             <th>Producto</th>
@@ -253,21 +253,33 @@
                 //$precioSugerido = $reparto['precio_sugerido_caja'] == 0 ? $lineas['precio_sugerido_bulto'] : $reparto['precio_sugerido_caja'];    
                 $precioPromedioBulto = $reparto['total_al_proveedor'] / ($reparto['total_bultos'] - $reparto['total_merma']);
                 $precioPromedioBulto = round ($precioPromedioBulto, 2);
-
+                
+                
+                
+                $arrayDescProducto = str_split($reparto['descripcion_producto'], 12); 
+                $arrayDescVL = str_split($reparto['descripcion_vl'], 12); 
+                
+                $longitudProducto = strlen ( $reparto['descripcion_producto'] );
+                $longitudVL = strlen ( $reparto['descripcion_vl'] );
+                
+                if ($longitudProducto >= $longitudVL)
+                    $rowspan = $longitudProducto/12;
+                else
+                    $rowspan = $longitudVL/12;     
+                
+                
+                $rowspan = ceil($rowspan);
+                
             ?>  
-                <tr class="warning">             
-                  <td align="rigth"> <?php echo $reparto['descripcion_producto'] ?> </td>
-                  <td align="rigth"> <?php echo $reparto['descripcion_envase'] ?> </td>
-                  <td align="rigth"> <?php echo $reparto['peso'] ?> </td>
-                  <td align="rigth"> <?php echo $reparto['marca'] ?> </td>
-                  <td align="rigth"> <?php echo $reparto['descripcion_vl'] ?> </td>
-                  <TD> <?php echo $reparto['total_bultos'] ?> </TD> 
-                  <TD> <?php echo $reparto['total_merma'] ?> </TD> 
-                  <TD> <?php echo $precioPromedioBulto ?> </TD> 
-
-
-
-
+                <tr class="warning" style="font-size:x-small;">             
+                  <td align="rigth" rowspan=" <?php echo $rowspan ?>"> <?php echo $reparto['descripcion_producto'] ?> </td>
+                  <td align="rigth" rowspan=" <?php echo $rowspan ?>"> <?php echo $reparto['descripcion_envase'] ?> </td>
+                  <td align="rigth" rowspan=" <?php echo $rowspan ?>"> <?php echo $reparto['peso'] ?> </td>
+                  <td align="rigth" rowspan=" <?php echo $rowspan ?>"> <?php echo $reparto['marca'] ?> </td>
+                  <td align="rigth" > <?php echo $arrayDescVL[0] ?> </td>
+                  <TD rowspan=" <?php echo $rowspan ?>"> <?php echo $reparto['total_bultos'] ?> </TD> 
+                  <TD rowspan=" <?php echo $rowspan ?>"> <?php echo $reparto['total_merma'] ?> </TD> 
+                  <TD rowspan=" <?php echo $rowspan ?>"> <?php echo $precioPromedioBulto ?> </TD> 
                   <?php 
                         $precioTotalLinea = $reparto['total_al_proveedor'];//$reparto['precio_sugerido_caja'] * ( $reparto['cantidad_bultos'] - $reparto['cant_bultos_merma']); 
 
@@ -277,11 +289,23 @@
                         $totalMonto = $totalMonto +  $precioTotalLinea;
                         $totalMonto = $totalMonto;
                   ?>
-
-                  <TD>   <?php echo $precioTotalLinea?></TD>
-
-
+                  <TD rowspan=" <?php echo $rowspan ?>">   <?php echo $precioTotalLinea?></TD>
                 </tr>
+                <?php
+                $cantidad = 0;
+                foreach( $arrayDescVL as $VLDesc ) : 
+                $cantidad++;
+                if ($cantidad > 1)
+                {
+                    ?>
+                    <tr class="warning" style="font-size:x-small;">             
+                      <td align="rigth"> <?php echo $VLDesc ?> </td>                     
+                      
+                    </tr>
+                <?php 
+                }
+                endforeach; ?>
+                
             <?php
             endforeach;
             ?>
@@ -305,7 +329,8 @@
     if ($existenGastosDelProveedor)
     {
     ?>
-        <div style="padding:10px;">Detalle de gastos</div>
+    <br>    
+    <div style="padding:10px;">Detalle de gastos</div>
 
         <table border=1 cellspacing=0 cellpadding=2 bordercolor="#000000" >
             <thead>
