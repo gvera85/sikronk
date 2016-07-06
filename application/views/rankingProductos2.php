@@ -169,7 +169,7 @@
                             <div class="box-content">
 
                                 <div id="container">
-                                    <div id="graficoTorta" style="height:300px;"></div>
+                                    <div id="graficoTorta" style="height:500px;"></div>
                                 </div>
 
                             </div>
