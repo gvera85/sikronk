@@ -1,7 +1,36 @@
-<html lang="es">
-<?php 
-        $this->load->view('headerProveedor');
-?>				
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<?php         
+                            $this->load->view('headerProv');
+        ?>
+		
+</head>
+
+<body>
+<?php         
+                    $this->load->view('menuSuperiorProv');
+        ?>
+<div class="container-fluid-full">
+		<div class="row-fluid">				
+			<?php         
+                            $this->load->view('menuLateral');
+                        ?>
+			<!-- start: Content -->
+			<div id="content" class="span10">
+			
+			
+			<ul class="breadcrumb">
+				<li>
+					<i class="icon-home"></i>
+					<a href="<?php echo base_url() ?>index.php/reportes/homeProveedor">Home</a> 
+					<i class="icon-angle-right"></i>
+				</li>
+				<li><a href="#"><?php echo $this->session->userdata('ruta') ?></a></li>
+			</ul>
+                    
+                <div class="row-fluid">                            
+                        
 <table id="example" class="display compact responsive nowrap" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
     <thead>
         <tr>
@@ -56,12 +85,13 @@
             }
         ?>  
     </tbody>
-</table>	
+</table>
+</div>  
 
 <div class="row-fluid">
 <div class="box">
                                     <div class="box-header">
-                                            <h2><i class="halflings-icon list-alt"></i><span class="break"></span>Gráfico de barras</h2>
+                                            <h2><i class="halflings-icon list-alt"></i><span class="break"></span>Gráfico de barras [$/mes]</h2>
                                             <div class="box-icon">
                                                     
                                                     <a href="#" class="btn-minimize"><i class="halflings-icon chevron-up"></i></a>
@@ -71,23 +101,28 @@
                                     <div class="box-content">
                                              <div id="graficaDeBarras" class="center" style="height:300px;"></div>
 
-                                            <p class="graficaDeBarras center">
-                                                    <input class="btn" type="button" value="With stacking">
-                                                    <input class="btn" type="button" value="Without stacking">
-                                            </p>
-
-                                            <p class="graficaDeBarras center">
-                                                    <input class="btn-primary" type="button" value="Bars">
-                                                    <input class="btn-primary" type="button" value="Lines">
-                                                    <input class="btn-primary" type="button" value="Lines with steps">
-                                            </p>
+                                           
                                     </div>
                             </div>    
 
 </div>    
-<?php 
-        $this->load->view('footerProveedor');
-?>  
+
+                    </div><!--/.fluid-container-->
+	
+			<!-- end: Content -->
+        </div><!--/#content.span10-->
+        </div><!--/fluid-row-->
+		
+	
+	
+	<?php         
+            $this->load->view('footerProv');
+        ?>	
+        
+                
+	
+</body>
+</html>
 
 <script type="text/javascript">
         
@@ -136,7 +171,7 @@ if($("#graficaDeBarras").length)
 		var stack = 0, bars = true, lines = false, steps = false;
 
 		function plotWithOptions() {
-			$.plot($("#graficaDeBarras"), [ d1, d2 ], {
+			$.plot($("#graficaDeBarras"), [ d1 ], {
 				series: {
 					stack: stack,
 					lines: { show: lines, fill: true, steps: steps },
@@ -171,8 +206,4 @@ if($("#graficaDeBarras").length)
 
 
 </script>        
-        
-        
-</body>
-</html>
 

@@ -1,8 +1,16 @@
-<html lang="es">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<?php         
+                            $this->load->view('headerProv');
+        ?>
+		
+</head>
+
+<body>
 <?php         
-        $this->load->view('headerProveedor');
-        ini_set('date.timezone', 'America/Argentina/Buenos_Aires'); 
-?>					
+                    $this->load->view('menuSuperiorProv');
+        ?>					
 
 <!-- start: Content -->
 
@@ -39,7 +47,25 @@
 ?>    
 
 
+<div class="container-fluid-full">
+<div class="row-fluid">				
+        <?php         
+            $this->load->view('menuLateral');
+        ?>
+        <!-- start: Content -->
+        <div id="content" class="span10">
 
+
+        <ul class="breadcrumb">
+                <li>
+                        <i class="icon-home"></i>
+                        <a href="<?php echo base_url() ?>index.php/reportes/homeProveedor">Home</a> 
+                        <i class="icon-angle-right"></i>
+                </li>
+                <li><a href="#"><?php echo $this->session->userdata('ruta') ?></a></li>
+        </ul>
+                    
+                
 <div class="row-fluid">	
     <div class="box blue span12">
             <div class="box-header">
@@ -154,9 +180,22 @@
     </div>        
 </div><!--/row-->
 <?php } ?>
-<?php 
-        $this->load->view('footerProveedor');
-?>  
+</div><!--/.fluid-container-->
+	
+			<!-- end: Content -->
+        </div><!--/#content.span10-->
+        </div><!--/fluid-row-->
+		
+	
+	
+	<?php         
+            $this->load->view('footerProv');
+        ?>	
+        
+                
+	
+</body>
+</html>
     
 <script type="text/javascript">
         
@@ -315,6 +354,4 @@ $(document).ready(function() {
 </script>       
         
         
-</body>
-</html>
 
