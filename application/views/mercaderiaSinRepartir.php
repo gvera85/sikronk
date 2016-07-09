@@ -1,6 +1,35 @@
-<html lang="es">
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<?php         
+                            $this->load->view('headerProv');
+        ?>
+		
+</head>
+
+<body>
+<?php         
+    $this->load->view('menuSuperiorProv');
+?>				
+<div class="container-fluid-full">
+<div class="row-fluid">				
+        <?php         
+            $this->load->view('menuLateral');
+        ?>
+        <!-- start: Content -->
+        <div id="content" class="span10">
+
+
+        <ul class="breadcrumb">
+                <li>
+                        <i class="icon-home"></i>
+                        <a href="<?php echo base_url() ?>index.php/reportes/homeProveedor">Home</a> 
+                        <i class="icon-angle-right"></i>
+                </li>
+                <li><a href="#"><?php echo $this->session->userdata('ruta') ?></a></li>
+        </ul>
 <?php 
-        $this->load->view('headerProveedor');
+        ini_set('date.timezone', 'America/Argentina/Buenos_Aires'); 
         $fechaEjecucion = date("Y-m-d H:i:s"); //Por default la fecha ejecucion es el dia de hoy    
 ?>					
 
@@ -50,10 +79,22 @@
             </table>	
             <input type="hidden" name="fecha_ejecucion_hidden" id="fecha_ejecucion_hidden" value="<?php echo date_format(date_create($fechaEjecucion), 'd/m/Y H:i:s') ?>">   
 </div>
-<?php 
-        $this->load->view('footerProveedor');
-?>  
-    
+
+</div><!--/#content.span10-->			
+</div>
+</div><!--/fluid-row-->
+
+
+
+<?php         
+    $this->load->view('footerProv');
+?>	
+        
+                
+	
+</body>
+</html>
+
 <script type="text/javascript">
         
 $(document).ready(function() {
@@ -74,7 +115,4 @@ $(document).ready(function() {
 
 </script>       
         
-        
-</body>
-</html>
 

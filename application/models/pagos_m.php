@@ -26,6 +26,30 @@ class pagos_m extends CI_Model {
        
     }
     
+    public function getDetalleAjuste($idAjuste)
+    {    
+        $sql = "select a.id, fecha, b.id id_tipo_mov, b.descripcion tipo_mov, a.importe, 
+                c.id id_motivo, c.descripcion motivo, 
+                d.id id_modo_pago, d.descripcion modo_pago,
+                a.observaciones
+                from nota_credito_debito a
+                join tipo_mov b on a.id_tipo = b.id
+                join tipo_debito_credito c on a.id_tipo_credito_debito = c.id 
+                join modo_pago d on a.id_modo_pago = d.id
+                where a.id= ?";
+
+        $query = $this->db->query($sql, array($idAjuste));
+
+        $pago = $query->result_array();
+
+        if( is_array($pago) && count($pago) > 0 ) {
+          return $pago;
+        }
+
+        return false;
+       
+    }
+    
     public function getLineasPagoCliente($idPago)
     {    
         
@@ -116,16 +140,20 @@ class pagos_m extends CI_Model {
        
     }
     
-    public function getDetalleChequeProveedor($idLineaPago)
+    public function getDetalleChequeAjuste($idLineaPago)
     {    
         
         $sql = "select a.importe, a.numero_de_cheque, a.fecha_de_acreditacion, a.cuit, a.observaciones,
                 b.razon_social, b.cuit, b.direccion direccion_banco,
-                d.numero_sucursal, d.direccion direccion_sucursal
-                from pagos_proveedor_lineas a
+                d.numero_sucursal, d.direccion direccion_sucursal, a.id_cheque_cliente,
+                g.razon_social cliente
+                from nota_credito_debito a
                 join entidad_bancaria b on a.id_entidad_bancaria = b.id
                 join sucursales_bancarias d on a.id_sucursal_bancaria = d.id
-                where a.id = ?";
+                join pagos_clientes_lineas e on a.id_cheque_cliente = e.id
+                join pago_cliente f on e.id_pago = f.id	
+                join cliente g on f.id_cliente = g.id
+                where a.id =  ?";
 
         $query = $this->db->query($sql, array($idLineaPago));
 

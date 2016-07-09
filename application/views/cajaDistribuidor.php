@@ -269,6 +269,7 @@
                             $classTipo = "label label-info";
                         } else if ($lineas['tipo'] == 'Ajuste'){
                             $classTipo = "label label-info";    
+                            $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verNotaCreditoDebito').'/'.$lineas['id']."'". ')';
                         }
                     ?>
                     <TR>
