@@ -173,7 +173,7 @@ class notaDeCreditoDebito extends CI_Controller{
     
     $importe = $this->input->post('importe');  
     
-    if ( $id_tipo != 1  )/*ERROR!!! Solo se permite pago de cheque en cartera en DEBITOS*/
+    if ( $id_tipo != 1 && $id_modo_pago == 3 )/*ERROR!!! Solo se permite pago de cheque en cartera en DEBITOS*/
     {
         $this->form_validation->set_message('validarPagoEnChequeCartera', ' Solo se permite utilizar CHEQUES EN CARTERA para DEBITOS');  
         return FALSE;
