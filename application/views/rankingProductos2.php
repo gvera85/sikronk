@@ -276,7 +276,7 @@ $(document).ready(function() {
         var dato = this.data();
         
         porcentajeParticipacion = dato[4] * 100 / total;
-        nombreCliente = dato[1].substring(0,10);
+        nombreCliente = dato[1].substring(0,10) +' '+dato[2].substring(0,8) ;
         
         if (porcentajeParticipacion < 4)
         {
