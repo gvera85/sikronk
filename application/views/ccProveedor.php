@@ -127,9 +127,11 @@
                         $debe = $lineas['debe'];
                         $haber = $lineas['haber'];
                       
+                        $linkHaciaDetalles = "#";        
                         
                         if ($lineas['tipo'] == 'Pago') {
                             $classTipo = 'label label-success';
+                            $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verPagoEnPaginaProveedor').'/'.$lineas['id_linea']."'". ')';
                         } else if ($lineas['tipo'] == 'Deuda'){
                             $classTipo = "label label-danger";
                         } else if ($lineas['tipo'] == 'Gasto'){
@@ -137,7 +139,11 @@
                         }
                     ?>
                     <TR>
-                            <TD> <span class="<?php echo $classTipo ?>" id="tipoMovimiento"> <?php echo $lineas['tipo'] ?></span></TD>
+                            <TD> 
+                                <a href=<?php echo $linkHaciaDetalles;?> >
+                                <span class="<?php echo $classTipo ?>" id="tipoMovimiento"> <?php echo $lineas['tipo'] ?></span>
+                                </a>
+                            </TD>
                             <td><?php echo date_format(date_create($lineas['fecha_estimada_llegada']), 'd/m/Y'); ?></td>
                             <td><?php echo date_format(date_create($lineas['stamp']), 'd/m/Y H:i:s'); ?></td>
                             

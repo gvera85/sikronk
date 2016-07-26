@@ -56,6 +56,18 @@ class detallesEntidades extends CI_Controller{
     $this->load->view('detallePagoProveedor',$data);
   }
   
+  function verPagoEnPaginaProveedor($idPago){
+    $this->load->model('pagos_m');
+
+    $cabeceraPago = $this->pagos_m->getCabeceraPagoProveedor($idPago);
+    $lineasPago = $this->pagos_m->getLineasPagoProveedor($idPago);
+    
+    $data['cabeceraPago'] = $cabeceraPago;    
+    $data['lineasPago'] = $lineasPago;
+   
+    $this->load->view('detallePagoPaginaProveedor',$data);
+  }
+  
   function verDetalleCheque($idLineaPago){
     $this->load->model('pagos_m');
 
