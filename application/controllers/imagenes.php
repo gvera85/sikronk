@@ -163,7 +163,7 @@ class imagenes extends CI_Controller {
 		$this->distribuidor_output($output);
 	}
         
-        function verImagenesPagoProveedor($idViaje)
+        function verImagenesPagoProveedor($idPago, $monto)
 	{
 		$image_crud = new image_CRUD();	
                 

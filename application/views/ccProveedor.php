@@ -131,9 +131,10 @@
                         
                         if ($lineas['tipo'] == 'Pago') {
                             $classTipo = 'label label-success';
-                            $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verPagoEnPaginaProveedor').'/'.$lineas['id_linea']."'". ')';
+                            $linkHaciaDetalles = base_url('/index.php/detallesEntidades/verPagoEnPaginaProveedor/'.$lineas['id_linea']); 
                         } else if ($lineas['tipo'] == 'Deuda'){
                             $classTipo = "label label-danger";
+                            $linkHaciaDetalles = base_url('/index.php/reportes/detalleViaje/'.$lineas['id_viaje']); 
                         } else if ($lineas['tipo'] == 'Gasto'){
                             $classTipo = "label label-default";
                         }

@@ -167,7 +167,28 @@ class pagos_m extends CI_Model {
        
     }
     
-    
+    public function getDetalleChequeProveedor($idLineaPago)
+    {    
+        
+        $sql = "select a.importe, a.numero_de_cheque, a.fecha_de_acreditacion, a.cuit, a.observaciones,
+                b.razon_social, b.cuit, b.direccion direccion_banco,                 
+                d.numero_sucursal, d.direccion direccion_sucursal
+                from pagos_proveedor_lineas a
+                join entidad_bancaria b on a.id_entidad_bancaria = b.id                
+                join sucursales_bancarias d on a.id_sucursal_bancaria = d.id
+                where a.id = ?";
+
+        $query = $this->db->query($sql, array($idLineaPago));
+
+        $lineasPago = $query->result_array();
+
+        if( is_array($lineasPago) && count($lineasPago) > 0 ) {
+          return $lineasPago;
+        }
+
+        return false;
+       
+    }
     
 }
 

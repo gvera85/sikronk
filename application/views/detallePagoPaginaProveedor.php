@@ -77,7 +77,7 @@
                 <tr>
                         <td>Monto total</td>
                         <td>    
-                                <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-success" style="font-size:small;" title="Monto total del pago">$<?php echo $monto ?></button>
+                                <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-small btn-success" style="font-size:small;" title="Monto total del pago">$<?php echo $monto ?></button>
                         </td>
                 </tr>
                 <tr>
@@ -88,8 +88,8 @@
                 </tr>
                 <tr>                                
                     <TD colspan="2" style="text-align: center;"> 
-                        <a href=javascript:window.open('<?php echo base_url('/index.php/imagenes/pagoProveedor').'/'.$nroFactura.'/'.$monto ?>')>                                     
-                            <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-info" style="font-size:small;" title="Imágenes relacionadas a este pago (subidas por el usuario)">Ver imágenes</button>
+                        <a href=javascript:window.open('<?php echo base_url('/index.php/imagenes/verImagenesPagoProveedor').'/'.$nroFactura.'/'.$monto ?>')>                                     
+                            <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-small btn-info" style="font-size:small;" title="Imágenes relacionadas a este pago (subidas por el usuario)">Ver imágenes</button>
                         </a> 
                     </TD>
                 </tr>
@@ -125,7 +125,7 @@
                                            <td id="producto">
                                            <?php if ($lineas['id_modo_pago'] == 2  || $lineas['id_modo_pago'] == 3) 
                                            {?>    
-                                               <button type="button" value="<?php echo $lineas['id'] ?>" class="btn btn-xs btn-info" style="font-size:small;" id="btnInfoCheque" data-toggle="modal" data-target="#myModal"><?php echo $lineas['modo_pago'] ?></button>
+                                               <button type="button" value="<?php echo $lineas['id'] ?>" class="btn btn-small btn-info" style="font-size:small;" id="btnInfoCheque" data-toggle="modal" data-target="#myModal"><?php echo $lineas['modo_pago'] ?></button>
                                            <?php                                         
                                            }
                                            else
