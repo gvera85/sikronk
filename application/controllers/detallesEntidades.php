@@ -58,12 +58,19 @@ class detallesEntidades extends CI_Controller{
   
   function verPagoEnPaginaProveedor($idPago){
     $this->load->model('pagos_m');
+    
+    $this->session->set_userdata('ruta', "Resumen > Detalle del pago");    
 
     $cabeceraPago = $this->pagos_m->getCabeceraPagoProveedor($idPago);
     $lineasPago = $this->pagos_m->getLineasPagoProveedor($idPago);
     
     $data['cabeceraPago'] = $cabeceraPago;    
     $data['lineasPago'] = $lineasPago;
+    
+    $this->load->model('usuario_m');
+    $permisos["rankingClientes"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 3);            
+    $permisos["rankingProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 4);  
+    $data['permisos'] = $permisos;
    
     $this->load->view('detallePagoPaginaProveedor',$data);
   }
