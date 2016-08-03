@@ -55,7 +55,7 @@
                 </div>
         </div>
         <div class="box-content">        
-            <table id="example" class="display compact responsive nowrap" cellspacing="0" width="100%" style="font-size:small; border-color: #000;">
+            <table class="table table-bordered compact table-striped" style="font-size:small;">
                 <tr>
                         <td>Proveedor</td>
                         <td>    
