@@ -59,6 +59,8 @@ class pagoProveedoresLineas extends CI_Controller{
     $crud->callback_after_update(array($this,'monto_total_callback'));
     $crud->callback_after_insert(array($this,'monto_total_callback'));
     
+    $crud->callback_before_delete(array($this,'revivir_cheque_callback'));
+    
     $crud->display_as('fecha_de_acreditacion','Fecha acreditación (para pagos en cheque)');
     
     $crud->display_as('id_entidad_bancaria','Banco (para pagos en cheque)');    
@@ -129,6 +131,18 @@ class pagoProveedoresLineas extends CI_Controller{
   
   function pago_output($output = null){
     $this->load->view('mostrarABM',$output);
+  }
+  
+  function revivir_cheque_callback($post_array) {
+      
+    $id_modo_pago = $post_array['id_modo_pago'];
+    $id_cheque_cliente = $post_array['id_cheque_cliente'];
+    
+    if ($id_modo_pago == 3)/*Si el pago es cheque en cartera, averiguo todos los datos del cheque y los uso*/
+    {   
+        transicionSimple($id_cheque_cliente, 8, "pagos_clientes_lineas");
+    }
+      
   }
   
   /*Hace un update de la tabla pago_cliente para actualizar el monto total que suman las lineas de pagos */
