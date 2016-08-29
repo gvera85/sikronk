@@ -17,6 +17,21 @@ class facturas_proveedor_m extends CI_Model {
         return false;
     }
     
+    public function getDistribuidorXId($idDistribuidor)
+    {
+        $sql = "select * from distribuidor where id = ?";
+            
+        $query = $this->db->query($sql, $idDistribuidor);
+
+        $Distribuidor = $query->result_array();
+
+        if( is_array($Distribuidor) && count($Distribuidor) > 0 ) {
+          return $Distribuidor;
+        }
+
+        return false;
+    }
+    
     public function getLineasCCP($idProveedor)
     {
          if($idProveedor != FALSE) {
@@ -97,6 +112,52 @@ class facturas_proveedor_m extends CI_Model {
        
     }
     
+    public function getMontoTotalCredito($idCredito)
+    {
+         if($idCredito != FALSE) {
+            $sql = "select sum(importe) monto_total
+                    from lineas_credito 
+                    where id_credito = ?";
+            
+            $query = $this->db->query($sql, array($idCredito));
+            
+            $monto = $query->result_array();
+            
+            
+             if ( is_array($monto) && count($monto) == 1 )  {
+              
+              if (empty($monto[0]["monto_total"])) {
+                  return 0;
+              }else{
+                  return $monto[0]["monto_total"];
+              }
+              
+            }
+            else{
+              return 0;
+            }
+        }else {
+          return FALSE;
+        }    
+            
+        
+       
+    }
+    
+    
+    
+    public function updateMontoTotalCredito($montoTotal, $idCredito)
+    {    
+        $data = array(
+                'monto' => $montoTotal
+             );
+
+        $this->db->where('id', $idCredito);
+        
+        $this->db->update("cabecera_credito", $data); 
+
+    }
+    
     public function updateMontoTotalPago($montoTotal, $idPago)
     {    
         $data = array(
@@ -134,6 +195,21 @@ class facturas_proveedor_m extends CI_Model {
         
         if( is_array($estado) && count($estado) > 0 ) {
           return $estado;
+        }
+
+        return false;
+    }
+    
+    public function getChequeProveedor($idCheque)
+    {    
+        $sql = "select * from pagos_proveedor_lineas where id = ?";
+            
+        $query = $this->db->query($sql, $idCheque);
+
+        $cheque = $query->result_array();
+        
+        if( is_array($cheque) && count($cheque) > 0 ) {
+          return $cheque;
         }
 
         return false;

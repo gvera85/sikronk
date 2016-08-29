@@ -1,6 +1,6 @@
 <?php
 
-class pagoProveedoresLineas extends CI_Controller{
+class ingresoCajaLineas extends CI_Controller{
 
   public function __construct()
   {
@@ -21,10 +21,10 @@ class pagoProveedoresLineas extends CI_Controller{
     }
   }
   
-  function popUp($id_proveedor, $primary_key){
-    $id_pago = $primary_key;    
-    if ($id_pago) {
-            $this->session->set_userdata('id_pago', $id_pago);        
+  function popUp($id_distribuidor, $primary_key){
+    $id_credito = $primary_key;    
+    if ($id_credito) {
+            $this->session->set_userdata('id_credito', $id_credito);        
     }          
     
     $this->load->library('grocery_CRUD');
@@ -35,22 +35,22 @@ class pagoProveedoresLineas extends CI_Controller{
     
     $crud->set_language("spanish");
             
-    $crud->where('pagos_proveedor_lineas.id_pago', $id_pago);      
+    $crud->where('lineas_credito.id_credito', $id_credito);      
     
     $crud->set_theme('datatables');
     
-    $crud->set_table('pagos_proveedor_lineas');
+    $crud->set_table('lineas_credito');
     $crud->edit_fields( 'id_modo_pago', 'id_cheque_cliente', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
     $crud->add_fields( 'id_modo_pago', 'id_cheque_cliente', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
     
     //$crud->set_theme('datatables');
    
-    $crud->set_subject('Item a la factura');
+    $crud->set_subject('Item al crédito');
     $crud->required_fields('id_modo_pago');
     $crud->columns( 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
     
-    $crud->fields('id_pago', 'id_modo_pago', 'id_cheque_cliente', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
-    $crud->change_field_type('id_pago','invisible');
+    $crud->fields('id_credito', 'id_modo_pago', 'id_cheque_cliente', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
+    $crud->change_field_type('id_credito','invisible');
     
     $crud->callback_before_insert(array($this,'lineas_callback'));
     $crud->callback_before_update(array($this,'lineas_callback'));
@@ -91,15 +91,15 @@ class pagoProveedoresLineas extends CI_Controller{
     
     $this->load->model('facturas_proveedor_m');
 
-    $proveedor = $this->facturas_proveedor_m->getProveedorXId($id_proveedor);
+    $distribuidor = $this->facturas_proveedor_m->getDistribuidorXId($id_distribuidor);
 
-    $this->session->set_userdata('titulo', "Proveedor ".$proveedor[0]["razon_social"]." - Factura ".$id_pago." - Agregar items a la factura"); 
+    $this->session->set_userdata('titulo', "Distribuidor ".$distribuidor[0]["razon_social"]." - Ingreso ".$id_credito." - Agregar items a la factura"); 
         
     $this->pago_output($output);
   }
   
   function lineas_callback($post_array) {
-    $post_array['id_pago'] = $this->session->userdata('id_pago');//Fijo el Id de viaje recibido por parametro
+    $post_array['id_credito'] = $this->session->userdata('id_credito');//Fijo el Id de viaje recibido por parametro
 
     $id_cheque_cliente = $post_array['id_cheque_cliente'];
     $id_modo_pago = $post_array['id_modo_pago'];
@@ -131,21 +131,7 @@ class pagoProveedoresLineas extends CI_Controller{
   
   function pago_output($output = null){
     $this->load->view('mostrarABM',$output);
-  }
-  
-  function cek_before_delete($primary_key) {
-        $this->db->db_debug = false;
-        $this->db->trans_begin();
-        $this->db->where('id', $primary_key);
-        $this->db->delete('viaje');
-        $num_rows = $this->db->affected_rows();
-        $this->db->trans_rollback();
-        if ($num_rows > 0) {
-            return TRUE;
-        } else {
-            return FALSE;
-        }
-   }
+  }  
   
   function revivir_cheque_callback($primary_key) {
     
@@ -168,9 +154,9 @@ class pagoProveedoresLineas extends CI_Controller{
    
     $this->load->model('facturas_proveedor_m');
 
-    $montoTotal = $this->facturas_proveedor_m->getMontoTotal($this->session->userdata('id_pago'));/*Obtengo el monto actual en la BD*/
+    $montoTotal = $this->facturas_proveedor_m->getMontoTotalCredito($this->session->userdata('id_credito'));/*Obtengo el monto actual en la BD*/
     
-    $this->facturas_proveedor_m->updateMontoTotalPago($montoTotal, $this->session->userdata('id_pago'));
+    $this->facturas_proveedor_m->updateMontoTotalCredito($montoTotal, $this->session->userdata('id_credito'));
    
    
 }
