@@ -47,9 +47,9 @@ class pagoProveedoresLineas extends CI_Controller{
    
     $crud->set_subject('Item a la factura');
     $crud->required_fields('id_modo_pago');
-    $crud->columns( 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
+    $crud->columns( 'id_modo_pago', 'importe', 'numero_de_cheque', 'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
     
-    $crud->fields('id_pago', 'id_modo_pago', 'id_cheque_cliente', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
+    $crud->fields('id_pago', 'id_modo_pago', 'id_cheque_cliente', 'id_cheque_distribuidor', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
     $crud->change_field_type('id_pago','invisible');
     
     $crud->callback_before_insert(array($this,'lineas_callback'));
@@ -73,6 +73,11 @@ class pagoProveedoresLineas extends CI_Controller{
     
     $crud->display_as('id_cheque_cliente','Cheque');
     $crud->set_relation('id_cheque_cliente','cheques_en_cartera','${importe} - Nro:{numero_de_cheque} - Banco:{razon_social} - Fec:{fecha_de_acreditacion}',array('id_modo_pago' => 2, 'id_estado' => 8), 'fecha_de_acreditacion ASC');
+    
+    $crud->set_primary_key('id','vw_cheques_en_cartera_distribuidor');
+    
+    $crud->display_as('id_cheque_distribuidor','Cheque propio');
+    $crud->set_relation('id_cheque_distribuidor','vw_cheques_en_cartera_distribuidor','${importe} - Nro:{numero_de_cheque} - Banco:{razon_social} - Fec:{fecha_de_acreditacion}', null, 'fecha_de_acreditacion ASC');
     
     $crud->set_primary_key('id','vw_sucursales_bancarias');
     
@@ -102,6 +107,7 @@ class pagoProveedoresLineas extends CI_Controller{
     $post_array['id_pago'] = $this->session->userdata('id_pago');//Fijo el Id de viaje recibido por parametro
 
     $id_cheque_cliente = $post_array['id_cheque_cliente'];
+    $id_cheque_distribuidor = $post_array['id_cheque_distribuidor'];
     $id_modo_pago = $post_array['id_modo_pago'];
 
     if ($id_modo_pago == 3)/*Si el pago es cheque en cartera, averiguo todos los datos del cheque y los uso*/
@@ -118,6 +124,22 @@ class pagoProveedoresLineas extends CI_Controller{
         $post_array['cuit'] = $cheque[0]["cuit"];  
         
         transicionSimple($id_cheque_cliente, 9, "pagos_clientes_lineas");
+    }
+    
+    if ($id_modo_pago == 4)/*Si el pago es cheque en cartera de distribuidor, averiguo todos los datos del cheque y los uso*/
+    {
+        $this->load->model('facturas_proveedor_m');
+
+        $cheque = $this->facturas_proveedor_m->getDatosChequeDistribuidor($id_cheque_distribuidor);
+
+        $post_array['importe'] = $cheque[0]["importe"];     
+        $post_array['id_entidad_bancaria'] = $cheque[0]["id_entidad_bancaria"];     
+        $post_array['id_sucursal_bancaria'] = $cheque[0]["id_sucursal_bancaria"];     
+        $post_array['fecha_de_acreditacion'] = $cheque[0]["fecha_de_acreditacion"];     
+        $post_array['numero_de_cheque'] = $cheque[0]["numero_de_cheque"];     
+        $post_array['cuit'] = $cheque[0]["cuit"];  
+        
+        transicionSimple($id_cheque_distribuidor, 16, "cheque_distribuidor");
     }
    
     return $post_array;
@@ -155,10 +177,16 @@ class pagoProveedoresLineas extends CI_Controller{
       
     $id_modo_pago = $cheque[0]["id_modo_pago"];
     $id_cheque_cliente = $cheque[0]["id_cheque_cliente"];
+    $id_cheque_distribuidor = $cheque[0]["id_cheque_distribuidor"];
     
     if ($id_modo_pago == 3)/*Si el pago es cheque en cartera, averiguo todos los datos del cheque y los uso*/
     {   
         transicionSimple($id_cheque_cliente, 8, "pagos_clientes_lineas");
+    }
+    
+    if ($id_modo_pago == 4)/*Si el pago es cheque en cartera, averiguo todos los datos del cheque y los uso*/
+    {   
+        transicionSimple($id_cheque_distribuidor, 15, "cheque_distribuidor");
     }
       
   }
@@ -240,6 +268,7 @@ class pagoProveedoresLineas extends CI_Controller{
       
     $id_modo_pago = $this->input->post('id_modo_pago');  
     $id_cheque_cliente = $this->input->post('id_cheque_cliente'); 
+    $id_cheque_distribuidor = $this->input->post('id_cheque_distribuidor'); 
     
     $importe = $this->input->post('importe');  
     
@@ -249,9 +278,21 @@ class pagoProveedoresLineas extends CI_Controller{
         return FALSE;
     } 
     
-    if ($id_modo_pago == 3 && ($importe != ""))
+    if ( $id_modo_pago != 4 && $id_cheque_distribuidor != ""  )/*ERROR!!! El tipo de pago NO es cheque pero seleccionó un cheque en cartera*/
+    {
+        $this->form_validation->set_message('validarPagoEnChequeCartera', ' Solo debe seleccionar un cheque cuando el pago sea del tipo CHEQUE PROPIO');  
+        return FALSE;
+    } 
+    
+    if ( $id_modo_pago == 3 && ($importe != ""))
     {
         $this->form_validation->set_message('validarPagoEnChequeCartera', ' En el tipo de pago CHEQUE EN CARTERA no debe ingresar el importe');  
+        return FALSE;
+    }  
+    
+    if ( $id_modo_pago == 4 && ($importe != ""))
+    {
+        $this->form_validation->set_message('validarPagoEnChequeCartera', ' En el tipo de pago CHEQUE PROPIO no debe ingresar el importe');  
         return FALSE;
     }  
     
@@ -259,6 +300,12 @@ class pagoProveedoresLineas extends CI_Controller{
     if ($id_modo_pago == 3 && ($id_cheque_cliente == ""))
     {
         $this->form_validation->set_message('validarPagoEnChequeCartera', ' En el tipo de pago CHEQUE EN CARTERA es obligatorio seleccionar un cheque de la lista');  
+        return FALSE;
+    }  
+    
+    if ($id_modo_pago == 4 && ($id_cheque_distribuidor == ""))
+    {
+        $this->form_validation->set_message('validarPagoEnChequeCartera', ' En el tipo de pago CHEQUE PROPIO es obligatorio seleccionar un cheque de la lista');  
         return FALSE;
     }  
     

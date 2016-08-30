@@ -185,6 +185,21 @@ class facturas_proveedor_m extends CI_Model {
         return false;
     }
     
+    public function getDatosChequeDistribuidor($idChequeCliente)
+    {    
+        $sql = "select * from cheque_distribuidor where id = ?";
+            
+        $query = $this->db->query($sql, $idChequeCliente);
+
+        $cheque = $query->result_array();
+        
+        if( is_array($cheque) && count($cheque) > 0 ) {
+          return $cheque;
+        }
+
+        return false;
+    }
+    
     public function getEstado($idEstado)
     {    
         $sql = "select * from estado where id = ?";
