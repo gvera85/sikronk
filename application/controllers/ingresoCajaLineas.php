@@ -67,7 +67,7 @@ class ingresoCajaLineas extends CI_Controller{
     $crud->set_relation('id_entidad_bancaria','entidad_bancaria','{razon_social}', array('activo' => 1));
     
     $crud->display_as('id_modo_pago','Tipo de pago');
-    $crud->set_relation('id_modo_pago','modo_pago','{descripcion}', array('activo' => 1));
+    $crud->set_relation('id_modo_pago','modo_pago','{descripcion}', array('visto_por_distribuidor' => 1, 'activo' => 1));
     
     $crud->set_primary_key('id','cheques_en_cartera');
     

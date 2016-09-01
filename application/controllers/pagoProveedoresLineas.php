@@ -67,7 +67,7 @@ class pagoProveedoresLineas extends CI_Controller{
     $crud->set_relation('id_entidad_bancaria','entidad_bancaria','{razon_social}', array('activo' => 1));
     
     $crud->display_as('id_modo_pago','Tipo de pago');
-    $crud->set_relation('id_modo_pago','modo_pago','{descripcion}', array('activo' => 1));
+    $crud->set_relation('id_modo_pago','modo_pago','{descripcion}', array('visto_por_proveedor' => 1, 'activo' => 1));
     
     $crud->set_primary_key('id','cheques_en_cartera');
     
@@ -123,7 +123,7 @@ class pagoProveedoresLineas extends CI_Controller{
         $post_array['numero_de_cheque'] = $cheque[0]["numero_de_cheque"];     
         $post_array['cuit'] = $cheque[0]["cuit"];  
         
-        transicionSimple($id_cheque_cliente, 9, "pagos_clientes_lineas");
+        transicionSimple($id_cheque_cliente, ESTADO_CHEQUE_ENTREGADO_A_PROVEEDOR, "pagos_clientes_lineas");
     }
     
     if ($id_modo_pago == 4)/*Si el pago es cheque en cartera de distribuidor, averiguo todos los datos del cheque y los uso*/
@@ -139,7 +139,7 @@ class pagoProveedoresLineas extends CI_Controller{
         $post_array['numero_de_cheque'] = $cheque[0]["numero_de_cheque"];     
         $post_array['cuit'] = $cheque[0]["cuit"];  
         
-        transicionSimple($id_cheque_distribuidor, 16, "cheque_distribuidor");
+        transicionSimple($id_cheque_distribuidor, ESTADO_CHEQUE_DIST_USADO_CON_PROVEEDOR, "cheque_distribuidor");
     }
    
     return $post_array;
