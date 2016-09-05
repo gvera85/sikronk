@@ -28,18 +28,20 @@ class ingresoCaja extends CI_Controller{
     $crud->set_language("spanish");
     
     $crud->set_table('cabecera_credito');
-    $crud->edit_fields('fecha', 'id_distribuidor','observaciones');
-    $crud->add_fields('fecha','id_distribuidor', 'observaciones');
+    $crud->edit_fields('fecha', 'id_distribuidor', 'id_tipo_credito','observaciones');
+    $crud->add_fields('fecha','id_distribuidor', 'id_tipo_credito','observaciones');
     
     $crud->set_theme('datatables');
    
     $crud->set_subject('Ingreso a caja (luego agregar los items con importes y tipos de pagos)');
     $crud->required_fields('fecha','id_distribuidor');
-    $crud->columns('id','fecha','id_distribuidor', 'monto', 'observaciones');
+    $crud->columns('id','fecha','id_distribuidor', 'id_tipo_credito', 'monto', 'observaciones');
   
-    $crud->display_as('id_distribuidor','Distribuidor');
-       
+    $crud->display_as('id_distribuidor','Distribuidor');       
     $crud->set_relation('id_distribuidor','distribuidor','razon_social');
+    
+    $crud->display_as('id_tipo_credito','Tipo crédito');       
+    $crud->set_relation('id_tipo_credito','tipo_debito_credito','descripcion',  array('activo' => 1, 'id_tipo' => 2));
     
     $crud->order_by('fecha','desc');
     

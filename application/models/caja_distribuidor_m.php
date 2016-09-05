@@ -45,6 +45,18 @@ class caja_distribuidor_m extends CI_Model {
                           END haber,  
                         id
                         FROM nota_credito_debito 
+                    union    
+                        select 
+                        'Crédito' AS Tipo,
+                        a.fecha AS fecha,
+                        a.stamp AS stamp,
+                        '-' AS razon_social,
+                        a.observaciones AS descripcion,
+                        0 AS debe,
+                        a.monto AS haber,
+                        a.id AS id
+                       from
+                           cabecera_credito a    
                     order by 2 asc, 3 asc";
             
             $query = $this->db->query($sql, array($idDistribuidor, $idDistribuidor));
