@@ -270,6 +270,9 @@
                         } else if ($lineas['tipo'] == 'Ajuste'){
                             $classTipo = "label label-info";    
                             $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verNotaCreditoDebito').'/'.$lineas['id']."'". ')';
+                        } else if ($lineas['tipo'] == 'Crédito'){
+                            $classTipo = "label label-info";    
+                            $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verNotaCredito').'/'.$lineas['id']."'". ')';
                         }
                     ?>
                     <TR>

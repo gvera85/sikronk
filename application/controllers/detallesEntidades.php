@@ -44,6 +44,18 @@ class detallesEntidades extends CI_Controller{
     $this->load->view('detalleAjuste',$data);
   }
   
+  function verNotaCredito($idCredito){
+    $this->load->model('pagos_m');
+    
+    $cabeceraCredito = $this->pagos_m->getCabeceraCredito($idCredito);
+    $lineasCredito = $this->pagos_m->getLineasCredito($idCredito);
+    
+    $data['cabeceraCredito'] = $cabeceraCredito;    
+    $data['lineasCredito'] = $lineasCredito;
+   
+    $this->load->view('detalleNotaCredito',$data);
+  }
+  
   function verPagoProveedor($idPago){
     $this->load->model('pagos_m');
 
@@ -176,6 +188,57 @@ class detallesEntidades extends CI_Controller{
     $this->load->model('pagos_m');
 
     $detalleCheque = $this->pagos_m->getDetalleChequeAjuste($idLineaPago);
+    
+    $respuestaHTML = "<table id='tablaDatosCheque' class='table compact table-striped table-hover table-condensed table-responsive'>                        
+                        <tbody>
+                            <tr>
+                                <td> <div id='nroCheque'>Cheque entregado por</div></td>
+                                <td> <div id='bancoCheque'> ". $detalleCheque[0]["cliente"]." </div> </td>
+                            </tr>        
+                            <tr>
+                                <td> <div id='nroCheque'>Importe</div></td>
+                                <td> <div id='bancoCheque'> $". $detalleCheque[0]["importe"]." </div> </td>
+                            </tr>
+                            <tr>
+                                <td> <div id='nroCheque'>Numero de cheque</div></td>
+                                <td> <div id='bancoCheque'> ". $detalleCheque[0]["numero_de_cheque"]." </div> </td>
+                            </tr>
+                            <tr>
+                                <td> <div id='nroCheque'>Fecha de acreditacion</div></td>
+                                <td> <div id='bancoCheque'> ".date_format(date_create($detalleCheque[0]["fecha_de_acreditacion"]), 'd/m/Y')." </div> </td>
+                            </tr>
+                            <tr>
+                                <td> <div id='nroCheque'>Cuit del cheque</div></td>
+                                <td> <div id='bancoCheque'> ". $detalleCheque[0]["cuit"]." </div> </td>
+                            </tr>
+                            <tr>
+                                <td> <div id='nroCheque'>Banco</div></td>
+                                <td> <div id='bancoCheque'> ". $detalleCheque[0]["razon_social"]." </div> </td>
+                            </tr>
+                            <tr>
+                                <td> <div id='nroCheque'>Número de Sucursal</div></td>
+                                <td> <div id='bancoCheque'> ". $detalleCheque[0]["numero_sucursal"]." </div> </td>
+                            </tr>
+                            <tr>
+                                <td> <div id='nroCheque'>Dirección sucursal</div></td>
+                                <td> <div id='bancoCheque'> ". $detalleCheque[0]["direccion_sucursal"]." </div> </td>
+                            </tr>
+                                               
+                            <tr>
+                                <td> <div id='nroCheque'>Observaciones</div></td>
+                                <td> <div id='bancoCheque'> ". $detalleCheque[0]["observaciones"]." </div> </td>
+                            </tr>
+                        </tbody>
+                        </table>";
+    
+    echo $respuestaHTML;
+    
+  }
+  
+  function verDetalleChequeCredito($idLineaPago){
+    $this->load->model('pagos_m');
+
+    $detalleCheque = $this->pagos_m->getDetalleChequeCredito($idLineaPago);
     
     $respuestaHTML = "<table id='tablaDatosCheque' class='table compact table-striped table-hover table-condensed table-responsive'>                        
                         <tbody>
