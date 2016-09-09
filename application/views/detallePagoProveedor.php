@@ -116,7 +116,7 @@
                             <tr>
                                     <td>Monto total</td>
                                     <td>    
-                                            <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-success" style="font-size:small;" title="Monto total del pago">$<?php echo $monto ?></button>
+                                            <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-danger" style="font-size:small;" title="Monto total del pago">$<?php echo $monto ?></button>
                                     </td>
                             </tr>
                             <tr>
