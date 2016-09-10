@@ -20,8 +20,9 @@ class chequesHistoricos extends CI_Controller{
   }
   
   function index(){
-    $this->grocery_crud->set_table('pagos_clientes_lineas');
-    $this->grocery_crud->edit_fields('id_estado', 'observaciones');
+    $this->grocery_crud->set_table('vw_cheques_historicos');
+    
+    $this->grocery_crud->set_primary_key('id');
 
     //$this->grocery_crud->where('id_modo_pago', 2);  
     
@@ -30,7 +31,7 @@ class chequesHistoricos extends CI_Controller{
     $this->grocery_crud->set_subject('Cheques en cartera');
     $this->grocery_crud->required_fields('descripcion');
     
-    $this->grocery_crud->columns('stamp','importe', 'numero_de_cheque', 'fecha_de_acreditacion', 'id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones', 'id_estado');
+    $this->grocery_crud->columns('tipo','stamp','importe', 'numero_de_cheque', 'fecha_de_acreditacion', 'id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones', 'id_estado');
     $this->grocery_crud->fields('id_estado','observaciones');
     
     $this->grocery_crud->display_as('stamp','Fecha creación');

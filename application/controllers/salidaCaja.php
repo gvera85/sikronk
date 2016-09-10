@@ -1,6 +1,6 @@
 <?php
 
-class ingresoCaja extends CI_Controller{
+class salidaCaja extends CI_Controller{
 
   public function __construct()
   {
@@ -12,7 +12,7 @@ class ingresoCaja extends CI_Controller{
 
     $this->grocery_crud->set_language("spanish");
     
-    $this->session->set_userdata('titulo', 'Ingreso a caja - Primero se ingresa el encabezado del credito y luego se agregan los distintos tipos de ingresos (cheques, efectivo) con el boton "Items"');
+    $this->session->set_userdata('titulo', 'Salida de caja - Primero se ingresa el encabezado del débito y luego se agregan los distintos tipos de egresos (cheques, efectivo) con el boton "Items"');
              
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');
@@ -29,16 +29,16 @@ class ingresoCaja extends CI_Controller{
     
     $crud->where('id_distribuidor', $this->session->userdata('empresa'));  
     
-    $crud->set_table('cabecera_credito');
+    $crud->set_table('cabecera_debito');
     $crud->set_theme('datatables');
    
-    $crud->set_subject('Ingreso a caja (luego agregar los items con importes y tipos de pagos)');
-    $crud->required_fields('fecha', 'id_tipo_credito');
-    $crud->columns('id','fecha', 'id_tipo_credito', 'monto', 'observaciones');
-    $crud->fields('fecha','id_distribuidor', 'id_tipo_credito','observaciones');
+    $crud->set_subject('Egreso de caja (luego agregar los items con importes y tipos de pagos)');
+    $crud->required_fields('fecha', 'id_tipo_debito');
+    $crud->columns('id','fecha', 'id_tipo_debito', 'monto', 'observaciones');
+    $crud->fields('fecha','id_distribuidor', 'id_tipo_debito','observaciones');
     
-    $crud->display_as('id_tipo_credito','Tipo crédito');       
-    $crud->set_relation('id_tipo_credito','tipo_debito_credito','descripcion',  array('activo' => 1, 'id_tipo' => 2));
+    $crud->display_as('id_tipo_debito','Tipo débito');       
+    $crud->set_relation('id_tipo_debito','tipo_debito_credito','descripcion',  array('activo' => 1, 'id_tipo' => 1));
     
     $crud->field_type('id_distribuidor','invisible');
     
@@ -66,7 +66,7 @@ class ingresoCaja extends CI_Controller{
   
   function link_hacia_lineas($primary_key , $row)
   {
-      return "javascript:window.open('" . base_url('/index.php/ingresoCajaLineas/popUp'). '/' . $row->id_distribuidor . '/' . $row->id . "')"; 
+      return "javascript:window.open('" . base_url('/index.php/salidaCajaLineas/popUp'). '/' . $row->id_distribuidor . '/' . $row->id . "')"; 
       //return site_url('planificacion/confirmacionViaje/'.$row->id);
   }
   

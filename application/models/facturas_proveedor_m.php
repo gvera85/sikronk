@@ -158,6 +158,52 @@ class facturas_proveedor_m extends CI_Model {
 
     }
     
+    public function getMontoTotalDebito($idDebito)
+    {
+         if($idDebito != FALSE) {
+            $sql = "select sum(importe) monto_total
+                    from lineas_debito 
+                    where id_debito = ?";
+            
+            $query = $this->db->query($sql, array($idDebito));
+            
+            $monto = $query->result_array();
+            
+            
+             if ( is_array($monto) && count($monto) == 1 )  {
+              
+              if (empty($monto[0]["monto_total"])) {
+                  return 0;
+              }else{
+                  return $monto[0]["monto_total"];
+              }
+              
+            }
+            else{
+              return 0;
+            }
+        }else {
+          return FALSE;
+        }    
+            
+        
+       
+    }
+    
+    
+    
+    public function updateMontoTotalDebito($montoTotal, $idDebito)
+    {    
+        $data = array(
+                'monto' => $montoTotal
+             );
+
+        $this->db->where('id', $idDebito);
+        
+        $this->db->update("cabecera_debito", $data); 
+
+    }
+    
     public function updateMontoTotalPago($montoTotal, $idPago)
     {    
         $data = array(
@@ -218,6 +264,36 @@ class facturas_proveedor_m extends CI_Model {
     public function getChequeProveedor($idCheque)
     {    
         $sql = "select * from pagos_proveedor_lineas where id = ?";
+            
+        $query = $this->db->query($sql, $idCheque);
+
+        $cheque = $query->result_array();
+        
+        if( is_array($cheque) && count($cheque) > 0 ) {
+          return $cheque;
+        }
+
+        return false;
+    }
+    
+    public function getChequeCredito($idCheque)
+    {    
+        $sql = "select * from lineas_credito where id = ?";
+            
+        $query = $this->db->query($sql, $idCheque);
+
+        $cheque = $query->result_array();
+        
+        if( is_array($cheque) && count($cheque) > 0 ) {
+          return $cheque;
+        }
+
+        return false;
+    }
+    
+    public function getChequeDebito($idCheque)
+    {    
+        $sql = "select * from lineas_debito where id = ?";
             
         $query = $this->db->query($sql, $idCheque);
 

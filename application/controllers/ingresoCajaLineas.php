@@ -12,7 +12,7 @@ class ingresoCajaLineas extends CI_Controller{
 
     $this->grocery_crud->set_language("spanish");
     
-    $this->session->set_userdata('titulo', 'Agregar item a pagos de proveedores');
+    $this->session->set_userdata('titulo', 'Agregar item');
     
     $this->load->helper('cambio_estados');
              
@@ -40,17 +40,18 @@ class ingresoCajaLineas extends CI_Controller{
     $crud->set_theme('datatables');
     
     $crud->set_table('lineas_credito');
-    $crud->edit_fields( 'id_modo_pago', 'id_cheque_cliente', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
-    $crud->add_fields( 'id_modo_pago', 'id_cheque_cliente', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
     
-    //$crud->set_theme('datatables');
-   
     $crud->set_subject('Item al crédito');
     $crud->required_fields('id_modo_pago');
     $crud->columns( 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
     
     $crud->fields('id_credito', 'id_modo_pago', 'id_cheque_cliente', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
-    $crud->change_field_type('id_credito','invisible');
+    $crud->field_type('id_credito','invisible');
+    $crud->field_type('numero_de_cheque','invisible');
+    $crud->field_type('fecha_de_acreditacion','invisible');
+    $crud->field_type('id_entidad_bancaria','invisible');
+    $crud->field_type('id_sucursal_bancaria','invisible');
+    $crud->field_type('cuit','invisible');
     
     $crud->callback_before_insert(array($this,'lineas_callback'));
     $crud->callback_before_update(array($this,'lineas_callback'));
@@ -61,30 +62,22 @@ class ingresoCajaLineas extends CI_Controller{
     
     $crud->callback_before_delete(array($this,'revivir_cheque_callback'));
     
-    $crud->display_as('fecha_de_acreditacion','Fecha acreditación (para pagos en cheque)');
+    $crud->display_as('fecha_de_acreditacion','Fecha acreditación');
+    $crud->display_as('id_entidad_bancaria','Banco');    
+    $crud->display_as('id_sucursal_bancaria','Sucursal');  
     
-    $crud->display_as('id_entidad_bancaria','Banco (para pagos en cheque)');    
-    $crud->set_relation('id_entidad_bancaria','entidad_bancaria','{razon_social}', array('activo' => 1));
+    $crud->callback_column('id_entidad_bancaria',array($this,'_callback_entidad_bancaria'));
+    $crud->callback_column('id_sucursal_bancaria',array($this,'_callback_sucursal_bancaria'));        
     
     $crud->display_as('id_modo_pago','Tipo de pago');
-    $crud->set_relation('id_modo_pago','modo_pago','{descripcion}', array('visto_por_distribuidor' => 1, 'activo' => 1));
+    $crud->set_relation('id_modo_pago','modo_pago','{descripcion}', array('visto_por_distribuidor_ingreso' => 1, 'activo' => 1));
     
     $crud->set_primary_key('id','cheques_en_cartera');
     
     $crud->display_as('id_cheque_cliente','Cheque');
     $crud->set_relation('id_cheque_cliente','cheques_en_cartera','${importe} - Nro:{numero_de_cheque} - Banco:{razon_social} - Fec:{fecha_de_acreditacion}',array('id_modo_pago' => 2, 'id_estado' => 8), 'fecha_de_acreditacion ASC');
     
-    $crud->set_primary_key('id','vw_sucursales_bancarias');
-    
-    $crud->display_as('id_sucursal_bancaria','Sucursal bancaria');
-    $crud->set_relation('id_sucursal_bancaria','vw_sucursales_bancarias','{numero_sucursal}-{direccion}');
-    
-    //$crud->callback_column('id_viaje',array($this,'item_description_callback'));
-    
-    $crud->set_relation_dependency('id_sucursal_bancaria','id_entidad_bancaria','id_entidad_bancaria');
-    
     $crud->set_rules('id_entidad_bancaria','Banco','callback_validarPagoEnCheque');
-    
     $crud->set_rules('id_cheque_cliente','Cheque en cartera','callback_validarPagoEnChequeCartera');
 
     $output = $crud->render();
@@ -93,11 +86,29 @@ class ingresoCajaLineas extends CI_Controller{
 
     $distribuidor = $this->facturas_proveedor_m->getDistribuidorXId($id_distribuidor);
 
-    $this->session->set_userdata('titulo', "Distribuidor ".$distribuidor[0]["razon_social"]." - Ingreso ".$id_credito." - Agregar items a la factura"); 
+    $this->session->set_userdata('titulo', "Distribuidor ".$distribuidor[0]["razon_social"]." - Ingreso ".$id_credito." - Agregar items"); 
         
     $this->pago_output($output);
   }
   
+  public function _callback_entidad_bancaria($value, $row)
+    {   
+        $this->load->model('entidad_bancaria_m');
+
+        $banco = $this->entidad_bancaria_m->getBancoXId($row->id_entidad_bancaria);  
+
+        return $banco[0]["razon_social"];
+    }
+  
+    public function _callback_sucursal_bancaria($value, $row)
+    {   
+        $this->load->model('entidad_bancaria_m');
+
+        $sucursal = $this->entidad_bancaria_m->getSucursalXId($row->id_sucursal_bancaria);  
+
+        return $sucursal[0]["numero_sucursal"]." - ".$sucursal[0]["direccion"];
+    }
+    
   function lineas_callback($post_array) {
     $post_array['id_credito'] = $this->session->userdata('id_credito');//Fijo el Id de viaje recibido por parametro
 
@@ -137,7 +148,7 @@ class ingresoCajaLineas extends CI_Controller{
     
     $this->load->model('facturas_proveedor_m');
 
-    $cheque = $this->facturas_proveedor_m->getChequeProveedor($primary_key);  
+    $cheque = $this->facturas_proveedor_m->getChequeCredito($primary_key);  
       
     $id_modo_pago = $cheque[0]["id_modo_pago"];
     $id_cheque_cliente = $cheque[0]["id_cheque_cliente"];
