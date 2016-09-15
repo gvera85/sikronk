@@ -56,10 +56,28 @@ class caja_distribuidor_m extends CI_Model {
                         a.monto AS haber,
                         a.id AS id
                        from
-                           cabecera_credito a    
+                           cabecera_credito a   
+                    union    
+                        select 
+                        'Débito' AS Tipo,
+                        a.fecha AS fecha,
+                        a.stamp AS stamp,
+                        '-' AS razon_social,
+                        a.observaciones AS descripcion,
+                        a.monto AS debe,
+                        0 AS haber,
+                        a.id AS id
+                       from
+                           cabecera_debito a          
+                    union
+                        select 'Ingreso' tipo, a.fecha_de_acreditacion, a.stamp, b.razon_social, '-' descripcion,
+                            0 debe, a.importe haber, a.id
+                           from cheque_distribuidor a
+                           join distribuidor b on a.id_distribuidor = b.id
+                           where b.id=?
                     order by 2 asc, 3 asc";
             
-            $query = $this->db->query($sql, array($idDistribuidor, $idDistribuidor));
+            $query = $this->db->query($sql, array($idDistribuidor, $idDistribuidor, $idDistribuidor));
                    
             $lineasFacturas = $query->result_array();
 

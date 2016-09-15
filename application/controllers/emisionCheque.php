@@ -30,7 +30,8 @@ class emisionCheque extends CI_Controller{
     
     $crud->set_language("spanish");
             
-    $crud->where('cheque_distribuidor.id_estado', ESTADO_CHEQUE_DIST_SIN_USAR);      
+    $crud->where('cheque_distribuidor.id_estado', ESTADO_CHEQUE_DIST_SIN_USAR);    
+    $crud->where('id_distribuidor', $this->session->userdata('empresa'));  
     
     $crud->set_theme('datatables');
     
@@ -42,10 +43,12 @@ class emisionCheque extends CI_Controller{
    
     $crud->set_subject('Cheque');
     $crud->required_fields( 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria');
-    $crud->columns( 'id_estado', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria');
+    $crud->columns( 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria');
     
-    $crud->fields('id_estado', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
+    $crud->fields('id_estado', 'id_distribuidor','importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
     
+    $crud->field_type('id_distribuidor','invisible');
+    $crud->field_type('id_estado','invisible');
     
     $crud->callback_before_insert(array($this,'lineas_callback'));
     $crud->callback_before_update(array($this,'lineas_callback'));
@@ -70,7 +73,8 @@ class emisionCheque extends CI_Controller{
   }
   
   function lineas_callback($post_array) {
-        $post_array['id_estado'] = ESTADO_CHEQUE_DIST_SIN_USAR;//Fijo el Id de viaje recibido por parametro
+        $post_array['id_estado'] = ESTADO_CHEQUE_DIST_SIN_USAR;
+        $post_array['id_distribuidor'] = $this->session->userdata('empresa');        
 
         return $post_array;
   }
