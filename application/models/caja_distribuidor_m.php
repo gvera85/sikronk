@@ -22,12 +22,12 @@ class caja_distribuidor_m extends CI_Model {
         $idDistribuidor = 1; 
         
         if($idDistribuidor != FALSE) {
-                $sql = "select 'Ingreso' tipo, a.fecha_pago, a.stamp, b.razon_social, '-' descripcion, 0 debe, a.monto haber, a.id
+                $sql = "select 'Ingreso de cliente' tipo, a.fecha_pago, a.stamp, b.razon_social, '-' descripcion, 0 debe, a.monto haber, a.id
                         from pago_cliente a
                         join cliente b on a.id_cliente = b.id
                         and 1=?
                     union
-                        select 'Egreso' tipo, a.fecha_pago, a.stamp, b.razon_social, c.descripcion, a.monto debe, 0 haber, a.id
+                        select 'Pago a proveedor' tipo, a.fecha_pago, a.stamp, b.razon_social, c.descripcion, a.monto debe, 0 haber, a.id
                         from pago_proveedor a
                         join proveedor b on a.id_proveedor = b.id
                         left join modo_pago c on a.id_modo_pago = c.id
@@ -70,7 +70,7 @@ class caja_distribuidor_m extends CI_Model {
                        from
                            cabecera_debito a          
                     union
-                        select 'Ingreso' tipo, a.fecha_de_acreditacion, a.stamp, b.razon_social, '-' descripcion,
+                        select 'Emisión cheque' tipo, a.fecha_de_acreditacion, a.stamp, b.razon_social, '-' descripcion,
                             0 debe, a.importe haber, a.id
                            from cheque_distribuidor a
                            join distribuidor b on a.id_distribuidor = b.id

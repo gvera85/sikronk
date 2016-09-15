@@ -257,21 +257,27 @@
 
                         $linkHaciaDetalles = "#";    
                         
-                        if ($lineas['tipo'] == 'Ingreso') {
+                        if ($lineas['tipo'] == 'Ingreso de cliente') {
                             $classTipo = 'label label-success';
                             $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verPagoCliente').'/'.$lineas['id']."'". ')';
-                        } else if ($lineas['tipo'] == 'Egreso'){
-                            $classTipo = "label label-warning";
+                        } else if ($lineas['tipo'] == 'Pago a proveedor'){
+                            $classTipo = "label label-danger";
                             $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verPagoProveedor').'/'.$lineas['id']."'". ')';
                         } else if ($lineas['tipo'] == 'Gasto'){
-                            $classTipo = "label label-default";                            
+                            $classTipo = "label label-danger";                            
                         } else if ($lineas['tipo'] == 'Ganancia'){
-                            $classTipo = "label label-info";
+                            $classTipo = "label label-success";
                         } else if ($lineas['tipo'] == 'Ajuste'){
                             $classTipo = "label label-info";    
                             $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verNotaCreditoDebito').'/'.$lineas['id']."'". ')';
                         } else if ($lineas['tipo'] == 'Crédito'){
-                            $classTipo = "label label-info";    
+                            $classTipo = "label label-success";    
+                            $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verNotaCredito').'/'.$lineas['id']."'". ')';
+                        } else if ($lineas['tipo'] == 'Emisión cheque'){
+                            $classTipo = "label label-success";    
+                            $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verNotaCredito').'/'.$lineas['id']."'". ')';
+                        } else if ($lineas['tipo'] == 'Débito'){
+                            $classTipo = "label label-danger";    
                             $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verNotaCredito').'/'.$lineas['id']."'". ')';
                         }
                     ?>
