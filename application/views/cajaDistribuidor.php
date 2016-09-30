@@ -275,10 +275,10 @@
                             $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verNotaCredito').'/'.$lineas['id']."'". ')';
                         } else if ($lineas['tipo'] == 'Emisión cheque'){
                             $classTipo = "label label-success";    
-                            $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verNotaCredito').'/'.$lineas['id']."'". ')';
+                            $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verChequeDistribuidor').'/'.$lineas['id']."'". ')';
                         } else if ($lineas['tipo'] == 'Débito'){
                             $classTipo = "label label-danger";    
-                            $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verNotaCredito').'/'.$lineas['id']."'". ')';
+                            $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verNotaDebito').'/'.$lineas['id']."'". ')';
                         }
                     ?>
                     <TR>

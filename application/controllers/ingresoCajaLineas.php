@@ -43,9 +43,10 @@ class ingresoCajaLineas extends CI_Controller{
     
     $crud->set_subject('Item al crédito');
     $crud->required_fields('id_modo_pago');
-    $crud->columns( 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
+    $crud->columns( 'id_modo_pago', 'importe', 'observaciones');
     
     $crud->fields('id_credito', 'id_modo_pago', 'id_cheque_cliente', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
+    $crud->field_type('id_cheque_cliente','invisible');
     $crud->field_type('id_credito','invisible');
     $crud->field_type('numero_de_cheque','invisible');
     $crud->field_type('fecha_de_acreditacion','invisible');
@@ -72,10 +73,12 @@ class ingresoCajaLineas extends CI_Controller{
     $crud->display_as('id_modo_pago','Tipo de pago');
     $crud->set_relation('id_modo_pago','modo_pago','{descripcion}', array('visto_por_distribuidor_ingreso' => 1, 'activo' => 1));
     
+    /*
     $crud->set_primary_key('id','cheques_en_cartera');
     
     $crud->display_as('id_cheque_cliente','Cheque');
     $crud->set_relation('id_cheque_cliente','cheques_en_cartera','${importe} - Nro:{numero_de_cheque} - Banco:{razon_social} - Fec:{fecha_de_acreditacion}',array('id_modo_pago' => 2, 'id_estado' => 8), 'fecha_de_acreditacion ASC');
+    */
     
     $crud->set_rules('id_entidad_bancaria','Banco','callback_validarPagoEnCheque');
     $crud->set_rules('id_cheque_cliente','Cheque en cartera','callback_validarPagoEnChequeCartera');

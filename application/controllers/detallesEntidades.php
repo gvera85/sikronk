@@ -56,6 +56,28 @@ class detallesEntidades extends CI_Controller{
     $this->load->view('detalleNotaCredito',$data);
   }
   
+  function verNotaDebito($idDebito){
+    $this->load->model('pagos_m');
+    
+    $cabeceraDebito = $this->pagos_m->getCabeceraDebito($idDebito);
+    $lineasDebito = $this->pagos_m->getLineasDebito($idDebito);
+    
+    $data['cabeceraDebito'] = $cabeceraDebito;    
+    $data['lineasDebito'] = $lineasDebito;
+   
+    $this->load->view('detalleNotaDebito',$data);
+  }
+  
+  function verChequeDistribuidor($idCheque){
+    $this->load->model('pagos_m');
+    
+    $chequeDistribuidor = $this->pagos_m->getChequeEmitido($idCheque);
+    
+    $data['chequeDistribuidor'] = $chequeDistribuidor;    
+   
+    $this->load->view('detalleChequeDistribuidor',$data);
+  }
+  
   function verPagoProveedor($idPago){
     $this->load->model('pagos_m');
 
@@ -239,6 +261,57 @@ class detallesEntidades extends CI_Controller{
     $this->load->model('pagos_m');
 
     $detalleCheque = $this->pagos_m->getDetalleChequeCredito($idLineaPago);
+    
+    $respuestaHTML = "<table id='tablaDatosCheque' class='table compact table-striped table-hover table-condensed table-responsive'>                        
+                        <tbody>
+                            <tr>
+                                <td> <div id='nroCheque'>Cheque entregado por</div></td>
+                                <td> <div id='bancoCheque'> ". $detalleCheque[0]["cliente"]." </div> </td>
+                            </tr>        
+                            <tr>
+                                <td> <div id='nroCheque'>Importe</div></td>
+                                <td> <div id='bancoCheque'> $". $detalleCheque[0]["importe"]." </div> </td>
+                            </tr>
+                            <tr>
+                                <td> <div id='nroCheque'>Numero de cheque</div></td>
+                                <td> <div id='bancoCheque'> ". $detalleCheque[0]["numero_de_cheque"]." </div> </td>
+                            </tr>
+                            <tr>
+                                <td> <div id='nroCheque'>Fecha de acreditacion</div></td>
+                                <td> <div id='bancoCheque'> ".date_format(date_create($detalleCheque[0]["fecha_de_acreditacion"]), 'd/m/Y')." </div> </td>
+                            </tr>
+                            <tr>
+                                <td> <div id='nroCheque'>Cuit del cheque</div></td>
+                                <td> <div id='bancoCheque'> ". $detalleCheque[0]["cuit"]." </div> </td>
+                            </tr>
+                            <tr>
+                                <td> <div id='nroCheque'>Banco</div></td>
+                                <td> <div id='bancoCheque'> ". $detalleCheque[0]["razon_social"]." </div> </td>
+                            </tr>
+                            <tr>
+                                <td> <div id='nroCheque'>Número de Sucursal</div></td>
+                                <td> <div id='bancoCheque'> ". $detalleCheque[0]["numero_sucursal"]." </div> </td>
+                            </tr>
+                            <tr>
+                                <td> <div id='nroCheque'>Dirección sucursal</div></td>
+                                <td> <div id='bancoCheque'> ". $detalleCheque[0]["direccion_sucursal"]." </div> </td>
+                            </tr>
+                                               
+                            <tr>
+                                <td> <div id='nroCheque'>Observaciones</div></td>
+                                <td> <div id='bancoCheque'> ". $detalleCheque[0]["observaciones"]." </div> </td>
+                            </tr>
+                        </tbody>
+                        </table>";
+    
+    echo $respuestaHTML;
+    
+  }
+  
+  function verDetalleChequeDebito($idLineaPago){
+    $this->load->model('pagos_m');
+
+    $detalleCheque = $this->pagos_m->getDetalleChequeDebito($idLineaPago);
     
     $respuestaHTML = "<table id='tablaDatosCheque' class='table compact table-striped table-hover table-condensed table-responsive'>                        
                         <tbody>

@@ -110,6 +110,68 @@ class pagos_m extends CI_Model {
        
     }
     
+     public function getChequeEmitido($idCheque)
+    {    
+        $sql = "select a.importe, a.numero_de_cheque, a.fecha_de_acreditacion, a.cuit, a.observaciones, 
+                b.razon_social, b.cuit, b.direccion direccion_banco,                 
+                                d.numero_sucursal, d.direccion direccion_sucursal,
+                                g.razon_social distribuidor
+                from cheque_distribuidor a
+                join entidad_bancaria b on a.id_entidad_bancaria = b.id                
+                join sucursales_bancarias d on a.id_sucursal_bancaria = d.id
+                join distribuidor g on a.id_distribuidor = g.id
+                where a.id = ?";
+
+        $query = $this->db->query($sql, array($idCheque));
+
+        $pago = $query->result_array();
+
+        if( is_array($pago) && count($pago) > 0 ) {
+          return $pago;
+        }
+
+        return false;
+       
+    }
+    
+    public function getCabeceraDebito($idPago)
+    {    
+        $sql = "select a.*
+                from cabecera_debito a
+                where a.id= ?";
+
+        $query = $this->db->query($sql, array($idPago));
+
+        $pago = $query->result_array();
+
+        if( is_array($pago) && count($pago) > 0 ) {
+          return $pago;
+        }
+
+        return false;
+       
+    }
+    
+    public function getLineasDebito($idPago)
+    {    
+        
+        $sql = "select a.*, b.descripcion modo_pago 
+                from lineas_debito a
+                join modo_pago b on a.id_modo_pago = b.id
+                where a.id_debito = ?";
+
+        $query = $this->db->query($sql, array($idPago));
+
+        $lineasPago = $query->result_array();
+
+        if( is_array($lineasPago) && count($lineasPago) > 0 ) {
+          return $lineasPago;
+        }
+
+        return false;
+       
+    }
+    
     
     public function getCabeceraPagoProveedor($idPago)
     {    
@@ -220,6 +282,33 @@ class pagos_m extends CI_Model {
                 join pagos_clientes_lineas e on a.id_cheque_cliente = e.id
                 join pago_cliente f on e.id_pago = f.id	
                 join cliente g on f.id_cliente = g.id
+                where a.id = ?";
+
+        $query = $this->db->query($sql, array($idLineaPago));
+
+        $lineasPago = $query->result_array();
+
+        if( is_array($lineasPago) && count($lineasPago) > 0 ) {
+          return $lineasPago;
+        }
+
+        return false;
+       
+    }
+    
+    
+    public function getDetalleChequeDebito($idLineaPago)
+    {    
+        
+        $sql = "select a.importe, a.numero_de_cheque, a.fecha_de_acreditacion, a.cuit, a.observaciones,
+                b.razon_social, b.cuit, b.direccion direccion_banco,                 
+                d.numero_sucursal, d.direccion direccion_sucursal,
+                g.razon_social cliente
+                from lineas_debito a
+                join entidad_bancaria b on a.id_entidad_bancaria = b.id                
+                join sucursales_bancarias d on a.id_sucursal_bancaria = d.id
+                join cheque_distribuidor e on a.id_cheque_distribuidor = e.id
+                join distribuidor g on e.id_distribuidor = g.id
                 where a.id = ?";
 
         $query = $this->db->query($sql, array($idLineaPago));
