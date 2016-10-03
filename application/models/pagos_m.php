@@ -303,12 +303,15 @@ class pagos_m extends CI_Model {
         $sql = "select a.importe, a.numero_de_cheque, a.fecha_de_acreditacion, a.cuit, a.observaciones,
                 b.razon_social, b.cuit, b.direccion direccion_banco,                 
                 d.numero_sucursal, d.direccion direccion_sucursal,
-                g.razon_social cliente
+                ifnull(g.razon_social,j.razon_social)  cliente
                 from lineas_debito a
                 join entidad_bancaria b on a.id_entidad_bancaria = b.id                
                 join sucursales_bancarias d on a.id_sucursal_bancaria = d.id
-                join cheque_distribuidor e on a.id_cheque_distribuidor = e.id
-                join distribuidor g on e.id_distribuidor = g.id
+                left join cheque_distribuidor e on a.id_cheque_distribuidor = e.id
+                left join distribuidor g on e.id_distribuidor = g.id
+                left join pagos_clientes_lineas h on a.id_cheque_cliente = h.id
+                left join pago_cliente i on h.id_pago = i.id	
+                left join cliente j on i.id_cliente = j.id
                 where a.id = ?";
 
         $query = $this->db->query($sql, array($idLineaPago));

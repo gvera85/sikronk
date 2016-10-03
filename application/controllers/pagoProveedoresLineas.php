@@ -80,7 +80,7 @@ class pagoProveedoresLineas extends CI_Controller{
     
     $crud->set_primary_key('id','cheques_en_cartera');
     
-    $crud->display_as('id_cheque_cliente','Cheque');
+    $crud->display_as('id_cheque_cliente','Cheque cliente');
     $crud->set_relation('id_cheque_cliente','cheques_en_cartera','${importe} - Nro:{numero_de_cheque} - Banco:{razon_social} - Fec:{fecha_de_acreditacion}',array('id_modo_pago' => 2, 'id_estado' => 8), 'fecha_de_acreditacion ASC');
     
     $crud->set_primary_key('id','vw_cheques_en_cartera_distribuidor');
