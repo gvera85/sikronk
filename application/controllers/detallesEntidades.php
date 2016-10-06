@@ -117,6 +117,10 @@ class detallesEntidades extends CI_Controller{
     $respuestaHTML = "<table id='tablaDatosCheque' class='table compact table-striped table-hover table-condensed table-responsive'>                        
                         <tbody>
                             <tr>
+                                <td> <div id='nroCheque'>Cheque emitido por</div></td>
+                                <td> <div id='bancoCheque'> ". $detalleCheque[0]["cliente"]." </div> </td>
+                            </tr> 
+                            <tr>
                                 <td> <div id='nroCheque'>Importe</div></td>
                                 <td> <div id='bancoCheque'> $". $detalleCheque[0]["importe"]." </div> </td>
                             </tr>
@@ -167,6 +171,10 @@ class detallesEntidades extends CI_Controller{
     $respuestaHTML = "<table id='tablaDatosCheque' class='table compact table-striped table-hover table-condensed table-responsive'>                        
                         <tbody>
                             <tr>
+                                <td> <div id='nroCheque'>Cheque emitido por</div></td>
+                                <td> <div id='bancoCheque'> ". $detalleCheque[0]["cliente"]." </div> </td>
+                            </tr> 
+                            <tr>
                                 <td> <div id='nroCheque'>Importe</div></td>
                                 <td> <div id='bancoCheque'> $". $detalleCheque[0]["importe"]." </div> </td>
                             </tr>
@@ -214,7 +222,7 @@ class detallesEntidades extends CI_Controller{
     $respuestaHTML = "<table id='tablaDatosCheque' class='table compact table-striped table-hover table-condensed table-responsive'>                        
                         <tbody>
                             <tr>
-                                <td> <div id='nroCheque'>Cheque entregado por</div></td>
+                                <td> <div id='nroCheque'>Cheque emitido por</div></td>
                                 <td> <div id='bancoCheque'> ". $detalleCheque[0]["cliente"]." </div> </td>
                             </tr>        
                             <tr>
@@ -265,7 +273,7 @@ class detallesEntidades extends CI_Controller{
     $respuestaHTML = "<table id='tablaDatosCheque' class='table compact table-striped table-hover table-condensed table-responsive'>                        
                         <tbody>
                             <tr>
-                                <td> <div id='nroCheque'>Cheque entregado por</div></td>
+                                <td> <div id='nroCheque'>Cheque emitido por</div></td>
                                 <td> <div id='bancoCheque'> ". $detalleCheque[0]["cliente"]." </div> </td>
                             </tr>        
                             <tr>
@@ -316,7 +324,7 @@ class detallesEntidades extends CI_Controller{
     $respuestaHTML = "<table id='tablaDatosCheque' class='table compact table-striped table-hover table-condensed table-responsive'>                        
                         <tbody>
                             <tr>
-                                <td> <div id='nroCheque'>Cheque entregado por</div></td>
+                                <td> <div id='nroCheque'>Cheque emitido por</div></td>
                                 <td> <div id='bancoCheque'> ". $detalleCheque[0]["cliente"]." </div> </td>
                             </tr>        
                             <tr>

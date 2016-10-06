@@ -261,10 +261,10 @@
                             $classTipo = 'label label-success';
                             $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verPagoCliente').'/'.$lineas['id']."'". ')';
                         } else if ($lineas['tipo'] == 'Pago a proveedor'){
-                            $classTipo = "label label-danger";
+                            $classTipo = "label label-warning";
                             $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verPagoProveedor').'/'.$lineas['id']."'". ')';
                         } else if ($lineas['tipo'] == 'Gasto'){
-                            $classTipo = "label label-danger";                            
+                            $classTipo = "label label-warning";                            
                         } else if ($lineas['tipo'] == 'Ganancia'){
                             $classTipo = "label label-success";
                         } else if ($lineas['tipo'] == 'Ajuste'){
@@ -277,7 +277,7 @@
                             $classTipo = "label label-success";    
                             $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verChequeDistribuidor').'/'.$lineas['id']."'". ')';
                         } else if ($lineas['tipo'] == 'Débito'){
-                            $classTipo = "label label-danger";    
+                            $classTipo = "label label-warning";    
                             $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verNotaDebito').'/'.$lineas['id']."'". ')';
                         }
                     ?>
