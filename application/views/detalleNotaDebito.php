@@ -78,7 +78,8 @@
             $nroFactura = $cabecera['id'];
             $monto = $cabecera['monto'];
             $fechaPago = date_format(date_create($cabecera['fecha']), 'd/m/Y');
-            $observaciones = $cabecera['observaciones'];           
+            $observaciones = $cabecera['observaciones'];  
+            $tipoDebito = $cabecera['descripcion'];  
         endforeach; 
     }      
               
@@ -106,10 +107,16 @@
                                             <span data-toggle="tooltip" data-placement="bottom" title="Fecha en que se realizó el pago"><?php echo $fechaPago ?></span>
                                     </td>
                             </tr>
+                             <tr>
+                                    <td>Tipo de débito</td>
+                                    <td>    
+                                            <?php echo $tipoDebito ?>
+                                    </td>
+                            </tr>
                             <tr>
                                     <td>Monto total</td>
                                     <td>    
-                                            <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-success" style="font-size:small;" title="Monto total del pago">$<?php echo $monto ?></button>
+                                            <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-danger" style="font-size:small;" title="Monto total del pago">$<?php echo $monto ?></button>
                                     </td>
                             </tr>
                             <tr>

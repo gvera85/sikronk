@@ -79,6 +79,7 @@
             $monto = $cabecera['monto'];
             $fechaPago = date_format(date_create($cabecera['fecha']), 'd/m/Y');
             $observaciones = $cabecera['observaciones'];           
+            $tipoCredito = $cabecera['descripcion'];           
         endforeach; 
     }      
               
@@ -104,6 +105,12 @@
                                     <td>Fecha de pago</td>
                                     <td>    
                                             <span data-toggle="tooltip" data-placement="bottom" title="Fecha en que se realizó el pago"><?php echo $fechaPago ?></span>
+                                    </td>
+                            </tr>
+                            <tr>
+                                    <td>Tipo de débito</td>
+                                    <td>    
+                                            <?php echo $tipoCredito ?>
                                     </td>
                             </tr>
                             <tr>

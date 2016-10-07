@@ -31,20 +31,7 @@ class caja_distribuidor_m extends CI_Model {
                         from pago_proveedor a
                         join proveedor b on a.id_proveedor = b.id
                         left join modo_pago c on a.id_modo_pago = c.id
-                        and 1=1                   
-                    union
-                        SELECT 'Ajuste' Tipo, fecha, stamp, '-' razon_social,
-                        observaciones descripcion,
-                          CASE id_tipo 
-                            WHEN 1 THEN importe  
-                                ELSE 0 
-                          END debe,
-                         CASE id_tipo 
-                            WHEN 2 THEN importe    
-                                ELSE 0 
-                          END haber,  
-                        id
-                        FROM nota_credito_debito 
+                        and 1=1                                       
                     union    
                         select 
                         'Crédito' AS Tipo,
@@ -57,6 +44,7 @@ class caja_distribuidor_m extends CI_Model {
                         a.id AS id
                        from
                            cabecera_credito a   
+                       where a.id_distribuidor = ?    
                     union    
                         select 
                         'Débito' AS Tipo,
@@ -68,7 +56,8 @@ class caja_distribuidor_m extends CI_Model {
                         0 AS haber,
                         a.id AS id
                        from
-                           cabecera_debito a          
+                           cabecera_debito a 
+                       where a.id_distribuidor = ?    
                     union
                         select 'Emisión cheque' tipo, a.fecha_de_acreditacion, a.stamp, b.razon_social, '-' descripcion,
                             0 debe, a.importe haber, a.id
@@ -77,7 +66,7 @@ class caja_distribuidor_m extends CI_Model {
                            where b.id=?
                     order by 2 asc, 3 asc";
             
-            $query = $this->db->query($sql, array($idDistribuidor, $idDistribuidor, $idDistribuidor));
+            $query = $this->db->query($sql, array($idDistribuidor, $idDistribuidor, $idDistribuidor, $idDistribuidor, $idDistribuidor));
                    
             $lineasFacturas = $query->result_array();
 

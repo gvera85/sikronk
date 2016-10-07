@@ -74,8 +74,9 @@ class pagos_m extends CI_Model {
     
     public function getCabeceraCredito($idPago)
     {    
-        $sql = "select a.*
-                from cabecera_credito a
+        $sql = "select a.*, b.descripcion
+                from cabecera_credito a                
+                join tipo_debito_credito b on a.id_tipo_credito = b.id
                 where a.id= ?";
 
         $query = $this->db->query($sql, array($idPago));
@@ -136,8 +137,9 @@ class pagos_m extends CI_Model {
     
     public function getCabeceraDebito($idPago)
     {    
-        $sql = "select a.*
+        $sql = "select a.*, b.descripcion
                 from cabecera_debito a
+                join tipo_debito_credito b on a.id_tipo_debito = b.id
                 where a.id= ?";
 
         $query = $this->db->query($sql, array($idPago));
