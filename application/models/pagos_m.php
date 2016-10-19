@@ -116,11 +116,14 @@ class pagos_m extends CI_Model {
         $sql = "select a.importe, a.numero_de_cheque, a.fecha_de_acreditacion, a.cuit, a.observaciones, 
                 b.razon_social, b.cuit, b.direccion direccion_banco,                 
                                 d.numero_sucursal, d.direccion direccion_sucursal,
-                                g.razon_social distribuidor
+                                g.razon_social distribuidor,
+                                a.fecha_emision, a.fecha_deposito_efectivo,
+                                e.descripcion estado
                 from cheque_distribuidor a
                 join entidad_bancaria b on a.id_entidad_bancaria = b.id                
                 join sucursales_bancarias d on a.id_sucursal_bancaria = d.id
                 join distribuidor g on a.id_distribuidor = g.id
+                join estado e on a.id_estado = e.id
                 where a.id = ?";
 
         $query = $this->db->query($sql, array($idCheque));

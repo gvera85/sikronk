@@ -59,11 +59,18 @@ class caja_distribuidor_m extends CI_Model {
                            cabecera_debito a 
                        where a.id_distribuidor = ?    
                     union
-                        select 'Emisión cheque' tipo, a.fecha_de_acreditacion, a.stamp, b.razon_social, '-' descripcion,
+                        select 'Emisión cheque' tipo, a.fecha_emision, a.stamp, b.razon_social, '-' descripcion,
                             0 debe, a.importe haber, a.id
                            from cheque_distribuidor a
                            join distribuidor b on a.id_distribuidor = b.id
                            where b.id=?
+                    union
+                        select 'Deposito para cheque' tipo, a.fecha_deposito_efectivo, a.stamp, b.razon_social, '-' descripcion,
+                           a.importe debe, 0 haber, a.id
+                           from cheque_distribuidor a
+                           join distribuidor b on a.id_distribuidor = b.id
+                           where b.id=?
+                           and a.id_estado = 18
                     order by 2 asc, 3 asc";
             
             $query = $this->db->query($sql, array($idDistribuidor, $idDistribuidor, $idDistribuidor, $idDistribuidor, $idDistribuidor));
@@ -165,6 +172,38 @@ class caja_distribuidor_m extends CI_Model {
             }
             
             return false;
+    }
+    
+    public function getChequesSinCubrir($idDistribuidor)
+    {   
+            $sql = "SELECT *
+                    FROM vw_cheques_sin_cubrir_distribuidor 
+                    WHERE id_distribuidor = ?;";
+            
+            $query = $this->db->query($sql, $idDistribuidor);
+                   
+            $cheques = $query->result_array();
+
+            if( is_array($cheques) && count($cheques) > 0 ) {
+              return $cheques;
+            }
+            
+            return false;
+    }
+    
+    public function updateFechaDeposito($idCheque)
+    {    
+        putenv("TZ=America/Argentina/Buenos_Aires");
+        ini_set('date.timezone', 'America/Argentina/Buenos_Aires'); 
+        
+        $data = array(
+                'fecha_deposito_efectivo' => date("Y-m-d")
+             );
+
+        $this->db->where('id', $idCheque);
+        
+        $this->db->update("cheque_distribuidor", $data); 
+
     }
    
 

@@ -12,6 +12,11 @@ class cajaDistribuidor extends CI_Controller{
     $this->load->model('facturas_proveedor_m');
     $this->load->model('caja_distribuidor_m');
     
+    if( !$this->session->userdata('isLoggedIn') ) {
+        redirect('/login/show_login');
+    }
+    
+    
    
   }
   

@@ -90,9 +90,9 @@ class stock_m extends CI_Model {
     public function getStockProductos()
     {
          
-        $sql = "select * from vw_stock
+        $sql = "select * from vw_stock_viajes 
                 where 1 = ?
-                order by stock_en_pallets";
+                order by stock_en_bultos";
 
           $query = $this->db->query($sql, array(1));
 

@@ -95,7 +95,7 @@
                                             }
                                              
                                         ],
-                                        "order": [[1,"desc"], [2,"desc"]],
+                                        "order": [[1,"desc"], [0,"asc"]],
                                          "columnDefs": [
                                             {
                                                 "targets": [ 0 ],
@@ -276,7 +276,11 @@
                         } else if ($lineas['tipo'] == 'Emisión cheque'){
                             $classTipo = "label label-success";    
                             $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verChequeDistribuidor').'/'.$lineas['id']."'". ')';
-                        } else if ($lineas['tipo'] == 'Débito'){
+                        } else if ($lineas['tipo'] == 'Deposito para cheque'){
+                            $classTipo = "label label-warning";    
+                            $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verChequeDistribuidor').'/'.$lineas['id']."'". ')';
+                        }
+                        else if ($lineas['tipo'] == 'Débito'){
                             $classTipo = "label label-warning";    
                             $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verNotaDebito').'/'.$lineas['id']."'". ')';
                         }

@@ -35,4 +35,9 @@ function transicionAutomatica($idEntidad, $idEstado)
         
   }
   
+  /*function verificarPermisos($nombreControlador, $idPerfil)
+  {
+      
+  }*/
+  
 ?>

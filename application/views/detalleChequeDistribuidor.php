@@ -79,13 +79,16 @@
             $importe = $cabecera['importe'];
             $numero_de_cheque = $cabecera['numero_de_cheque'];
             $fecha_de_acreditacion = date_format(date_create($cabecera['fecha_de_acreditacion']), 'd/m/Y');
+            $fecha_de_emision = date_format(date_create($cabecera['fecha_emision']), 'd/m/Y');
+            $fecha_deposito_efectivo = date_format(date_create($cabecera['fecha_deposito_efectivo']), 'd/m/Y');
             $cuit = $cabecera['cuit'];           
             $observaciones = $cabecera['observaciones'];           
             $banco = $cabecera['razon_social'];           
             $direccion_banco = $cabecera['direccion_banco'];           
             $numero_sucursal = $cabecera['numero_sucursal'];           
             $direccion_sucursal = $cabecera['direccion_sucursal'];           
-            $distribuidor = $cabecera['distribuidor'];           
+            $distribuidor = $cabecera['distribuidor'];   
+            $estado  = $cabecera['estado']; 
         endforeach; 
     }      
               
@@ -112,7 +115,13 @@
                                     <td>    
                                             <?php echo $numero_de_cheque ?>
                                     </td>
-                            </tr>     
+                            </tr>  
+                            <tr>
+                                    <td>Fecha de emisión</td>
+                                    <td>    
+                                            <?php echo $fecha_de_emision ?>
+                                    </td>
+                            </tr> 
                            <tr>
                                     <td>Fecha de acreditación</td>
                                     <td>    
@@ -148,13 +157,25 @@
                                     <td>    
                                             <?php echo $direccion_sucursal ?>
                                     </td>
+                            </tr>
+                             <tr>
+                                    <td>Fecha de depósito del efectivo</td>
+                                    <td>    
+                                            <?php echo $fecha_deposito_efectivo ?>
+                                    </td>
                             </tr>     
                             <tr>
                                     <td>Observaciones</td>
                                     <td>    
                                             <?php echo $observaciones ?>
                                     </td>
-                            </tr>  
+                            </tr> 
+                            <tr>
+                                    <td>Estado del cheque</td>
+                                    <td>    
+                                            <?php echo $estado ?>
+                                    </td>
+                            </tr> 
                         </table>
                     </div>
                 </div>
