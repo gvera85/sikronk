@@ -181,7 +181,8 @@ class viaje_m extends CI_Model {
                             getCantBultosRepartidos(a.id_viaje, a.id_producto, a.id_variable_logistica) cant_repartida,
                             a.precio_sugerido_caja,
                             cant_bultos_merma_prov,
-                            d.id_tipo_envase, e.descripcion descripcion_envase
+                            d.id_tipo_envase, e.descripcion descripcion_envase, 
+                            (select count(1) from pagos_cliente_reparto x where id_reparto = a.id) cant_pagos
                     from reparto a
                     join cliente b on a.id_cliente = b.id
                     join producto c on a.id_producto = c.id
@@ -426,6 +427,20 @@ class viaje_m extends CI_Model {
         $this->db->where('id_variable_logistica', $idVL);        
         
         $this->db->update("productos_viaje", $data); 
+
+    }
+    
+    public function eliminarRepartoViaje($idViaje)
+    {    
+        $sql = "delete from reparto where id_viaje = ? and id not in (select id_reparto from pagos_cliente_reparto)";
+         
+        if ($this->db->query($sql, array($idViaje)))
+        {
+            return true;
+        }else{
+            show_error('Error!');
+            return false;
+        }
 
     }
     

@@ -292,6 +292,15 @@
                                         if (is_array($lineasReparto))
                                         {
                                             foreach( $lineasReparto as $reparto ) : 
+                                            
+                                            $tagImagenPago = "";
+                                            if ($reparto['cant_pagos'] != 0)
+                                            {
+                                                 $tagImagenPago = "<span data-placement='bottom' data-toggle='tooltip' title='El cliente ya abonó esta línea'>"
+                                                                    . "<img style='max-width: 20px;' src='". base_url() ."/assets/img/lineaPagada.png'> </img>"
+                                                                    . "</span>";
+                                            }
+                                                
                                             if ($reparto['id_producto'] == $lineas['id_producto'] && $reparto['id_variable_logistica'] == $lineas['id_vl'])
                                             {                                            
                                                 $precioSugerido = $reparto['precio_sugerido_caja'] == 0 ? $lineas['precio_sugerido_bulto'] : $reparto['precio_sugerido_caja'];                                                    
@@ -323,7 +332,7 @@
                                                     } 
                                                     ?>
                                                   </td> 
-                                                  <td align="rigth"> <?php echo $reparto['razon_social'] ?> </td>
+                                                  <td align="rigth"> <?php echo $reparto['razon_social']. $tagImagenPago ?> </td>
                                                   <TD> <div class="cantidad_linea" id="DivBultos_<?php echo $cantidadLineasReparto?>" name="DivBultos_<?php echo $cantidadLineasReparto?>"> <?php echo $reparto['cantidad_bultos'] ?> </div> </TD> 
                                                   <input type="hidden" id="bultos_<?php echo $cantidadLineasReparto?>" value=<?php echo $reparto['cantidad_bultos'] ?>>
                                                   <TD> <?php echo $reparto['cantidad_pallets'] ?></TD> 

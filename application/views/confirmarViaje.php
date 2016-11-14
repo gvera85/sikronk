@@ -149,6 +149,15 @@
                             if (is_array($lineasReparto))
                             {
                                 foreach( $lineasReparto as $reparto ) : 
+                                    
+                                $tagImagenPago = "";
+                                if ($reparto['cant_pagos'] != 0)
+                                {
+                                    $tagImagenPago = "<span data-placement='bottom' data-toggle='tooltip' title='El cliente ya abonó esta línea'>"
+                                            . "<img style='max-width: 20px;' src='". base_url() ."/assets/img/lineaPagada.png'> </img>"
+                                            . "</span>";
+                                }    
+                                    
                                 if ($reparto['id_producto'] == $lineas['id_producto'] && $reparto['id_variable_logistica'] == $lineas['id_vl'])
                                 {
                                      $cantidadClientes ++;
@@ -157,17 +166,25 @@
                                     <td></td>
                                     <td align="left">
                                         <?php                                               
-                                        if ($modo == "edicion")
+                                        if ($modo == "edicion" && $reparto['cant_pagos']=="0")
                                         {
                                         ?>
                                             <button id="btnBorrar" class="btn btn-xs btn-danger" data-toggle="tooltip" title="Botón para eliminar a este cliente"> - Cliente</button>
+                                        <?php
+                                        }
+                                        
+                                        if ($reparto['cant_pagos']!="0")
+                                        {
+                                        ?>
+                                            
+                                            <div data-placement="bottom" data-toggle="tooltip" title="No se puede modificar este reparto porque ya fue abonado por el cliente"><button disabled class="btn btn-xs btn-danger"> - Cliente</button></div>
                                         <?php
                                         }
                                         ?>
                                     </td>
                                     <td style="vertical-align: middle; text-align: center">
                                         <?php    
-                                                if ($modo == "edicion")
+                                                if ($modo == "edicion" && $reparto['cant_pagos']=="0")
                                                 {
                                                 ?>
                                                     <span data-placement="bottom" data-toggle="tooltip" title="Ingrese la fecha en la cual entregó este producto al cliente">
@@ -176,25 +193,37 @@
                                                 <?php
                                                 }
                                                 else
-                                                {
-                                                    $f_reparto  = empty($reparto['fecha_reparto']) ? NULL : $reparto['fecha_reparto'];
-                                                    
-                                                    if (!is_null($f_reparto))                                                    
-                                                        echo date_format(date_create($reparto['fecha_reparto']), 'd/m/Y');
+                                                {                                                    
+                                                    if ($reparto['cant_pagos']!="0")
+                                                    {?>
+                                                        <span data-placement="bottom" data-toggle="tooltip" title="No se puede modificar la fecha">
+                                                        <input type="date" style="height:25px;" readonly name="fechaReparto[]" max="<?php echo date("Y-m-d");?>" id="fecha_reparto_html_<?php echo $cantidadClientes?>" value=<?php echo $reparto['fecha_reparto'] ?>> 
+                                                        </span>
+                                                    <?php
+                                                    }
                                                     else
-                                                        echo "Sin fecha";
+                                                    {
+                                                        $f_reparto  = empty($reparto['fecha_reparto']) ? NULL : $reparto['fecha_reparto'];
+
+                                                        if (!is_null($f_reparto))                                                    
+                                                            echo date_format(date_create($reparto['fecha_reparto']), 'd/m/Y');
+                                                        else
+                                                            echo "Sin fecha";
+                                                    }
                                                 } 
                                         ?> 
                                     
                                     </td>
-                                    <td style="vertical-align: middle; text-align: center"> <?php echo $reparto['razon_social'] ?> </td>
+                                    <td style="vertical-align: middle; text-align: center"> <?php echo $reparto['razon_social']. $tagImagenPago ?> </td>
                                     <td> </td>
                                     <TD style="vertical-align: middle; text-align: center"> <?php echo $reparto['cantidad_bultos'] ?></TD>
-                                    <TD style="vertical-align: middle; text-align: center"> <?php echo $reparto['cantidad_pallets'] ?></TD>
+                                    <TD style="vertical-align: middle; text-align: center"> <?php echo $reparto['cantidad_pallets']  ?></TD>
                                     <input type="hidden" id="idProducto" name="idProducto[]" value=<?php echo $reparto['id_producto'] ?>>
                                     <input type="hidden" id="idViaje" name="idViaje[]" value="<?php echo $lineas['id_viaje'] ?>">
                                     <input type="hidden" id="idCliente" name="comboClientes[]" value="<?php echo $reparto['id_cliente'] ?>">
                                     <input type="hidden" id="idVL" name="idVL[]" value="<?php echo $lineas['id_vl'] ?>">
+                                    <input type="hidden" id="cantPagos" name="cantPagos[]" value="<?php echo $reparto['cant_pagos'] ?>">
+                                    
                                     
                                     
                                     
@@ -216,7 +245,7 @@
                 <?php if ($sinProductos == 0 && $modo == "edicion") 
                       {?>
                 <button id="btnsubmit" value="1" type="submit" class="btn btn-default" data-placement="left" data-toggle="tooltip" title="Se guardarán los cambios y luego se podrá seguir modificando valores">Guardar</button>
-                <button id="btnCierreViaje" value="2" class="btn btn-success" data-placement="rigth" data-toggle="tooltip" title="Si usted confirma el viaje ya NO podrá modificar las cantidades repartidas">Confirmar viaje</button>
+                <button id="btnCierreViaje" value="2" class="btn btn-success" data-placement="rigth" data-toggle="tooltip" title="Si usted confirma el viaje ya NO podrá modificar las cantidades repartidas">Confirmar reparto</button>
                 <input id="botonPresionado" type="hidden" value="botonGuardar" name="botonPresionado">
                 <?php }?>
             </form>
@@ -268,6 +297,7 @@ $(function() {
        
        var hiddenViaje = '<input type="hidden" id="idViaje" name="idViaje[]" value="'+$('input#Viaje').val()+'">';
        var hiddenVL = '<input type="hidden" id="idVL" name="idVL[]" value="'+idVL+'">';
+       var hiddenPago = '<input type="hidden" id="cantPagos" name="cantPagos[]" value="0">';
        
        var combo = '<div>'+
                         '<select data-placeholder="Seleccione un cliente..." class="chosen-select" name="comboClientes[]" style="display: true;" tabindex="-1" id="cliente_'+nroLineaAgregada+'">'+
@@ -309,7 +339,7 @@ $(function() {
                         '<input type="number" id="cantPallets_'+nroLineaAgregada+'" name="pallets[]" class="numerico" onchange="calcularCantidadBultos2('+nroLineaAgregada+','+idVL+',\'' + descProducto + '\',\''+nomCampoBultos+'\',this.value, '+basePallet+','+ alturaPallet+',cantBultos_'+nroLineaAgregada+');" style="width:50px; text-align:right;">'+
                         '</div>'+
                     '</td>'
-                    +hiddenProducto+hiddenViaje+hiddenVL+
+                    +hiddenProducto+hiddenViaje+hiddenVL+hiddenPago+
                     '</tr>';
             
       $( event.target ).closest( "tr" ).after( fila );   

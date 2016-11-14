@@ -163,7 +163,7 @@ class Planificacion extends CI_Controller{
         //update user_account table     
         
         $this->stock_m->anularRepartoDeStock($viaje[0], $this->session->userdata('id'));  
-       
+        
         $this->db->delete('planificacion_reparto', array('id_viaje' => $viaje[0]));
         $this->db->delete('reparto', array('id_viaje' => $viaje[0]));
         
@@ -331,6 +331,7 @@ class Planificacion extends CI_Controller{
         $VL = $_POST['idVL'];
         $bultos = $_POST['bultos'];
         $pallets = $_POST['pallets'];
+        $pago = $_POST['cantPagos'];
         
         $fechaReparto = $_POST['fechaReparto'];
         
@@ -341,35 +342,51 @@ class Planificacion extends CI_Controller{
         $this->load->model('stock_m'); /*Antes de eliminar el reparto anterior, dejo el stock como estaba antes*/
         $this->stock_m->anularRepartoDeStock($viaje[0], $this->session->userdata('id'));  
         
-        $this->db->delete('reparto', array('id_viaje' => $viaje[0]));
+        //$this->db->delete('reparto', array('id_viaje' => $viaje[0]));
+        $this->load->model('viaje_m');
+        
+        chrome_log("antes de eliminar repartos del viaje","log");
+        
+        $this->viaje_m->eliminarRepartoViaje($viaje[0]);
+        
+        chrome_log("despues de eliminar repartos del viaje","log");
         
         //Recorro todos los elementos
         for($i=0; $i<$longitud; $i++)
         {   
-            $f_reparto  = empty($fechaReparto[$i]) ? NULL : $fechaReparto[$i];
+            chrome_log("pago[".$i."]: ".$pago[$i],"log");
             
-            $data = array(
-                            'id_viaje' => $viaje[$i] ,
-                            'id_cliente' => $cliente[$i] ,
-                            'id_producto' => $producto[$i],
-                            'id_variable_logistica' => $VL[$i],
-                            'cantidad_bultos' => $bultos[$i],
-                            'cantidad_pallets' => $pallets[$i],
-                            'fecha_reparto' => $f_reparto
-                         );
-
-            if (!$this->db->insert('reparto', $data))
+            if ($pago[$i] == "0")
             {
-            
-              $this->output->set_status_header(500,'Error al grabar el cliente ['.$cliente[$i].'] en el reparto con fecha:'.$f_reparto);
-              $this->db->trans_rollback(); 
-              return false;
-              //$this->output->set_status_header(500,$result);
+                chrome_log("fechaReparto[".$i."]: ".$fechaReparto[$i],"log");
+                
+                $f_reparto  = empty($fechaReparto[$i]) ? NULL : $fechaReparto[$i];
+                
+                chrome_log("f_reparto[".$i."]: ".$f_reparto,"log");
+
+                $data = array(
+                                'id_viaje' => $viaje[$i] ,
+                                'id_cliente' => $cliente[$i] ,
+                                'id_producto' => $producto[$i],
+                                'id_variable_logistica' => $VL[$i],
+                                'cantidad_bultos' => $bultos[$i],
+                                'cantidad_pallets' => $pallets[$i],
+                                'fecha_reparto' => $f_reparto
+                             );
+
+                if (!$this->db->insert('reparto', $data))
+                {
+
+                  $this->output->set_status_header(500,'Error al grabar el cliente ['.$cliente[$i].'] en el reparto con fecha:'.$f_reparto);
+                  $this->db->trans_rollback(); 
+                  return false;
+                  //$this->output->set_status_header(500,$result);
+                }
+
+                chrome_log("CONTROLLER entregarStockCliente C[".$cliente[$i]."],P[". $producto[$i]."],V[".$VL[$i]."],BUL[".$bultos[$i]."],U[".$this->session->userdata('id')."]","log");
+                $this->stock_m->entregarStockCliente($cliente[$i], $producto[$i], $VL[$i],$bultos[$i],$this->session->userdata('id'));  
             }
-            
-            chrome_log("CONTROLLER entregarStockCliente C[".$cliente[$i]."],P[". $producto[$i]."],V[".$VL[$i]."],BUL[".$bultos[$i]."],U[".$this->session->userdata('id')."]","log");
-            $this->stock_m->entregarStockCliente($cliente[$i], $producto[$i], $VL[$i],$bultos[$i],$this->session->userdata('id'));               
-            
+
         }
         
         $this->stock_m->actualizarCantidadReparto($viaje[0]);          
