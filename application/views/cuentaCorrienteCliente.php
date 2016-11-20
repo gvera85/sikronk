@@ -411,7 +411,7 @@
                         <th><b>Fecha entrega</b></th>                  
                         <th><b>Producto</b></th>
                         <th><b>Marca</b></th>
-                        <th><b>Peso</b></th>
+                        <th><b>Presentación</b></th>                        
                         <th><b>Cantidad</b></th>
                         <th><b>Cant. con merma</b></th>
                         <th><b>Cant. a pagar</b></th>
@@ -460,11 +460,11 @@
                                 </td>
                                 <TD> <?php echo $lineas['producto'] ?></TD>
                                 <TD> <?php echo $lineas['marca'] ?></TD>
-                                <TD> <?php echo $lineas['peso'] ?></TD>
+                                <TD> <?php echo $lineas['vl']." - ".$lineas['tipo_envase']." - ".$lineas['peso']. "[KG]" ?></TD>
                                 <TD> <?php echo $cantidad ?></TD>
                                 <TD> <?php echo $cantidadConMerma ?> </TD>
                                 <TD> <?php echo $cantidadAPagar ?></TD>                         
-                                <TD> <a href=javascript:window.open('<?php echo base_url('/index.php/planificacion/valorizarViajeCliente').'/'.$lineas['id_viaje'].'/'.$lineas['id_cliente']; ?>')> <span class="label label-danger" id="tipoMovimiento"> ? </span> </a> </TD>                                  
+                                <TD> <a href=javascript:window.open('<?php echo base_url('/index.php/planificacion/valorizarViajeCliente').'/'.$lineas['id_viaje'].'/'.$lineas['id_cliente'].'/'.$lineas['id_vl']; ?>')> <span class="label label-danger" id="tipoMovimiento"> ? </span> </a> </TD>                                  
                         </TR>   
                     <?php 
 

@@ -78,7 +78,7 @@ class viaje_m extends CI_Model {
        
     }
     
-    public function getLineasViajeCliente($idViaje, $idCliente)
+    public function getLineasViajeCliente($idViaje, $idCliente, $idVL)
     {
          if($idViaje != FALSE) {
           $sql = "select a.id id_linea, d.id id_viaje,  b.id id_producto,  b.descripcion producto, b.marca,
@@ -101,10 +101,10 @@ class viaje_m extends CI_Model {
                     join tipo_envase f on c.id_tipo_envase = f.id
                     join estado g on g.id = d.id_estado
                     where a.id_viaje = ?
-                    and (a.id_producto, a.id_variable_logistica) in (select id_producto, id_variable_logistica from reparto where id_viaje = ? and id_cliente = ? and precio_caja is null)  
+                    and (a.id_producto, a.id_variable_logistica) in (select id_producto, id_variable_logistica from reparto where id_viaje = ? and id_variable_logistica = ? and id_cliente = ? and precio_caja is null)  
                     order by a.id_producto, a.cantidad_bultos ";
             
-            $query = $this->db->query($sql, array($idViaje, $idViaje, $idCliente));
+            $query = $this->db->query($sql, array($idViaje, $idViaje, $idVL, $idCliente));
                    
             $lineasViaje = $query->result_array();
 

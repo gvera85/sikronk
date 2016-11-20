@@ -17,6 +17,10 @@ class chequesHistoricos extends CI_Controller{
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');
     }
+    
+    /*if (!verificarPermisoControlador($this->uri->segment(1), $this->session->userdata('idLineaPerfil'))) {
+        redirect('/sinPermisos');
+    }*/
   }
   
   function index(){
@@ -31,7 +35,7 @@ class chequesHistoricos extends CI_Controller{
     $this->grocery_crud->set_subject('Cheques en cartera');
     $this->grocery_crud->required_fields('descripcion');
     
-    $this->grocery_crud->columns('tipo','stamp','importe', 'numero_de_cheque', 'fecha_de_acreditacion', 'id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones', 'id_estado');
+    $this->grocery_crud->columns('tipo','stamp', 'empresa_emisora', 'importe', 'numero_de_cheque', 'fecha_de_acreditacion', 'id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones', 'id_estado');
     $this->grocery_crud->fields('id_estado','observaciones');
     
     $this->grocery_crud->display_as('stamp','Fecha creación');

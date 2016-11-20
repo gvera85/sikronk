@@ -205,14 +205,17 @@ class facturas_clientes_m extends CI_Model {
 			c.razon_social proveedor,  
                         a.id id_viaje, a.numero_de_viaje, b.id id_reparto, b.id_cliente, 
 			d.razon_social cliente,
-                        b.id_producto, e.descripcion producto, e.marca, e.calidad, b.id_variable_logistica, f.peso
-                        ,b.cantidad_bultos                         
+                        b.id_producto, e.descripcion producto, e.marca, e.calidad, b.id_variable_logistica, 
+                        b.cantidad_bultos,
+                        f.descripcion vl, f.peso, f.base_pallet, f.altura_pallet, f.codigo_vl, f.id id_vl,
+                        f.descripcion tipo_envase
                     from viaje a
                     join reparto b ON a.id = b.id_viaje
                     join proveedor c on a.id_proveedor = c.id
                     join cliente d on b.id_cliente = d.id
                     join producto e on b.id_producto = e.id
                     join variable_logistica f on b.id_variable_logistica = f.id	
+                    join tipo_envase g on f.id_tipo_envase = g.id
                     where b.id_cliente = ?
                     and b.precio_caja is null
                     and b.fecha_reparto is not null";
