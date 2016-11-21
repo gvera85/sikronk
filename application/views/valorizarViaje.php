@@ -191,6 +191,7 @@
                                            <span class="glyphicon glyphicon-picture" aria-hidden="true"></span> Ver imágenes
                                         </button>
                                     </a> 
+                                    
                                 </TD>
                             </tr>
                             <?php if ($modo == "viajeConPrecioCerrado" || $precioAcordadoConProveedor == true) {?>
@@ -223,7 +224,21 @@
                     <div id="collapse2" class="panel-collapse collapse in">
                         
                         <div class="panel-body">
-                            <div class="table-responsive">        
+                            
+                            
+                            
+                            <div class="table-responsive">   
+                            
+                            <div style="text-align:center;">
+                                <?php if ($FlagUnSoloCliente == 1) {?>
+                                    <a href=javascript:window.open('<?php echo base_url('/index.php/planificacion/valorizarViaje').'/'.$idViaje?>')>                                     
+                                        <button type="button" data-toggle="tooltip" data-placement="bottom" class="btn btn-xs btn-danger" style="font-size:small;" title="Ver viaje completo, mostrando todos los productos">
+                                           <span class="glyphicon glyphicon-resize-full" aria-hidden="true"></span> Ver viaje completo
+                                        </button>
+                                    </a> 
+                                <?php }?>
+                            </div>
+                                
                             <table id="tblprod" class="table compact table-striped table-hover table-condensed table-responsive">
                                 <thead>
                                     <tr class="info">
@@ -428,6 +443,9 @@
                         <button id="btnConfirmarPrecio" value="2" class="btn btn-success" data-placement="rigth" data-toggle="tooltip" title="Si usted confirma los precios ya NO podrá modificar NADA">Confirmar precios</button>
                     <?php }?>
                         <input id="botonPresionado" type="hidden" value="botonGuardar" name="botonPresionado">
+                        
+                           
+                           
                 </div>                    
                 <?php }?>
             
