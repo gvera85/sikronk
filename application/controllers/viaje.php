@@ -78,6 +78,10 @@ class Viaje extends CI_Controller{
     $this->grocery_crud->callback_before_delete(array($this,'cek_before_delete'));
     $this->grocery_crud->set_lang_string('delete_error_message', 'No se pudo eliminar el viaje debido a que posee planificaciones o repartos activos.');
     
+    $where = "id_estado NOT IN ('".ESTADO_VIAJE_ANULADO."')";
+    
+    $this->grocery_crud->where($where);
+    
     $this->grocery_crud->order_by('id', 'desc'); 
     
     $output = $this->grocery_crud->render();
