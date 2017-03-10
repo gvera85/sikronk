@@ -35,34 +35,40 @@ class facturas_proveedor_m extends CI_Model {
     public function getLineasCCP($idProveedor)
     {
          if($idProveedor != FALSE) {
-            $sql = "    select b.id id_linea, 'Deuda' tipo, a.fecha_estimada_llegada, a.stamp, a.id id_viaje, a.id_proveedor,
-                        a.numero_de_viaje,
-                        sum((b.cantidad_bultos - ifnull(b.cant_bultos_merma_prov,0)) * b.precio_sugerido_caja  ) - (getMontoGastosProveedor(a.id))debe,
-                        0 haber,
-                        DATE_FORMAT(a.fecha_estimada_llegada,'%Y%m%d') fecha_cc
-                        from viaje a
-                        join reparto b ON a.id = b.id_viaje                    
-                        where a.id_proveedor = ?  
-                        and b.precio_sugerido_caja is not null
-                        group by a.fecha_estimada_llegada
-                        ,a.id, a.id_proveedor, a.numero_de_viaje
-                    union
-                        select pp.id id_linea, 'Pago' tipo, pp.fecha_pago, pp.stamp, null id_viaje, pp.id_proveedor,
-                                   null numero_de_viaje, 0 debe, pp.monto haber,
-                                   DATE_FORMAT(pp.fecha_pago,'%Y%m%d') fecha_cc
-                        from pago_proveedor pp
-                        where pp.id_proveedor = ?
-                    union
-                        select a.id, c.descripcion tipo, b.fecha_estimada_llegada, a.stamp, b.id id_viaje, a.id_proveedor_de_servicios id_proveedor,
-                        b.numero_de_viaje,
-                        (precio_unitario * cantidad) debe,
-                        0 haber,
-                        DATE_FORMAT(b.fecha_estimada_llegada,'%Y%m%d') fecha_cc
-                        from viaje_gasto a
-                        join viaje b on a.id_viaje = b.id
-                        join gastos_de_un_viaje c on a.id_gasto = c.id
-                        where a.id_proveedor_de_servicios = ?
-                    ORDER BY 2 ASC, 3 ASC";
+            $sql = "    
+                    SELECT @rownum:=@rownum + 1 as row_number, 
+                    t.*
+                    FROM ( 
+                        select b.id id_linea, 'Deuda' tipo, a.fecha_estimada_llegada, a.stamp, a.id id_viaje, a.id_proveedor,
+                            a.numero_de_viaje,
+                            sum((b.cantidad_bultos - ifnull(b.cant_bultos_merma_prov,0)) * b.precio_sugerido_caja  ) - (getMontoGastosProveedor(a.id))debe,
+                            0 haber,
+                            DATE_FORMAT(a.fecha_estimada_llegada,'%Y%m%d') fecha_cc
+                            from viaje a
+                            join reparto b ON a.id = b.id_viaje                    
+                            where a.id_proveedor = ?  
+                            and b.precio_sugerido_caja is not null
+                            group by a.fecha_estimada_llegada
+                            ,a.id, a.id_proveedor, a.numero_de_viaje
+                        union
+                            select pp.id id_linea, 'Pago' tipo, pp.fecha_pago, pp.stamp, null id_viaje, pp.id_proveedor,
+                                       null numero_de_viaje, 0 debe, pp.monto haber,
+                                       DATE_FORMAT(pp.fecha_pago,'%Y%m%d') fecha_cc
+                            from pago_proveedor pp
+                            where pp.id_proveedor = ?
+                        union
+                            select a.id, c.descripcion tipo, b.fecha_estimada_llegada, a.stamp, b.id id_viaje, a.id_proveedor_de_servicios id_proveedor,
+                            b.numero_de_viaje,
+                            (precio_unitario * cantidad) debe,
+                            0 haber,
+                            DATE_FORMAT(b.fecha_estimada_llegada,'%Y%m%d') fecha_cc
+                            from viaje_gasto a
+                            join viaje b on a.id_viaje = b.id
+                            join gastos_de_un_viaje c on a.id_gasto = c.id
+                            where a.id_proveedor_de_servicios = ?
+                        ORDER BY 3 ASC, 4 ASC
+                    ) t,
+                    (SELECT @rownum := 0) r;";
             
             $query = $this->db->query($sql, array($idProveedor, $idProveedor, $idProveedor));
                    
