@@ -64,7 +64,7 @@ $autoload['libraries'] = array('database','session');
 |	$autoload['helper'] = array('url', 'file');
 */
 
-$autoload['helper'] = array('url');
+$autoload['helper'] = array('url','chrome_logger','security','general_helper', 'cambio_estados');
 
 
 /*
@@ -112,7 +112,7 @@ $autoload['language'] = array();
 $autoload['model'] = array();
 
 
-$autoload['helper'] = array('url','chrome_logger','security','general_helper');
+
 
 
 /* End of file autoload.php */
