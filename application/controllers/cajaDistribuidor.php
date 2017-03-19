@@ -8,6 +8,7 @@ class cajaDistribuidor extends CI_Controller{
     
     $this->load->database();
     $this->load->helper('url');    
+    $this->load->helper('cambio_estados');
     
     $this->load->model('facturas_proveedor_m');
     $this->load->model('caja_distribuidor_m');
@@ -16,7 +17,9 @@ class cajaDistribuidor extends CI_Controller{
         redirect('/login/show_login');
     }
     
-    
+    if (!verificarPermisoControlador($this->uri->segment(1), $this->session->userdata('idLineaPerfil'))) {
+        redirect('/sinPermisos');
+    }
    
   }
   
