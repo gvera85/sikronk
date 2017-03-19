@@ -9,6 +9,7 @@ class Banco extends CI_Controller{
     $this->load->library('grocery_CRUD');
     $this->load->database();
     $this->load->helper('url');
+    //$this->load->helper('cambio_estados');
 
     $this->grocery_crud->set_language("spanish");
     
@@ -16,6 +17,10 @@ class Banco extends CI_Controller{
              
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');
+    }
+    
+    if (!verificarPermisoControlador($this->uri->segment(1), $this->session->userdata('idLineaPerfil'))) {
+        redirect('/sinPermisos');
     }
   }
   
