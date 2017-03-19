@@ -35,9 +35,18 @@ function transicionAutomatica($idEntidad, $idEstado)
         
   }
   
-  /*function verificarPermisos($nombreControlador, $idPerfil)
+  function verificarPermisoControlador($nombreControlador, $idPerfil)
   {
-      
-  }*/
+    $CI = get_instance();
+
+    // You may need to load the model if it hasn't been pre-loaded
+    $CI->load->model('usuario_m');
+
+    // Call a function of the model
+    $resultado = $CI->usuario_m->controladorHabilitado($nombreControlador, $idPerfil);
+    
+    return $resultado;
+    
+  }
   
 ?>
