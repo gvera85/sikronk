@@ -413,12 +413,16 @@ class Planificacion extends CI_Controller{
   }
   
   function grabarConfirmacionPrecio(){
+    
+    $botonPresionado = $_POST['botonPresionado'];  
+    $viaje = $_POST['idViaje'];
+      
     if(isset($_POST['idProducto']) && !empty($_POST['idProducto']))
     {
-        $botonPresionado = $_POST['botonPresionado'];
+        
         $idProducto = $_POST['idProducto'];
         $idReparto = $_POST['idReparto'];
-        $viaje = $_POST['idViaje'];
+        
         $precioBulto = $_POST['precioBulto'];
         $precioParaElProveedor = $_POST['precioParaElProveedor'];
         $cantMerma = $_POST['cantMerma'];
@@ -473,6 +477,14 @@ class Planificacion extends CI_Controller{
             }
         }
             
+    }
+    else
+    {
+        if ($botonPresionado == "btnVolverAConfirmarViaje") 
+        {
+            transicionSimple($viaje[0], ESTADO_VIAJE_REPARTO_EN_PROCESO, "viaje");
+            echo "El reparto puede modificarse nuevamente...";
+        }
     }
   }
 }
