@@ -19,6 +19,10 @@ class cierreViajes extends CI_Controller{
     if( !$this->session->userdata('isLoggedIn') ) {
         redirect('/login/show_login');
     }
+    
+    if (!verificarPermisoControlador($this->uri->segment(1), $this->session->userdata('idLineaPerfil'))) {
+        redirect('/sinPermisos');
+    }
   }
   
   function index(){
