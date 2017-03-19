@@ -201,7 +201,7 @@ class usuario_m extends CI_Model {
           {  
             $sql = "select b.id id_menu, b.descripcion , b.path_icono, b.controlador, (select count(*) from menu m where m.id_menu_padre = b.id) cant_hijos 
                       from menu_proveedor a
-                      join menu b on a.id_menu = b.id
+                      join opcion_menu_proveedor b on a.id_menu = b.id
                       where id_perfil_proveedor = ?
                       and b.id_menu_padre is null
                       order by a.orden";
@@ -212,7 +212,7 @@ class usuario_m extends CI_Model {
           {
               $sql = "select b.id id_menu, b.descripcion , b.path_icono, b.controlador, (select count(*) from menu m where m.id_menu_padre = b.id) cant_hijos 
                       from menu_proveedor a
-                      join menu b on a.id_menu = b.id
+                      join opcion_menu_proveedor b on a.id_menu = b.id
                       where id_perfil_proveedor = ?
                       and b.id_menu_padre = ?
                       order by a.orden";
@@ -255,6 +255,37 @@ class usuario_m extends CI_Model {
         
         
     }
+    
+    public function controladorHabilitado($controlador, $idPerfil){
+        
+        chrome_log("controladorHabilitado[".$controlador."],[". $idPerfil."]","log");
+        
+        if($idPerfil != FALSE) {
+            $sql = "select 1 existe
+                    from menu_distribuidor a
+                    join menu b on a.id_menu = b.id
+                    where id_perfil_distribuidor = ?
+                    and controlador = ?";
+            
+            $query = $this->db->query($sql, array($idPerfil, $controlador));
+            
+            $resultado = $query->result_array();
+              
+            if (empty($resultado[0]["existe"])) {
+                return FALSE;
+            }else{
+                return TRUE;
+            }
+              
+            
+        }else {
+          return FALSE;
+        }    
+        
+        
+    }
+    
+
     
     
     public function getMenuCliente($idPerfil, $idMenuPadre)
