@@ -91,10 +91,15 @@
                                             }
                                              
                                         ],
-                                        "order": [[3,"desc"], [0,"desc"]],
+                                        "order": [13,"desc"],
                                          "columnDefs": [
                                             {
                                                 "targets": [ 0 ],
+                                                "visible": false,
+                                                "searchable": false
+                                            },
+                                            {
+                                                "targets": [ 13 ],
                                                 "visible": false,
                                                 "searchable": false
                                             }
@@ -269,6 +274,7 @@
                     <th><b>Debe</b></th>
                     <th><b>Haber</b></th>
                     <th><b>Saldo parcial</b></th>   
+                    <th><b>#</b></th>   
                   
                 </TR>
                 </thead>
@@ -365,6 +371,7 @@
                             <TD style="background-color: #F1ABAB;"> <?php echo $debe  ?></TD>
                             <TD style="background-color: #B7E4B7;"> <?php  echo $haber; ?></TD>
                             <TD> <?php echo $lineas['saldo_parcial'] ?> </TD>
+                            <TD> <?php echo $lineas['row_number'] ?></TD>
                     </TR>               
                     
                 <?php           
