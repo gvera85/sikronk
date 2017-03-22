@@ -20,11 +20,6 @@ class reportes extends CI_Controller {
             
             $lineasVentas = $this->reporte_ventas_m->getLineasVentasCliente($this->session->userdata('empresa'), 7);
             
-            $this->load->model('usuario_m');
-            $permisos["rankingClientes"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 3);            
-            $permisos["rankingProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 4);  
-            $data['permisos'] = $permisos;
-            
             $data['lineasVentas'] = $lineasVentas;
             
             $this->load->view('viajes.php',$data);
@@ -37,11 +32,6 @@ class reportes extends CI_Controller {
             $this->load->model('reporte_ventas_m');
             
             $lineasVentas = $this->reporte_ventas_m->getVentasMensualesProveedor($this->session->userdata('empresa'));
-            
-             $this->load->model('usuario_m');
-            $permisos["rankingClientes"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 3);            
-            $permisos["rankingProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 4);  
-            $data['permisos'] = $permisos;
             
             $data['lineasVentas'] = $lineasVentas;
             
@@ -56,11 +46,6 @@ class reportes extends CI_Controller {
     
             $lineasVentas = $this->reporte_ventas_m->getVentasMensualPorProd($this->session->userdata('empresa'), $mes, $anio);
             
-             $this->load->model('usuario_m');
-            $permisos["rankingClientes"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 3);            
-            $permisos["rankingProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 4);  
-            $data['permisos'] = $permisos;
-            
             $data['lineasVentas'] = $lineasVentas;
                        
             $this->load->view('ventasMensualesProdProveedor.php', $data);
@@ -69,7 +54,18 @@ class reportes extends CI_Controller {
         
         public function homeProveedor()
 	{   
-            $this->session->set_userdata('ruta', "Resumen");                
+            $this->session->set_userdata('ruta', "Resumen");    
+            
+            /*$this->load->model('usuario_m');
+            
+            $menues = $this->usuario_m->getMenuPorPerfil($this->session->userdata('perfil'), 0);
+    
+            if ($menues) {
+                $data['menues'] = $menues;
+                $data['hayMenu'] = true;
+            }else{
+                $data['hayMenu'] = false;
+            }*/
             
             $this->load->model('reporte_ventas_m');
             
@@ -79,8 +75,6 @@ class reportes extends CI_Controller {
             $data['lineasVentas'] = $lineasVentas;
             
             $this->load->model('usuario_m');
-            $permisos["rankingClientes"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 3);            
-            $permisos["rankingProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 4);  
             $permisos["listaProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 5);  
             $data['permisos'] = $permisos;
             
@@ -96,11 +90,6 @@ class reportes extends CI_Controller {
             $lineasVentas = $this->reporte_ventas_m->getViajesProveedor($this->session->userdata('empresa'), null, null);
             
             $data['lineasVentas'] = $lineasVentas;
-            
-            $this->load->model('usuario_m');
-            $permisos["rankingClientes"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 3);            
-            $permisos["rankingProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 4);  
-            $data['permisos'] = $permisos;
             
             $this->load->view('viajesProveedor.php',$data);
 	}
@@ -118,8 +107,6 @@ class reportes extends CI_Controller {
             $lineasGastos = $this->reporte_ventas_m->getGastos($idViaje);
             $permisos["precio"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 1);            
             $permisos["detalleReparto"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 2);  
-            $permisos["rankingClientes"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 3);            
-            $permisos["rankingProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 4);  
             $data['permisos'] = $permisos;
             
             $data['lineasReparto'] = $lineasReparto;
@@ -139,11 +126,6 @@ class reportes extends CI_Controller {
             $lineasSinRepartir = $this->stock_m->getProductosSinRepartir($this->session->userdata('empresa'));
             
             $data['lineasSinRepartir'] = $lineasSinRepartir;
-            
-            $this->load->model('usuario_m');
-            $permisos["rankingClientes"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 3);            
-            $permisos["rankingProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 4);  
-            $data['permisos'] = $permisos;
             
             $this->load->view('mercaderiaSinRepartir.php',$data);
 	}
@@ -179,11 +161,6 @@ class reportes extends CI_Controller {
             
             $data['productos'] = $productos;
             
-            $this->load->model('usuario_m');
-            $permisos["rankingClientes"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 3);            
-            $permisos["rankingProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 4);  
-            $data['permisos'] = $permisos;
-            
             $this->load->view('verProductos.php', $data);
 	}
         
@@ -194,11 +171,6 @@ class reportes extends CI_Controller {
             $this->load->model('reporte_ventas_m');  
             
             $viajes = $this->reporte_ventas_m->getEntregasPendientes($this->session->userdata('empresa'));
-            
-             $this->load->model('usuario_m');
-            $permisos["rankingClientes"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 3);            
-            $permisos["rankingProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 4);  
-            $data['permisos'] = $permisos;
             
             $data['viajesPendientesDeRecibir'] = $viajes;
             
@@ -215,11 +187,6 @@ class reportes extends CI_Controller {
             
             $data['lineasVentas'] = $lineasVentas;
             
-             $this->load->model('usuario_m');
-            $permisos["rankingClientes"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 3);            
-            $permisos["rankingProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 4);  
-            $data['permisos'] = $permisos;
-            
             $this->load->view('viajesProveedor.php',$data);
 	}
         
@@ -233,11 +200,6 @@ class reportes extends CI_Controller {
             
             $data['lineasRanking'] = $lineasRanking;
             $data['tipoConsulta'] = $tipoConsulta;            
-            
-             $this->load->model('usuario_m');
-            $permisos["rankingClientes"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 3);            
-            $permisos["rankingProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 4);  
-            $data['permisos'] = $permisos;
             
             $this->load->view('rankingClientes.php',$data);
 	}
@@ -260,11 +222,6 @@ class reportes extends CI_Controller {
             $data['tipoConsulta'] = $tipoConsulta;            
             $data['producto'] = $producto;            
             
-            $this->load->model('usuario_m');
-            $permisos["rankingClientes"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 3);            
-            $permisos["rankingProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 4);  
-            $data['permisos'] = $permisos;
-            
             $this->load->view('rankingClientesPorProducto.php',$data);
 	}
         
@@ -275,11 +232,6 @@ class reportes extends CI_Controller {
             $this->load->model('reporte_ventas_m');
             
             $lineasRanking = $this->reporte_ventas_m->getRankingProductos($this->session->userdata('empresa'));
-            
-             $this->load->model('usuario_m');
-            $permisos["rankingClientes"] =  $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 3);            
-            $permisos["rankingProductos"] = $this->usuario_m->tieneEstePermiso( $this->session->userdata('idLineaPerfil'), 4);  
-            $data['permisos'] = $permisos;
             
             $data['lineasRanking'] = $lineasRanking;
             $data['tipoConsulta'] = $tipoConsulta;            
