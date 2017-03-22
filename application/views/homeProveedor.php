@@ -16,6 +16,8 @@
         <?php         
             $this->load->view('menuLateral');
         ?>
+    
+        
         <!-- start: Content -->
         <div id="content" class="span10">
 
@@ -113,8 +115,6 @@
                                
 				
 			</div>
-                        
-                       
                             
                             <div class="row-fluid">	
 				
