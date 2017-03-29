@@ -208,7 +208,7 @@ class facturas_clientes_m extends CI_Model {
                         b.id_producto, e.descripcion producto, e.marca, e.calidad, b.id_variable_logistica, 
                         b.cantidad_bultos,
                         f.descripcion vl, f.peso, f.base_pallet, f.altura_pallet, f.codigo_vl, f.id id_vl,
-                        f.descripcion tipo_envase
+                        g.descripcion tipo_envase
                     from viaje a
                     join reparto b ON a.id = b.id_viaje
                     join proveedor c on a.id_proveedor = c.id
