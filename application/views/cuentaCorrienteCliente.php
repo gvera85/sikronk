@@ -417,6 +417,7 @@
 
                         <th><b>Fecha entrega</b></th>                  
                         <th><b>Producto</b></th>
+                        <th><b>Proveedor</b></th>
                         <th><b>Marca</b></th>
                         <th><b>Presentación</b></th>                        
                         <th><b>Cantidad</b></th>
@@ -466,6 +467,7 @@
                                     <?php echo $f_reparto; ?>
                                 </td>
                                 <TD> <?php echo $lineas['producto'] ?></TD>
+                                <TD> <?php echo $lineas['proveedor'] ?></TD>
                                 <TD> <?php echo $lineas['marca'] ?></TD>
                                 <TD> <?php echo $lineas['vl']." - ".$lineas['tipo_envase']." - ".$lineas['peso']. "[KG]" ?></TD>
                                 <TD> <?php echo $cantidad ?></TD>
