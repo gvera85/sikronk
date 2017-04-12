@@ -71,6 +71,14 @@ class caja_distribuidor_m extends CI_Model {
                            join distribuidor b on a.id_distribuidor = b.id
                            where b.id=?
                            and a.id_estado = 18
+                    union
+                        select 'Débito banco' tipo, a.fecha_movimiento, a.stamp, a.razon_social, '-' descripcion, a.importe debe, 0 haber, a.id_movimiento_cuenta_bancaria
+                        from vw_movimientos_bancos a
+                        where a.id_tipo_mov = 1
+                    union
+                        select 'Crédito banco' tipo, a.fecha_movimiento, a.stamp, a.razon_social, '-' descripcion, 0 debe, a.importe haber, a.id_movimiento_cuenta_bancaria
+                        from vw_movimientos_bancos a
+                        where a.id_tipo_mov = 2
                     order by 2 asc, 3 asc";
             
             $query = $this->db->query($sql, array($idDistribuidor, $idDistribuidor, $idDistribuidor, $idDistribuidor, $idDistribuidor));

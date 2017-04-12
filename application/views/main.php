@@ -13,7 +13,7 @@
         <div class="imagenes" >
             <a href="
                 <?php if ($menu['cant_hijos'] == 0) 
-                            echo base_url()."index.php/main/redireccionarControlador/".urlencode($menu['controlador']); 
+                            echo base_url()."index.php/".$menu['controlador']; 
                             /*echo site_url("main/redireccionarControlador/".urlencode($menu['controlador']));*/
                       else 
                             echo base_url()."index.php/main/recargarMenu/".$menu['id_menu'];  ?>">

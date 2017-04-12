@@ -26,6 +26,29 @@ class proveedor_m extends CI_Model {
        
     }
     
+    public function getBancoXId($idBanco)
+    {
+         if($idBanco != FALSE) {
+          $sql = "select a.* 
+                    from entidad_bancaria a
+                    where a.id = ?";
+            
+            $query = $this->db->query($sql, array($idBanco));
+                   
+            $banco = $query->result_array();
+
+            if( is_array($banco) && count($banco) > 0 ) {
+              return $banco;
+            }
+            
+            return false;
+        }
+        else {
+          return FALSE;
+        }   
+       
+    }
+    
 
    
 }

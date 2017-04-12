@@ -284,6 +284,18 @@
                             $classTipo = "label label-warning";    
                             $linkHaciaDetalles = 'javascript:window.open('."'".base_url('/index.php/detallesEntidades/verNotaDebito').'/'.$lineas['id']."'". ')';
                         }
+                        else if ($lineas['tipo'] == 'Débito banco'){
+                            $classTipo = "label label-warning";    
+                            $linkHaciaDetalles = '';
+                        }
+                        else if ($lineas['tipo'] == 'Crédito banco'){
+                            $classTipo = "label label-success";    
+                            $linkHaciaDetalles = '';
+                        }
+                        else{
+                            $classTipo = "label label-warning";    
+                            $linkHaciaDetalles = '';                            
+                        }
                     ?>
                     <TR>
                             <TD> 
