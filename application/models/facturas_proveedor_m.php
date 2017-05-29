@@ -19,7 +19,7 @@ class facturas_proveedor_m extends CI_Model {
     
     public function getDistribuidorXId($idDistribuidor)
     {
-        $sql = "select * from distribuidor where id = ?";
+        $sql = "select * from distribuidor where id_distribuidor = ?";
             
         $query = $this->db->query($sql, $idDistribuidor);
 

@@ -79,7 +79,7 @@ class usuario_m extends CI_Model {
         if($idUsuario != FALSE) {
           $sql = "select a.id id_linea, c.id id_perfil, a.id_perfil_distribuidor id_perfil, b.razon_social empresa, b.imagen_logo, c.descripcion perfil, a.id_distribuidor id_empresa, a.id_usuario
                     from usuario_perfil_distribuidor a
-                    join distribuidor b on a.id_distribuidor = b.id
+                    join distribuidor b on a.id_distribuidor = b.id_distribuidor
                     join perfil_distribuidor c on a.id_perfil_distribuidor = c.id
                     where a.id_usuario = ?";
             

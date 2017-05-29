@@ -47,9 +47,9 @@ class pagoClienteLineas extends CI_Controller{
    
     $crud->set_subject('Item a la factura');
     $crud->required_fields('id_modo_pago', 'importe');
-    $crud->columns( 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit','estado', 'observaciones');
+    $crud->columns( 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit','estado','id_cuenta_bancaria', 'observaciones');
     
-    $crud->fields('id_pago', 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'id_estado', 'observaciones');
+    $crud->fields('id_pago', 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'id_estado', 'id_cuenta_bancaria', 'observaciones');
     $crud->change_field_type('id_pago','invisible');
     
     $crud->callback_before_insert(array($this,'lineas_callback'));
@@ -67,6 +67,11 @@ class pagoClienteLineas extends CI_Controller{
     $crud->display_as('id_modo_pago','Tipo de pago');
     $crud->set_relation('id_modo_pago','modo_pago','{descripcion}',array('visto_por_clientes' => 1, 'activo' => 1));
     
+    
+    
+    $crud->display_as('id_cuenta_bancaria','Cuenta bancaria (para pagos por transferencia)');
+    $crud->set_primary_key('id_cuenta_bancaria','vw_cuentas_bancarias');
+    $crud->set_relation('id_cuenta_bancaria','vw_cuentas_bancarias','{razon_social}-Nro. Cuenta: {numero_cuenta}',array( 'id_distribuidor' =>1), 'razon_social ASC');
     
     $crud->change_field_type('id_estado','invisible');
     
@@ -102,6 +107,13 @@ class pagoClienteLineas extends CI_Controller{
         $post_array['id_estado'] = 8;
    }
    
+   if ($post_array['id_modo_pago'] == 5)
+   {
+       $cuenta_bancaria = $this->input->post('id_cuenta_bancaria'); 
+       $importe = $this->input->post('importe'); 
+       $this->generarMovimientoEnCuentaBancaria($cuenta_bancaria, $importe);
+   }
+   
    return $post_array;
 }
 
@@ -125,6 +137,16 @@ class pagoClienteLineas extends CI_Controller{
     $this->facturas_clientes_m->updateMontoTotalPago($montoTotal, $this->session->userdata('id_pago'));
    
 }
+
+    function generarMovimientoEnCuentaBancaria($cuenta_bancaria, $importe) {
+   
+        $this->load->model('caja_distribuidor_m');
+        
+        $fechaPago = $this->caja_distribuidor_m->getFechaPago($this->session->userdata('id_pago'));/*Obtengo el monto actual en la BD*/
+
+        $this->caja_distribuidor_m->insertMovimientoCuentaBancaria($cuenta_bancaria, 2, $importe, $fechaPago, "Movimiento generado por transferencia bancaria de un cliente", 2);
+   
+    }
   
   public function validarPagoEnCheque($idBanco) 
   {
@@ -134,11 +156,18 @@ class pagoClienteLineas extends CI_Controller{
     $id_sucursal_bancaria = $this->input->post('id_sucursal_bancaria'); 
     $cuit = $this->input->post('cuit'); 
     $numero_de_cheque = $this->input->post('numero_de_cheque'); 
+    $cuenta_bancaria = $this->input->post('id_cuenta_bancaria'); 
     
             
     if ( $id_modo_pago != 2 && $fecha_de_acreditacion != ""  )/*ERROR!!! El tipo de pago NO es cheque pero seleccionó la fecha de acreditacion*/
     {
         $this->form_validation->set_message('validarPagoEnCheque', ' La fecha de acreditacion solo debe seleccionarse para pagos en cheques');  
+        return FALSE;
+    } 
+    
+    if ( $id_modo_pago != 5 && $cuenta_bancaria != ""  )/*ERROR!!! El numero de cuenta solo debe seleccionarse si el pago es por transferencia bancaria*/
+    {
+        $this->form_validation->set_message('validarPagoEnCheque', ' La cuenta bancaria solo debe seleccionarse si el pago es por transferencia bancaria');  
         return FALSE;
     } 
     
@@ -163,6 +192,12 @@ class pagoClienteLineas extends CI_Controller{
     if ($id_modo_pago == 2 && ($idBanco == "" || $fecha_de_acreditacion == "" || $id_sucursal_bancaria == "" || $numero_de_cheque == "" ))
     {
         $this->form_validation->set_message('validarPagoEnCheque', ' En el tipo de pago CHEQUE es obligatorio elegir el numero de cheque, la fecha de acreditacion, el banco y la sucursal');  
+        return FALSE;
+    }  
+    
+    if ($id_modo_pago == 5 && ($cuenta_bancaria == ""))
+    {
+        $this->form_validation->set_message('validarPagoEnCheque', ' En el tipo de pago TRANSFERENCIA BANCARIA es obligatorio elegir la cuenta bancaria');  
         return FALSE;
     }  
     

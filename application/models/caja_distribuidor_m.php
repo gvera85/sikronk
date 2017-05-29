@@ -4,7 +4,7 @@ class caja_distribuidor_m extends CI_Model {
 
     public function getDistribuidorXId($idDistribuidor)
     {
-        $sql = "select * from distribuidor where id = ?";
+        $sql = "select * from distribuidor where id_distribuidor = ?";
             
         $query = $this->db->query($sql, $idDistribuidor);
 
@@ -22,7 +22,11 @@ class caja_distribuidor_m extends CI_Model {
         $idDistribuidor = 1; 
         
         if($idDistribuidor != FALSE) {
-                $sql = "select 'Ingreso de cliente' tipo, a.fecha_pago, a.stamp, b.razon_social, '-' descripcion, 0 debe, a.monto haber, a.id
+            $sql = "
+                SELECT @rownum:=@rownum + 1 as row_number, 
+                t.*
+                FROM (
+                    select 'Ingreso de cliente' tipo, a.fecha_pago, a.stamp, b.razon_social, '-' descripcion, 0 debe, a.monto haber, a.id
                         from pago_cliente a
                         join cliente b on a.id_cliente = b.id
                         and 1=?
@@ -62,24 +66,28 @@ class caja_distribuidor_m extends CI_Model {
                         select 'Emisión cheque' tipo, a.fecha_emision, a.stamp, b.razon_social, '-' descripcion,
                             0 debe, a.importe haber, a.id
                            from cheque_distribuidor a
-                           join distribuidor b on a.id_distribuidor = b.id
-                           where b.id=?
+                           join distribuidor b on a.id_distribuidor = b.id_distribuidor
+                           where b.id_distribuidor=?
                     union
                         select 'Deposito para cheque' tipo, a.fecha_deposito_efectivo, a.stamp, b.razon_social, '-' descripcion,
                            a.importe debe, 0 haber, a.id
                            from cheque_distribuidor a
-                           join distribuidor b on a.id_distribuidor = b.id
-                           where b.id=?
+                           join distribuidor b on a.id_distribuidor = b.id_distribuidor
+                           where b.id_distribuidor=?
                            and a.id_estado = 18
                     union
                         select 'Débito banco' tipo, a.fecha_movimiento, a.stamp, a.razon_social, '-' descripcion, a.importe debe, 0 haber, a.id_movimiento_cuenta_bancaria
                         from vw_movimientos_bancos a
                         where a.id_tipo_mov = 1
+                        and id_origen_movimiento in (1, 3)
                     union
                         select 'Crédito banco' tipo, a.fecha_movimiento, a.stamp, a.razon_social, '-' descripcion, 0 debe, a.importe haber, a.id_movimiento_cuenta_bancaria
                         from vw_movimientos_bancos a
                         where a.id_tipo_mov = 2
-                    order by 2 asc, 3 asc";
+                        and id_origen_movimiento in (1, 3)
+                    order by 2 asc, 3 asc
+                ) t,
+                (SELECT @rownum := 0) r;";
             
             $query = $this->db->query($sql, array($idDistribuidor, $idDistribuidor, $idDistribuidor, $idDistribuidor, $idDistribuidor));
                    
@@ -212,6 +220,70 @@ class caja_distribuidor_m extends CI_Model {
         
         $this->db->update("cheque_distribuidor", $data); 
 
+    }
+    
+    public function getFechaPago($idPago)
+    {
+        if($idPago != FALSE) {
+            $sql = "select fecha_pago
+                    from pago_cliente 
+                    where id = ?";
+            
+            $query = $this->db->query($sql, array($idPago));
+            
+            $fecha_pago = $query->result_array();
+            
+            
+             if ( is_array($fecha_pago) && count($fecha_pago) == 1 )  {
+              
+              if (empty($fecha_pago[0]["fecha_pago"])) {
+                  return 0;
+              }else{
+                  return $fecha_pago[0]["fecha_pago"];
+              }
+              
+            }
+            else{
+              return 0;
+            }
+        }else {
+          return FALSE;
+        }    
+    }
+    
+    public function insertMovimientoCuentaBancaria($id_cuenta_bancaria, $tipoMovimiento, $importe, $fecha_movimiento, $observaciones, $idOrigenMovimiento)
+    {    
+            
+             $data = array(               
+                'id_cuenta_bancaria' => $id_cuenta_bancaria ,
+                'id_tipo_mov' => $tipoMovimiento, // Credito o debito
+                'importe'  => $importe,   
+                'fecha_movimiento' => $fecha_movimiento,
+                'observaciones' => $observaciones,
+                'id_origen_movimiento' => $idOrigenMovimiento
+             );
+
+             $this->db->insert('movimientos_cuenta_bancaria', $data); 
+             
+             if($data['error'] = $this->db->_error_message());
+                    return $data;
+             
+             return true;
+    }
+    
+    public function getChequeDistribuidorXId($idCheque)
+    {
+        $sql = "select * from cheque_distribuidor where id = ?";
+            
+        $query = $this->db->query($sql, $idCheque);
+
+        $cheque = $query->result_array();
+
+        if( is_array($cheque) && count($cheque) > 0 ) {
+          return $cheque;
+        }
+
+        return false;
     }
    
 

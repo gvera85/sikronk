@@ -115,8 +115,9 @@
                                    url:"<?php echo base_url() ?>index.php/depositarEfectivoParaCheque/generarDepositoEfectivo/"+idCheque
                              })
                            .done(function(data) {
-                               location.reload();
-                               swal("Operación exitosa!", data, "success");
+                               console.log( "Error:", data.slice( 0, 1000 ) );
+                               /*location.reload();
+                               swal("Operación exitosa!", data, "success");*/
                            })
                            .fail(function(data) {
                              alert( "error" );

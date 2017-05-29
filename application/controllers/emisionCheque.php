@@ -36,16 +36,16 @@ class emisionCheque extends CI_Controller{
     $crud->set_theme('datatables');
     
     $crud->set_table('cheque_distribuidor');
-    $crud->edit_fields( 'id_estado','fecha_emision' ,'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
-    $crud->add_fields( 'id_estado','fecha_emision', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
+    $crud->edit_fields( 'id_estado','fecha_emision' ,'importe', 'numero_de_cheque', 'fecha_de_acreditacion','id_cuenta_bancaria','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
+    $crud->add_fields( 'id_estado','fecha_emision', 'importe', 'numero_de_cheque', 'fecha_de_acreditacion','id_cuenta_bancaria','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
     
     //$crud->set_theme('datatables');
    
     $crud->set_subject('Cheque');
-    $crud->required_fields( 'fecha_emision', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria');
-    $crud->columns( 'fecha_emision', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria');
+    $crud->required_fields( 'fecha_emision', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_cuenta_bancaria','id_entidad_bancaria', 'id_sucursal_bancaria');
+    $crud->columns( 'fecha_emision', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_cuenta_bancaria','id_entidad_bancaria', 'id_sucursal_bancaria');
     
-    $crud->fields('id_estado', 'id_distribuidor', 'fecha_emision', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
+    $crud->fields('id_estado', 'id_distribuidor', 'fecha_emision', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_cuenta_bancaria','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
     
     $crud->field_type('id_distribuidor','invisible');
     $crud->field_type('id_estado','invisible');
@@ -54,6 +54,11 @@ class emisionCheque extends CI_Controller{
     $crud->callback_before_update(array($this,'lineas_callback'));
     
     $crud->change_field_type('id_estado','invisible');
+    
+    $crud->set_primary_key('id_cuenta_bancaria','vw_cuentas_bancarias');
+    
+    $crud->display_as('id_cuenta_bancaria','Cuenta bancaria');    
+    $crud->set_relation('id_cuenta_bancaria','vw_cuentas_bancarias','{razon_social}-{numero_cuenta}', array('activo' => 1, 'id_distribuidor_cuenta_bancaria'=> $this->session->userdata('empresa') ));
     
     $crud->display_as('id_entidad_bancaria','Banco');    
     $crud->set_relation('id_entidad_bancaria','entidad_bancaria','{razon_social}', array('activo' => 1));
