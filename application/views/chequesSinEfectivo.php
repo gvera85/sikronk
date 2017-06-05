@@ -106,7 +106,7 @@
                     
                     $(document).on("click","#btnDepositar",function( event ) { 
                     
-                        var answer = confirm("¿Está seguro?. Esta acción hará que se debite de su efectivo el TOTAL del importe del cheque")
+                        var answer = confirm("¿Está seguro?. Esta acción hará que se debite de esta cuenta bancaria el TOTAL del importe del cheque")
                         if (answer)
                         {
                             var idCheque = $(this).attr('value');     
@@ -190,6 +190,7 @@
                     <th><b>Importe</b></th>
                     <th><b>Banco</b></th>                           
                     <th><b>Nro. sucursal</b></th>                           
+                    <th><b>Nro. cuenta</b></th>  
                     <th><b>Dirección</b></th>                           
                     <th><b>Acción</b></th>                           
                 </TR>
@@ -209,8 +210,9 @@
                         <TD> <?php echo $lineas['importe'] ?></TD>                           
                         <TD> <?php echo $lineas['razon_social'] ?></TD>  
                         <TD> <?php echo $lineas['numero_sucursal'] ?></TD>  
+                        <TD> <?php echo $lineas['numero_cuenta'] ?></TD>  
                         <TD> <?php echo $lineas['direccion'] ?></TD>  
-                        <TD> <button type="button" id="btnDepositar" value="<?php echo $lineas['id'] ?>" class="btn btn-primary">Depositar efectivo</button></TD>  
+                        <TD> <button type="button" id="btnDepositar" value="<?php echo $lineas['id'] ?>" class="btn btn-primary">Descontar de cuenta bancaria</button></TD>  
                         
                         
                         

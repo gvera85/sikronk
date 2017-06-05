@@ -20,38 +20,51 @@ class cuentaBancaria extends CI_Controller{
   }
   
   function index(){
-    $this->grocery_crud->where('id_distribuidor', $this->session->userdata('empresa'));    
+    $this->load->library('ajax_grocery_CRUD');  
+    //create ajax_grocery_CRUD instead of grocery_CRUD. This extends the functionality with the set_relation_dependency method keeping all original functionality as well
+    $crud = new ajax_grocery_CRUD();  
       
-    $this->grocery_crud->set_table('cuenta_bancaria');
-    $this->grocery_crud->edit_fields('activo','id_entidad_bancaria','numero_cuenta','cbu', 'descripcion');
-    $this->grocery_crud->add_fields('activo','id_entidad_bancaria','numero_cuenta','cbu', 'descripcion');
+    $crud->where('id_distribuidor', $this->session->userdata('empresa'));    
+      
+    $crud->set_table('cuenta_bancaria');
+    $crud->edit_fields('activo','id_entidad_bancaria','id_sucursal_bancaria','numero_cuenta','cbu', 'descripcion');
+    $crud->add_fields('activo','id_entidad_bancaria','id_sucursal_bancaria','numero_cuenta','cbu', 'descripcion');
     
-    $this->grocery_crud->set_theme('datatables');
+    $crud->set_theme('datatables');
    
-    $this->grocery_crud->set_subject('Cuentas bancarias');
-    $this->grocery_crud->required_fields('activo','id_entidad_bancaria','numero_cuenta');
-    $this->grocery_crud->columns('activo','id_entidad_bancaria','numero_cuenta','cbu', 'descripcion', 'saldo');
+    $crud->set_subject('Cuentas bancarias');
+    $crud->required_fields('activo','id_entidad_bancaria','id_sucursal_bancaria','numero_cuenta');
+    $crud->columns('activo','id_entidad_bancaria','id_sucursal_bancaria','numero_cuenta','cbu', 'descripcion', 'saldo');
     
-    $this->grocery_crud->display_as('id_entidad_bancaria','Banco'); 
+    $crud->display_as('id_entidad_bancaria','Banco'); 
     
-    $this->grocery_crud->display_as('cbu','CBU'); 
+    $crud->display_as('cbu','CBU'); 
         
-    $this->grocery_crud->set_relation('id_entidad_bancaria','entidad_bancaria','razon_social');
+    $crud->set_relation('id_entidad_bancaria','entidad_bancaria','razon_social');
     
-    $this->grocery_crud->fields('id_distribuidor','activo','id_entidad_bancaria','numero_cuenta','cbu', 'descripcion');
+    $crud->set_primary_key('id','vw_sucursales_bancarias');
     
-    $this->grocery_crud->change_field_type('id_distribuidor','invisible');
+    $crud->display_as('id_sucursal_bancaria','Sucursal bancaria');
+    $crud->set_relation('id_sucursal_bancaria','vw_sucursales_bancarias','{numero_sucursal}-{direccion}');
     
-    $this->grocery_crud->change_field_type('activo', 'true_false');
+    //$crud->callback_column('id_viaje',array($this,'item_description_callback'));
     
-    $this->grocery_crud->callback_before_insert(array($this,'distribuidor_callback'));
-    $this->grocery_crud->callback_before_update(array($this,'distribuidor_callback'));
+    $crud->set_relation_dependency('id_sucursal_bancaria','id_entidad_bancaria','id_entidad_bancaria');
     
-    $this->grocery_crud->add_action('Movimientos', base_url().'/assets/img/iconoMovimientoBancario.png', '','ui-icon-image',array($this,'link_hacia_movimientos'));
+    $crud->fields('id_distribuidor','activo','id_entidad_bancaria','id_sucursal_bancaria','numero_cuenta','cbu', 'descripcion');
     
-    $this->grocery_crud->set_rules('cbu','CBU','callback_validarCBU');
+    $crud->change_field_type('id_distribuidor','invisible');
     
-    $output = $this->grocery_crud->render();
+    $crud->change_field_type('activo', 'true_false');
+    
+    $crud->callback_before_insert(array($this,'distribuidor_callback'));
+    $crud->callback_before_update(array($this,'distribuidor_callback'));
+    
+    $crud->add_action('Movimientos', base_url().'/assets/img/iconoMovimientoBancario.png', '','ui-icon-image',array($this,'link_hacia_movimientos'));
+    
+    $crud->set_rules('cbu','CBU','callback_validarCBU');
+    
+    $output = $crud->render();
     $this->cuenta_output($output);
   }
   

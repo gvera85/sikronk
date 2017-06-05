@@ -285,6 +285,21 @@ class caja_distribuidor_m extends CI_Model {
 
         return false;
     }
+    
+    public function getCuentaBancariaXId($idCuenta)
+    {
+        $sql = "select * from cuenta_bancaria where id_cuenta_bancaria = ?";
+            
+        $query = $this->db->query($sql, $idCuenta);
+
+        $cuenta = $query->result_array();
+
+        if( is_array($cuenta) && count($cuenta) > 0 ) {
+          return $cuenta;
+        }
+
+        return false;
+    }
    
 
 }

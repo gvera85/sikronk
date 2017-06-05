@@ -36,38 +36,34 @@ class emisionCheque extends CI_Controller{
     $crud->set_theme('datatables');
     
     $crud->set_table('cheque_distribuidor');
-    $crud->edit_fields( 'id_estado','fecha_emision' ,'importe', 'numero_de_cheque', 'fecha_de_acreditacion','id_cuenta_bancaria','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
-    $crud->add_fields( 'id_estado','fecha_emision', 'importe', 'numero_de_cheque', 'fecha_de_acreditacion','id_cuenta_bancaria','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
+    $crud->edit_fields( 'id_estado','fecha_emision' ,'importe', 'numero_de_cheque', 'fecha_de_acreditacion','id_cuenta_bancaria', 'cuit', 'observaciones');
+    $crud->add_fields( 'id_estado','fecha_emision', 'importe', 'numero_de_cheque', 'fecha_de_acreditacion','id_cuenta_bancaria', 'cuit', 'observaciones');
     
     //$crud->set_theme('datatables');
    
     $crud->set_subject('Cheque');
-    $crud->required_fields( 'fecha_emision', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_cuenta_bancaria','id_entidad_bancaria', 'id_sucursal_bancaria');
-    $crud->columns( 'fecha_emision', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_cuenta_bancaria','id_entidad_bancaria', 'id_sucursal_bancaria');
+    $crud->required_fields( 'fecha_emision', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_cuenta_bancaria');
+    $crud->columns( 'fecha_emision', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_cuenta_bancaria');
     
     $crud->fields('id_estado', 'id_distribuidor', 'fecha_emision', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_cuenta_bancaria','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'observaciones');
     
     $crud->field_type('id_distribuidor','invisible');
     $crud->field_type('id_estado','invisible');
     
+    $crud->change_field_type('id_entidad_bancaria','invisible');
+    $crud->change_field_type('id_sucursal_bancaria','invisible');
+    
     $crud->callback_before_insert(array($this,'lineas_callback'));
     $crud->callback_before_update(array($this,'lineas_callback'));
     
-    $crud->change_field_type('id_estado','invisible');
+    
     
     $crud->set_primary_key('id_cuenta_bancaria','vw_cuentas_bancarias');
     
     $crud->display_as('id_cuenta_bancaria','Cuenta bancaria');    
     $crud->set_relation('id_cuenta_bancaria','vw_cuentas_bancarias','{razon_social}-{numero_cuenta}', array('activo' => 1, 'id_distribuidor_cuenta_bancaria'=> $this->session->userdata('empresa') ));
     
-    $crud->display_as('id_entidad_bancaria','Banco');    
-    $crud->set_relation('id_entidad_bancaria','entidad_bancaria','{razon_social}', array('activo' => 1));
-    
     $crud->set_primary_key('id','vw_sucursales_bancarias');
-    
-    $crud->display_as('id_sucursal_bancaria','Sucursal bancaria');
-    $crud->set_relation('id_sucursal_bancaria','vw_sucursales_bancarias','{numero_sucursal}-{direccion}');
-    
     //$crud->callback_column('id_viaje',array($this,'item_description_callback'));
     
     $crud->set_relation_dependency('id_sucursal_bancaria','id_entidad_bancaria','id_entidad_bancaria');
@@ -78,12 +74,22 @@ class emisionCheque extends CI_Controller{
   }
   
   function lineas_callback($post_array) {
-        $post_array['id_estado'] = ESTADO_CHEQUE_DIST_SIN_USAR;
-        $post_array['id_distribuidor'] = $this->session->userdata('empresa');        
+    $post_array['id_estado'] = ESTADO_CHEQUE_DIST_SIN_USAR;
+    $post_array['id_distribuidor'] = $this->session->userdata('empresa');  
 
-        return $post_array;
+    $id_cuenta_bancaria = $post_array['id_cuenta_bancaria'];    
+
+    $this->load->model('caja_distribuidor_m');
+
+    $cuentaBancaria = $this->caja_distribuidor_m->getCuentaBancariaXId($id_cuenta_bancaria);
+
+    $post_array['id_entidad_bancaria'] = $cuentaBancaria[0]["id_entidad_bancaria"];     
+    $post_array['id_sucursal_bancaria'] = $cuentaBancaria[0]["id_sucursal_bancaria"];   
+
+    return $post_array;
   }
   
+
     
   function pago_output($output = null){
     $this->load->view('mostrarABM',$output);
