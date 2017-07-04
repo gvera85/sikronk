@@ -71,7 +71,7 @@ class pagoClienteLineas extends CI_Controller{
     
     $crud->display_as('id_cuenta_bancaria','Cuenta bancaria (para pagos por transferencia)');
     $crud->set_primary_key('id_cuenta_bancaria','vw_cuentas_bancarias');
-    $crud->set_relation('id_cuenta_bancaria','vw_cuentas_bancarias','{razon_social}-Nro. Cuenta: {numero_cuenta}',array( 'id_distribuidor' =>1), 'razon_social ASC');
+    $crud->set_relation('id_cuenta_bancaria','vw_cuentas_bancarias','{razon_social}-Nro. Cuenta: {numero_cuenta}',array( 'id_distribuidor_cuenta_bancaria' => $this->session->userdata('empresa')), 'razon_social ASC');
     
     $crud->change_field_type('id_estado','invisible');
     
