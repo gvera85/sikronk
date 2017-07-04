@@ -23,6 +23,8 @@ class cuentaBancaria extends CI_Controller{
     $this->load->library('ajax_grocery_CRUD');  
     //create ajax_grocery_CRUD instead of grocery_CRUD. This extends the functionality with the set_relation_dependency method keeping all original functionality as well
     $crud = new ajax_grocery_CRUD();  
+    
+    $crud->set_language("spanish");
       
     $crud->where('id_distribuidor', $this->session->userdata('empresa'));    
       

@@ -58,7 +58,7 @@ class cuentaBancariaMovimientos extends CI_Controller{
   
     $crud->display_as('id_tipo_mov','Movimiento');
     $crud->display_as('id_movimiento_cuenta_bancaria','Id');
-    $crud->set_relation('id_tipo_mov', 'tipo_mov', '{descripcion}');
+    $crud->set_relation('id_tipo_mov', 'tipo_mov', '{descripcion}', array('activo' => 1));
     
     $output = $crud->render();
     
