@@ -182,7 +182,7 @@ class viaje_m extends CI_Model {
                             a.precio_sugerido_caja,
                             cant_bultos_merma_prov,
                             d.id_tipo_envase, e.descripcion descripcion_envase, 
-                            if(precio_caja, 1, (select count(1) from pagos_cliente_reparto x where id_reparto = a.id)) cant_pagos
+                            if(precio_caja, 1, if(precio_sugerido_caja, 2, (select count(1) from pagos_cliente_reparto x where id_reparto = a.id))) cant_pagos
                     from reparto a
                     join cliente b on a.id_cliente = b.id
                     join producto c on a.id_producto = c.id
