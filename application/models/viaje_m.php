@@ -694,7 +694,7 @@ class viaje_m extends CI_Model {
                 e.cuit cuit_distribuidor
                 from viaje a 
                 join proveedor b on a.id_proveedor = b.id
-                join distribuidor e on a.id_distribuidor = e.id
+                join distribuidor e on a.id_distribuidor = e.id_distribuidor
                 left join tipo_iva c on b.id_tipo_iva = c.id
                 left join provincia d on b.id_provincia = d.id                
                 where a.id = ?";

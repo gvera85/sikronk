@@ -122,7 +122,7 @@ class pagos_m extends CI_Model {
                 from cheque_distribuidor a
                 join entidad_bancaria b on a.id_entidad_bancaria = b.id                
                 join sucursales_bancarias d on a.id_sucursal_bancaria = d.id
-                join distribuidor g on a.id_distribuidor = g.id
+                join distribuidor g on a.id_distribuidor = g.id_distribuidor
                 join estado e on a.id_estado = e.id
                 where a.id = ?";
 
@@ -316,7 +316,7 @@ class pagos_m extends CI_Model {
                 join entidad_bancaria b on a.id_entidad_bancaria = b.id                
                 join sucursales_bancarias d on a.id_sucursal_bancaria = d.id
                 left join cheque_distribuidor e on a.id_cheque_distribuidor = e.id
-                left join distribuidor g on e.id_distribuidor = g.id
+                left join distribuidor g on e.id_distribuidor = g.id_distribuidor
                 left join pagos_clientes_lineas h on a.id_cheque_cliente = h.id
                 left join pago_cliente i on h.id_pago = i.id	
                 left join cliente j on i.id_cliente = j.id
@@ -345,7 +345,7 @@ class pagos_m extends CI_Model {
                 join entidad_bancaria b on a.id_entidad_bancaria = b.id                
                 join sucursales_bancarias d on a.id_sucursal_bancaria = d.id
                 left join cheque_distribuidor e on a.id_cheque_distribuidor = e.id
-                left join distribuidor g on e.id_distribuidor = g.id
+                left join distribuidor g on e.id_distribuidor = g.id_distribuidor
                 left join pagos_clientes_lineas h on a.id_cheque_cliente = h.id
                 left join pago_cliente i on h.id_pago = i.id	
                 left join cliente j on i.id_cliente = j.id
