@@ -49,11 +49,13 @@ class pagoClienteLineas extends CI_Controller{
     $crud->required_fields('id_modo_pago', 'importe');
     $crud->columns( 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit','estado','id_cuenta_bancaria', 'observaciones');
     
-    $crud->fields('id_pago', 'id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'id_estado', 'id_cuenta_bancaria', 'observaciones');
+    $crud->fields('id_pago', 'id_movimiento_cuenta_bancaria','id_modo_pago', 'importe', 'numero_de_cheque',  'fecha_de_acreditacion','id_entidad_bancaria', 'id_sucursal_bancaria', 'cuit', 'id_estado', 'id_cuenta_bancaria', 'observaciones');
     $crud->change_field_type('id_pago','invisible');
+    $crud->change_field_type('id_movimiento_cuenta_bancaria','invisible');
     
     $crud->callback_before_insert(array($this,'lineas_callback'));
     $crud->callback_before_update(array($this,'lineas_callback'));
+    $crud->callback_before_delete(array($this,'lineas_delete_callback'));
     
     $crud->callback_after_delete(array($this,'monto_total_callback'));
     $crud->callback_after_update(array($this,'monto_total_callback'));
@@ -107,15 +109,35 @@ class pagoClienteLineas extends CI_Controller{
         $post_array['id_estado'] = 8;
    }
    
+   chrome_log("idmodopago insert:".$post_array['id_modo_pago'],"log"); 
+   
    if ($post_array['id_modo_pago'] == 5)
    {
        $cuenta_bancaria = $this->input->post('id_cuenta_bancaria'); 
        $importe = $this->input->post('importe'); 
-       $this->generarMovimientoEnCuentaBancaria($cuenta_bancaria, $importe);
+       $insert_id = $this->generarMovimientoEnCuentaBancaria($cuenta_bancaria, $importe);
+       
+       chrome_log("id insert:".$insert_id,"log"); 
+       
+       $post_array['id_movimiento_cuenta_bancaria'] = $insert_id;
    }
    
    return $post_array;
 }
+
+    function lineas_delete_callback($post_array) {
+     
+       chrome_log("idmodopago delete:".$post_array['id_modo_pago'],"log"); 
+        
+       if ($post_array['id_modo_pago'] == 5)
+       {
+           $id_movimiento_cuenta_bancaria = $this->input->post('id_movimiento_cuenta_bancaria'); 
+           chrome_log("id_movimiento_cuenta_bancaria:".$id_movimiento_cuenta_bancaria,"log");
+           $retorno = $this->eliminarMovimientoEnCuentaBancaria($id_movimiento_cuenta_bancaria);
+       }
+
+       return $retorno;
+    }
 
   function monto_total_callback($post_array) {
    
@@ -144,8 +166,17 @@ class pagoClienteLineas extends CI_Controller{
         
         $fechaPago = $this->caja_distribuidor_m->getFechaPago($this->session->userdata('id_pago'));/*Obtengo el monto actual en la BD*/
 
-        $this->caja_distribuidor_m->insertMovimientoCuentaBancaria($cuenta_bancaria, 2, $importe, $fechaPago, "Movimiento generado por transferencia bancaria de un cliente", 2);
+        $id_insert = $this->caja_distribuidor_m->insertMovimientoCuentaBancaria($cuenta_bancaria, 2, $importe, $fechaPago, "Movimiento generado por transferencia bancaria de un cliente", 2);
+        
+        return $id_insert;
    
+    }
+    
+    function eliminarMovimientoEnCuentaBancaria($idMovimiento) {
+   
+        $this->load->model('caja_distribuidor_m');
+        
+        $this->caja_distribuidor_m->deleteMovimientoCuentaBancaria($idMovimiento);
     }
   
   public function validarPagoEnCheque($idBanco) 

@@ -265,10 +265,23 @@ class caja_distribuidor_m extends CI_Model {
 
              $this->db->insert('movimientos_cuenta_bancaria', $data); 
              
-             if($data['error'] = $this->db->_error_message());
-                    return $data;
+             $insert_id = $this->db->insert_id();
              
-             return true;
+             return $insert_id;
+    }
+    
+    public function deleteMovimientoCuentaBancaria($id_movimiento)
+    {    
+        $data = array(               
+           'id_movimiento_cuenta_bancaria' => $id_movimiento
+        );
+
+        $this->db->delete('movimientos_cuenta_bancaria', $data); 
+
+        if($data['error'] = $this->db->_error_message());
+               return false;
+
+        return true;
     }
     
     public function getChequeDistribuidorXId($idCheque)
