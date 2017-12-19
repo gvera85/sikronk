@@ -10,7 +10,7 @@
  */
 function chrome_log($object, $type = 'log')
 {
-	if(!file_exists(APPPATH .'debugger/ChromePhp.php')){
+	/*if(!file_exists(APPPATH .'debugger/ChromePhp.php')){
 		echo 'Missing required file: debugger/ChromePhp.php';
 		return;
 	}
@@ -19,5 +19,7 @@ function chrome_log($object, $type = 'log')
 	if($type == 'warn') ChromePhp::warn($object);
 	else if($type == 'error') ChromePhp::error($object);
 	else if($type == 'group') ChromePhp::group($object);
-	else ChromePhp::log($object);
+	else ChromePhp::log($object);*/
+    
+    return;
 }
